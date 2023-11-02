@@ -1,0 +1,108 @@
+<form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
+
+  <!-- Sheet Headers -->
+  <header class="sheet-header" style="border-bottom: 1px solid gray;">
+    <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100"/>
+
+    <div style="display: flex; flex-direction: column;">
+      <!-- Character Name at the top of the sheet -->
+      <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name"/></h1>
+      
+      <!-- Characters lineage, culture, faction, and path, relativly thin strip-->
+      <div class="flexrow">
+        <input name="system.background.lineage" type="text" value="{{system.background.lineage}}" placeholder="species"/>
+        <input name="system.background.culture" type="text" value="{{system.background.culture}}" placeholder="culture"/>
+        <input name="system.background.faction" type="text" value="{{system.background.faction}}" placeholder="faction"/>
+        <input name="system.background.path" type="text" value="{{system.background.path}}" placeholder="path"/>
+      </div>
+      <!-- Player health, legend, and path rank + xp-->
+      <div class="flexrow">
+        <!--Health-->
+        <div class="flexrow">
+          <div>
+            <input name="system.health.value" type="number" value="{{system.health.value}}" placeholder="current hp" />
+          </div>
+          <div class="flexcol">
+            <div>{{system.health.max}}</div>
+            <input name="system.health.mod" type="number" value="{{system.health.mod}}" placeholder="hp mod" />
+          </div>
+        </div>
+        <!--Legend-->
+        <div class="flexcol">
+          <input name="legend-temp" type="number" value="{{system.legend.value}}" placeholder="temp legend" />
+          <input name="legend-max" type="number" value="{{system.legend.max}}" placeholder="max legend" />
+        </div>
+        <!--Level / xp-->
+        <div></div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Tab Navigation -->
+  {{!-- Sheet Tab Navigation --}}
+  <nav class="sheet-tabs tabs" data-group="primary" style="text-align: left;">
+    {{!-- Default tab is specified in actor-sheet.mjs --}}
+    <a class="item" style="text-align: center; border-right: 1px solid gray;" data-tab="traits">Traits</a>
+    <a class="item" style="text-align: center; border-right: 1px solid gray;" data-tab="skills">Skills</a>
+    <a class="item" style="text-align: center; border-right: 1px solid gray;" data-tab="equipment">Equipment</a>
+    <a class="item" style="text-align: center; border-right: 1px solid gray;" data-tab="augs">Augs</a>
+    <a class="item" style="text-align: center; border-right: 1px solid gray;" data-tab="magic">Magic</a>
+    <a class="item" style="text-align: center;" data-tab="bio">Bio</a>
+  </nav>
+
+  <!-- Tab Bodies -->
+  <section class="sheet-body">
+    <div class="tab traits" data-group="primary" data-tab="traits" style="height: 100%; padding-bottom: 12px;">
+      <div style="display: flex; flex-direction: row; padding-right: 3px;">
+        <!-- Core traits on the left hand side -->
+        <div style="display: flex; flex-direction: column; min-width: 80px; max-width: 80px; text-align: center; margin-right: 12px;">
+          <aside>
+
+            {{!-- The grid classes are defined in scss/global/_grid.scss. To use,
+            use both the "grid" and "grid-Ncol" class where "N" can be any number
+            from 1 to 12 and will create that number of columns.  --}}
+
+            <div class="flexcol" style="border: 2px groove gray; border-radius: 5px;">
+
+              {{#each system.traits.core as |trait key|}}
+              <div class="trait flexrow flex-group-center" style="flex-direction: column; border-bottom: 1px solid gray;">
+                <label for="system.traits.core.{{key}}.value" class="resource-label rollable flexlarge align-left" data-roll="(@traits.core.{{key}}.rank)d10x10" data-label="{{trait.label}}">{{trait.label}}</label>
+                <div style="padding-left: 10px; padding-right: 10px;"><div style="background-color: rgb(168, 168, 168); height: 1px; width: 60px;"></div></div>
+                <input type="text" style="font-size: 20px; border: 0; background-color: transparent; padding-top: 5px;" name="system.traits.core.{{key}}.value" value="{{trait.value}}" data-dtype="Number"/>
+                <span class="trait-rank rollable" style="font-size: 12px;" data-roll="(@traits.core.{{key}}.rank)d10x10" data-label="{{trait.label}}">Rank {{numberFormat trait.rank decimals=0 sign=false}}</span>
+              </div>
+              {{/each}}
+
+            </div>
+          </aside>
+        </div>
+        <!-- Derived Stats, armour soak -->
+        <div>
+          <!-- Derived stats top bar -->
+          <div style="min-height: 40px; max-height: 40px; text-align: center; min-width: 200px; max-width: 225px;">
+            <div class="traits.derived flexrow" style="border: 2px groove gray; border-radius: 5px;">
+
+              {{#each system.traits.derived as |trait key|}}
+              <div class="trait flex-group-center" style="flex-direction: column; border-right: 1px solid gray;">
+                <label for="system.traits.derived.{{key}}.value" class="resource-label flexlarge" data-label="{{trait.label}}" style="font-size: 10px;">{{trait.label}}</label>
+                <div style="padding-left: 5px; padding-right: 5px;"><div style="background-color: rgb(168, 168, 168); height: 1px; width: 100%;"></div></div>
+                <div style="font-size: 15px;" name="system.traits.derived.{{key}}.value" value="{{trait.value}}">{{trait.value}}</div>
+
+                <div style="display: flex; flex-direction: row; align-items: center; border-top: 1px solid gray;">
+                  <div style="border-right: 1px solid gray; font-size: 10px; padding: 0px 4px 0px 4px;">Mod</div>
+                  <input type="text" style="font-size: 12px; border: 0; background-color: transparent; padding-top: 5px;" name="system.traits.derived.{{key}}.mod" value="{{trait.mod}}" data-dtype="Number"/>
+                </div>
+
+              </div>
+              {{/each}}
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+</form>
+

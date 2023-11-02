@@ -1,0 +1,35 @@
+$bgc_1: blue;
+$bgc_2: green;
+$bgc_3: purple;
+$bgc_4: orange;
+$bgc_5: red;
+$bgc_6: white;
+
+
+div.wrap-armour {
+  background-color: $bgc_6;
+  .armour-soak {
+    label {
+      text-align: right;
+    }
+    input {
+      text-align: center;
+    }
+  }
+}
+
+//style="text-align: center; padding: 1px; gap: 1px 1px; text-wrap: nowrap; font-size: 12px;"
+div.wrap-wounds{
+  background-color: aqua;
+
+  grid.wound-chart {
+    text-align: left;
+    padding: 1px;
+    gap: 1px;
+    text-wrap: nowrap;
+    font-size: 12px;
+    .align-center {
+      text-align: center;
+    }
+  }
+}

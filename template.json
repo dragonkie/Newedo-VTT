@@ -1,0 +1,150 @@
+{
+  "Actor": {
+    "types": ["character", "npc", "pet"],
+    "templates": {
+      "base": {
+        "health": {
+          "value": 10,
+          "min": 0,
+          "max": 10,
+          "mod": 1.5,
+          "wound": {
+            "state": "healthy",
+            "penalty": {
+              "healthy": 0,
+              "grazed": -1,
+              "flesh-wound": -3,
+              "banged-up": -5,
+              "hurt-bad": -7,
+              "burning-legend": -10
+            },
+            "threshold": {
+              "healthy": 1.0,
+              "grazed": 0.90,
+              "flesh-wound": 0.75,
+              "banged-up": 0.25,
+              "hurt-bad": 0.10,
+              "burning-legend": 0.0
+            }
+          }
+        },
+        "legend": {
+          "value": 10,
+          "min": 0,
+          "max": 10
+        },
+        "size": {
+          "value": 5,
+          "min": 1,
+          "max": 6
+        },
+        "biography": ""
+      }
+    },
+    "character": {
+      "templates": ["base"],
+      "attributes": {
+        "level": {
+          "value": 1
+        }
+      },
+      "traits": {
+        "core": {
+          "pow": {
+            "value": 10,
+            "rank": 1
+          },
+          "ref": {
+            "value": 10,
+            "rank": 1
+          },
+          "hrt": {
+            "value": 10,
+            "rank": 1
+          },
+          "sav": {
+            "value": 10,
+            "rank": 1
+          },
+          "per": {
+            "value": 10,
+            "rank": 1
+          },
+          "pre": {
+            "value": 10,
+            "rank": 1
+          }
+        },
+        "derived": {
+          "initative": {
+            "value": 1,
+            "mod": 1
+          },
+          "move": {
+            "value": 1,
+            "mod": 1
+          },
+          "defence": {
+            "value": 0,
+            "mod": 0.4
+          },
+          "resolve": {
+            "value": 0,
+            "mod": 0.4
+          }
+        }
+      },
+      "background": {
+        "contacts": {
+          "value": 1,
+          "rank": 1
+        },
+        "followers": {
+          "value": 1,
+          "rank": 1
+        },
+        "soul": {
+          "value": 1,
+          "rank": 1
+        },
+        "status": {
+          "value": 1,
+          "rank": 1
+        },
+        "wealth": {
+          "value": 1,
+          "rank": 1
+        },
+        "lineage": "",
+        "culture": "",
+        "faction": "",
+        "path": ""
+      }
+    },
+    "npc": {
+      "templates": ["base"],
+      "cr": 0
+    }
+  },
+  "Item": {
+    "types": ["item", "feature", "rote"],
+    "templates": {
+      "base": {
+        "description": ""
+      }
+    },
+    "item": {
+      "templates": ["base"],
+      "quantity": 1,
+      "weight": 0,
+      "formula": "1d10 + @pow.mod"
+    },
+    "feature": {
+      "templates": ["base"]
+    },
+    "rote": {
+      "templates": ["base"],
+      "roteLevel": 1
+    }
+  }
+}

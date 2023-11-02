@@ -1,0 +1,40 @@
+{
+  "NEWEDO.AttributeExp": "Experience",
+  "NEWEDO.AttributeLvl": "Level",
+  "NEWEDO.AttributeSize:" : "Size",
+
+  "NEWEDO.AttributeExpAbbr": "exp",
+  "NEWEDO.AttributeLvlAbbr": "lvl",
+  "NEWEDO.AttributeSizeAbbr" : "size",
+
+  "NEWEDO.TraitPow": "Power",
+  "NEWEDO.TraitHrt": "Heart",
+  "NEWEDO.TraitRef": "Reflex",
+  "NEWEDO.TraitSav": "Savvy",
+  "NEWEDO.TraitPer": "Perception",
+  "NEWEDO.TraitPre": "Presence",
+
+  "NEWEDO.TraitPowAbbr": "pow",
+  "NEWEDO.TraitHrtAbbr": "hrt",
+  "NEWEDO.TraitRefAbbr": "ref",
+  "NEWEDO.TraitSavAbbr": "sav",
+  "NEWEDO.TraitPerAbbr": "per",
+  "NEWEDO.TraitPreAbbr": "pre",
+
+  "NEWEDO.TraitInit": "Inititative",
+  "NEWEDO.TraitMove": "Move",
+  "NEWEDO.TraitDef": "Defence",
+  "NEWEDO.TraitRes": "Resolve",
+
+  "NEWEDO.TraitInitAbbr": "Inititative",
+  "NEWEDO.TraitMoveAbbr": "Move",
+  "NEWEDO.TraitDefAbbr": "Defence",
+  "NEWEDO.TraitResAbbr": "Resolve",
+
+  "NEWEDO.EffectCreate": "Create Effect",
+  "NEWEDO.EffectToggle": "Toggle Effect",
+  "NEWEDO.EffectEdit": "Edit Effect",
+  "NEWEDO.EffectDelete": "Delete Effect",
+
+  "NEWEDO.Add": "Add"
+}

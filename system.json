@@ -1,0 +1,34 @@
+{
+  "id": "newedo",
+  "title": "NewEdo",
+  "description": "The Newedo system for FoundryVTT!",
+  "version": "1.0.0",
+  "compatibility": {
+    "minimum": 10,
+    "verified": "11.308",
+    "maximum": 12
+  },
+  "authors": [{
+    "name": "Asacolips"
+  }],
+  "esmodules": ["module/newedo.mjs"],
+  "styles": ["css/newedo.css"],
+  "scripts": [],
+  "packs": [],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "gridDistance": 1,
+  "gridUnits": "m",
+  "primaryTokenAttribute": "health",
+  "secondaryTokenAttribute": "defence",
+  "url": "",
+  "manifest": "",
+  "download": "",
+  "license": "LICENSE.txt",
+  "changelog": "CHANGELOG.md"
+}
