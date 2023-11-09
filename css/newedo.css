@@ -372,26 +372,288 @@
 }
 
 /*my custom made assest by kiki the dumbass himself */
-div.wrap-armour {
-  background-color: white;
+.border-rounded {
+  border-radius: 5px;
+  border: 2px groove gray;
 }
-div.wrap-armour .armour-soak label {
+
+.container-trait-core {
+  min-width: 80px;
+  max-width: 80px;
+  text-align: center;
+  margin-right: 5px;
+  display: flex;
+  flex-direction: column;
+}
+.container-trait-core div {
+  border-bottom: 1px solid gray;
+}
+.container-trait-core div .barrier {
+  border: 0;
+  margin-left: 10px;
+  background-color: rgb(168, 168, 168);
+  height: 1px;
+  min-width: calc(100% - 20px);
+  max-width: calc(100% - 20px);
+}
+.container-trait-core div input {
+  font-size: 20px;
+  border: 0;
+  background-color: transparent;
+  margin: 5px 0px 5px 0px;
+}
+.container-trait-core div span {
+  font-size: 12px;
+  border: 0;
+}
+
+.container-trait-derived {
+  min-height: 65px;
+  max-height: 65px;
+  min-width: 250px;
+  max-width: 250px;
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+}
+.container-trait-derived span {
+  border: 0;
+  border-right: 1px solid gray;
+}
+.container-trait-derived span div {
+  border: 0;
+}
+.container-trait-derived span div .name {
+  font-size: 12px;
+}
+.container-trait-derived span div .score {
+  font-size: 18px;
+}
+.container-trait-derived span div .wrap-mod {
+  padding-top: 2px;
+  margin-left: 2px;
+  margin-right: 2px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  border-top: 1px solid gray;
+  font-size: 12px;
+}
+.container-trait-derived span div .wrap-mod input {
+  font-size: 16px;
+  height: 18px;
+  padding: 0px;
+  margin: 0px;
+  margin-left: 2px;
+  min-width: 0px;
+}
+
+.container-armour {
+  min-width: 250px;
+  max-width: 250px;
+  min-height: 50px;
+  max-height: 50px;
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+}
+.container-armour span {
+  flex-direction: column;
+  border-right: 1px solid gray;
+}
+.container-armour span div {
+  border: 0;
+}
+.container-armour span div div {
+  font-size: 12px;
+}
+.container-armour span div input {
+  font-size: 18px;
+  border: 0;
+  background-color: transparent;
+}
+
+.barrier-gray {
+  background-color: rgb(168, 168, 168);
+}
+
+.character-origin .background {
+  border-bottom: 1px solid black;
+  display: flex;
+  flex-direction: row;
+}
+.character-origin .background div {
+  border-right: 1px solid gray;
+  border-bottom: 0;
+}
+.character-origin .background div label {
+  font-size: 10px;
+  padding-bottom: 0px;
+  padding-left: 2px;
+  margin-bottom: 0px;
+}
+.character-origin .background div input {
+  font-size: 16px;
+  height: 18px;
+  text-align: center;
+  background-color: transparent;
+  border: 0;
+  box-shadow: none;
+}
+.character-origin .header-stats {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
+  flex-direction: row;
+  text-align: center;
+}
+.character-origin .header-stats .health {
+  border: 0;
+  border-right: 1px solid gray;
+  display: flex;
+  flex-direction: column;
+}
+.character-origin .header-stats .health .hp-grid {
+  border-bottom: 1px solid gray;
+  font-size: 20px;
+  text-align: center;
+  display: grid;
+  gap: 2px;
+  padding: 2px;
+  grid-template-columns: minmax(0, 1fr) 15px minmax(0, 1fr);
+}
+.character-origin .header-stats .health .hp-grid input {
+  height: 22px;
+  border: 0;
+  background-color: transparent;
+}
+.character-origin .header-stats .health .mod-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
+  font-size: 12px;
+}
+.character-origin .header-stats .health .mod-grid .hp-mod {
+  border-right: 1px solid gray;
+}
+.character-origin .header-stats .health .mod-grid .hp-mod input {
+  height: 14px;
+  border: 0;
+  background-color: transparent;
+}
+.character-origin .header-stats .health .mod-grid .rest-mod {
+  border-right: 1px solid gray;
+}
+.character-origin .header-stats .health .mod-grid .rest-mod input {
+  height: 14px;
+  border: 0;
+  background-color: transparent;
+}
+.character-origin .header-stats .health .mod-grid .size input {
+  height: 14px;
+  border: 0;
+  background-color: transparent;
+}
+.character-origin .header-stats .legend {
+  border-right: 1px solid gray;
+  display: flex;
+  flex-direction: column;
+}
+.character-origin .header-stats .legend div {
+  border: 0;
+  font-size: 26px;
+  text-align: center;
+  align-items: center;
+  display: grid;
+  gap: 2px;
+  padding: 2px;
+  grid-template-columns: minmax(0, 1fr) 15px minmax(0, 1fr);
+}
+.character-origin .header-stats .legend div input {
+  height: 28px;
+  border: 0;
+  background-color: transparent;
+}
+.character-origin .header-stats .rank {
+  margin: 0;
+  padding: 0;
+}
+.character-origin .header-stats .rank input {
+  font-size: 26px;
+  height: 28px;
+  border: 0;
+  background-color: transparent;
+}
+.character-origin .header-stats .rank .exp {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   text-align: right;
 }
-div.wrap-armour .armour-soak input {
+.character-origin .header-stats .rank .exp div {
+  font-size: 12px;
+  margin-right: 4px;
+}
+.character-origin .header-stats .rank .exp input {
+  font-size: 12px;
+  text-align: left;
+  height: 14px;
+  border: 1px solid black;
+}
+
+.skill-wrapper {
+  display: grid;
+  gap: 2px;
+  grid-template-columns: 120px 30px 30px 30px 30px 30px;
+  font-size: 14px;
+  align-items: center;
+  border-bottom: 1px solid gray;
+  border-right: 1px solid gray;
+}
+.skill-wrapper .title {
+  text-align: right;
+  border-right: 1px solid gray;
+  padding-right: 4px;
+}
+
+.skilldice {
+  height: 25px;
+  margin-left: 2px;
+  padding: 0px;
+  line-height: 0px;
   text-align: center;
 }
 
-div.wrap-wounds {
-  background-color: aqua;
+.dice-d4 {
+  background-image: url(https://game-icons.net/icons/ffffff/000000/1x1/skoll/d4.svg);
+  background-repeat: no-repeat;
+  font-size: 0px;
 }
-div.wrap-wounds grid.wound-chart {
-  text-align: left;
-  padding: 1px;
-  gap: 1px;
-  text-wrap: nowrap;
-  font-size: 12px;
+
+.dice-d6 {
+  background-image: url(https://game-icons.net/icons/ffffff/000000/1x1/delapouite/dice-six-faces-six.svg);
+  background-repeat: no-repeat;
+  font-size: 0px;
 }
-div.wrap-wounds grid.wound-chart .align-center {
-  text-align: center;
+
+.dice-d8 {
+  background-image: url(https://game-icons.net/icons/ffffff/000000/1x1/delapouite/dice-eight-faces-eight.svg);
+  background-repeat: no-repeat;
+  font-size: 0px;
+}
+
+.dice-d10 {
+  background-image: url(https://game-icons.net/icons/ffffff/000000/1x1/skoll/d10.svg);
+  background-repeat: no-repeat;
+  font-size: 0px;
+}
+
+.dice-d12 {
+  background-image: url(https://game-icons.net/icons/ffffff/000000/1x1/skoll/d12.svg);
+  background-repeat: no-repeat;
+  font-size: 0px;
+}
+
+.dice-d20 {
+  background-image: url(https://game-icons.net/icons/ffffff/000000/1x1/delapouite/dice-twenty-faces-twenty.svg);
+  background-repeat: no-repeat;
+  font-size: 0px;
 }/*# sourceMappingURL=newedo.css.map */

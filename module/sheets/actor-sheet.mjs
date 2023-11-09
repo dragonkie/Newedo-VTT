@@ -68,7 +68,7 @@ export class NewedoActorSheet extends ActorSheet {
    * @return {undefined}
    */
   _prepareCharacterData(context) {
-    // Handle Core trait scores.
+    //constants to hold references to the diffrent trait links
     const { core, derived } = context.system.traits;
 
     for (let [k, v] of Object.entries(core)) {
@@ -77,6 +77,14 @@ export class NewedoActorSheet extends ActorSheet {
     // Handle Derived trait scores.
     for (let [k, v] of Object.entries(derived)) {
       v.label = game.i18n.localize(CONFIG.NEWEDO.traits.derived[k]) ?? k;
+    }
+
+    for (let [k, v] of Object.entries(context.system.attributes.armour)) {
+      v.label = game.i18n.localize(CONFIG.NEWEDO.attributes.armour[k]) ?? k;
+    }
+
+    for (let [k, v] of Object.entries(context.system.skills)) {
+      v.label = game.i18n.localize(CONFIG.NEWEDO.skills[k]) ?? k;
     }
   }
 
@@ -165,7 +173,73 @@ export class NewedoActorSheet extends ActorSheet {
         li.addEventListener("dragstart", handler, false);
       });
     }
+
+    //Skill dice button Cycler
+    html.find('.skilldice').each ((i, li) => {
+      let handler = ev => this._cycleSkillDice(ev);
+      li.addEventListener("click", handler);
+    });
+    //fatecard range evaluator
+    html.find('.fate-ability').each ((i, li) => {
+      let handler = ev => this._fateUpdate(ev);
+      li.addEventListener("change", handler);
+    });
   }
+
+  /**
+   * Handle clickable rolls.
+   * @param {Event} _click the originating click event
+   * @private
+   */
+  _cycleSkillDice(_click) {
+    const _id = _click.target.id;
+    switch (_click.target.value) {
+      case "0":
+        this.actor.update({[_id]:4});
+        break;
+      case "4":
+        this.actor.update({[_id]:6});
+        break;
+      case "6":
+        this.actor.update({[_id]:8});
+        break;
+      case "8":
+        this.actor.update({[_id]:12});
+        break;
+      case "12":
+        this.actor.update({[_id]:0});
+        break;
+      default:
+        this.actor.update({[_id]:0});
+        break;
+    }
+  };
+
+  /**
+   * Handle clickable rolls.
+   * @param {Event} _input the originating click event
+   * @private
+   */
+  _fateUpdate(_input) {
+    console.log("NEWEDO | Fatebox changed, updating...");
+    console.log(_input);
+    console.log(_input.target.name);
+
+    actorData = this.actor.system;
+    fateData = actorData.fatecard;
+
+    for (let [key, fate] of Object.entries(fateData.list)) {
+      if (fate.range.top < fate.range.bot) {
+        console.log("NEWEDO | Fate entry has inverted range, correcting...")
+        _t = fate.range.top;
+        _b = fate.range.bot;
+        _path = "system.fatecard.list."+key+".range";
+        console.log(_path);
+        actorData.update({[_path + ".top"] : [_t]});
+        actorData.update({[_path + ".bot"] : [_b]});
+      }
+    }
+  };
 
   /**
    * Handle creating a new Owned Item for the actor using initial data defined in the HTML dataset
@@ -225,5 +299,6 @@ export class NewedoActorSheet extends ActorSheet {
       return roll;
     }
   }
-
 }
+
+

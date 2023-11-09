@@ -30,7 +30,6 @@ export class NewedoActor extends Actor {
    */
   prepareDerivedData() {
     const actorData = this;
-    const systemData = actorData.system;
     const flags = actorData.flags.newedo || {};
 
     // Make separate methods for each Actor type (character, npc, etc.) to keep
@@ -44,24 +43,64 @@ export class NewedoActor extends Actor {
    */
   _prepareCharacterData(actorData) {
     if (actorData.type !== 'character') return;
+    console.log("NEWEDO | Preparing character data...")
 
     // Make modifications to data here. For example:
     const systemData = actorData.system;
     const coreData = systemData.traits.core;
     const deriData = systemData.traits.derived;
+    const fateData = systemData.fatecard;
 
     // Loop through ability scores, and add their modifiers to our sheet output.
     for (let [key, trait] of Object.entries(systemData.traits.core)) {
       // Calculate the rank of the core traits
       trait.rank = Math.max(Math.floor(trait.value / 10), 1);
     }
+
+    //checks to make sure skill values are valid otherwise sets them to 0
+
+    for (let [key, skill] of Object.entries(systemData.skills)) {
+      //vars to hold data about the roll formula
+      let _rollFormula = "";
+      let _core = "";
+
+      //sets the base value of the skill roll to use the core trait or not
+      if (skill.rollCore) _rollFormula += coreData[skill.trait].rank+"d10";
+
+      //loops through skill ranks to validate their values and add them to the roll formula
+      for (let [scores, index] of Object.entries(skill.rank)) {
+        const element = systemData.skills[key].rank[scores];
+        if (element > 0) {
+          _rollFormula += " + 1d" + element;
+        }
+      }
+      //calculates the roll formula for the skil
+      systemData.skills[key].formula = _rollFormula;
+    }
     
     // Calculates derived traits for initative, move, defence, and resolve
-    deriData.initative.value = Math.floor((coreData.ref.value + coreData.sav.value) * deriData.initative.mod);
-    deriData.move.value = Math.floor(((coreData.ref.value + coreData.hrt.value) / systemData.size.value) * deriData.move.mod);
-    deriData.defence.value = Math.floor((coreData.pow.value + coreData.ref.value) * deriData.defence.mod);
-    deriData.resolve.value = Math.floor((coreData.hrt.value + coreData.pre.value) * deriData.resolve.mod);
-    systemData.health.max = Math.floor(systemData.health.mod * coreData.hrt.value);
+    deriData.initative.value = Math.ceil((coreData.ref.value + coreData.sav.value) * deriData.initative.mod);
+    deriData.move.value = Math.ceil(((coreData.ref.value + coreData.hrt.value) / systemData.attributes.size.value) * deriData.move.mod);
+    deriData.defence.value = Math.ceil((coreData.pow.value + coreData.ref.value) * deriData.defence.mod);
+    deriData.resolve.value = Math.ceil((coreData.hrt.value + coreData.pre.value) * deriData.resolve.mod);
+
+    systemData.health.max = Math.ceil(systemData.health.mod * coreData.hrt.value);
+    systemData.health.rest.value = Math.floor(systemData.health.rest.mod * 5.0);
+
+    //Fate card managment
+    for (let [key, fate] of Object.entries(fateData.list)) {
+      console.log(fate.range.top);
+      console.log(fate.range.bot);
+      if (fate.range.top < fate.range.bot) {
+        console.log("NEWEDO | Fate entry has inverted range, correcting...")
+        _t = fate.range.top;
+        _b = fate.range.bot;
+        _path = "system.fatecard.list."+key+".range";
+        console.log(_path);
+        actorData.update({[_path + ".top"] : [_t]});
+        actorData.update({[_path + ".bot"] : [_b]});
+      }
+    }
   }
 
   /**
@@ -87,13 +126,17 @@ export class NewedoActor extends Actor {
     return data;
   }
 
+  setSkillValue(key, value) {
+
+  }
+
   /**
    * Prepare character roll data.
    */
   _getCharacterRollData(data) {
     if (this.type !== 'character') return;
     /*
-    // Copy the ability scores to the top level, so that rolls can use
+    // Copy the ability scores to the top level, so that rolls can use functions like /r 1d20+@dex
     if (data.traits.core) {
       for (let [k, v] of Object.entries(data.traits.core)) {
         data[k] = foundry.utils.deepClone(v);
@@ -108,9 +151,6 @@ export class NewedoActor extends Actor {
     */
 
     // Add level for easier access, or fall back to 0.
-    if (data.attributes.level) {
-      data.lvl = data.attributes.level.value ?? 1;
-    }
   }
 
   /**
@@ -121,5 +161,4 @@ export class NewedoActor extends Actor {
 
     // Process additional NPC data here.
   }
-
 }
