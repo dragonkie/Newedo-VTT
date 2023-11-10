@@ -62,7 +62,6 @@ export class NewedoActor extends Actor {
     for (let [key, skill] of Object.entries(systemData.skills)) {
       //vars to hold data about the roll formula
       let _rollFormula = "";
-      let _core = "";
 
       //sets the base value of the skill roll to use the core trait or not
       if (skill.rollCore) _rollFormula += coreData[skill.trait].rank+"d10";
@@ -88,19 +87,29 @@ export class NewedoActor extends Actor {
     systemData.health.rest.value = Math.floor(systemData.health.rest.mod * 5.0);
 
     //Fate card managment
-    for (let [key, fate] of Object.entries(fateData.list)) {
-      console.log(fate.range.top);
-      console.log(fate.range.bot);
-      if (fate.range.top < fate.range.bot) {
-        console.log("NEWEDO | Fate entry has inverted range, correcting...")
-        _t = fate.range.top;
-        _b = fate.range.bot;
-        _path = "system.fatecard.list."+key+".range";
-        console.log(_path);
-        actorData.update({[_path + ".top"] : [_t]});
-        actorData.update({[_path + ".bot"] : [_b]});
+    /*
+    if (fateData.method == "range") {
+      for (let [key, fate] of Object.entries(fateData.list)) {
+        //corrects for inverted range values, and ensures the scale range is set properly
+        const _t = fate.range.top;
+        const _b = fate.range.bot;
+        const _path = "system.fatecard.list."+key;
+        if (_t < _b) {
+          console.log("NEWEDO | Fate entry has inverted range, correcting...")
+
+          const _pt = {[_path+".range.top"] : _b};
+          const _pb = {[_path+".range.bot"] : _t};
+          actorData.update(_pt);
+          actorData.update(_pb);
+        }
+        //correct the range size, mainly used in value method fate card layout
+        const _s = {[_path+".range.size"] : [fate.range.max - fate.range.min + 1]};
+        actorData.update(_s);
       }
+    } else {
+
     }
+    */
   }
 
   /**
@@ -124,10 +133,6 @@ export class NewedoActor extends Actor {
     this._getNpcRollData(data);
 
     return data;
-  }
-
-  setSkillValue(key, value) {
-
   }
 
   /**

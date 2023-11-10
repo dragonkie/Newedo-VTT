@@ -150,7 +150,7 @@
           <div class="border-rounded" style="max-width: 250px;">
             <div style="display: flex; flex-direction: column; align-items: center;">
               <!-- Loops through the characters list of fate card options-->
-              <b style="font-size: 14px;">Fate Card</b>
+              <b class="fate-roll" style="font-size: 14px;">Fate Card</b>
               {{#each system.fatecard.list as |fate key|}}
                 <span>
                   <div style="display: grid; gap: 2px; grid-template-columns: 25px 15px 25px 100px; border-bottom: 1px solid gray; align-items: center;">
@@ -193,15 +193,15 @@
         {{#each system.fatecard.list as | fate key |}}
             <div class="border-rounded fate-ability" style="padding: 0;">
               <div style="display: grid; grid-template-columns: 1fr 1fr;">
-                <input type="text" name="system.fatecard.{{key}}.label" value="{{fate.label}}" />
+                <input type="text" name="system.fatecard.list.{{key}}.label" value="{{fate.label}}" />
                 <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; text-align: center; align-items: center;">
                   <div>Range:</div>
-                  <input type="number" name="system.fatecard.{{key}}.range.top" value="{{fate.range.top}}" placeholder="0"/>
-                  <input type="number" name="system.fatecard.{{key}}.range.bot" value="{{fate.range.bot}}" placeholder="0"/>
+                  <input type="number" name="system.fatecard.list.{{key}}.range.top" value="{{fate.range.top}}" placeholder="0"/>
+                  <input type="number" name="system.fatecard.list.{{key}}.range.bot" value="{{fate.range.bot}}" placeholder="0"/>
                 </div>
               </div>
               
-              <textarea style="resize: none;" name="system.fatecard.{{key}}.description" oninput='this.style.height = "";this.style.height = this.scrollHeight + 6 + "px"'>{{fate.description}}</textarea>
+              <textarea style="resize: none; min-height: 100px;" name="system.fatecard.list.{{key}}.description" onclick='this.style.height = "";this.style.height = this.scrollHeight + 6 + "px"'>{{fate.description}}</textarea>
             </div>
         {{/each}}
       </div>

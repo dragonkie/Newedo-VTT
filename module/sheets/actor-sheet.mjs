@@ -184,6 +184,11 @@ export class NewedoActorSheet extends ActorSheet {
       let handler = ev => this._fateUpdate(ev);
       li.addEventListener("change", handler);
     });
+
+    html.find('.fate-roll').each ((i, li) => {
+      let handler = ev => this._fateRoll(ev);
+      li.addEventListener("click", handler);
+    });
   }
 
   /**
@@ -221,24 +226,29 @@ export class NewedoActorSheet extends ActorSheet {
    * @private
    */
   _fateUpdate(_input) {
-    console.log("NEWEDO | Fatebox changed, updating...");
-    console.log(_input);
-    console.log(_input.target.name);
+    const actorData = this.actor;
+    const fateData = this.actor.system.fatecard;
 
-    actorData = this.actor.system;
-    fateData = actorData.fatecard;
-
-    for (let [key, fate] of Object.entries(fateData.list)) {
-      if (fate.range.top < fate.range.bot) {
-        console.log("NEWEDO | Fate entry has inverted range, correcting...")
-        _t = fate.range.top;
-        _b = fate.range.bot;
-        _path = "system.fatecard.list."+key+".range";
-        console.log(_path);
-        actorData.update({[_path + ".top"] : [_t]});
-        actorData.update({[_path + ".bot"] : [_b]});
+    /*
+    if (fateData.method == "range") {
+      for (let [key, fate] of Object.entries(fateData.list)) {
+        //corrects for inverted range values, and ensures the scale range is set properly
+        const _t = fate.range.top;
+        const _b = fate.range.bot;
+        const _path = "system.fatecard.list."+key;
+        if (_t < _b) {
+          console.log("NEWEDO | Fate entry has inverted range, correcting...")
+          const _pt = {[_path+".range.top"] : _b};
+          const _pb = {[_path+".range.bot"] : _t};
+          actorData.update(_pt);
+          actorData.update(_pb);
+        }
       }
+    } else {
+
     }
+    actorData.getData();
+    */
   };
 
   /**
@@ -266,6 +276,44 @@ export class NewedoActorSheet extends ActorSheet {
 
     // Finally, create the item!
     return await Item.create(itemData, {parent: this.actor});
+  }
+
+  /**
+   * Handle fate roll table calls.
+   * @param {Event} event The originating click event
+   * @private
+   */
+  async _fateRoll(event) {
+    const fateData = this.actor.system.fatecard;
+    const element = event.currentTarget;
+
+    let roll = new Roll("1d100");
+    await roll.evaluate();
+    const result = roll.total;
+
+    console.log(roll);
+
+    let label = "";
+    let description = "";
+    let rollRender = await roll.render();
+
+    for (let [key, fate] of Object.entries(fateData.list)) {
+      console.log(key+" | "+result+" -> "+fate.range.top+","+fate.range.bot);
+      if ((result >= fate.range.bot) && (result <= fate.range.top))
+      {
+        label = " | " + fate.label;
+        description = fate.description;
+        console.log("Succesful fate call!");
+      }
+    }
+
+    let msg = await roll.toMessage({
+      speaker: ChatMessage.getSpeaker({ actor: this.actor}),
+      flavor: "<div style=\"font-size: 20px; text-align: center;\">Fate"+[label],
+      content: [rollRender]+"<div>"+[description]+"</div>",
+      create: true,
+      rollMode: game.settings.get('core', 'rollMode')
+    });
   }
 
   /**

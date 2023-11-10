@@ -535,7 +535,7 @@
           "fate2": {
             "range": {"top": 3, "bot": 1, "size": 3},
             "label": "Botch",
-            "description" : "Your declared intent fails spectacularly. Whatever you were tryinf goes incredibly arry and fails harder than you could ahve possibly expected."
+            "description" : "Your declared intent fails spectacularly. Whatever you were trying goes incredibly wrong and may have additional complications."
           },
           "fate3": {
             "range": {"top": 0, "bot": 0, "size": 5},
