@@ -1,211 +1,49 @@
-<form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
+<form class="{{cssClass}} {{actor.type}}" autocomplete="off" style="overflow: hidden; display: flex; flex-direction: column;">
 
   <!-- Sheet Headers -->
-  <header class="sheet-header" style="border-bottom: 1px solid gray;">
-    <img style="object-fit: cover; object-position: 50% 0%;" class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100px" width="100px"/>
-
-    <div style="display: flex; flex-direction: column; padding-bottom: 3px;">
-      <!-- Character Name at the top of the sheet -->
-      <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name"/></h1>
-      
-      <!-- Character header details -->
-      <div class="border-rounded character-origin">
-        <!-- Background details -->
-        <div class="background">
-          <div>
-            <label for="bio-lineage">Lineage</label>
-            <input id="bio-lineage" name="system.biography.lineage" type="text" value="{{system.biography.lineage}}" placeholder="species"/>
-          </div>
-          <div>
-            <label for="bio-culture">Culture</label>
-            <input id="bio-culture" name="system.biography.culture" type="text" value="{{system.biography.culture}}" placeholder="culture"/>
-          </div>
-          <div>
-            <label for="bio-faction">Faction</label>
-            <input id="bio-faction" name="system.biography.faction" type="text" value="{{system.biography.faction}}" placeholder="faction"/>
-          </div>
-          <div>
-            <label for="bio-path">Path</label>
-            <input id="bio-path" name="system.biography.path" type="text" value="{{system.biography.path}}" placeholder="path"/>
-          </div>
-        </div>
-        <!-- Player health, legend, and path rank + xp-->
-        <div class="header-stats">
-          <!--Health-->
-          <div class="health">
-            <b>Health</b>
-            <div class="barrier"></div>
-            <div class="hp-grid">
-              <input type="number" name="system.health.value" value="{{system.health.value}}" />
-              <div> / </div>
-              <div>{{system.health.max}}</div>
-            </div>
-            <div class="mod-grid">
-              <div class="hp-mod">
-                <input type="number" name="system.health.mod" value="{{system.health.mod}}">
-                <label for="hp-mod">Hp mod</label>
-              </div>
-              <div class="rest-mod">
-                <input type="number" name="system.health.rest.mod" value="{{system.health.rest.mod}}">
-                <label for="rest-mod">Rest mod</label>
-              </div>
-              <div class="size">
-                <input type="number" name="system.attributes.size.value" value="{{system.attributes.size.value}}">
-                <label for="hp-mod">Size</label>
-              </div>
-            </div>
-          </div>
-          <!--Legend-->
-          <div class="legend">
-            <b>Legend</b>
-            <div>
-              <input type="number" name="system.legend.value" value="{{system.legend.value}}" placeholder="0" />
-              <div> / </div>
-              <input type="number" name="system.legend.max" value="{{system.legend.max}}" placeholder="0"/>
-            </div>
-          </div>
-          <!--Level / xp-->
-          <div class="rank">
-            <b>Rank</b>
-            <input name="system.level.value" type="number" value="{{system.level.value}}" placeholder="1"/>
-            <div class="exp">
-              <div>XP</div>
-              <input name="system.attributes.level.xp.value" type="number" value="{{system.attributes.level.xp.value}}" placeholder="0"/>
-            </div>
-
-          </div>
-        </div>
-      </div>
-
-    </div>
+  <header class="sheet-header" style="margin: 0;">
+    {{> "systems/newedo/templates/actor/character/player-header.html"}}
   </header>
 
   <!-- Tab Navigation -->
   {{!-- Sheet Tab Navigation --}}
-  <nav class="sheet-tabs tabs" data-group="primary" style="text-align: center; align-items: center;">
-    {{!-- Default tab is specified in actor-sheet.mjs --}}
-    <a class="item" style="text-align: center; border-right: 1px solid gray;" data-tab="traits">Traits</a>
-    <a class="item" style="text-align: center; border-right: 1px solid gray;" data-tab="skills">Skills</a>
-    <a class="item" style="text-align: center; border-right: 1px solid gray;" data-tab="fates">Fates</a>
-    <a class="item" style="text-align: center; border-right: 1px solid gray;" data-tab="equipment">Equipment</a>
-    <a class="item" style="text-align: center; border-right: 1px solid gray;" data-tab="augs">Augs</a>
-    <a class="item" style="text-align: center; border-right: 1px solid gray;" data-tab="magic">Magic</a>
-    <a class="item" style="text-align: center;" data-tab="bio">Bio</a>
+  <nav class="sheet-tabs tabs flexrow" data-group="primary" style="text-align: center; align-items: center; border: 0; margin: 0; padding: 0px 10px 0px 10px;">
+    <a class="item" data-tab="traits">Traits</a>
+    <a class="item" data-tab="skills">Skills</a>
+    <a class="item" data-tab="fates">Fates</a>
+    <a class="item" data-tab="equipment">Equipment</a>
+    <a class="item" data-tab="augs">Augments</a>
+    <a class="item" data-tab="magic">Magic</a>
+    <a class="item" data-tab="bio">Biography</a>
+    <a class="item" data-tab="journal">Journal</a>
   </nav>
 
   <!-- Tab Bodies -->
-  <section class="sheet-body">
+  <section class="sheet-body" style="overflow: auto">
 
     <!-- TRAITS TAB-->
-    <div class="tab traits" data-group="primary" data-tab="traits" style="height: 100%;">
-      <div class="flexrow">
-        <!-- Core traits on the left hand side -->
-        <div class="container-trait-core border-rounded">
-          <!-- Loop through characters core traits and places them in a vertical stack -->
-          {{#each system.traits.core as |trait key|}}
-          <div>
-            <label for="system.traits.core.{{key}}.value" class="resource-label rollable flexlarge align-left" data-roll="(@traits.core.{{key}}.rank)d10x10" data-label="{{trait.label}}">{{trait.label}}</label>
-            <div class="barrier"></div>
-            <input type="text" name="system.traits.core.{{key}}.value" value="{{trait.value}}" data-dtype="Number"/>
-            <span class="trait-rank rollable" data-roll="(@traits.core.{{key}}.rank)d10x10" data-label="{{trait.label}}">Rank {{numberFormat trait.rank decimals=0 sign=false}}</span>
-          </div>
-          {{/each}}
-        </div>
-
-        <!-- Derived Stats, armour soak -->
-        <div style="padding-bottom: 5px;" class="flexcol">
-          <!-- Derived stats top bar -->
-          <div class="container-trait-derived border-rounded">
-            
-            {{#each system.traits.derived as |trait key|}}
-            <span>
-              <div>
-                <div class="name">{{trait.label}}</div>
-                <div class="score" name="system.traits.derived.{{key}}.value" value="{{trait.value}}">{{trait.value}}</div>
-                
-                <!-- Modifier container -->
-                <div class="wrap-mod">
-                  <label for="mod-input">Mod</label>
-                  <input id="mod-input" type="number" name="system.traits.derived.{{key}}.mod" value="{{trait.mod}}" data-dtype="1.0" placeholder="1.0"/>
-                </div>
-              </div>
-            </span>
-            {{/each}}
-          </div>
-
-          <!-- Armor soaks -->
-          <div class="container-armour border-rounded">
-            
-            {{#each system.attributes.armour as |soak key|}}
-            <span>
-              <div>
-                <div class="name">{{soak.label}}</div>
-                <input type="number" class="score" name="system.attributes.armour.{{key}}.value" value="{{soak.value}}" placeholder="0"/>
-              </div>
-            </span>
-            {{/each}}
-          </div>
-
-          <!-- FATE CARD! -->
-          <div class="border-rounded" style="max-width: 250px;">
-            <div style="display: flex; flex-direction: column; align-items: center;">
-              <!-- Loops through the characters list of fate card options-->
-              <b class="fate-roll" style="font-size: 14px;">Fate Card</b>
-              {{#each system.fatecard.list as |fate key|}}
-                <span>
-                  <div style="display: grid; gap: 2px; grid-template-columns: 25px 15px 25px 100px; border-bottom: 1px solid gray; align-items: center;">
-                    <div style="text-align: center; margin-right: 2px;">{{fate.range.top}}</div>
-                    <div style="text-align: center;">|</div>
-                    <div style="text-align: center; margin-left: 2px;">{{fate.range.bot}}</div>
-                    <div style="text-align: left; margin-left: 4px;">{{fate.label}}</div>
-                  </div>
-                </span>
-              {{/each}}
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
+    <div class="tab traits" data-group="primary" data-tab="traits">
+      {{> "systems/newedo/templates/actor/character/player-traits.html"}}
     </div>
 
-    <!-- SKILS TAB -->
+    <!-- SKILLS TAB -->
     <div class="tab skills" data-group="primary" data-tab="skills">
-      <div style="display: grid; gap: 2px; grid-auto-flow: column; grid-template-rows: repeat( 19, 1fr)">
-        <!-- Loops through all the skills found on the character, pressing one of these buttons will cycle skill values-->
-        {{#each system.skills as | skill key |}}
-          <div class="skill-wrapper">
-            <div class="title rollable" data-roll="{{skill.formula}}" data-label="{{skill.label}}">{{skill.label}}</div>
-            <input type="button" id="system.skills.{{key}}.rank.r1" class="skilldice" value="{{skill.rank.r1}}"/>
-            <input type="button" id="system.skills.{{key}}.rank.r2" class="skilldice" value="{{skill.rank.r2}}"/>
-            <input type="button" id="system.skills.{{key}}.rank.r3" class="skilldice" value="{{skill.rank.r3}}"/>
-            <input type="button" id="system.skills.{{key}}.rank.r4" class="skilldice" value="{{skill.rank.r4}}"/>
-            <input type="button" id="system.skills.{{key}}.rank.r5" class="skilldice" value="{{skill.rank.r5}}"/>
-          </div>
-        {{/each}}
-      </div>
+      {{> "systems/newedo/templates/actor/character/player-skills.html"}}
     </div>
 
     <!-- FATES TAB -->
     <div class="tab fates" data-group="primary" data-tab="fates">
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px; padding: 0;">
-        {{#each system.fatecard.list as | fate key |}}
-            <div class="border-rounded fate-ability" style="padding: 0;">
-              <div style="display: grid; grid-template-columns: 1fr 1fr;">
-                <input type="text" name="system.fatecard.list.{{key}}.label" value="{{fate.label}}" />
-                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; text-align: center; align-items: center;">
-                  <div>Range:</div>
-                  <input type="number" name="system.fatecard.list.{{key}}.range.top" value="{{fate.range.top}}" placeholder="0"/>
-                  <input type="number" name="system.fatecard.list.{{key}}.range.bot" value="{{fate.range.bot}}" placeholder="0"/>
-                </div>
-              </div>
-              
-              <textarea style="resize: none; min-height: 100px;" name="system.fatecard.list.{{key}}.description" onclick='this.style.height = "";this.style.height = this.scrollHeight + 6 + "px"'>{{fate.description}}</textarea>
-            </div>
-        {{/each}}
-      </div>
+      {{> "systems/newedo/templates/actor/character/player-fates.html"}}
     </div>
+
+    <div class="tab bio" data-group="primary" data-tab="bio">
+      {{> "systems/newedo/templates/actor/character/player-bio.html"}}
+    </div>
+
+    <div class="tab journal" data-group="primary" data-tab="journal">
+
+    </div>
+    
   </section>
 </form>
 

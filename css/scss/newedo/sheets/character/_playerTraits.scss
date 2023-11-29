@@ -1,0 +1,119 @@
+.sheet-body .tab.traits {
+    padding: 20px;
+}
+
+.container-trait-core {
+    min-width: 80px;
+    max-width: 80px;
+    text-align: center;
+    margin-right: 5px;
+    display: flex;
+    flex-direction: column;
+
+    div {
+        border-bottom: $border-thin;
+
+        .barrier {
+            border: 0;
+            margin-left: $margin-traitCore;
+            background-color: $c-background;
+            height: 1px;
+            min-width: calc(100% - ($margin-traitCore * 2));
+            max-width: calc(100% - ($margin-traitCore * 2));
+        }
+
+        input {
+            font-size: 20px;
+            border: 0;
+            background-color: transparent;
+            margin: 5px 0px 5px 0px;
+        }
+
+        span {
+            font-size: 12px;
+            border: 0;
+        }
+    }
+}
+
+.container-trait-derived {
+    min-height: 65px;
+    max-height: 65px;
+    min-width: 250px;
+    max-width: 250px;
+
+    display: flex;
+    flex-direction: row;
+
+    text-align: center;
+
+    span {
+        border: 0;
+        border-right: $border-thin;
+
+        div {
+            border: 0;
+
+            .name {
+                font-size: 12px;
+            }
+
+            .score {
+                font-size: 18px;
+            }
+
+            .wrap-mod {
+                padding-top: 2px;
+                margin-left: 2px;
+                margin-right: 2px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                border-top: $border-thin;
+                font-size: 12px;
+
+                input {
+                    font-size: 16px;
+                    height: 18px;
+                    padding: 0px;
+                    margin: 0px;
+                    margin-left: 2px;
+
+                    min-width: 0px;
+                }
+            }
+        }
+    }
+}
+
+.container-armour {
+    min-width: 250px;
+    max-width: 250px;
+    min-height: 50px;
+    max-height: 50px;
+
+    display: flex;
+    flex-direction: row;
+
+    text-align: center;
+
+    span {
+        flex-direction: column;
+        border-right: $border-thin;
+
+        div {
+            border: 0;
+
+            div {
+                font-size: 12px;
+            }
+
+            input {
+                font-size: 18px;
+                height: 18px;
+                border: 0;
+                background-color: transparent;
+            }
+        }
+    }
+}

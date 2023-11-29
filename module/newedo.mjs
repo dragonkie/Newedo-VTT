@@ -1,25 +1,29 @@
 // Import document classes.
-import { NewedoActor } from "./documents/actor.mjs";
-import { NewedoItem } from "./documents/item.mjs";
+import NewedoActor from "./actor/actor.mjs";
+import NewedoItem from "./item/item.mjs";
 // Import sheet classes.
-import { NewedoActorSheet } from "./sheets/actor-sheet.mjs";
-import { NewedoItemSheet } from "./sheets/item-sheet.mjs";
+import NewedoActorSheet from "./actor/actor-sheet.mjs";
+import NewedoItemSheet from "./item/item-sheet.mjs";
 // Import helper/utility classes and constants.
-import { preloadHandlebarsTemplates } from "./helpers/templates.mjs";
-import { NEWEDO } from "./helpers/config.mjs";
+import preloadHandlebarsTemplates from "./helpers/templates.mjs";
+import NEWEDO from "./system/config.mjs";
+
+import registerSystemSettings from "./system/settings.mjs";
+import LOGGER from "./utility/logger.mjs"
 
 /* -------------------------------------------- */
 /*  Init Hook                                   */
 /* -------------------------------------------- */
 
 Hooks.once('init', async function() {
-
+  LOGGER.log(`Initalizing game system`);
   // Add utility classes to the global game object so that they're more easily
   // accessible in global contexts.
-  game.newedo = {
+  game.NEWEDO = {
     NewedoActor,
     NewedoItem,
-    rollItemMacro
+    rollItemMacro,
+    LOGGER
   };
 
   // Add custom constants for configuration.
@@ -44,6 +48,10 @@ Hooks.once('init', async function() {
   Items.unregisterSheet("core", ItemSheet);
   Items.registerSheet("newedo", NewedoItemSheet, { makeDefault: true });
 
+  //register the system specific settings
+  
+  registerSystemSettings();
+
   // Preload Handlebars templates.
   return preloadHandlebarsTemplates();
 });
@@ -51,7 +59,6 @@ Hooks.once('init', async function() {
 /* -------------------------------------------- */
 /*  Handlebars Helpers                          */
 /* -------------------------------------------- */
-
 // If you need to add Handlebars helpers, here are a few useful examples:
 Handlebars.registerHelper('concat', function() {
   var outStr = '';

@@ -1,24 +1,28 @@
 import {onManageActiveEffect, prepareActiveEffectCategories} from "../helpers/effects.mjs";
+import LOGGER from "../utility/logger.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
  */
-export class NewedoActorSheet extends ActorSheet {
+export default class NewedoActorSheet extends ActorSheet {
 
   /** @override */
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    var merged = mergeObject(super.defaultOptions, {
       classes: ["newedo", "sheet", "actor"],
       template: "systems/newedo/templates/actor/actor-sheet.html",
-      width: 600,
-      height: 600,
-      tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "features" }]
+      width: 800,
+      height: 700,
+      tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "traits", group: "primary"}]
     });
+    LOGGER.log(`Merging object data for actor sheet`, merged);
+    return merged
   }
 
   /** @override */
   get template() {
+    LOGGER.log(`Retrieved template for [actor-${this.actor.type}-sheet.html]`)
     return `systems/newedo/templates/actor/actor-${this.actor.type}-sheet.html`;
   }
 
@@ -68,19 +72,29 @@ export class NewedoActorSheet extends ActorSheet {
    * @return {undefined}
    */
   _prepareCharacterData(context) {
+    LOGGER.log(`Preparing character data`);
+    LOGGER.debug(`Localizing character data`);
+
     //constants to hold references to the diffrent trait links
     const { core, derived } = context.system.traits;
 
     for (let [k, v] of Object.entries(core)) {
       v.label = game.i18n.localize(CONFIG.NEWEDO.traits.core[k]) ?? k;
+      v.abr = game.i18n.localize(CONFIG.NEWEDO.traits.coreAbbreviations[k]) ?? k;
+      
     }
     // Handle Derived trait scores.
     for (let [k, v] of Object.entries(derived)) {
       v.label = game.i18n.localize(CONFIG.NEWEDO.traits.derived[k]) ?? k;
+      v.abr = game.i18n.localize(CONFIG.NEWEDO.traits.derivedAbbreviations[k]) ?? k;
     }
 
     for (let [k, v] of Object.entries(context.system.attributes.armour)) {
       v.label = game.i18n.localize(CONFIG.NEWEDO.attributes.armour[k]) ?? k;
+    }
+
+    for (let [k, v] of Object.entries(context.system.background)) {
+      v.label = game.i18n.localize(CONFIG.NEWEDO.backgrounds[k]) ?? k;
     }
 
     for (let [k, v] of Object.entries(context.system.skills)) {
@@ -89,7 +103,7 @@ export class NewedoActorSheet extends ActorSheet {
   }
 
   /**
-   * Organize and classify Items for Character sheets.
+   * Organize and classify Items for Character sheets
    *
    * @param {Object} actorData The actor to prepare.
    *
@@ -135,6 +149,7 @@ export class NewedoActorSheet extends ActorSheet {
   /** @override */
   activateListeners(html) {
     super.activateListeners(html);
+    LOGGER.log('Activating sheet listeners')
 
     // Render the item sheet for viewing/editing prior to the editable check.
     html.find('.item-edit').click(ev => {
@@ -162,6 +177,7 @@ export class NewedoActorSheet extends ActorSheet {
     html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.actor));
 
     // Rollable traits.
+    LOGGER.debug(`Preparing listeners for rollables`);
     html.find('.rollable').click(this._onRoll.bind(this));
 
     // Drag events for macros.
@@ -175,80 +191,125 @@ export class NewedoActorSheet extends ActorSheet {
     }
 
     //Skill dice button Cycler
+    LOGGER.debug(`Preparing listeners for skill buttons`);
     html.find('.skilldice').each ((i, li) => {
       let handler = ev => this._cycleSkillDice(ev);
       li.addEventListener("click", handler);
     });
-    //fatecard range evaluator
-    html.find('.fate-ability').each ((i, li) => {
-      let handler = ev => this._fateUpdate(ev);
-      li.addEventListener("change", handler);
-    });
 
+    //fate dice roll clicks
+    LOGGER.debug(`Preparing listeners for fate rolls`);
     html.find('.fate-roll').each ((i, li) => {
       let handler = ev => this._fateRoll(ev);
+      li.addEventListener("click", handler);
+    });
+
+    //prep button that adds new fate to the list
+    LOGGER.debug(`Preparing listeners for New Fate button`);
+    html.find('.fate-new').each ((i, li) => {
+      let handler = ev => this._createNewFate(ev);
+      li.addEventListener("click", handler);
+    });
+
+    //preps button for deleteing fates
+    LOGGER.debug(`Preparing listeners for Fate Delete buttons`);
+    html.find('.fate-delete').each ((i, li) => {
+      let handler = ev => this._deleteFate(ev);
       li.addEventListener("click", handler);
     });
   }
 
   /**
-   * Handle clickable rolls.
+   * Handles switching tabs in the fate menu by hiding / showing the active tab.
+   * @param {Event} _event the originating click event
+   * @private
+   */
+  async _createNewFate(_event) {
+    LOGGER.log(`Creating fate with actor id: ${this.actor.id}`);
+    var newFate = {
+      "range": {"top": 0, "bot": 0, "size": 0},
+      "label": "New fate",
+      "description": "Fate description"
+    };
+
+    var newIndex = (Object.keys(this.actor.system.fatecard.list).length)
+    var fatekey = "system.fatecard.list";
+    var newList = [];
+    var counter = 0;
+
+    for (let [key, fate] of Object.entries(this.actor.system.fatecard.list)) {
+      newList[counter] = this.actor.system.fatecard.list[counter];
+      counter += 1;
+    }
+
+    newList[counter] = newFate;
+
+    await this.actor.update({[fatekey]: newList});
+  }
+
+  /**
+   * Handles switching tabs in the fate menu by hiding / showing the active tab.
+   * @param {Event} _event the originating click event
+   * @private
+   */
+  async _deleteFate(_event) {
+    _event.preventDefault();
+    LOGGER.log(`Deleting fate from actor id: ${this.actor.id}`);
+    var fateData = this.actor.system.fatecard.list;
+    var fateList = [];
+    var deleteIndex = _event.target.attributes.fateindex.value;
+    var counter = 0;
+    
+    for (let [key, fate] of Object.entries(fateData)) {
+      if (key != deleteIndex){
+        fateList[counter] = fate;
+        counter += 1;
+      }
+    }
+    await this.actor.update({"system.fatecard.list": fateList});
+  }
+
+  /**
+   * Handles the cycling of skill dice with button presses
    * @param {Event} _click the originating click event
    * @private
    */
-  _cycleSkillDice(_click) {
+  async _cycleSkillDice(_click) {
+    _click.preventDefault();
+    
     const _id = _click.target.id;
-    switch (_click.target.value) {
-      case "0":
-        this.actor.update({[_id]:4});
+    const _index = _click.target.attributes.index.value;
+
+    const key = `system.skills.${_id}.rank`;
+
+    const actorData = this.actor.system;
+    let skillData = actorData.skills[_id];
+    let ranks = foundry.utils.deepClone(skillData.rank);
+
+    LOGGER.log(`Updating skill dice`);
+    
+    switch (ranks[_index]) {
+      case 0:
+        ranks[_index] = 4;
         break;
-      case "4":
-        this.actor.update({[_id]:6});
+      case 4:
+        ranks[_index] = 6;
         break;
-      case "6":
-        this.actor.update({[_id]:8});
+      case 6:
+        ranks[_index] = 8;
         break;
-      case "8":
-        this.actor.update({[_id]:12});
-        break;
-      case "12":
-        this.actor.update({[_id]:0});
+      case 8:
+        ranks[_index] = 12;
         break;
       default:
-        this.actor.update({[_id]:0});
+        ranks[_index] = 0;
         break;
     }
-  };
 
-  /**
-   * Handle clickable rolls.
-   * @param {Event} _input the originating click event
-   * @private
-   */
-  _fateUpdate(_input) {
-    const actorData = this.actor;
-    const fateData = this.actor.system.fatecard;
+    await this.actor.update({ [`${key}`]: ranks });
 
-    /*
-    if (fateData.method == "range") {
-      for (let [key, fate] of Object.entries(fateData.list)) {
-        //corrects for inverted range values, and ensures the scale range is set properly
-        const _t = fate.range.top;
-        const _b = fate.range.bot;
-        const _path = "system.fatecard.list."+key;
-        if (_t < _b) {
-          console.log("NEWEDO | Fate entry has inverted range, correcting...")
-          const _pt = {[_path+".range.top"] : _b};
-          const _pb = {[_path+".range.bot"] : _t};
-          actorData.update(_pt);
-          actorData.update(_pb);
-        }
-      }
-    } else {
-
-    }
-    actorData.getData();
-    */
+    LOGGER.debug(`Ranks data`, ranks);
+    LOGGER.debug(`Key`, key);
   };
 
   /**
@@ -298,8 +359,9 @@ export class NewedoActorSheet extends ActorSheet {
     let rollRender = await roll.render();
 
     for (let [key, fate] of Object.entries(fateData.list)) {
-      console.log(key+" | "+result+" -> "+fate.range.top+","+fate.range.bot);
-      if ((result >= fate.range.bot) && (result <= fate.range.top))
+      var _bot = fate.range.bot;
+      var _top = fate.range.top;
+      if ((result >= Math.min(_bot, _top)) && (result <= Math.max(_bot, _top)))
       {
         label = " | " + fate.label;
         description = fate.description;
@@ -317,7 +379,8 @@ export class NewedoActorSheet extends ActorSheet {
   }
 
   /**
-   * Handle clickable rolls.
+   * Handle clickable roll events.
+   * 
    * @param {Event} event   The originating click event
    * @private
    */

@@ -1,5 +1,5 @@
 // Exported object
-export const NEWEDO = {}
+const NEWEDO = {}
 
 NEWEDO.traits = {
   core: {
@@ -10,7 +10,7 @@ NEWEDO.traits = {
     per: "NEWEDO.TraitPer",
     pre: "NEWEDO.TraitPre"
   },
-  CoreAbbreviations: {
+  coreAbbreviations: {
     pow: "NEWEDO.TraitPowAbbr",
     ref: "NEWEDO.TraitRefAbbr",
     hrt: "NEWEDO.TraitHrtAbbr",
@@ -24,7 +24,7 @@ NEWEDO.traits = {
     def: "NEWEDO.TraitDef",
     res: "NEWEDO.TraitRes"
   },
-  DerivedAbbreviations: {
+  derivedAbbreviations: {
     init: "NEWEDO.TraitInitAbbr",
     move: "NEWEDO.TraitMoveAbbr",
     def: "NEWEDO.TraitDefAbbr",
@@ -43,7 +43,7 @@ NEWEDO.attributes = {
     arc: "NEWEDO.SoakArcane"
   }
 }
-
+//Sorted A-Z, grouped by trait
 NEWEDO.skills = {
   //Heart
   crafting: "NEWEDO.SkillCrafting",
@@ -89,3 +89,33 @@ NEWEDO.skills = {
   toxicology: "NEWEDO.SkillToxicology",
   wetware: "NEWEDO.SkillWetware"
 }
+
+NEWEDO.backgrounds = {
+  contacts: "NEWEDO.bgContacts",
+  followers: "NEWEDO.bgFollowers",
+  soul: "NEWEDO.bgSoul",
+  status: "NEWEDO.bgStatus",
+  wealth: "NEWEDO.bgWealth"
+}
+
+NEWEDO.sheets = {
+  actor: {
+    character: "TYPES.Actor.character",
+    npc: "TYPES.Actor.npc",
+    pet: "TYPES.Actor.pet",
+    vehicle: "TYPES.Actor.vehicle"
+  },
+  item: {
+    weapon: "TYPES.Item.weapon",
+    armour: "TYPES.Item.armour",
+    augment: "TYPES.Item.augment"
+  },
+  card: {
+
+  },
+  page: {
+
+  }
+}
+
+export default NEWEDO;

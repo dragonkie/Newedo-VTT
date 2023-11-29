@@ -2,7 +2,7 @@
  * Extend the basic ItemSheet with some very simple modifications
  * @extends {ItemSheet}
  */
-export class NewedoItemSheet extends ItemSheet {
+export default class NewedoItemSheet extends ItemSheet {
 
   /** @override */
   static get defaultOptions() {

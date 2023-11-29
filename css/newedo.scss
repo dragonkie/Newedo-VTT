@@ -12,13 +12,16 @@
 @import 'scss/global/grid';
 @import 'scss/global/flex';
 
-/* Styles limited to newedo sheets */
 .newedo {
   @import 'scss/components/forms';
   @import 'scss/components/resource';
   @import 'scss/components/items';
   @import 'scss/components/effects';
-}
 
-/*my custom made assest by kiki the dumbass himself */
-@import 'scss/newedo/playerSheet';
+  @import 'scss/newedo/sheets/character/playerHeader';
+  @import 'scss/newedo//sheets/character/playerSheet';
+  @import 'scss/newedo/sheets/character/playerFates';
+  @import 'scss/newedo/sheets/character/playerSkills';
+  @import 'scss/newedo/sheets/character/playerTraits';
+  @import 'scss/newedo/sheets/character/playerBio';
+}

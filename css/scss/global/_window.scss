@@ -2,11 +2,25 @@
   font-family: $font-primary;
 }
 
+.window-app.newedo.actor.sheet {
+  
+  
+  .window-content {
+    padding: 0;
+    background-image: none;
+    color: white;
+    background-color: $c-gray;
+  }
+
+  .sheet-body {
+    background-color: $c-darkgray;
+  }
+}
+
 .rollable {
   &:hover,
   &:focus {
-    color: #000;
-    text-shadow: 0 0 10px red;
+    text-shadow: $shadow-pink;
     cursor: pointer;
   }
 }

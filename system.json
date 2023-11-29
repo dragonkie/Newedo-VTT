@@ -1,7 +1,7 @@
 {
   "id": "newedo",
   "title": "NewEdo",
-  "description": "The Newedo system for FoundryVTT!",
+  "description": "Unofficial adaptation of the Newedo system for FoundryVTT! Developed and published by Saltygames",
   "version": "1.0.0",
   "compatibility": {
     "minimum": 10,
@@ -9,7 +9,7 @@
     "maximum": 12
   },
   "authors": [{
-    "name": "Asacolips"
+    "name": "dragonkie"
   }],
   "esmodules": ["module/newedo.mjs"],
   "styles": ["css/newedo.css"],

@@ -18,14 +18,65 @@
           "bonus": 0,
           "wound": {
             "status": 0,
-            "label": ["healthy", "grazed", "flesh-wound", "banged-up", "hurt-bad", "burning-legend"],
-            "penalty": [0, -1, -3, -5, -7, -10],
-            "threshold": [1.0, 0.90, 0.75, 0.25, 0.1]
+            "label": "healthy",
+            "penalty": 0
           },
           "rest": {
             "mod": 2,
             "value": 10,
             "min": 0
+          }
+        },
+        "traits": {
+          "core": {
+            "pow": {
+              "value": 10,
+              "min": 0,
+              "rank": 1
+            },
+            "ref": {
+              "value": 10,
+              "min": 0,
+              "rank": 1
+            },
+            "hrt": {
+              "value": 10,
+              "min": 0,
+              "rank": 1
+            },
+            "sav": {
+              "value": 10,
+              "min": 0,
+              "rank": 1
+            },
+            "per": {
+              "value": 10,
+              "min": 0,
+              "rank": 1
+            },
+            "pre": {
+              "value": 10,
+              "min": 0,
+              "rank": 1
+            }
+          },
+          "derived": {
+            "init": {
+              "value": 1,
+              "mod": 1
+            },
+            "move": {
+              "value": 1,
+              "mod": 1
+            },
+            "def": {
+              "value": 0,
+              "mod": 0.4
+            },
+            "res": {
+              "value": 0,
+              "mod": 0.4
+            }
           }
         },
         "biography": {
@@ -75,7 +126,7 @@
       },
       "skills": {
         "crafting":{
-          "rank": {"r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0},
+          "rank": [0, 0, 0, 0, 0],
           "trait": "hrt",
           "rollCore": true,
           "bonuses": {
@@ -85,7 +136,7 @@
           "formula": ""
         },
         "meditation":{
-          "rank": {"r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0},
+          "rank": [0, 0, 0, 0, 0],
           "trait": "hrt",
           "rollCore": true,
           "bonuses": {
@@ -95,7 +146,7 @@
           "formula": ""
         },
         "rally":{
-          "rank": {"r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0},
+          "rank": [0, 0, 0, 0, 0],
           "trait": "hrt",
           "rollCore": true,
           "bonuses": {
@@ -105,7 +156,7 @@
           "formula": ""
         },
         "survival":{
-          "rank": {"r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0},
+          "rank": [0, 0, 0, 0, 0],
           "trait": "hrt",
           "rollCore": true,
           "bonuses": {
@@ -116,7 +167,7 @@
         },
 
         "athletics":{
-          "rank": {"r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0},
+          "rank": [0, 0, 0, 0, 0],
           "trait": "pow",
           "rollCore": true,
           "bonuses": {
@@ -126,7 +177,7 @@
           "formula": ""
         },
         "meleeHeavy":{
-          "rank": {"r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0},
+          "rank": [0, 0, 0, 0, 0],
           "trait": "pow",
           "rollCore": true,
           "bonuses": {
@@ -136,7 +187,7 @@
           "formula": ""
         },
         "meleeLight":{
-          "rank": {"r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0},
+          "rank": [0, 0, 0, 0, 0],
           "trait": "pow",
           "rollCore": true,
           "bonuses": {
@@ -146,7 +197,7 @@
           "formula": ""
         },
         "thrown":{
-          "rank": {"r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0},
+          "rank": [0, 0, 0, 0, 0],
           "trait": "pow",
           "rollCore": true,
           "bonuses": {
@@ -156,7 +207,7 @@
           "formula": ""
         },
         "unarmed":{
-          "rank": {"r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0},
+          "rank": [0, 0, 0, 0, 0],
           "trait": "pow",
           "rollCore": true,
           "bonuses": {
@@ -167,7 +218,7 @@
         },
 
         "banter":{
-          "rank": {"r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0},
+          "rank": [0, 0, 0, 0, 0],
           "trait": "ref",
           "rollCore": true,
           "bonuses": {
@@ -177,7 +228,7 @@
           "formula": ""
         },
         "dodge":{
-          "rank": {"r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0},
+          "rank": [0, 0, 0, 0, 0],
           "trait": "ref",
           "rollCore": true,
           "bonuses": {
@@ -187,7 +238,7 @@
           "formula": ""
         },
         "drive":{
-          "rank": {"r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0},
+          "rank": [0, 0, 0, 0, 0],
           "trait": "ref",
           "rollCore": true,
           "bonuses": {
@@ -197,7 +248,7 @@
           "formula": ""
         },
         "sleightOfHand":{
-          "rank": {"r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0},
+          "rank": [0, 0, 0, 0, 0],
           "trait": "ref",
           "rollCore": true,
           "bonuses": {
@@ -207,7 +258,7 @@
           "formula": ""
         },
         "stealth":{
-          "rank": {"r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0},
+          "rank": [0, 0, 0, 0, 0],
           "trait": "ref",
           "rollCore": true,
           "bonuses": {
@@ -218,7 +269,7 @@
         },
 
         "deception":{
-          "rank": {"r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0},
+          "rank": [0, 0, 0, 0, 0],
           "trait": "pre",
           "rollCore": true,
           "bonuses": {
@@ -228,7 +279,7 @@
           "formula": ""
         },
         "eloquence":{
-          "rank": {"r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0},
+          "rank": [0, 0, 0, 0, 0],
           "trait": "pre",
           "rollCore": true,
           "bonuses": {
@@ -238,7 +289,7 @@
           "formula": ""
         },
         "intimidation":{
-          "rank": {"r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0},
+          "rank": [0, 0, 0, 0, 0],
           "trait": "pre",
           "rollCore": true,
           "bonuses": {
@@ -248,7 +299,7 @@
           "formula": ""
         },
         "performance":{
-          "rank": {"r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0},
+          "rank": [0, 0, 0, 0, 0],
           "trait": "pre",
           "rollCore": true,
           "bonuses": {
@@ -258,7 +309,7 @@
           "formula": ""
         },
         "seduction":{
-          "rank": {"r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0},
+          "rank": [0, 0, 0, 0, 0],
           "trait": "pre",
           "rollCore": true,
           "bonuses": {
@@ -269,7 +320,7 @@
         },
         
         "archery":{
-          "rank": {"r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0},
+          "rank": [0, 0, 0, 0, 0],
           "trait": "per",
           "rollCore": true,
           "bonuses": {
@@ -279,7 +330,7 @@
           "formula": ""
         },
         "commerce":{
-          "rank": {"r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0},
+          "rank": [0, 0, 0, 0, 0],
           "trait": "per",
           "rollCore": true,
           "bonuses": {
@@ -289,7 +340,7 @@
           "formula": ""
         },
         "gunnery":{
-          "rank": {"r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0},
+          "rank": [0, 0, 0, 0, 0],
           "trait": "per",
           "rollCore": true,
           "bonuses": {
@@ -299,7 +350,7 @@
           "formula": ""
         },
         "intuition":{
-          "rank": {"r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0},
+          "rank": [0, 0, 0, 0, 0],
           "trait": "per",
           "rollCore": true,
           "bonuses": {
@@ -309,7 +360,7 @@
           "formula": ""
         },
         "investigation":{
-          "rank": {"r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0},
+          "rank": [0, 0, 0, 0, 0],
           "trait": "per",
           "rollCore": true,
           "bonuses": {
@@ -319,7 +370,7 @@
           "formula": ""
         },
         "smallArms":{
-          "rank": {"r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0},
+          "rank": [0, 0, 0, 0, 0],
           "trait": "per",
           "rollCore": true,
           "bonuses": {
@@ -330,7 +381,7 @@
         },
 
         "arcana":{
-          "rank": {"r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0},
+          "rank": [0, 0, 0, 0, 0],
           "trait": "sav",
           "rollCore": true,
           "bonuses": {
@@ -340,7 +391,7 @@
           "formula": ""
         },
         "computers":{
-          "rank": {"r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0},
+          "rank": [0, 0, 0, 0, 0],
           "trait": "sav",
           "rollCore": true,
           "bonuses": {
@@ -350,7 +401,7 @@
           "formula": ""
         },
         "gambling":{
-          "rank": {"r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0},
+          "rank": [0, 0, 0, 0, 0],
           "trait": "sav",
           "rollCore": true,
           "bonuses": {
@@ -360,7 +411,7 @@
           "formula": ""
         },
         "hardware":{
-          "rank": {"r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0},
+          "rank": [0, 0, 0, 0, 0],
           "trait": "sav",
           "rollCore": true,
           "bonuses": {
@@ -370,7 +421,7 @@
           "formula": ""
         },
         "medicine":{
-          "rank": {"r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0},
+          "rank": [0, 0, 0, 0, 0],
           "trait": "sav",
           "rollCore": true,
           "bonuses": {
@@ -380,7 +431,7 @@
           "formula": ""
         },
         "security":{
-          "rank": {"r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0},
+          "rank": [0, 0, 0, 0, 0],
           "trait": "sav",
           "rollCore": true,
           "bonuses": {
@@ -390,7 +441,7 @@
           "formula": ""
         },
         "streetwise":{
-          "rank": {"r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0},
+          "rank": [0, 0, 0, 0, 0],
           "trait": "sav",
           "rollCore": true,
           "bonuses": {
@@ -400,7 +451,7 @@
           "formula": ""
         },
         "study":{
-          "rank": {"r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0},
+          "rank": [0, 0, 0, 0, 0],
           "trait": "sav",
           "rollCore": true,
           "bonuses": {
@@ -410,7 +461,7 @@
           "formula": ""
         },
         "surveillance":{
-          "rank": {"r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0},
+          "rank": [0, 0, 0, 0, 0],
           "trait": "sav",
           "rollCore": true,
           "bonuses": {
@@ -420,7 +471,7 @@
           "formula": ""
         },
         "tactics":{
-          "rank": {"r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0},
+          "rank": [0, 0, 0, 0, 0],
           "trait": "sav",
           "rollCore": true,
           "bonuses": {
@@ -430,7 +481,7 @@
           "formula": ""
         },
         "toxicology":{
-          "rank": {"r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0},
+          "rank": [0, 0, 0, 0, 0],
           "trait": "sav",
           "rollCore": true,
           "bonuses": {
@@ -440,7 +491,7 @@
           "formula": ""
         },
         "wetware":{
-          "rank": {"r1": 0, "r2": 0, "r3": 0, "r4": 0, "r5": 0},
+          "rank": [0, 0, 0, 0, 0],
           "trait": "sav",
           "rollCore": true,
           "bonuses": {
@@ -448,58 +499,6 @@
             "dice": []
           },
           "formula": ""
-        }
-      },
-      "traits": {
-        "core": {
-          "pow": {
-            "value": 10,
-            "min": 0,
-            "rank": 1
-          },
-          "ref": {
-            "value": 10,
-            "min": 0,
-            "rank": 1
-          },
-          "hrt": {
-            "value": 10,
-            "min": 0,
-            "rank": 1
-          },
-          "sav": {
-            "value": 10,
-            "min": 0,
-            "rank": 1
-          },
-          "per": {
-            "value": 10,
-            "min": 0,
-            "rank": 1
-          },
-          "pre": {
-            "value": 10,
-            "min": 0,
-            "rank": 1
-          }
-        },
-        "derived": {
-          "initative": {
-            "value": 1,
-            "mod": 1
-          },
-          "move": {
-            "value": 1,
-            "mod": 1
-          },
-          "defence": {
-            "value": 0,
-            "mod": 0.4
-          },
-          "resolve": {
-            "value": 0,
-            "mod": 0.4
-          }
         }
       },
       "background": {
@@ -526,23 +525,23 @@
       },
       "fatecard": {
         "method": "range",
-        "list": {
-          "fate1": {
+        "list": [
+          {
             "range": {"top": 100, "bot": 96, "size": 5},
             "label": "Crit",
-            "description" : "Your declared intent is incredibly successful! if you attacked you automatically hit unless the enemy gets a critical success on a dodge attempt, . On hit you roll double the damage dice"
+            "description" : "Your declared intent is incredibly successful! if you attacked you automatically hit unless the enemy gets a critical success on a dodge attempt. On hit you roll double the damage dice"
           },
-          "fate2": {
+          {
             "range": {"top": 3, "bot": 1, "size": 3},
             "label": "Botch",
             "description" : "Your declared intent fails spectacularly. Whatever you were trying goes incredibly wrong and may have additional complications."
           },
-          "fate3": {
+          {
             "range": {"top": 0, "bot": 0, "size": 5},
             "label": "Bio-Feedback",
             "description" : "Your augments flare up and cause your whole body to tense in an almost paralyzing shock, you cannot take actions this turn. Only applicable in combat"
           }
-        }
+        ]
       },
       "biography": {
         "lineage": "",
@@ -550,33 +549,217 @@
         "faction": "",
         "path": "",
         "allies": "",
-        "enemies": ""
+        "enemies": "",
+        "personality": "",
+
+        "gender": "",
+        "weight": "",
+        "age": "",
+        "height": "",
+        "skin": "",
+        "eyes": "",
+        "hair": ""
       }
     },
     "npc": {
       "templates": ["base"],
-      "cr": 0
+      "legend": {
+        "value": 10,
+        "transactions": [],
+        "min": 0,
+        "max": 10
+      },
+      "attributes": {
+        "level": 0,
+        "armour": {
+          "kin": {
+            "value": 0,
+            "min": 0,
+            "bonus": 0
+          },
+          "ele": {
+            "value": 0,
+            "min": 0,
+            "bonus": 0
+          },
+          "bio": {
+            "value": 0,
+            "min": 0,
+            "bonus": 0
+          },
+          "arc": {
+            "value": 0,
+            "min": 0,
+            "bonus": 0
+          }
+        }
+      },
+      "skills": [
+        {
+          "label": "attack",
+          "value": 1,
+          "trait": "pow",
+          "rollCore": true,
+          "bonus": 0,
+          "bonuses": []
+        }
+      ],
+      "biography": {
+        "lineage": "",
+        "culture": "",
+        "faction": ""
+      },
+      "abilities": {
+        "active": {
+
+        },
+        "passive": {
+
+        }
+      }
     }
   },
+  
   "Item": {
-    "types": ["item", "feature", "rote"],
+    "types": ["weapon", "equipment", "armour", "augment", "rote", "item", "feature"],
     "templates": {
       "base": {
-        "description": ""
+        "description": "",
+        "quantity": 1,
+        "weight": 1,
+        "price": {
+          "base": 50,
+          "mod": 1,
+          "total": 50,
+          "tn": 3
+        }
       }
     },
-    "item": {
+    "weapon": {
       "templates": ["base"],
-      "quantity": 1,
-      "weight": 0,
-      "formula": "1d10 + @pow.mod"
+      "type": "melee",
+
+      "quality": 1,
+      "grit": 0,
+      "tier": 0,
+
+      "magazine": {
+        "min": 0,
+        "max": 0,
+        "value": 0
+      },
+      "burst": {
+        "roll": 0,
+        "ammo": 0
+      },
+
+      "attack": {
+        "skill": "meleeLight",
+        "trait": "pow",
+        "mod": 1,
+        "bonus": 0,
+        "bonuses": 0
+      },
+
+      "range": {
+        "short": 1,
+        "long": 0,
+        "modShort": 1,
+        "modLong": 1
+      },
+
+      "damage": {
+        "type": "kinetic",
+        "formula": "1d8",
+        "mod": 1,
+        "bonus": 0,
+        "ap": {
+          "kin": 0,
+          "ele": 0,
+          "bio": 0,
+          "arc": 0
+        }
+      },
+
+      "unlocks": ["@power 20: attack +1"],
+      "tags": {
+        "ranged": false,
+        "thrown": false,
+        "2handed": false,
+        "binding": false,
+        "conceal": false,
+        "disarm": false,
+
+        "burst": false,
+        "bulky": false,
+        "laser": false,
+        "mounted": false,
+        "piercing": false,
+        "threaded": false,
+
+        "chipped": false,
+        "bent": false,
+        "damaged": false,
+
+        "jammed": false,
+
+        "equipped": false,
+        "carried": false
+      },
+      "upgrades": {
+
+        "rebuild": false,
+        "balanceTuning": false,
+        "counterweight": false,
+        "gripextension": false,
+        "flashlight": false,
+        "gripblade": false,
+        "porting": false,
+        "bayonet": false,
+
+        "honing": false,
+        "reinforcedGuard": false,
+        "wristSpring": false,
+        "hardening": false,
+        "crossmember": false,
+        "collapsible": false,
+        "silencer": false,
+        "laserSight": false,
+        "rifled2m": false,
+        "rifled5m": false,
+        "suppressor": false,
+        "laserScope": false,
+        "weldedCasing": false,
+
+        "carbonEdge": false,
+        "oniCoat": false,
+        "magnesiumHaft": false,
+        "oniCoatPlus": false,
+        "themalScope5m": false,
+        "thermalScope12m": false,
+        "nylonBody": false,
+        "hipMount": false,
+
+        "fusionBlade": false,
+        "polymerBypass": false,
+        "safetySuzi": false
+      },
+      "properties": []
     },
-    "feature": {
-      "templates": ["base"]
+    "equipment": {
+
+    },
+    "armour": {
+
+    },
+    "augment": {
+
     },
     "rote": {
-      "templates": ["base"],
-      "roteLevel": 1
+
+    },
+    "feature": {
+
     }
   }
 }

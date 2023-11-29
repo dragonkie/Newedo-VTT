@@ -1,0 +1,12 @@
+<!-- Data for loading character skills into the sheet tab -->
+<div class="content">
+    <!-- Loops through all the skills found on the character, pressing one of these buttons will cycle skill values-->
+    {{#each system.skills as | skill key |}}
+        <div class="skill-wrapper">
+        <div class="title rollable" data-roll="{{skill.formula}}" data-label="{{skill.label}}">{{skill.label}}</div>
+        {{#each skill.rank as | value index |}}
+            <input type="button" id="{{key}}" index="{{index}}" class="skilldice" value="{{value}}"/>
+        {{/each}}
+        </div>
+    {{/each}}
+</div>

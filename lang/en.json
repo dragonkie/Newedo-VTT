@@ -14,22 +14,22 @@
   "NEWEDO.TraitPer": "Perception",
   "NEWEDO.TraitPre": "Presence",
 
-  "NEWEDO.TraitPowAbbr": "pow",
-  "NEWEDO.TraitHrtAbbr": "hrt",
-  "NEWEDO.TraitRefAbbr": "ref",
-  "NEWEDO.TraitSavAbbr": "sav",
-  "NEWEDO.TraitPerAbbr": "per",
-  "NEWEDO.TraitPreAbbr": "pre",
+  "NEWEDO.TraitPowAbbr": "Pow",
+  "NEWEDO.TraitHrtAbbr": "Hrt",
+  "NEWEDO.TraitRefAbbr": "Ref",
+  "NEWEDO.TraitSavAbbr": "Sav",
+  "NEWEDO.TraitPerAbbr": "Per",
+  "NEWEDO.TraitPreAbbr": "Pre",
 
   "NEWEDO.TraitInit": "Inititative",
   "NEWEDO.TraitMove": "Move",
   "NEWEDO.TraitDef": "Defence",
   "NEWEDO.TraitRes": "Resolve",
 
-  "NEWEDO.TraitInitAbbr": "Inititative",
+  "NEWEDO.TraitInitAbbr": "Init",
   "NEWEDO.TraitMoveAbbr": "Move",
-  "NEWEDO.TraitDefAbbr": "Defence",
-  "NEWEDO.TraitResAbbr": "Resolve",
+  "NEWEDO.TraitDefAbbr": "Def",
+  "NEWEDO.TraitResAbbr": "Res",
 
   "NEWEDO.EffectCreate": "Create Effect",
   "NEWEDO.EffectToggle": "Toggle Effect",
@@ -79,5 +79,21 @@
   "NEWEDO.SkillToxicology": "Toxicology",
   "NEWEDO.SkillWetware": "Wetware",
 
-  "NEWEDO.Add": "Add"
+  "NEWEDO.Add": "Add",
+
+  "NEWEDO.bgContacts": "Contacts",
+  "NEWEDO.bgFollowers": "Followers",
+  "NEWEDO.bgSoul": "Soul",
+  "NEWEDO.bgStatus": "Status",
+  "NEWEDO.bgWealth": "Wealth",
+
+  "TYPES.Actor.character": "Character",
+  "TYPES.Actor.npc": "Npc",
+  "TYPES.Actor.pet": "Pet",
+  "TYPES.Actor.vehicle": "vehicle",
+
+  "TYPES.Item.weapon": "Weapon",
+  "TYPES.Item.armour": "Armour",
+  "TYPES.Item.augment": "Augment",
+  "TYPES.Item.rote": "Rote"
 }

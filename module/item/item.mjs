@@ -2,7 +2,7 @@
  * Extend the basic Item with some very simple modifications.
  * @extends {Item}
  */
-export class NewedoItem extends Item {
+export default class NewedoItem extends Item {
   /**
    * Augment the basic Item data model with additional dynamic data.
    */

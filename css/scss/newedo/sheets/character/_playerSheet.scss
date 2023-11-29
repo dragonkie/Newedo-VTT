@@ -1,0 +1,29 @@
+//general classes
+.border-rounded {
+  border-radius: 5px;
+  border: 2px groove gray;
+}
+
+.barrier-gray {
+  background-color: $c-background;
+}
+
+
+.fate-roll {
+  font-size: 14px;
+  &:hover,
+  &:focus {
+    color: black;
+    text-shadow: $shadow-pink;
+    cursor: pointer;
+  }
+}
+
+input {
+  color: white;
+  &::placeholder {
+    color: lightgray;
+  }
+}
+
+//Stuff for making the fate tabs

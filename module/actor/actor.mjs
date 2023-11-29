@@ -1,15 +1,15 @@
+import LOGGER from "../utility/logger.mjs";
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
  * @extends {Actor}
  */
-export class NewedoActor extends Actor {
+export default class NewedoActor extends Actor {
 
   /** @override */
   prepareData() {
     // Prepare data for the actor. Calling the super version of this executes
     // the following, in order: data reset (to clear active effects),
-    // prepareBaseData(), prepareEmbeddedDocuments() (including active effects),
-    // prepareDerivedData().
+    // prepareBaseData(), prepareEmbeddedDocuments() (including active effects), prepareDerivedData();
     super.prepareData();
   }
 
@@ -43,7 +43,7 @@ export class NewedoActor extends Actor {
    */
   _prepareCharacterData(actorData) {
     if (actorData.type !== 'character') return;
-    console.log("NEWEDO | Preparing character data...")
+    LOGGER.log("Preparing character data")
 
     // Make modifications to data here. For example:
     const systemData = actorData.system;
@@ -51,65 +51,71 @@ export class NewedoActor extends Actor {
     const deriData = systemData.traits.derived;
     const fateData = systemData.fatecard;
 
-    // Loop through ability scores, and add their modifiers to our sheet output.
-    for (let [key, trait] of Object.entries(systemData.traits.core)) {
-      // Calculate the rank of the core traits
+    // Loop through core traits and calculate their rank
+    for (let [key, trait] of Object.entries(coreData)) {
+      if ((typeof trait.value !== `number`) || (trait.value < 1)) trait.value = 10;
       trait.rank = Math.max(Math.floor(trait.value / 10), 1);
     }
 
-    //checks to make sure skill values are valid otherwise sets them to 0
+    //calculates ranks for background, idk why it doesnt scale as just 1 rank per 20 points?
+    for (let [key, background] of Object.entries(systemData.background)) {
+      if (background.value < 1) background.value = 1;
 
+      background.rank = 1;
+      if (background.value >= 91) background.rank = 5;
+      else if (background.value >= 66) background.rank = 4;
+      else if (background.value >= 31) background.rank = 3;
+      else if (background.value >= 11) background.rank = 2;
+      //ensures background cant be above 100, or below 1
+      if (background.value > 100) background.value = 100;
+      if (background.value < 1) background.value = 1;
+    }
+
+    //goes through list of skills and calculates the roll formula for them
     for (let [key, skill] of Object.entries(systemData.skills)) {
       //vars to hold data about the roll formula
       let _rollFormula = "";
-
       //sets the base value of the skill roll to use the core trait or not
-      if (skill.rollCore) _rollFormula += coreData[skill.trait].rank+"d10";
-
-      //loops through skill ranks to validate their values and add them to the roll formula
-      for (let [scores, index] of Object.entries(skill.rank)) {
-        const element = systemData.skills[key].rank[scores];
-        if (element > 0) {
-          _rollFormula += " + 1d" + element;
+      if (skill.rollCore) _rollFormula += coreData[skill.trait].rank+"d10x10";
+      /*loops through skill ranks to validate their values and add them to the roll formula
+      * array template [d4, d6, d8, d12]
+      */ 
+      LOGGER.debug("Caluclating skill dice formula")
+      let diceTray = [0, 0, 0, 0];
+      for (let [key, value] of Object.entries(skill.rank)) {
+        switch (value) {
+          case 4:
+            diceTray[0] += 1;
+            break;
+          case 6:
+            diceTray[1] += 1;
+            break;
+          case 8:
+            diceTray[2] += 1;
+            break;
+          case 12:
+            diceTray[3] += 1;
+            break;
         }
       }
-      //calculates the roll formula for the skil
+
+      if (diceTray[0] != 0) _rollFormula += `+${diceTray[0]}d4`;
+      if (diceTray[1] != 0) _rollFormula += `+${diceTray[1]}d6`;
+      if (diceTray[2] != 0) _rollFormula += `+${diceTray[2]}d8`;
+      if (diceTray[3] != 0) _rollFormula += `+${diceTray[3]}d12`;
+
       systemData.skills[key].formula = _rollFormula;
     }
     
-    // Calculates derived traits for initative, move, defence, and resolve
-    deriData.initative.value = Math.ceil((coreData.ref.value + coreData.sav.value) * deriData.initative.mod);
+    // Calculates derived traits for initative, move, defence, resolve, and max health
+    deriData.init.value = Math.ceil((coreData.ref.value + coreData.sav.value) * deriData.init.mod);
     deriData.move.value = Math.ceil(((coreData.ref.value + coreData.hrt.value) / systemData.attributes.size.value) * deriData.move.mod);
-    deriData.defence.value = Math.ceil((coreData.pow.value + coreData.ref.value) * deriData.defence.mod);
-    deriData.resolve.value = Math.ceil((coreData.hrt.value + coreData.pre.value) * deriData.resolve.mod);
-
+    deriData.def.value = Math.ceil((coreData.pow.value + coreData.ref.value) * deriData.def.mod);
+    deriData.res.value = Math.ceil((coreData.hrt.value + coreData.pre.value) * deriData.res.mod);
     systemData.health.max = Math.ceil(systemData.health.mod * coreData.hrt.value);
     systemData.health.rest.value = Math.floor(systemData.health.rest.mod * 5.0);
 
-    //Fate card managment
-    /*
-    if (fateData.method == "range") {
-      for (let [key, fate] of Object.entries(fateData.list)) {
-        //corrects for inverted range values, and ensures the scale range is set properly
-        const _t = fate.range.top;
-        const _b = fate.range.bot;
-        const _path = "system.fatecard.list."+key;
-        if (_t < _b) {
-          console.log("NEWEDO | Fate entry has inverted range, correcting...")
-
-          const _pt = {[_path+".range.top"] : _b};
-          const _pb = {[_path+".range.bot"] : _t};
-          actorData.update(_pt);
-          actorData.update(_pb);
-        }
-        //correct the range size, mainly used in value method fate card layout
-        const _s = {[_path+".range.size"] : [fate.range.max - fate.range.min + 1]};
-        actorData.update(_s);
-      }
-    } else {
-
-    }
-    */
+    //ensure fatecard is well organized
   }
 
   /**
@@ -119,7 +125,6 @@ export class NewedoActor extends Actor {
     if (actorData.type !== 'npc') return;
 
     // Make modifications to data here. For example:
-    
   }
 
   /**
@@ -129,8 +134,8 @@ export class NewedoActor extends Actor {
     const data = super.getRollData();
 
     // Prepare character roll data.
-    this._getCharacterRollData(data);
-    this._getNpcRollData(data);
+    if (this.type === 'character') this._getCharacterRollData(data);
+    if (this.type === 'npc') this._getNpcRollData(data);
 
     return data;
   }
@@ -139,8 +144,6 @@ export class NewedoActor extends Actor {
    * Prepare character roll data.
    */
   _getCharacterRollData(data) {
-    if (this.type !== 'character') return;
-    /*
     // Copy the ability scores to the top level, so that rolls can use functions like /r 1d20+@dex
     if (data.traits.core) {
       for (let [k, v] of Object.entries(data.traits.core)) {
@@ -153,16 +156,14 @@ export class NewedoActor extends Actor {
         data[k] = foundry.utils.deepClone(v);
       }
     }
-    */
-
-    // Add level for easier access, or fall back to 0.
+    
   }
 
   /**
    * Prepare NPC roll data.
    */
   _getNpcRollData(data) {
-    if (this.type !== 'npc') return;
+    
 
     // Process additional NPC data here.
   }

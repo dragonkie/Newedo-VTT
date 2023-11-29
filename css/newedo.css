@@ -4,9 +4,18 @@
   font-family: "Roboto", sans-serif;
 }
 
+.window-app.newedo.actor.sheet .window-content {
+  padding: 0;
+  background-image: none;
+  color: white;
+  background-color: #434343;
+}
+.window-app.newedo.actor.sheet .sheet-body {
+  background-color: #333;
+}
+
 .rollable:hover, .rollable:focus {
-  color: #000;
-  text-shadow: 0 0 10px red;
+  text-shadow: 0 0 10px hotpink;
   cursor: pointer;
 }
 
@@ -203,7 +212,6 @@
   text-align: center;
 }
 
-/* Styles limited to newedo sheets */
 .newedo {
   /* ----------------------------------------- */
   /*  Items Lists                              */
@@ -212,34 +220,6 @@
 }
 .newedo .item-form {
   font-family: "Roboto", sans-serif;
-}
-.newedo .sheet-header {
-  flex: 0 auto;
-  overflow: hidden;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  margin-bottom: 10px;
-}
-.newedo .sheet-header .profile-img {
-  flex: 0 0 100px;
-  height: 100px;
-  margin-right: 10px;
-}
-.newedo .sheet-header .header-fields {
-  flex: 1;
-}
-.newedo .sheet-header h1.charname {
-  height: 50px;
-  padding: 0px;
-  margin: 5px 0;
-  border-bottom: 0;
-}
-.newedo .sheet-header h1.charname input {
-  width: 100%;
-  height: 100%;
-  margin: 0;
 }
 .newedo .sheet-tabs {
   flex: 0;
@@ -370,14 +350,190 @@
 .newedo .effects .item .effect-controls {
   border: none;
 }
-
-/*my custom made assest by kiki the dumbass himself */
-.border-rounded {
+.newedo .sheet-tabs .item.active {
+  background-color: #333;
+  border-radius: 5px 5px 0px 0px;
+  border: 1px solid #bbb;
+  border-bottom: 1px none #bbb;
+}
+.newedo .sheet-tabs .item {
+  border-radius: 0px;
+  border: 1px none #bbb;
+  border-bottom: 1px solid #bbb;
+}
+.newedo .sheet-header {
+  flex: 0 auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  padding: 10px;
+}
+.newedo .sheet-header h1.charname {
+  height: 50px;
+  padding: 0px;
+  border-bottom: 0;
+}
+.newedo .sheet-header h1.charname input {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  color: white;
+  border: 0;
+  font-weight: bold;
+}
+.newedo .sheet-header .portrait {
+  align-items: center;
+  max-width: 150px;
+  margin-right: 10px;
+}
+.newedo .sheet-header .portrait .profile-img {
+  flex: 0 0 150px;
+  margin-right: 10px;
+  border-radius: 15px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  height: 150px;
+  width: 150px;
+}
+.newedo .sheet-header .portrait .hp-bar {
+  align-items: center;
+  text-align: center;
+  border: 1px solid black;
+  border-radius: 15px;
+}
+.newedo .sheet-header .portrait .hp-bar input {
+  border: none;
+  background-color: transparent;
+}
+.newedo .sheet-header .portrait .hp-bar .fill {
+  background-color: #55cb53;
+}
+.newedo .sheet-header .background {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.newedo .sheet-header .background input {
+  border: 0;
+  color: white;
+  background-color: transparent;
+  font-size: 14px;
+  height: 16px;
+  padding: 0;
+}
+.newedo .sheet-header .list-derived {
+  display: inline;
+  margin-right: 5px;
+}
+.newedo .border-rounded {
   border-radius: 5px;
   border: 2px groove gray;
 }
-
-.container-trait-core {
+.newedo .barrier-gray {
+  background-color: rgb(168, 168, 168);
+}
+.newedo .fate-roll {
+  font-size: 14px;
+}
+.newedo .fate-roll:hover, .newedo .fate-roll:focus {
+  color: black;
+  text-shadow: 0 0 10px hotpink;
+  cursor: pointer;
+}
+.newedo input {
+  color: white;
+}
+.newedo input::-moz-placeholder {
+  color: lightgray;
+}
+.newedo input::placeholder {
+  color: lightgray;
+}
+.newedo .sheet-body .tab.fates {
+  padding: 20px;
+}
+.newedo .sheet-body .tab.fates .fate-new {
+  background-image: url(../assets/images/icon-check-mark.svg);
+  width: 40px;
+  height: 40px;
+}
+.newedo .sheet-body .tab.fates .fate-delete {
+  background-image: url(../assets/images/icon-trashcan.svg);
+  width: 26px;
+  height: 26px;
+}
+.newedo .sheet-body .tab.fates .fate-range {
+  display: grid;
+  grid-template-columns: 40px 40px 20px 40px;
+  gap: 4px;
+  align-items: center;
+  text-align: center;
+}
+.newedo .sheet-body .tab.fates .fate-container {
+  min-height: 200px;
+  max-height: 200px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  background-color: #434343;
+  border-radius: 15px;
+}
+.newedo .sheet-body .tab.fates .fate-container .fate-header {
+  display: grid;
+  grid-template-columns: 1fr 26px;
+}
+.newedo .sheet-body .tab.fates .fate-container .fate-header .title {
+  border: 0;
+  font-size: 18px;
+  height: 26px;
+  background-color: transparent;
+  font-weight: bold;
+  color: white;
+}
+.newedo .sheet-body .tab.fates .fate-container .fate-header input {
+  color: white;
+  border: 0;
+}
+.newedo .sheet-body .tab.skills {
+  padding: 20px;
+}
+.newedo .sheet-body .tab.skills .content {
+  display: grid;
+  gap: 2px;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(19, 1fr);
+}
+.newedo .sheet-body .tab.skills .content .skill-wrapper {
+  display: grid;
+  gap: 2px;
+  grid-template-columns: 120px repeat(5, 30px);
+  font-size: 14px;
+  align-items: center;
+  border-bottom: 1px solid gray;
+  border-right: 1px solid gray;
+}
+.newedo .sheet-body .tab.skills .content .skill-wrapper .title {
+  text-align: right;
+  border-right: 1px solid gray;
+  padding-right: 4px;
+}
+.newedo .sheet-body .tab.skills .content .skilldice {
+  height: 25px;
+  margin-left: 2px;
+  padding: 0px;
+  line-height: 0px;
+  text-align: center;
+  background-color: #434343;
+  border: 0;
+  border-radius: 3px;
+}
+.newedo .sheet-body .tab.traits {
+  padding: 20px;
+}
+.newedo .container-trait-core {
   min-width: 80px;
   max-width: 80px;
   text-align: center;
@@ -385,10 +541,10 @@
   display: flex;
   flex-direction: column;
 }
-.container-trait-core div {
+.newedo .container-trait-core div {
   border-bottom: 1px solid gray;
 }
-.container-trait-core div .barrier {
+.newedo .container-trait-core div .barrier {
   border: 0;
   margin-left: 10px;
   background-color: rgb(168, 168, 168);
@@ -396,18 +552,17 @@
   min-width: calc(100% - 20px);
   max-width: calc(100% - 20px);
 }
-.container-trait-core div input {
+.newedo .container-trait-core div input {
   font-size: 20px;
   border: 0;
   background-color: transparent;
   margin: 5px 0px 5px 0px;
 }
-.container-trait-core div span {
+.newedo .container-trait-core div span {
   font-size: 12px;
   border: 0;
 }
-
-.container-trait-derived {
+.newedo .container-trait-derived {
   min-height: 65px;
   max-height: 65px;
   min-width: 250px;
@@ -416,20 +571,20 @@
   flex-direction: row;
   text-align: center;
 }
-.container-trait-derived span {
+.newedo .container-trait-derived span {
   border: 0;
   border-right: 1px solid gray;
 }
-.container-trait-derived span div {
+.newedo .container-trait-derived span div {
   border: 0;
 }
-.container-trait-derived span div .name {
+.newedo .container-trait-derived span div .name {
   font-size: 12px;
 }
-.container-trait-derived span div .score {
+.newedo .container-trait-derived span div .score {
   font-size: 18px;
 }
-.container-trait-derived span div .wrap-mod {
+.newedo .container-trait-derived span div .wrap-mod {
   padding-top: 2px;
   margin-left: 2px;
   margin-right: 2px;
@@ -439,7 +594,7 @@
   border-top: 1px solid gray;
   font-size: 12px;
 }
-.container-trait-derived span div .wrap-mod input {
+.newedo .container-trait-derived span div .wrap-mod input {
   font-size: 16px;
   height: 18px;
   padding: 0px;
@@ -447,8 +602,7 @@
   margin-left: 2px;
   min-width: 0px;
 }
-
-.container-armour {
+.newedo .container-armour {
   min-width: 250px;
   max-width: 250px;
   min-height: 50px;
@@ -457,203 +611,98 @@
   flex-direction: row;
   text-align: center;
 }
-.container-armour span {
+.newedo .container-armour span {
   flex-direction: column;
   border-right: 1px solid gray;
 }
-.container-armour span div {
+.newedo .container-armour span div {
   border: 0;
 }
-.container-armour span div div {
+.newedo .container-armour span div div {
   font-size: 12px;
 }
-.container-armour span div input {
+.newedo .container-armour span div input {
   font-size: 18px;
-  border: 0;
-  background-color: transparent;
-}
-
-.barrier-gray {
-  background-color: rgb(168, 168, 168);
-}
-
-.character-origin .background {
-  border-bottom: 1px solid black;
-  display: flex;
-  flex-direction: row;
-}
-.character-origin .background div {
-  border-right: 1px solid gray;
-  border-bottom: 0;
-}
-.character-origin .background div label {
-  font-size: 10px;
-  padding-bottom: 0px;
-  padding-left: 2px;
-  margin-bottom: 0px;
-}
-.character-origin .background div input {
-  font-size: 16px;
   height: 18px;
-  text-align: center;
+  border: 0;
   background-color: transparent;
-  border: 0;
-  box-shadow: none;
 }
-.character-origin .header-stats {
+.newedo .sheet-body .tab.bio .tab-wrapper {
+  padding: 10px;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
-  flex-direction: row;
-  text-align: center;
+  grid-template-areas: "details details" "personality description" "ambition history" "ideals history" "fears history";
+  gap: 10px;
 }
-.character-origin .header-stats .health {
-  border: 0;
-  border-right: 1px solid gray;
+.newedo .sheet-body .tab.bio .container {
+  background-color: #434343;
+  padding: 5px;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
 }
-.character-origin .header-stats .health .hp-grid {
-  border-bottom: 1px solid gray;
-  font-size: 20px;
-  text-align: center;
-  display: grid;
-  gap: 2px;
-  padding: 2px;
-  grid-template-columns: minmax(0, 1fr) 15px minmax(0, 1fr);
-}
-.character-origin .header-stats .health .hp-grid input {
-  height: 22px;
+.newedo .sheet-body .tab.bio .container textarea {
   border: 0;
+  color: white;
   background-color: transparent;
+  width: 100%;
+  height: 100%;
 }
-.character-origin .header-stats .health .mod-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
-  font-size: 12px;
-}
-.character-origin .header-stats .health .mod-grid .hp-mod {
-  border-right: 1px solid gray;
-}
-.character-origin .header-stats .health .mod-grid .hp-mod input {
-  height: 14px;
+.newedo .sheet-body .tab.bio .container input {
   border: 0;
+  color: white;
+  text-align: left;
   background-color: transparent;
-}
-.character-origin .header-stats .health .mod-grid .rest-mod {
-  border-right: 1px solid gray;
-}
-.character-origin .header-stats .health .mod-grid .rest-mod input {
-  height: 14px;
-  border: 0;
-  background-color: transparent;
-}
-.character-origin .header-stats .health .mod-grid .size input {
-  height: 14px;
-  border: 0;
-  background-color: transparent;
-}
-.character-origin .header-stats .legend {
-  border-right: 1px solid gray;
-  display: flex;
-  flex-direction: column;
-}
-.character-origin .header-stats .legend div {
-  border: 0;
-  font-size: 26px;
-  text-align: center;
-  align-items: center;
-  display: grid;
-  gap: 2px;
-  padding: 2px;
-  grid-template-columns: minmax(0, 1fr) 15px minmax(0, 1fr);
-}
-.character-origin .header-stats .legend div input {
-  height: 28px;
-  border: 0;
-  background-color: transparent;
-}
-.character-origin .header-stats .rank {
-  margin: 0;
   padding: 0;
 }
-.character-origin .header-stats .rank input {
-  font-size: 26px;
-  height: 28px;
-  border: 0;
-  background-color: transparent;
+.newedo .sheet-body .tab.bio .container .label {
+  font-weight: bold;
 }
-.character-origin .header-stats .rank .exp {
+.newedo .sheet-body .tab.bio .container .barrier {
+  height: 1px;
+  width: 100%;
+  background-color: white;
+}
+.newedo .sheet-body .tab.bio .details {
+  grid-area: details;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2px;
+}
+.newedo .sheet-body .tab.bio .details div {
   display: flex;
   flex-direction: row;
   align-items: center;
+}
+.newedo .sheet-body .tab.bio .details div span {
   text-align: right;
 }
-.character-origin .header-stats .rank .exp div {
-  font-size: 12px;
-  margin-right: 4px;
-}
-.character-origin .header-stats .rank .exp input {
-  font-size: 12px;
+.newedo .sheet-body .tab.bio .details input {
+  margin-left: 4px;
   text-align: left;
-  height: 14px;
-  border: 1px solid black;
+  font-size: 15px;
+  height: 17px;
+  border: 0;
+  background-color: transparent;
+  color: white;
 }
-
-.skill-wrapper {
-  display: grid;
-  gap: 2px;
-  grid-template-columns: 120px 30px 30px 30px 30px 30px;
-  font-size: 14px;
-  align-items: center;
-  border-bottom: 1px solid gray;
-  border-right: 1px solid gray;
+.newedo .sheet-body .tab.bio .details input:hover, .newedo .sheet-body .tab.bio .details input:focus {
+  border: 1px solid hotpink;
 }
-.skill-wrapper .title {
-  text-align: right;
-  border-right: 1px solid gray;
-  padding-right: 4px;
+.newedo .sheet-body .tab.bio .personality {
+  grid-area: personality;
 }
-
-.skilldice {
-  height: 25px;
-  margin-left: 2px;
-  padding: 0px;
-  line-height: 0px;
-  text-align: center;
+.newedo .sheet-body .tab.bio .description {
+  grid-area: description;
 }
-
-.dice-d4 {
-  background-image: url(https://game-icons.net/icons/ffffff/000000/1x1/skoll/d4.svg);
-  background-repeat: no-repeat;
-  font-size: 0px;
+.newedo .sheet-body .tab.bio .ambition {
+  grid-area: ambition;
 }
-
-.dice-d6 {
-  background-image: url(https://game-icons.net/icons/ffffff/000000/1x1/delapouite/dice-six-faces-six.svg);
-  background-repeat: no-repeat;
-  font-size: 0px;
+.newedo .sheet-body .tab.bio .ideals {
+  grid-area: ideals;
 }
-
-.dice-d8 {
-  background-image: url(https://game-icons.net/icons/ffffff/000000/1x1/delapouite/dice-eight-faces-eight.svg);
-  background-repeat: no-repeat;
-  font-size: 0px;
+.newedo .sheet-body .tab.bio .fears {
+  grid-area: fears;
 }
-
-.dice-d10 {
-  background-image: url(https://game-icons.net/icons/ffffff/000000/1x1/skoll/d10.svg);
-  background-repeat: no-repeat;
-  font-size: 0px;
-}
-
-.dice-d12 {
-  background-image: url(https://game-icons.net/icons/ffffff/000000/1x1/skoll/d12.svg);
-  background-repeat: no-repeat;
-  font-size: 0px;
-}
-
-.dice-d20 {
-  background-image: url(https://game-icons.net/icons/ffffff/000000/1x1/delapouite/dice-twenty-faces-twenty.svg);
-  background-repeat: no-repeat;
-  font-size: 0px;
+.newedo .sheet-body .tab.bio .history {
+  grid-area: history;
 }/*# sourceMappingURL=newedo.css.map */
