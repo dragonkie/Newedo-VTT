@@ -1,4 +1,4 @@
-<form class="{{cssClass}}" autocomplete="off">
+<form class="{{cssClass}} {{item.type}}" autocomplete="off" system-theme="dark">
   <header class="sheet-header">
     <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
     <div class="header-fields">
@@ -6,26 +6,48 @@
     </div>
   </header>
 
-  {{!-- Sheet Tab Navigation --}}
+  <!-- Sheet Tab Navigation -->
   <nav class="sheet-tabs tabs" data-group="primary">
     <a class="item" data-tab="description">Description</a>
-    <a class="item" data-tab="attributes">Attributes</a>
+    <a class="item" data-tab="settings">Settings</a>
   </nav>
 
-  {{!-- Sheet Body --}}
+  <!-- Sheet Body -->
   <section class="sheet-body">
 
-    {{!-- Description Tab --}}
-    <div class="tab" data-group="primary" data-tab="description">
-      {{editor system.description target="system.description" rollData=rollData button=true owner=owner editable=editable}}
+    <!-- Description Tab -->
+    <div class="tab description" data-group="primary" data-tab="description">
+      <div class="description-tab">
+        <div class="summary">
+
+          <div class="detail">
+            <div>Kami:</div>
+            <div>{{system.kami}}</div>
+          </div>
+          <div class="detail">
+            <div>Tier:</div>
+            <div>{{system.tier.value}}</div>
+          </div>
+          <div class="detail">
+            <div>Legend Cost:</div>
+            <div>{{system.cost}}</div>
+          </div>
+          <div class="detail">
+            <div>Range:</div>
+            <div>{{system.range}}m</div>
+          </div>
+
+        </div>
+        <div class="description-editor">
+          {{editor itemDescriptionHTML target="system.description" button=true editable=editable engine="prosemirror" collaborate=false}}
+        </div>
+      </div>
     </div>
 
-    {{!-- Attributes Tab --}}
-    <div class="tab attributes" data-group="primary" data-tab="attributes">
-      {{!-- As you add new fields, add them in here! --}}
-      <div class="resource">
-        <label class="resource-label">Spell Level</label>
-        <input type="text" name="system.spellLevel" value="{{system.spellLevel}}" data-dtype="Number"/>
+    <!-- Settings Tab -->
+    <div class="tab settings" data-group="primary" data-tab="settings">
+      <div class="settings-tab">
+
       </div>
     </div>
   </section>

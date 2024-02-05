@@ -30,7 +30,6 @@
   padding: 0;
   overflow-y: auto;
   scrollbar-width: thin;
-  color: $c-tan;
 
   // Child lists
   .item-list {
@@ -74,7 +73,6 @@
     border-bottom: 1px solid $c-faint;
     &:last-child { border-bottom: none; }
     .item-name {
-      color: $c-dark;
       .item-image {
         flex: 0 0 30px;
         height: 30px;
@@ -98,7 +96,6 @@
     margin: 2px 0;
     padding: 0;
     align-items: center;
-    background: rgba(0, 0, 0, 0.05);
     border: $border-groove;
     font-weight: bold;
     > * {
@@ -113,7 +110,6 @@
   }
 }
 
-/* Example style for Newedo (can be removed if not needed) */
 .item-formula {
   flex: 0 0 200px;
   padding: 0 8px;

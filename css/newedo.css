@@ -4,18 +4,97 @@
   font-family: "Roboto", sans-serif;
 }
 
-.window-app.newedo.actor.sheet .window-content {
+.newedo.sheet {
+  --bg-c-primary: white;
+  --bg-c-secondary: transparent;
+  --bg-c-tertiary: transparent;
+  --bg-image: url(/ui/parchment.jpg) repeat;
+  --text-colour: black;
+  --text-placeholder: darkgrey;
+  --text-shadow: 0 0 10px hotpink;
+  --text-border: 0;
+}
+.newedo.sheet [system-theme=dark] {
+  --bg-c-primary: #434343;
+  --bg-c-secondary: #333;
+  --bg-c-tertiary: #434343;
+  --bg-image: none;
+  --text-colour: white;
+  --text-placeholder: grey;
+  --text-shadow: 0 0 10px hotpink;
+  --text-border: 0;
+}
+.newedo.sheet .window-content {
   padding: 0;
-  background-image: none;
-  color: white;
-  background-color: #434343;
 }
-.window-app.newedo.actor.sheet .sheet-body {
-  background-color: #333;
+.newedo.sheet .window-content form {
+  display: flex;
+  flex: 1;
+  background: var(--bg-c-primary, white) var(--bg-image, url(/ui/parchment.jpg)) repeat;
+  color: var(--text-colour, black);
 }
-
-.rollable:hover, .rollable:focus {
-  text-shadow: 0 0 10px hotpink;
+.newedo.sheet .window-content form select {
+  color: var(--text-colour, black);
+  background-color: var(--bg-c-tertiary, transparent);
+}
+.newedo.sheet .window-content form select option {
+  color: var(--text-colour, black);
+  background-color: var(--bg-c-tertiary, transparent);
+}
+.newedo.sheet .window-content form input {
+  color: var(--text-colour, black);
+  background-color: var(--bg-c-tertiary, none);
+  border: var(--text-border);
+}
+.newedo.sheet .window-content form input::-moz-placeholder {
+  color: var(--text-placeholder, lightgray);
+}
+.newedo.sheet .window-content form input::placeholder {
+  color: var(--text-placeholder, lightgray);
+}
+.newedo.sheet .window-content form input:hover, .newedo.sheet .window-content form input:focus {
+  box-shadow: var(--text-shadow);
+  cursor: pointer;
+}
+.newedo.sheet .window-content form textarea {
+  color: var(--text-colour, black);
+  background-color: var(--bg-c-tertiary);
+  border: var(--text-border, 0);
+}
+.newedo.sheet .window-content form textarea:hover, .newedo.sheet .window-content form textarea:focus {
+  box-shadow: var(--text-shadow);
+}
+.newedo.sheet .window-content form option {
+  color: var(--text-colour, black);
+}
+.newedo.sheet .window-content form .tab[data-tab].active {
+  display: flex;
+  flex: 1;
+}
+.newedo.sheet .window-content form .sheet-body {
+  flex: 1;
+  display: flex;
+  background-color: var(--bg-c-secondary, gray);
+  overflow: auto;
+}
+.newedo.sheet .window-content form .sheet-tabs .item.active {
+  border-radius: 5px 5px 0px 0px;
+  border: 1px solid #bbb;
+  border-bottom: 0;
+  background-color: var(--bg-c-secondary);
+}
+.newedo.sheet .window-content form .sheet-tabs .item {
+  border-radius: 0px;
+  border: 0;
+  border-bottom: 1px solid #bbb;
+  background-color: var(--bg-c-primary);
+}
+.newedo.sheet a.inline-roll {
+  background-color: var(--bg-c-secondary), white;
+  color: var(--text-colour), black;
+}
+.newedo.sheet .rollable:hover, .newedo.sheet .rollable:focus, .newedo.sheet .fate-roll:hover, .newedo.sheet .fate-roll:focus {
+  text-shadow: var(--text-shadow, red);
   cursor: pointer;
 }
 
@@ -216,24 +295,12 @@
   /* ----------------------------------------- */
   /*  Items Lists                              */
   /* ----------------------------------------- */
-  /* Example style for Newedo (can be removed if not needed) */
 }
 .newedo .item-form {
   font-family: "Roboto", sans-serif;
 }
 .newedo .sheet-tabs {
   flex: 0;
-}
-.newedo .sheet-body,
-.newedo .sheet-body .tab,
-.newedo .sheet-body .tab .editor {
-  height: 100%;
-}
-.newedo .tox .tox-editor-container {
-  background: #fff;
-}
-.newedo .tox .tox-edit-area {
-  padding: 0 8px;
 }
 .newedo .resource-label {
   font-weight: bold;
@@ -263,7 +330,6 @@
   padding: 0;
   overflow-y: auto;
   scrollbar-width: thin;
-  color: #444;
 }
 .newedo .items-list .item-list {
   list-style: none;
@@ -302,9 +368,6 @@
 .newedo .items-list .item:last-child {
   border-bottom: none;
 }
-.newedo .items-list .item .item-name {
-  color: #191813;
-}
 .newedo .items-list .item .item-name .item-image {
   flex: 0 0 30px;
   height: 30px;
@@ -323,7 +386,6 @@
   margin: 2px 0;
   padding: 0;
   align-items: center;
-  background: rgba(0, 0, 0, 0.05);
   border: 2px groove #eeede0;
   font-weight: bold;
 }
@@ -350,46 +412,70 @@
 .newedo .effects .item .effect-controls {
   border: none;
 }
-.newedo .sheet-tabs .item.active {
-  background-color: #333;
-  border-radius: 5px 5px 0px 0px;
-  border: 1px solid #bbb;
-  border-bottom: 1px none #bbb;
-}
-.newedo .sheet-tabs .item {
-  border-radius: 0px;
-  border: 1px none #bbb;
-  border-bottom: 1px solid #bbb;
-}
-.newedo .sheet-header {
-  flex: 0 auto;
+.newedo .character .character-body {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: flex-start;
+  flex: 1;
+  flex-direction: column;
+}
+.newedo .character .character-nav {
+  text-align: center;
+  align-items: center;
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+.newedo .character .character-panel {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  padding: 5px;
+  max-width: 200px;
+  align-items: center;
+}
+.newedo .character .character-panel .container-armour {
+  display: grid;
+  grid-template-columns: auto auto;
+  text-align: center;
+  align-items: center;
+}
+.newedo .character .character-panel .container-armour span {
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid gray;
+}
+.newedo .character .character-panel .container-armour span div {
+  border: 0;
+}
+.newedo .character .character-panel .container-armour span div div {
+  font-size: 12px;
+}
+.newedo .character .character-panel .container-armour span div input {
+  font-size: 18px;
+  height: 18px;
+  border: 0;
+}
+.newedo .character .sheet-header {
   padding: 10px;
 }
-.newedo .sheet-header h1.charname {
+.newedo .character .sheet-header h1.charname {
   height: 50px;
   padding: 0px;
   border-bottom: 0;
 }
-.newedo .sheet-header h1.charname input {
+.newedo .character .sheet-header h1.charname input {
   width: 100%;
   height: 100%;
   margin: 0;
   padding: 0;
-  background-color: transparent;
-  color: white;
   border: 0;
   font-weight: bold;
 }
-.newedo .sheet-header .portrait {
+.newedo .character .sheet-header .portrait {
   align-items: center;
   max-width: 150px;
   margin-right: 10px;
 }
-.newedo .sheet-header .portrait .profile-img {
+.newedo .character .sheet-header .portrait .profile-img {
   flex: 0 0 150px;
   margin-right: 10px;
   border-radius: 15px;
@@ -398,142 +484,62 @@
   height: 150px;
   width: 150px;
 }
-.newedo .sheet-header .portrait .hp-bar {
+.newedo .character .sheet-header .portrait .hp-bar {
   align-items: center;
   text-align: center;
   border: 1px solid black;
   border-radius: 15px;
 }
-.newedo .sheet-header .portrait .hp-bar input {
+.newedo .character .sheet-header .portrait .hp-bar input {
   border: none;
-  background-color: transparent;
 }
-.newedo .sheet-header .portrait .hp-bar .fill {
-  background-color: #55cb53;
-}
-.newedo .sheet-header .background {
+.newedo .character .sheet-header .background {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
-.newedo .sheet-header .background input {
+.newedo .character .sheet-header .background input {
   border: 0;
-  color: white;
-  background-color: transparent;
   font-size: 14px;
   height: 16px;
   padding: 0;
 }
-.newedo .sheet-header .list-derived {
+.newedo .character .sheet-header .list-derived {
   display: inline;
   margin-right: 5px;
 }
-.newedo .border-rounded {
-  border-radius: 5px;
-  border: 2px groove gray;
+.newedo .character .tab[data-tab].active {
+  padding: 8px;
+  overflow: auto;
 }
-.newedo .barrier-gray {
-  background-color: rgb(168, 168, 168);
+.newedo .character .tab-content {
+  flex: 1;
 }
-.newedo .fate-roll {
-  font-size: 14px;
-}
-.newedo .fate-roll:hover, .newedo .fate-roll:focus {
-  color: black;
-  text-shadow: 0 0 10px hotpink;
-  cursor: pointer;
-}
-.newedo input {
-  color: white;
-}
-.newedo input::-moz-placeholder {
-  color: lightgray;
-}
-.newedo input::placeholder {
-  color: lightgray;
-}
-.newedo .sheet-body .tab.fates {
-  padding: 20px;
-}
-.newedo .sheet-body .tab.fates .fate-new {
-  background-image: url(../assets/images/icon-check-mark.svg);
-  width: 40px;
-  height: 40px;
-}
-.newedo .sheet-body .tab.fates .fate-delete {
-  background-image: url(../assets/images/icon-trashcan.svg);
-  width: 26px;
-  height: 26px;
-}
-.newedo .sheet-body .tab.fates .fate-range {
+.newedo .character .traits-tab .wrap-background {
   display: grid;
-  grid-template-columns: 40px 40px 20px 40px;
   gap: 4px;
-  align-items: center;
-  text-align: center;
+  grid-template-areas: "wealth soul" "followers contacts" "status contacts";
 }
-.newedo .sheet-body .tab.fates .fate-container {
-  min-height: 200px;
-  max-height: 200px;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  background-color: #434343;
-  border-radius: 15px;
+.newedo .character .traits-tab .wrap-background .container {
+  border-radius: 10px;
+  padding: 5px;
 }
-.newedo .sheet-body .tab.fates .fate-container .fate-header {
-  display: grid;
-  grid-template-columns: 1fr 26px;
+.newedo .character .traits-tab .wrap-background .contacts {
+  grid-area: contacts;
 }
-.newedo .sheet-body .tab.fates .fate-container .fate-header .title {
-  border: 0;
-  font-size: 18px;
-  height: 26px;
-  background-color: transparent;
-  font-weight: bold;
-  color: white;
+.newedo .character .traits-tab .wrap-background .wealth {
+  grid-area: wealth;
 }
-.newedo .sheet-body .tab.fates .fate-container .fate-header input {
-  color: white;
-  border: 0;
+.newedo .character .traits-tab .wrap-background .soul {
+  grid-area: soul;
 }
-.newedo .sheet-body .tab.skills {
-  padding: 20px;
+.newedo .character .traits-tab .wrap-background .followers {
+  grid-area: followers;
 }
-.newedo .sheet-body .tab.skills .content {
-  display: grid;
-  gap: 2px;
-  grid-auto-flow: column;
-  grid-template-rows: repeat(19, 1fr);
+.newedo .character .traits-tab .wrap-background .status {
+  grid-area: status;
 }
-.newedo .sheet-body .tab.skills .content .skill-wrapper {
-  display: grid;
-  gap: 2px;
-  grid-template-columns: 120px repeat(5, 30px);
-  font-size: 14px;
-  align-items: center;
-  border-bottom: 1px solid gray;
-  border-right: 1px solid gray;
-}
-.newedo .sheet-body .tab.skills .content .skill-wrapper .title {
-  text-align: right;
-  border-right: 1px solid gray;
-  padding-right: 4px;
-}
-.newedo .sheet-body .tab.skills .content .skilldice {
-  height: 25px;
-  margin-left: 2px;
-  padding: 0px;
-  line-height: 0px;
-  text-align: center;
-  background-color: #434343;
-  border: 0;
-  border-radius: 3px;
-}
-.newedo .sheet-body .tab.traits {
-  padding: 20px;
-}
-.newedo .container-trait-core {
+.newedo .character .traits-tab .container-trait-core {
   min-width: 80px;
   max-width: 80px;
   text-align: center;
@@ -541,28 +547,26 @@
   display: flex;
   flex-direction: column;
 }
-.newedo .container-trait-core div {
+.newedo .character .traits-tab .container-trait-core div {
   border-bottom: 1px solid gray;
 }
-.newedo .container-trait-core div .barrier {
+.newedo .character .traits-tab .container-trait-core div .barrier {
   border: 0;
   margin-left: 10px;
-  background-color: rgb(168, 168, 168);
   height: 1px;
   min-width: calc(100% - 20px);
   max-width: calc(100% - 20px);
 }
-.newedo .container-trait-core div input {
-  font-size: 20px;
+.newedo .character .traits-tab .container-trait-core div input {
+  font-size: 36px;
   border: 0;
-  background-color: transparent;
   margin: 5px 0px 5px 0px;
 }
-.newedo .container-trait-core div span {
+.newedo .character .traits-tab .container-trait-core div span {
   font-size: 12px;
   border: 0;
 }
-.newedo .container-trait-derived {
+.newedo .character .traits-tab .container-trait-derived {
   min-height: 65px;
   max-height: 65px;
   min-width: 250px;
@@ -571,20 +575,20 @@
   flex-direction: row;
   text-align: center;
 }
-.newedo .container-trait-derived span {
+.newedo .character .traits-tab .container-trait-derived span {
   border: 0;
   border-right: 1px solid gray;
 }
-.newedo .container-trait-derived span div {
+.newedo .character .traits-tab .container-trait-derived span div {
   border: 0;
 }
-.newedo .container-trait-derived span div .name {
+.newedo .character .traits-tab .container-trait-derived span div .name {
   font-size: 12px;
 }
-.newedo .container-trait-derived span div .score {
+.newedo .character .traits-tab .container-trait-derived span div .score {
   font-size: 18px;
 }
-.newedo .container-trait-derived span div .wrap-mod {
+.newedo .character .traits-tab .container-trait-derived span div .wrap-mod {
   padding-top: 2px;
   margin-left: 2px;
   margin-right: 2px;
@@ -594,7 +598,7 @@
   border-top: 1px solid gray;
   font-size: 12px;
 }
-.newedo .container-trait-derived span div .wrap-mod input {
+.newedo .character .traits-tab .container-trait-derived span div .wrap-mod input {
   font-size: 16px;
   height: 18px;
   padding: 0px;
@@ -602,107 +606,163 @@
   margin-left: 2px;
   min-width: 0px;
 }
-.newedo .container-armour {
-  min-width: 250px;
-  max-width: 250px;
-  min-height: 50px;
-  max-height: 50px;
-  display: flex;
-  flex-direction: row;
+.newedo .character .skills-tab .skill-dice-button {
   text-align: center;
+  align-items: center;
+  flex: 1;
+  border-radius: 3px;
+  height: 1.1rem;
+  padding: 0;
 }
-.newedo .container-armour span {
-  flex-direction: column;
-  border-right: 1px solid gray;
+.newedo .character .skills-tab .skill-dice-tray {
+  flex: 0 0 10rem;
 }
-.newedo .container-armour span div {
-  border: 0;
+.newedo .character .skills-tab .items-list {
+  padding: 2px 0;
 }
-.newedo .container-armour span div div {
-  font-size: 12px;
+.newedo .character .skills-tab .items-list .item-name {
+  flex: 2 1 auto;
+  color: var(--text-colour, black);
 }
-.newedo .container-armour span div input {
-  font-size: 18px;
-  height: 18px;
-  border: 0;
-  background-color: transparent;
+.newedo .character .skills-tab .skills-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  grid-template-areas: "skills-left skills-right";
+  width: inherit;
+  gap: 0.3rem;
+  padding-bottom: 0.3rem;
 }
-.newedo .sheet-body .tab.bio .tab-wrapper {
+.newedo .character .skills-tab ol,
+.newedo .character .skills-tab ul {
+  margin: 0;
+  padding: 0;
+}
+.newedo .character .fates-tab .items-list {
+  padding: 4px 0;
+  color: var(--text-colour, black);
+}
+.newedo .character .fates-tab .items-list .item {
+  height: 2rem;
+}
+.newedo .character .fates-tab .items-list .item-name {
+  flex: 2;
+  font-weight: 24px;
+}
+.newedo .character .fates-tab ol, .newedo .character .fates-tab ul {
+  margin: 0;
+  padding: 0;
+}
+.newedo .character .inventory-tab {
+  color: white;
+}
+.newedo .character .biography-tab .tab-wrapper {
   padding: 10px;
   display: grid;
   grid-template-areas: "details details" "personality description" "ambition history" "ideals history" "fears history";
   gap: 10px;
 }
-.newedo .sheet-body .tab.bio .container {
-  background-color: #434343;
+.newedo .character .biography-tab .container {
   padding: 5px;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
 }
-.newedo .sheet-body .tab.bio .container textarea {
+.newedo .character .biography-tab .container textarea {
   border: 0;
-  color: white;
-  background-color: transparent;
   width: 100%;
   height: 100%;
 }
-.newedo .sheet-body .tab.bio .container input {
+.newedo .character .biography-tab .container input {
   border: 0;
-  color: white;
   text-align: left;
-  background-color: transparent;
   padding: 0;
 }
-.newedo .sheet-body .tab.bio .container .label {
+.newedo .character .biography-tab .container .label {
   font-weight: bold;
 }
-.newedo .sheet-body .tab.bio .container .barrier {
+.newedo .character .biography-tab .container .barrier {
   height: 1px;
   width: 100%;
-  background-color: white;
 }
-.newedo .sheet-body .tab.bio .details {
+.newedo .character .biography-tab .details {
   grid-area: details;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 2px;
 }
-.newedo .sheet-body .tab.bio .details div {
+.newedo .character .biography-tab .details div {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
-.newedo .sheet-body .tab.bio .details div span {
+.newedo .character .biography-tab .details div span {
   text-align: right;
 }
-.newedo .sheet-body .tab.bio .details input {
+.newedo .character .biography-tab .details input {
   margin-left: 4px;
   text-align: left;
   font-size: 15px;
   height: 17px;
   border: 0;
-  background-color: transparent;
-  color: white;
 }
-.newedo .sheet-body .tab.bio .details input:hover, .newedo .sheet-body .tab.bio .details input:focus {
-  border: 1px solid hotpink;
-}
-.newedo .sheet-body .tab.bio .personality {
+.newedo .character .biography-tab .personality {
   grid-area: personality;
 }
-.newedo .sheet-body .tab.bio .description {
+.newedo .character .biography-tab .description {
   grid-area: description;
 }
-.newedo .sheet-body .tab.bio .ambition {
+.newedo .character .biography-tab .ambition {
   grid-area: ambition;
 }
-.newedo .sheet-body .tab.bio .ideals {
+.newedo .character .biography-tab .ideals {
   grid-area: ideals;
 }
-.newedo .sheet-body .tab.bio .fears {
+.newedo .character .biography-tab .fears {
   grid-area: fears;
 }
-.newedo .sheet-body .tab.bio .history {
+.newedo .character .biography-tab .history {
   grid-area: history;
+}
+.newedo.sheet.item form {
+  flex-direction: column;
+  flex: 1;
+}
+.newedo.sheet.item form .tab[data-tab].active {
+  display: flex;
+  padding: 6px;
+}
+.newedo.sheet.item form .description-tab {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+}
+.newedo.sheet.item form .description-tab .summary {
+  display: block;
+  flex: 0 0 200px;
+}
+.newedo.sheet.item form .description-tab .summary .detail {
+  display: flex;
+  flex-direction: row;
+}
+.newedo.sheet.item form .description-tab .summary .detail :first-child {
+  flex: 1 0;
+}
+.newedo.sheet.item form .description-tab .summary .detail :last-child {
+  flex: 1;
+}
+.newedo.sheet.item form .description-tab .description-editor {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 4px;
+  background-color: var(--bg-c-tertiary, transparent);
+  border-radius: 6px;
+}
+.newedo.sheet.item form .description-tab .description-editor .editor {
+  flex: 1;
+}
+.newedo.sheet.item form .settings-tab {
+  display: flex;
+  flex-direction: column;
 }/*# sourceMappingURL=newedo.css.map */

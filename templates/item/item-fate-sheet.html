@@ -1,0 +1,46 @@
+<form class="{{cssClass}} {{item.type}}" system-theme="dark">
+    <header>
+        <h1><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
+    </header>
+    <nav class="sheet-tabs tabs flexrow" data-group="primary" style="text-align: center; align-items: center; border: 0; margin: 0; padding: 0px 10px 0px 10px;">
+        <a class="item" data-tab="description">Description</a>
+        <a class="item" data-tab="settings">Settings</a>
+    </nav>
+    <section class="sheet-body" style="overflow: auto; padding: 6px; height: 1fr;">
+        <div class="tab description" data-group="primary" data-tab="description">
+            
+            <div class="description-tab">
+                <div class="summary">
+                    <!-- Details pannel on left hand side -->
+                    <div>Range: {{system.range.max}}-{{system.range.min}}</div>
+                    <div>Source: {{system.source}}</div>
+                    <div>Locked: {{system.locked}}</div>
+                </div>
+                <div class="description-editor">
+                    <!-- description on the right -->
+                    {{editor itemDescriptionHTML target="system.description" button=true editable=editable engine="prosemirror" collaborate=false}}
+                </div>
+            </div>
+
+        </div>
+        
+        <div class="tab settings" data-group="primary" data-tab="settings">
+            <div style="display: flex; flex-direction: column;">
+                <div style="display: inline-flex;">
+                    <label>Range:</label>
+                    <input type="number" name="system.range.max" value="{{system.range.max}}" placeholder="Max"/>
+                    <div>/</div>
+                    <input type="number" name="system.range.min" value="{{system.range.min}}" placeholder="Min" />
+                </div>
+                <div style="display: inline-flex;">
+                    <label>Source:</label>
+                    <input type="text" name="system.source" value="{{system.source}}" placeholder="Origin of this fate"/>
+                </div>
+                <div>
+                    <label>Locked:</label>
+                    <input type="checkbox" value="{{system.locked}}"/>
+                </div>
+            </div>
+        </div>
+    </body>
+</form>

@@ -10,23 +10,6 @@
             "max": 10
           }
         },
-        "health": {
-          "value": 10,
-          "min": 0,
-          "max": 10,
-          "mod": 1.5,
-          "bonus": 0,
-          "wound": {
-            "status": 0,
-            "label": "healthy",
-            "penalty": 0
-          },
-          "rest": {
-            "mod": 2,
-            "value": 10,
-            "min": 0
-          }
-        },
         "traits": {
           "core": {
             "pow": {
@@ -61,22 +44,38 @@
             }
           },
           "derived": {
+            "hp": {
+              "value": 15,
+              "min": 0,
+              "max": 15,
+              "mod": 1.5,
+              "bonuses": []
+            },
             "init": {
               "value": 1,
-              "mod": 1
+              "mod": 1,
+              "bonuses": []
             },
             "move": {
               "value": 1,
-              "mod": 1
+              "mod": 1,
+              "bonuses": []
             },
             "def": {
-              "value": 0,
-              "mod": 0.4
+              "value": 1,
+              "mod": 0.4,
+              "bonuses": []
             },
             "res": {
-              "value": 0,
-              "mod": 0.4
+              "value": 1,
+              "mod": 0.4,
+              "bonuses": []
             }
+          },
+          "shinpi" : {
+            "min": 0,
+            "value": 0,
+            "rank": 0
           }
         },
         "biography": {
@@ -122,383 +121,6 @@
             "min": 0,
             "bonus": 0
           }
-        }
-      },
-      "skills": {
-        "crafting":{
-          "rank": [0, 0, 0, 0, 0],
-          "trait": "hrt",
-          "rollCore": true,
-          "bonuses": {
-            "flat": 0,
-            "dice": []
-          },
-          "formula": ""
-        },
-        "meditation":{
-          "rank": [0, 0, 0, 0, 0],
-          "trait": "hrt",
-          "rollCore": true,
-          "bonuses": {
-            "flat": 0,
-            "dice": []
-          },
-          "formula": ""
-        },
-        "rally":{
-          "rank": [0, 0, 0, 0, 0],
-          "trait": "hrt",
-          "rollCore": true,
-          "bonuses": {
-            "flat": 0,
-            "dice": []
-          },
-          "formula": ""
-        },
-        "survival":{
-          "rank": [0, 0, 0, 0, 0],
-          "trait": "hrt",
-          "rollCore": true,
-          "bonuses": {
-            "flat": 0,
-            "dice": []
-          },
-          "formula": ""
-        },
-
-        "athletics":{
-          "rank": [0, 0, 0, 0, 0],
-          "trait": "pow",
-          "rollCore": true,
-          "bonuses": {
-            "flat": 0,
-            "dice": []
-          },
-          "formula": ""
-        },
-        "meleeHeavy":{
-          "rank": [0, 0, 0, 0, 0],
-          "trait": "pow",
-          "rollCore": true,
-          "bonuses": {
-            "flat": 0,
-            "dice": []
-          },
-          "formula": ""
-        },
-        "meleeLight":{
-          "rank": [0, 0, 0, 0, 0],
-          "trait": "pow",
-          "rollCore": true,
-          "bonuses": {
-            "flat": 0,
-            "dice": []
-          },
-          "formula": ""
-        },
-        "thrown":{
-          "rank": [0, 0, 0, 0, 0],
-          "trait": "pow",
-          "rollCore": true,
-          "bonuses": {
-            "flat": 0,
-            "dice": []
-          },
-          "formula": ""
-        },
-        "unarmed":{
-          "rank": [0, 0, 0, 0, 0],
-          "trait": "pow",
-          "rollCore": true,
-          "bonuses": {
-            "flat": 0,
-            "dice": []
-          },
-          "formula": ""
-        },
-
-        "banter":{
-          "rank": [0, 0, 0, 0, 0],
-          "trait": "ref",
-          "rollCore": true,
-          "bonuses": {
-            "flat": 0,
-            "dice": []
-          },
-          "formula": ""
-        },
-        "dodge":{
-          "rank": [0, 0, 0, 0, 0],
-          "trait": "ref",
-          "rollCore": true,
-          "bonuses": {
-            "flat": 0,
-            "dice": []
-          },
-          "formula": ""
-        },
-        "drive":{
-          "rank": [0, 0, 0, 0, 0],
-          "trait": "ref",
-          "rollCore": true,
-          "bonuses": {
-            "flat": 0,
-            "dice": []
-          },
-          "formula": ""
-        },
-        "sleightOfHand":{
-          "rank": [0, 0, 0, 0, 0],
-          "trait": "ref",
-          "rollCore": true,
-          "bonuses": {
-            "flat": 0,
-            "dice": []
-          },
-          "formula": ""
-        },
-        "stealth":{
-          "rank": [0, 0, 0, 0, 0],
-          "trait": "ref",
-          "rollCore": true,
-          "bonuses": {
-            "flat": 0,
-            "dice": []
-          },
-          "formula": ""
-        },
-
-        "deception":{
-          "rank": [0, 0, 0, 0, 0],
-          "trait": "pre",
-          "rollCore": true,
-          "bonuses": {
-            "flat": 0,
-            "dice": []
-          },
-          "formula": ""
-        },
-        "eloquence":{
-          "rank": [0, 0, 0, 0, 0],
-          "trait": "pre",
-          "rollCore": true,
-          "bonuses": {
-            "flat": 0,
-            "dice": []
-          },
-          "formula": ""
-        },
-        "intimidation":{
-          "rank": [0, 0, 0, 0, 0],
-          "trait": "pre",
-          "rollCore": true,
-          "bonuses": {
-            "flat": 0,
-            "dice": []
-          },
-          "formula": ""
-        },
-        "performance":{
-          "rank": [0, 0, 0, 0, 0],
-          "trait": "pre",
-          "rollCore": true,
-          "bonuses": {
-            "flat": 0,
-            "dice": []
-          },
-          "formula": ""
-        },
-        "seduction":{
-          "rank": [0, 0, 0, 0, 0],
-          "trait": "pre",
-          "rollCore": true,
-          "bonuses": {
-            "flat": 0,
-            "dice": []
-          },
-          "formula": ""
-        },
-        
-        "archery":{
-          "rank": [0, 0, 0, 0, 0],
-          "trait": "per",
-          "rollCore": true,
-          "bonuses": {
-            "flat": 0,
-            "dice": []
-          },
-          "formula": ""
-        },
-        "commerce":{
-          "rank": [0, 0, 0, 0, 0],
-          "trait": "per",
-          "rollCore": true,
-          "bonuses": {
-            "flat": 0,
-            "dice": []
-          },
-          "formula": ""
-        },
-        "gunnery":{
-          "rank": [0, 0, 0, 0, 0],
-          "trait": "per",
-          "rollCore": true,
-          "bonuses": {
-            "flat": 0,
-            "dice": []
-          },
-          "formula": ""
-        },
-        "intuition":{
-          "rank": [0, 0, 0, 0, 0],
-          "trait": "per",
-          "rollCore": true,
-          "bonuses": {
-            "flat": 0,
-            "dice": []
-          },
-          "formula": ""
-        },
-        "investigation":{
-          "rank": [0, 0, 0, 0, 0],
-          "trait": "per",
-          "rollCore": true,
-          "bonuses": {
-            "flat": 0,
-            "dice": []
-          },
-          "formula": ""
-        },
-        "smallArms":{
-          "rank": [0, 0, 0, 0, 0],
-          "trait": "per",
-          "rollCore": true,
-          "bonuses": {
-            "flat": 0,
-            "dice": []
-          },
-          "formula": ""
-        },
-
-        "arcana":{
-          "rank": [0, 0, 0, 0, 0],
-          "trait": "sav",
-          "rollCore": true,
-          "bonuses": {
-            "flat": 0,
-            "dice": []
-          },
-          "formula": ""
-        },
-        "computers":{
-          "rank": [0, 0, 0, 0, 0],
-          "trait": "sav",
-          "rollCore": true,
-          "bonuses": {
-            "flat": 0,
-            "dice": []
-          },
-          "formula": ""
-        },
-        "gambling":{
-          "rank": [0, 0, 0, 0, 0],
-          "trait": "sav",
-          "rollCore": true,
-          "bonuses": {
-            "flat": 0,
-            "dice": []
-          },
-          "formula": ""
-        },
-        "hardware":{
-          "rank": [0, 0, 0, 0, 0],
-          "trait": "sav",
-          "rollCore": true,
-          "bonuses": {
-            "flat": 0,
-            "dice": []
-          },
-          "formula": ""
-        },
-        "medicine":{
-          "rank": [0, 0, 0, 0, 0],
-          "trait": "sav",
-          "rollCore": true,
-          "bonuses": {
-            "flat": 0,
-            "dice": []
-          },
-          "formula": ""
-        },
-        "security":{
-          "rank": [0, 0, 0, 0, 0],
-          "trait": "sav",
-          "rollCore": true,
-          "bonuses": {
-            "flat": 0,
-            "dice": []
-          },
-          "formula": ""
-        },
-        "streetwise":{
-          "rank": [0, 0, 0, 0, 0],
-          "trait": "sav",
-          "rollCore": true,
-          "bonuses": {
-            "flat": 0,
-            "dice": []
-          },
-          "formula": ""
-        },
-        "study":{
-          "rank": [0, 0, 0, 0, 0],
-          "trait": "sav",
-          "rollCore": true,
-          "bonuses": {
-            "flat": 0,
-            "dice": []
-          },
-          "formula": ""
-        },
-        "surveillance":{
-          "rank": [0, 0, 0, 0, 0],
-          "trait": "sav",
-          "rollCore": true,
-          "bonuses": {
-            "flat": 0,
-            "dice": []
-          },
-          "formula": ""
-        },
-        "tactics":{
-          "rank": [0, 0, 0, 0, 0],
-          "trait": "sav",
-          "rollCore": true,
-          "bonuses": {
-            "flat": 0,
-            "dice": []
-          },
-          "formula": ""
-        },
-        "toxicology":{
-          "rank": [0, 0, 0, 0, 0],
-          "trait": "sav",
-          "rollCore": true,
-          "bonuses": {
-            "flat": 0,
-            "dice": []
-          },
-          "formula": ""
-        },
-        "wetware":{
-          "rank": [0, 0, 0, 0, 0],
-          "trait": "sav",
-          "rollCore": true,
-          "bonuses": {
-            "flat": 0,
-            "dice": []
-          },
-          "formula": ""
         }
       },
       "background": {
@@ -621,27 +243,64 @@
   },
   
   "Item": {
-    "types": ["weapon", "equipment", "armour", "augment", "rote", "item", "feature"],
+    "types": [
+      "weapon", "armour", "ammo", "equipment", "augment", "item", "upgrade",
+      "rote", "kami", 
+      "skill", "fate", "feature", 
+      "lineage", "culture"
+    ],
     "templates": {
       "base": {
         "description": "",
+        "type": "none"
+      },
+      "price": {
+        "base": 50,
+        "mod": 1,
+        "total": 50,
+        "tn": 3
+      },
+      "physical": {
         "quantity": 1,
-        "weight": 1,
-        "price": {
-          "base": 50,
-          "mod": 1,
-          "total": 50,
-          "tn": 3
-        }
+        "weight": 0
       }
     },
     "weapon": {
-      "templates": ["base"],
+      "templates": ["base", "price", "physical"],
       "type": "melee",
+      "isRanged": false,
 
-      "quality": 1,
-      "grit": 0,
-      "tier": 0,
+      "skill": "Light Melee",
+
+      "attack": {
+        "bonus": 0,
+        "value": 0,
+        "total": 0,
+        "formula": ""
+      },
+
+      "damage": {
+        "value": "1d8",
+        "bonus": 0,
+        "total": 0,
+        "formula": "",
+        "type": "kin"
+      },
+
+      "quality": {
+        "value": 1,
+        "min": 1,
+        "max": 10
+      },
+
+      "grit": {
+        "value": 0,
+        "min": 0,
+        "max": 20,
+
+        "atk": 0,
+        "dmg": 0
+      },
 
       "magazine": {
         "min": 0,
@@ -651,115 +310,106 @@
       "burst": {
         "roll": 0,
         "ammo": 0
-      },
-
-      "attack": {
-        "skill": "meleeLight",
-        "trait": "pow",
-        "mod": 1,
-        "bonus": 0,
-        "bonuses": 0
-      },
-
-      "range": {
-        "short": 1,
-        "long": 0,
-        "modShort": 1,
-        "modLong": 1
-      },
-
-      "damage": {
-        "type": "kinetic",
-        "formula": "1d8",
-        "mod": 1,
-        "bonus": 0,
-        "ap": {
-          "kin": 0,
-          "ele": 0,
-          "bio": 0,
-          "arc": 0
-        }
-      },
-
-      "unlocks": ["@power 20: attack +1"],
-      "tags": {
-        "ranged": false,
-        "thrown": false,
-        "2handed": false,
-        "binding": false,
-        "conceal": false,
-        "disarm": false,
-
-        "burst": false,
-        "bulky": false,
-        "laser": false,
-        "mounted": false,
-        "piercing": false,
-        "threaded": false,
-
-        "chipped": false,
-        "bent": false,
-        "damaged": false,
-
-        "jammed": false,
-
-        "equipped": false,
-        "carried": false
-      },
-      "upgrades": {
-
-        "rebuild": false,
-        "balanceTuning": false,
-        "counterweight": false,
-        "gripextension": false,
-        "flashlight": false,
-        "gripblade": false,
-        "porting": false,
-        "bayonet": false,
-
-        "honing": false,
-        "reinforcedGuard": false,
-        "wristSpring": false,
-        "hardening": false,
-        "crossmember": false,
-        "collapsible": false,
-        "silencer": false,
-        "laserSight": false,
-        "rifled2m": false,
-        "rifled5m": false,
-        "suppressor": false,
-        "laserScope": false,
-        "weldedCasing": false,
-
-        "carbonEdge": false,
-        "oniCoat": false,
-        "magnesiumHaft": false,
-        "oniCoatPlus": false,
-        "themalScope5m": false,
-        "thermalScope12m": false,
-        "nylonBody": false,
-        "hipMount": false,
-
-        "fusionBlade": false,
-        "polymerBypass": false,
-        "safetySuzi": false
-      },
-      "properties": []
+      }
+    },
+    "ammo": {
+      "templates": ["base"]
     },
     "equipment": {
-
+      "templates": ["base"]
     },
     "armour": {
-
+      "templates": ["base"],
+      "soaks": [0, 0, 0, 0],
+      "fragile": false,
+      "stealthy": false,
+      "intimidating": false,
+      "concealable": false
+      
     },
     "augment": {
-
+      "templates": ["base"]
+    },
+    "item": {
+      "templates": ["base"]
+    },
+    "upgrade": {
+      "templates": ["base"]
+    },
+    "kami": {
+      "templates": ["base"],
+      "tier": 0
     },
     "rote": {
+      "templates": ["base"],
 
+      "kami": "none",
+      "circle": "none",
+      "tier": {"value": 0, "min": 1, "max": 4},
+      "action": "full",
+
+      "useTn": {
+        "range" : false,
+        "duraiton": false,
+        "targets" : false
+      },
+
+      "tn": 5,
+      "cost": 5,
+      "range": 10,
+      "duraiton": 10,
+
+      "target": {
+        "type" : "actor, radius, blast, cone, line, point",
+        "count": 0,
+        "size": 0,
+        "angle": 0
+      },
+
+      "skill": "none",
+      "formula": "Shinpi + relevant skill"
     },
     "feature": {
-
+      "templates": ["base"]
+    },
+    "fate": {
+      "templates": ["base"],
+      "locked": false,
+      "source": "none",
+      "range": {
+        "value": 0,
+        "total": 0,
+        "min": 0,
+        "max": 0,
+        "bonuses": [{"source": "nothing", "value": 0}]
+      }
+    },
+    "skill": {
+      "templates": ["base"],
+      "ranks": [0, 0, 0, 0, 0],
+      "xpValue": 0,
+      "trait": "hrt",
+      "rollTrait": true,
+      "bonuses": [],
+      "formula": "",
+      "unlocks": [
+        {"name": "rank 1 feature", "feature": "name of the feature this links too", "featureId": "identifier for the owned feature"},
+        {"name": "rank 2 feature", "feature": "name of the feature this links too", "featureId": "identifier for the owned feature"},
+        {"name": "rank 3 feature", "feature": "name of the feature this links too", "featureId": "identifier for the owned feature"},
+        {"name": "rank 4 feature", "feature": "name of the feature this links too", "featureId": "identifier for the owned feature"},
+        {"name": "rank 5 feature", "feature": "name of the feature this links too", "featureId": "identifier for the owned feature"}
+      ]
+    },
+    "lineage": {
+      "templates": ["base"],
+      "appearance": "Dragons once ruled this land, Covered in vibrant scales, touting strong tails or even great horns and clawed hands",
+      "personality": "Well dragons can have varying personalities, they tend to share a few common themes. Each dragon typically has an obssesion of some kind, colletcing treasures, objects, fame, or power",
+      "society": "Favoring isolated envirments, dragons typically do not share their territory with others",
+      "features": []
+    },
+    "culture": {
+      "templates": ["base"],
+      "features": []
     }
   }
 }

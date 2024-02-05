@@ -12,14 +12,21 @@ export default class LOGGER {
         if (typeof value !== `undefined`) console.log(`NEWEDO | ${msg}`, value);
         else console.log(`NEWEDO | ${msg}`);
     }
-
+    static warn (msg, value) {
+        if (typeof value !== `undefined`) console.warn(`NEWEDO | ${msg}`, value);
+        else console.warn(`NEWEDO | ${msg}`);
+    }
+    static error (msg, value) {
+        if (typeof value !== `undefined`) console.error(`NEWEDO | ${msg}`, value);
+        else console.error(`NEWEDO | ${msg}`);
+    }
     /**
      * Logger called to send message to console, all messages are marked as from NEWEDO 
      * @param {msg} message Text to output, will be marked as from the game system in console
      * @param {value} value optional param that can contain and output objects, methods, etc
      */
     static debug(msg=``, value) {
-        if (game.settings.get(game.system.id, "debugLogs")) {
+        if (game.settings.get(game.system.id, "debugLogs") > 0) {
             if (typeof value !== `undefined`) console.debug(`NEWEDO DBG | ${msg}`, value);
             else console.debug(`NEWEDO DBG | ${msg}`);
         }

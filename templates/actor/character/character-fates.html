@@ -1,0 +1,23 @@
+<div class="fates-tab tab-content">
+    <div>
+        <li class="items-header flexrow collapsible">
+            <span>Fates</span>
+            <span>Chance</span>
+            <span>Range</span>
+        </li>
+        <ol class="items-list">
+            {{#each fates as | fate key |}}
+
+            <li class="item flexrow" data-item-id="{{fate._id}}">
+                <!-- Link to the fate opens up the item sheet -->
+                <div class="item-name">
+                    <a class="item-edit">{{fate.name}}</a>
+                </div>
+                <span class="item-detail">{{fate.system.range.value}}% &nbsp &nbsp</span>
+                <span class="item-detail">{{fate.system.range.max}} - {{fate.system.range.min}}</span>
+            </li>
+
+            {{/each}}
+        </ol>
+    </div>
+</div>

@@ -17,6 +17,26 @@ export default class NewedoActor extends Actor {
   prepareBaseData() {
     // Data modifications in this step occur before processing embedded
     // documents or derived data.
+    const actorData = this;
+    const system = actorData.system;
+    const core = system.traits.core;
+    const derived = system.traits.derived;
+
+    // Loop through core traits and calculate their rank
+    for (let [key, trait] of Object.entries(core)) {
+      if ((typeof trait.value !== `number`) || (trait.value < 1)) trait.value = 10;
+      trait.rank = Math.max(Math.floor(trait.value / 10), 0);
+    }
+
+    //calculates the base stats for derived values, these will be affected by their mods and multipliers
+    //in prepare derived data function
+    derived.init.value = Math.ceil(core.ref.value + core.sav.value);
+    derived.move.value = Math.ceil(core.ref.value + core.hrt.value);
+    derived.def.value = Math.ceil(core.pow.value + core.ref.value);
+    derived.res.value = Math.ceil(core.hrt.value + core.pre.value);
+
+    derived.hp.max = core.hrt.value;
+    LOGGER.debug(`PREPARE | ACTOR | BASE`, this);
   }
 
   /**
@@ -43,22 +63,20 @@ export default class NewedoActor extends Actor {
    */
   _prepareCharacterData(actorData) {
     if (actorData.type !== 'character') return;
-    LOGGER.log("Preparing character data")
 
     // Make modifications to data here. For example:
-    const systemData = actorData.system;
-    const coreData = systemData.traits.core;
-    const deriData = systemData.traits.derived;
-    const fateData = systemData.fatecard;
+    const system = this.system;
+    const core = system.traits.core;
+    const derived = system.traits.derived;
 
     // Loop through core traits and calculate their rank
-    for (let [key, trait] of Object.entries(coreData)) {
-      if ((typeof trait.value !== `number`) || (trait.value < 1)) trait.value = 10;
-      trait.rank = Math.max(Math.floor(trait.value / 10), 1);
+    for (let [key, trait] of Object.entries(core)) {
+      if ((typeof trait.value !== `number`) || (trait.value < 1)) trait.value = 1;
+      trait.rank = Math.max(Math.floor(trait.value / 10), 0);
     }
 
     //calculates ranks for background, idk why it doesnt scale as just 1 rank per 20 points?
-    for (let [key, background] of Object.entries(systemData.background)) {
+    for (let [key, background] of Object.entries(system.background)) {
       if (background.value < 1) background.value = 1;
 
       background.rank = 1;
@@ -70,52 +88,14 @@ export default class NewedoActor extends Actor {
       if (background.value > 100) background.value = 100;
       if (background.value < 1) background.value = 1;
     }
-
-    //goes through list of skills and calculates the roll formula for them
-    for (let [key, skill] of Object.entries(systemData.skills)) {
-      //vars to hold data about the roll formula
-      let _rollFormula = "";
-      //sets the base value of the skill roll to use the core trait or not
-      if (skill.rollCore) _rollFormula += coreData[skill.trait].rank+"d10x10";
-      /*loops through skill ranks to validate their values and add them to the roll formula
-      * array template [d4, d6, d8, d12]
-      */ 
-      LOGGER.debug("Caluclating skill dice formula")
-      let diceTray = [0, 0, 0, 0];
-      for (let [key, value] of Object.entries(skill.rank)) {
-        switch (value) {
-          case 4:
-            diceTray[0] += 1;
-            break;
-          case 6:
-            diceTray[1] += 1;
-            break;
-          case 8:
-            diceTray[2] += 1;
-            break;
-          case 12:
-            diceTray[3] += 1;
-            break;
-        }
-      }
-
-      if (diceTray[0] != 0) _rollFormula += `+${diceTray[0]}d4`;
-      if (diceTray[1] != 0) _rollFormula += `+${diceTray[1]}d6`;
-      if (diceTray[2] != 0) _rollFormula += `+${diceTray[2]}d8`;
-      if (diceTray[3] != 0) _rollFormula += `+${diceTray[3]}d12`;
-
-      systemData.skills[key].formula = _rollFormula;
-    }
     
     // Calculates derived traits for initative, move, defence, resolve, and max health
-    deriData.init.value = Math.ceil((coreData.ref.value + coreData.sav.value) * deriData.init.mod);
-    deriData.move.value = Math.ceil(((coreData.ref.value + coreData.hrt.value) / systemData.attributes.size.value) * deriData.move.mod);
-    deriData.def.value = Math.ceil((coreData.pow.value + coreData.ref.value) * deriData.def.mod);
-    deriData.res.value = Math.ceil((coreData.hrt.value + coreData.pre.value) * deriData.res.mod);
-    systemData.health.max = Math.ceil(systemData.health.mod * coreData.hrt.value);
-    systemData.health.rest.value = Math.floor(systemData.health.rest.mod * 5.0);
-
-    //ensure fatecard is well organized
+    derived.init.value = Math.ceil(derived.init.value * derived.init.mod);
+    derived.move.value = Math.ceil((derived.move.value / system.attributes.size.value) * derived.move.mod);
+    derived.def.value = Math.ceil(derived.def.value * derived.def.mod);
+    derived.res.value = Math.ceil(derived.res.value * derived.res.mod);
+    derived.hp.max = Math.ceil(derived.hp.max * derived.hp.mod);
+    LOGGER.debug(`PREPARE | ACTOR | DERIVED`, this);
   }
 
   /**
@@ -123,7 +103,6 @@ export default class NewedoActor extends Actor {
    */
   _prepareNpcData(actorData) {
     if (actorData.type !== 'npc') return;
-
     // Make modifications to data here. For example:
   }
 
@@ -138,6 +117,14 @@ export default class NewedoActor extends Actor {
     if (this.type === 'npc') this._getNpcRollData(data);
 
     return data;
+  }
+
+  getSkill(skillName) {
+    const skills = this.itemTypes.skill;
+    for (var skill of skills) {
+      if (skill.name === skillName) return skill;
+    }
+    return null;
   }
 
   /**
@@ -156,7 +143,6 @@ export default class NewedoActor extends Actor {
         data[k] = foundry.utils.deepClone(v);
       }
     }
-    
   }
 
   /**

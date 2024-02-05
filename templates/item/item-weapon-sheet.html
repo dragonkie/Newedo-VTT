@@ -1,79 +1,72 @@
-<form class="{{cssClass}}" autocomplete="off">
-    <header class="sheet-header">
-      <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
-      <div class="header-fields">
-        <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
-        <div class="grid grid-2col">
-          <div class="resource">
-            <label class="resource-label">Quantity</label>
-            <input type="text" name="system.quantity" value="{{system.quantity}}" data-dtype="Number"/>
-          </div>
-          <div class="resource">
-            <label class="resource-label">Weight</label>
-            <input type="text" name="system.weight" value="{{system.weight}}" data-dtype="Number"/>
-          </div>
+<form class="{{cssClass}} {{item.type}}" system-theme="dark" autocomplete="off">
+  <header class="sheet-header" style="padding: 2px 8px; flex: 0;">
+    <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+    <div class="header-fields">
+      <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
+      <div class="grid grid-2col" style="margin: 0;">
+        <div class="resource">
+          <label class="resource-label">Quantity</label>
+          <input type="text" name="system.quantity" value="{{system.quantity}}" data-dtype="Number"/>
+        </div>
+        <div class="resource">
+          <label class="resource-label">Weight</label>
+          <input type="text" name="system.weight" value="{{system.weight}}" data-dtype="Number"/>
         </div>
       </div>
-    </header>
+    </div>
+  </header>
   
-    {{!-- Sheet Tab Navigation --}}
-    <nav class="sheet-tabs tabs" data-group="primary" style="text-align: center;">
-      <a class="item" data-tab="description">Description</a>
-      <a class="item" data-tab="settings">Settings</a>
-      <a class="item" data-tab="effects">Effects</a>
-      
-    </nav>
+  {{!-- Sheet Tab Navigation --}}
+  <nav class="sheet-tabs tabs" data-group="primary" style="text-align: center;">
+    <a class="item" data-tab="description">Description</a>
+    <a class="item" data-tab="settings">Settings</a>
+  </nav>
   
     {{!-- Sheet Body --}}
-    <section class="sheet-body">
-  
-      {{!-- Description Tab --}}
-      <div class="tab" data-group="primary" data-tab="description">
-        <!-- Summary sidebar that lists weapon details without all the config opptions alongside the description-->
-        <div style="display: inline-block;">
-            <aside style="display: block; border-right: 2px solid black; padding: 6px; float: left;">
-              {{#with system as | system |}}
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0px 0px;">
+  <section class="sheet-body">
+    {{!-- Description Tab --}}
+    <div class="tab description" data-group="primary" data-tab="description">
+      <!-- Summary sidebar that lists weapon details without all the config opptions alongside the description-->
+      <div class="flexrow description-tab">
 
-                  <div>Price:</div>
-                  <div><b>{{system.price.total}}</b>¥ / <b>{{system.price.tn}}</b> tn</div>
-
-                  <div>Quantity:</div>
-                  <div>{{system.quantity}}</div>
-
-                  <div>Type:</div>
-                  <div>{{system.type}}</div>
-
-                  <div>Damage:</div>
-                  <div>{{system.damage.formula}} {{system.damage.type}}</div>
-
-                  <div>Quality:</div>
-                  <div>{{system.quality}}</div>
-
-                  <div>Range:</div>
-                  <div>{{system.range.short}}m / {{system.range.long}}m</div>
-                  
-                  <div></div>
-                  <div></div>
-
-                </div>
-              {{/with}}
-            </aside>
-            <div style="width: 100%; min-height: 200px; float: left;">
-              {{!-- To render inline rolls in a TinyMCE editor, you need to pass the parent actor's (if any) roll data to the rollData prop. --}}
-              {{editor system.description target="system.description" rollData=rollData button=true owner=owner editable=editable}}
-            </div>
+        <div class="summary">
+          <div class="detail">
+            <div>Price:</div>
+            <div ><b>{{system.price.base}}</b> ¥ / <b>{{system.price.tn}}</b> tn</div>
+          </div>
+          <div class="detail">
+            <div>Quantity:</div>
+            <div>{{system.quantity}}</div>
+          </div>
+          <div class="detail">
+            <div>Skill:</div>
+            <div>{{system.skill}}</div>
+          </div>
+          <div class="detail">
+            <div>Damage:</div>
+            <div>{{system.damage.value}} {{system.damage.label}}</div>
+          </div>
+          <div class="detail">
+            <div>Quality:</div>
+            <div>{{system.quality.value}}</div>
+          </div>
+          <div class="detail">
+            <div>Range:</div>
+            <div>{{system.range.short}}m / {{system.range.long}}m</div>
+          </div>
         </div>
+
+        <div class="description-editor">
+          {{editor itemDescriptionHTML target="system.description" button=true editable=editable engine="prosemirror" collaborate=false}}
+        </div>
+
       </div>
-
-      {{!-- Settings Tab --}}
-      <div class="tab" data-group="primary" data-tab="settings">
-        
-        {{#with system as | system |}}
-
+    </div>
+    {{!-- Settings Tab --}}
+    <div class="tab settings" data-group="primary" data-tab="settings">
+      <div class="settings-tab">
         <!-- Item price and wealth target number -->
-        <div class="price">
-
+        <div>
           <div>Price</div>
           <div>Total: {{system.price.total}}</div>
           <div style="display: flex; flex-direction: row; align-items: center;">
@@ -90,85 +83,60 @@
               <input type="number" name="system.price.tn" value="{{system.price.tn}}"/>
             </div>
           </div>
-
         </div>
-
-          <!-- Damage Formula -->
-          <div>
-            <div>Dice Formula</div>
-            <div style="display: grid; grid-template-columns: 1fr 2fr 1fr; align-items: center; gap: 3px 3px; padding: 0px;">
-
-              <select name="system.type" id="weapon-type">
-                <option selected disabled hidden>{{system.type}}</option>
-                <optgroup label="Melee">
-                  <option value="meleeLight">Light</option>
-                  <option value="meleeHeavy">Heavy</option>
-                  <option value="thrown">Thrown</option>
-                  <option value="unarmed">Unarmed</option>
-                </optgroup>
-                <optgroup label="Ranged">
-                  <option value="archery">Archery</option>
-                  <option value="smallArms">Small Arms</option>
-                  <option value="gunnery">Gunnery</option>
-                </optgroup>
-              </select>
-
-              <input type="text" name="system.damage.formula" value="{{system.damage.formula}}" />
-
-              <select name="system.damage.type" id="damage-type">
-                <option selected disabled hidden>{{system.damage.type}}</option>
-                <option value="kin">Kinetic</option>
-                <option value="ele">Elemental</option>
-                <option value="bio">Biological</option>
-                <option value="arc">Arcane</option>
-              </select>
-
-            </div>
+        <!-- Damage Formula -->
+        <div>
+          <div>Dice Formula</div>
+          <div style="display: grid; grid-template-columns: 1fr 2fr 1fr; align-items: center; gap: 3px 3px; padding: 0px;">
+            <select name="system.skill" id="weapon-type">
+              <option selected disabled hidden>{{system.skill}}</option>
+              <optgroup label="Melee">
+                <option value="Light Melee">Light Melee</option>
+                <option value="Heavy Melee">Heavy Melee</option>
+                <option value="Thrown">Thrown</option>
+                <option value="Unarmed">Unarmed</option>
+              </optgroup>
+              <optgroup label="Ranged">
+                <option value="Archery">Archery</option>
+                <option value="Small Arms">Small Arms</option>
+                <option value="Gunnery">Gunnery</option>
+              </optgroup>
+            </select>
+            <input type="text" name="system.damage.value" value="{{system.damage.value}}" />
+            <select name="system.damage.type" id="damage-type">
+              <option selected disabled hidden value="{{system.damage.type}}">{{system.damage.label}}</option>
+              <option value="kin">Kinetic</option>
+              <option value="ele">Elemental</option>
+              <option value="bio">Biological</option>
+              <option value="arc">Arcane</option>
+            </select>
           </div>
-
+        </div>
           <!-- Ranged specific details, ranged toggles on when a ranged weapon type is selected for the sheet, and will be locked on well it stays that way-->
-          {{#if system.tags.ranged}}
-            <div>Ranged Details</div>
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr);">
-              <div>
-                <div>Magazine</div>
-                <div style="display: grid; grid-template-columns: 40px 30px 40px; text-align: center; align-items: center;">
-                  <input type="number" name="system.magazine.value" value="{{system.magazine.value}}"/>
-                  <div>/</div>
-                  <input type="number" name="system.magazine.max" value="{{system.magazine.max}}"/>
-                </div>
-              </div>
-            
-
-              <!-- Burstfire values -->
-              <div style="text-align: center; align-items: center;">
-                <label for="system.burst.ammo">Burst Ammo</label>
-                <input type="number" name="system.burst.ammo" value="{{system.burst.ammo}}"/>
-              </div>
-
-              <div style="text-align: center; align-items: center;">
-                <label for="system.burst.roll">Burst Roll</label>
-                <input type="number" name="system.burst.roll" value="{{system.burst.roll}}"/>
+          <div>Ranged Details</div>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr);">
+            <div>
+              <div>Magazine</div>
+              <div style="display: grid; grid-template-columns: 40px 30px 40px; text-align: center; align-items: center;">
+                <input type="number" name="system.magazine.value" value="{{system.magazine.value}}"/>
+                <div>/</div>
+                <input type="number" name="system.magazine.max" value="{{system.magazine.max}}"/>
               </div>
             </div>
-          {{/if}}
-
-          <!-- Flag Toggles -->
-          <div style="display: grid; grid-template-columns: repeat(6, 1fr);">
-            {{#each system.tags as | flag key |}}
-              <label for="system.{{key}}">{{key}}</label>
-              <input type="checkbox" name="system.{{key}}" value="{{key}}"/>
-            {{/each}}
+        
+            <!-- Burstfire values -->
+            <div style="text-align: center; align-items: center;">
+              <label for="system.burst.ammo">Burst Ammo</label>
+              <input type="number" name="system.burst.ammo" value="{{system.burst.ammo}}"/>
+            </div>
+          <div style="text-align: center; align-items: center;">
+            <label for="system.burst.roll">Burst Roll</label>
+            <input type="number" name="system.burst.roll" value="{{system.burst.roll}}"/>
           </div>
         </div>
-        {{/with}}
-
       </div>
 
-      {{!-- Effects Tab --}}
-      <div class="tab effects" data-group="primary" data-tab="effects">
-
-      </div>
-    </section>
-  </form>
+    </div>
+  </section>
+</form>
   

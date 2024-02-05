@@ -1,20 +1,115 @@
 {
   "id": "newedo",
   "title": "NewEdo",
-  "description": "Unofficial adaptation of the Newedo system for FoundryVTT! Developed and published by Saltygames",
-  "version": "1.0.0",
+  "description": "Official adaptation of the Newedo system for FVTT",
+  "version": "0.1.31",
   "compatibility": {
-    "minimum": 10,
-    "verified": "11.308",
-    "maximum": 12
+    "minimum": 11,
+    "verified": 11,
+    "maximum": 11
   },
-  "authors": [{
-    "name": "dragonkie"
-  }],
+  "authors": [
+    {
+    "name": "dragonkie",
+    "url": "https://github.com/dragonkie"
+    },
+    {
+      "name": "Salty Games",
+      "url": "https://salty-games.com"
+    }
+  ],
   "esmodules": ["module/newedo.mjs"],
   "styles": ["css/newedo.css"],
-  "scripts": [],
-  "packs": [],
+  
+  "packFolders": [
+    {
+      "name": "Newedo: core",
+      "sorting": "m",
+      "packs": [
+        "newedo-core_kami",
+        "newedo-core_rote",
+        "newedo-core_weapon",
+        "newedo-core_armour",
+        "newedo-core_ammo",
+
+        "internal_skills",
+        "internal_fates",
+        "internal_features"
+      ]
+    }
+  ],
+  "packs": [
+    {
+      "label": "Kami",
+      "type": "Item",
+      "name": "newedo-core_kami",
+      "path": "packs/core/kami",
+      "system": "newedo",
+      "banner": "systems/newedo/assets/images/banner/banner-item.jpg",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "TRUSTED": "OBSERVER",
+        "ASSISTANT": "OBSERVER",
+        "GAMEMASTER": "OWNER"
+      }
+    },
+    {
+      "label": "Rotes",
+      "type": "Item",
+      "name": "newedo-core_rote",
+      "path": "packs/core/rote",
+      "system": "newedo",
+      "banner": "none",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "TRUSTED": "OBSERVER",
+        "ASSISTANT": "OBSERVER",
+        "GAMEMASTER": "OWNER"
+      }
+    },
+    {
+      "label": "Weapons",
+      "type": "Item",
+      "name": "newedo-core_weapon",
+      "path": "packs/core/weapons",
+      "system": "newedo",
+      "banner": "none",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "TRUSTED": "OBSERVER",
+        "ASSISTANT": "OBSERVER",
+        "GAMEMASTER": "OWNER"
+      }
+    },
+    {
+      "label": "Skills",
+      "type": "Item",
+      "name": "internal_skills",
+      "path": "packs/internal/skills",
+      "system": "newedo",
+      "banner": "none",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "TRUSTED": "OBSERVER",
+        "ASSISTANT": "OBSERVER",
+        "GAMEMASTER": "OWNER"
+      }
+    },
+    {
+      "label": "Features",
+      "type": "Item",
+      "name": "internal_features",
+      "path": "packs/internal/features",
+      "system": "newedo",
+      "banner": "none",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "TRUSTED": "OBSERVER",
+        "ASSISTANT": "OBSERVER",
+        "GAMEMASTER": "OWNER"
+      }
+    }
+  ],
   "languages": [
     {
       "lang": "en",
@@ -22,13 +117,16 @@
       "path": "lang/en.json"
     }
   ],
+
   "gridDistance": 1,
   "gridUnits": "m",
-  "primaryTokenAttribute": "health",
-  "secondaryTokenAttribute": "defence",
-  "url": "",
-  "manifest": "",
-  "download": "",
-  "license": "LICENSE.txt",
-  "changelog": "CHANGELOG.md"
+  "initative": "traits.derived.init",
+  "primaryTokenAttribute": "traits.derived.hp",
+  "secondaryTokenAttribute": "legend",
+
+  "url": "https://github.com/dragonkie/Newedo-VTT",
+  "manifest": "https://github.com/dragonkie/Newedo-VTT/blob/main/system.json",
+  "download": "https://github.com/dragonkie/Newedo-VTT/zipball/master",
+
+  "license": "LICENSE.txt"
 }

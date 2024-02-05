@@ -1,25 +1,28 @@
-// Import document classes.
+//imported objects
+import { NEWEDO } from "./system/config.mjs";
+import LOGGER from "./utility/logger.mjs"
+import systemUtility from "./utility/systemUtility.mjs";
+
+import NewedoActorSheet from "./actor/sheet/actor-sheet.mjs";
+import NewedoItemSheet from "./item/item-sheet.mjs";
+
 import NewedoActor from "./actor/actor.mjs";
 import NewedoItem from "./item/item.mjs";
-// Import sheet classes.
-import NewedoActorSheet from "./actor/actor-sheet.mjs";
-import NewedoItemSheet from "./item/item-sheet.mjs";
-// Import helper/utility classes and constants.
-import preloadHandlebarsTemplates from "./helpers/templates.mjs";
-import NEWEDO from "./system/config.mjs";
 
+//imported functions
+import preloadHandlebarsTemplates from "./helpers/preload-templates.mjs";
+import registerHooks from "./system/hooks.js";
+
+//system settings
 import registerSystemSettings from "./system/settings.mjs";
-import LOGGER from "./utility/logger.mjs"
-
 /* -------------------------------------------- */
 /*  Init Hook                                   */
 /* -------------------------------------------- */
-
 Hooks.once('init', async function() {
   LOGGER.log(`Initalizing game system`);
   // Add utility classes to the global game object so that they're more easily
   // accessible in global contexts.
-  game.NEWEDO = {
+  game.newedo = {
     NewedoActor,
     NewedoItem,
     rollItemMacro,
@@ -28,13 +31,12 @@ Hooks.once('init', async function() {
 
   // Add custom constants for configuration.
   CONFIG.NEWEDO = NEWEDO;
-
   /**
    * Set an initiative formula for the system
    * @type {String}
    */
   CONFIG.Combat.initiative = {
-    formula: "@traits.derived.initative.value",
+    formula: "@traits.derived.init.value",
     decimals: 2
   };
 
@@ -49,8 +51,8 @@ Hooks.once('init', async function() {
   Items.registerSheet("newedo", NewedoItemSheet, { makeDefault: true });
 
   //register the system specific settings
-  
   registerSystemSettings();
+  registerHooks();
 
   // Preload Handlebars templates.
   return preloadHandlebarsTemplates();
@@ -72,6 +74,16 @@ Handlebars.registerHelper('concat', function() {
 
 Handlebars.registerHelper('toLowerCase', function(str) {
   return str.toLowerCase();
+});
+
+//handelbars functions
+//localization function for displaying localized details directly for when they need to be parsed
+Handlebars.registerHelper('i18n', function(str) {
+  return systemUtility.Localize(str);
+});
+//adds or removes the exploding dice text from a line
+Handlebars.registerHelper(`diceExplode`, function(str, toggle) {
+  return systemUtility.diceExplode(str, toggle);
 });
 
 /* -------------------------------------------- */

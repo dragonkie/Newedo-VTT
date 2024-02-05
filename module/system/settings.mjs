@@ -1,20 +1,29 @@
-import NEWEDO from "./config.mjs";
 import LOGGER from "../utility/logger.mjs";
 
-const registerSystemSettings = () => {
+export default function registerSystemSettings() {
     LOGGER.log(`Registering system settings`);
-    
+    //toggles the debug log visiblity in the console
     game.settings.register(game.system.id, "debugLogs", {
         name: "toggle debug logs",
-        hint: "when true, debug logs will be visible in the console",
+        hint: "Numeric value from 0-10, specifies diffrent debug scopes, 0 is off, 1 shows main functions, 2 shows internal function calls, etc",
         scope: "client",
         config: true,
-        type: Boolean,
+        type: Number,
         default: false,
         onChange: (value) => {
             LOGGER.log(`Changed debugLog to ${value}`);
         }
     });
+    //toggles between light and dark mode sheets
+    game.settings.register(game.system.id, "systemTheme", {
+        name: "Darkmode",
+        hint: "when toggled, sheets will render out using dark mode styles",
+        scope: "client",
+        config: true,
+        type: Boolean,
+        default: false,
+        onChange: (value) => {
+            LOGGER.log(`Changed darkmode to ${value}`);
+        }
+    });
 };
-
-export default registerSystemSettings;

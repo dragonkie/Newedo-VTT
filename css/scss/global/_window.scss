@@ -2,25 +2,125 @@
   font-family: $font-primary;
 }
 
-.window-app.newedo.actor.sheet {
-  
-  
+//styles to be applied to all newedo system sheets
+.newedo.sheet {
+  //All the needed variables are declared by default, additional themes can be made by adding a new [system-theme="#theme-name"] option
+  //the default values are for the standard light theme that looks like standard foundry
+  --bg-c-primary: white;
+  --bg-c-secondary: transparent;
+  --bg-c-tertiary: transparent;
+
+  --bg-image: #{$bg-image} repeat;
+
+  --text-colour: black;
+  --text-placeholder: darkgrey;
+  --text-shadow: #{$shadow-pink};
+
+  --text-border: 0;
+
+  //darkmode style variables
+  [system-theme="dark"] {
+    --bg-c-primary: #{$c-gray};
+    --bg-c-secondary: #{$c-darkgray};
+    --bg-c-tertiary: #{$c-gray};
+
+    --bg-image: none;
+    
+    --text-colour: white;
+    --text-placeholder: grey;
+    --text-shadow: #{$shadow-pink};
+    
+    --text-border: 0;
+  }
+
+  //styles the main window container, this is to ensure that none of the foundry needed features for the windo are overwrittedn, only its internal bits
+  //this is probably unnecesary, but better safe than sorry in the end
   .window-content {
     padding: 0;
-    background-image: none;
-    color: white;
-    background-color: $c-gray;
+    //everything in this area should be applied to ALL aspects of the sheet, adding all the light / dark mdoe styles to every element
+    form {
+      display: flex;
+      flex: 1;
+      background: var(--bg-c-primary, white) var(--bg-image, $bg-image) repeat;
+      color: var(--text-colour, black);
+
+      select {
+        color: var(--text-colour, black);
+        background-color: var(--bg-c-tertiary, transparent);
+        option {
+          color: var(--text-colour, black);
+          background-color: var(--bg-c-tertiary, transparent);
+        }
+      }
+
+      input {
+        color: var(--text-colour, black);
+        background-color: var(--bg-c-tertiary, none);
+        border: var(--text-border);
+
+        &::placeholder {
+          color: var(--text-placeholder, lightgray);
+        }
+        &:hover, &:focus {
+          box-shadow: var(--text-shadow);
+          cursor: pointer;
+        }
+      }
+
+      textarea {
+        color: var(--text-colour, black);
+        background-color: var(--bg-c-tertiary);
+        border: var(--text-border, 0);
+
+        &:hover, &:focus {
+          box-shadow: var(--text-shadow);
+        }
+      }
+
+      option {
+        color: var(--text-colour, black);
+      }
+      //sets the active tab display to flex instead of none, and sets its flex to 1 so it fills up its given space
+      .tab[data-tab].active {
+        display: flex;
+        flex: 1;
+      }
+
+      .sheet-body {
+        flex: 1;
+        display: flex;
+        background-color: var(--bg-c-secondary, gray);
+        overflow: auto;
+      }
+
+      .sheet-tabs {
+        .item.active {
+            border-radius: 5px 5px 0px 0px;
+            border: 1px solid $c-lightgray;
+            border-bottom: 0;
+            background-color: var(--bg-c-secondary);
+        }
+    
+        .item {
+            border-radius: 0px;
+            border: 0;
+            border-bottom: 1px solid $c-lightgray;
+            background-color: var(--bg-c-primary);
+        }
+      }
+    }
+  }
+  //styles the internal box that players can tab through
+  a.inline-roll {
+    background-color: var(--bg-c-secondary), white;
+    color: var(--text-colour), black;
   }
 
-  .sheet-body {
-    background-color: $c-darkgray;
+  .rollable, .fate-roll {
+    &:hover, &:focus {
+      text-shadow: var(--text-shadow, red);
+      cursor: pointer;
+    }
   }
 }
 
-.rollable {
-  &:hover,
-  &:focus {
-    text-shadow: $shadow-pink;
-    cursor: pointer;
-  }
-}

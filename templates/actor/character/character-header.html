@@ -1,0 +1,13 @@
+<div style="flex-direction: column;">
+    <!-- Character name field-->
+    <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name"/></h1>
+    <div style="height: 1px; margin: 1px 0px 1px 0px;"></div>
+    <!-- Derived stats? -->
+    <div class="list-derived">
+        <span>&#x2022 <b>{{system.traits.derived.def.label}}:</b> {{system.traits.derived.def.value}}</span>
+        <span>&#x2022 <b>{{system.traits.derived.res.label}}:</b> {{system.traits.derived.res.value}}</span>
+        <span>&#x2022 <b>{{system.traits.derived.move.label}}:</b> {{system.traits.derived.move.value}}</span>
+        <span>&#x2022 <b>{{system.traits.derived.init.label}}:</b> {{system.traits.derived.init.value}}</span>
+        <span>&#x2022 <b>Size:</b> {{system.attributes.size.value}}</span>
+    </div>
+</div>

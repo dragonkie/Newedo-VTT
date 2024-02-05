@@ -2,26 +2,7 @@
   font-family: $font-primary;
 }
 
-.sheet-header {
-  
-}
-
 .sheet-tabs {
   flex: 0;
 }
 
-.sheet-body,
-.sheet-body .tab,
-.sheet-body .tab .editor {
-  height: 100%;
-}
-
-.tox {
-  .tox-editor-container {
-    background: $c-white;
-  }
-
-  .tox-edit-area {
-    padding: 0 8px;
-  }
-}

@@ -12,16 +12,16 @@
 @import 'scss/global/grid';
 @import 'scss/global/flex';
 
+//anything imported into this group will require its PARENT have the newedo class, if it needs to share the newedo class it should start with &
 .newedo {
   @import 'scss/components/forms';
   @import 'scss/components/resource';
   @import 'scss/components/items';
   @import 'scss/components/effects';
 
-  @import 'scss/newedo/sheets/character/playerHeader';
-  @import 'scss/newedo//sheets/character/playerSheet';
-  @import 'scss/newedo/sheets/character/playerFates';
-  @import 'scss/newedo/sheets/character/playerSkills';
-  @import 'scss/newedo/sheets/character/playerTraits';
-  @import 'scss/newedo/sheets/character/playerBio';
+  @import 'scss/newedo/sheets/actor/character';
+
+  @import 'scss/newedo/sheets/item/fate';
+  @import 'scss/newedo/sheets/item/weapon';
+  @import 'scss/newedo/sheets/items';
 }

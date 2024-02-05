@@ -1,0 +1,46 @@
+//as this is include inside the .newedo class, it nees to be &.item as it specifies all newedo item sheets, not specific item types
+&.sheet.item form {
+    flex-direction: column;
+    flex: 1;
+
+    .tab[data-tab].active {
+        display: flex;
+        padding: 6px;
+    }
+
+    .description-tab {
+        display: flex;
+        flex-direction: row;
+        flex: 1;
+        .summary {
+            display: block;
+            flex: 0 0 200px;
+            .detail {
+                display: flex;
+                flex-direction: row;
+                :first-child {
+                    flex: 1 0;
+                }
+                :last-child {
+                    flex: 1;
+                }
+            }
+        }
+        .description-editor {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            padding: 4px;
+            background-color: var(--bg-c-tertiary, transparent);
+            border-radius: 6px;
+            .editor {
+                flex: 1;
+            }
+        }
+    }
+
+    .settings-tab {
+        display: flex;
+        flex-direction: column;
+    }  
+}
