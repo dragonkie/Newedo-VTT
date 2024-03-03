@@ -12,8 +12,7 @@
       {{> "systems/newedo/templates/actor/character/character-header.html"}}
     </header>
 
-    <!-- Tab Navigation -->
-    {{!-- Sheet Tab Navigation --}}
+    <!-- Navigation Tabs -->
     <nav class="sheet-tabs tabs flexrow character-nav" data-group="primary">
       <a class="item" data-tab="traits">Traits</a>
       <a class="item" data-tab="skills">Skills</a>
@@ -52,6 +51,10 @@
 
       <div class="tab magic" data-group="primary" data-tab="magic">
         {{> "systems/newedo/templates/actor/character/character-magic.html"}}
+      </div>
+
+      <div class="tab augs" data-group="primary" data-tab="augs">
+        {{> "systems/newedo/templates/actor/character/character-augs.html"}}
       </div>
       
     </section>

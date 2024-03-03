@@ -20,7 +20,7 @@
 
   //darkmode style variables
   [system-theme="dark"] {
-    --bg-c-primary: #{$c-gray};
+    --bg-c-primary: #{$c-lowgray};
     --bg-c-secondary: #{$c-darkgray};
     --bg-c-tertiary: #{$c-gray};
 
@@ -46,8 +46,12 @@
 
       select {
         color: var(--text-colour, black);
-        background-color: var(--bg-c-tertiary, transparent);
+        background-color: var(--bg-c-primary, transparent);
         option {
+          color: var(--text-colour, black);
+          background-color: var(--bg-c-primary, transparent);
+        }
+        optgroup {
           color: var(--text-colour, black);
           background-color: var(--bg-c-tertiary, transparent);
         }
@@ -55,7 +59,7 @@
 
       input {
         color: var(--text-colour, black);
-        background-color: var(--bg-c-tertiary, none);
+        background-color: var(--bg-c-primary, none);
         border: var(--text-border);
 
         &::placeholder {
@@ -69,7 +73,7 @@
 
       textarea {
         color: var(--text-colour, black);
-        background-color: var(--bg-c-tertiary);
+        background-color: var(--bg-c-primary);
         border: var(--text-border, 0);
 
         &:hover, &:focus {
@@ -79,6 +83,10 @@
 
       option {
         color: var(--text-colour, black);
+      }
+
+      img {
+        border: 0;
       }
       //sets the active tab display to flex instead of none, and sets its flex to 1 so it fills up its given space
       .tab[data-tab].active {
@@ -94,6 +102,8 @@
       }
 
       .sheet-tabs {
+        border: 0;
+        margin: 0;
         .item.active {
             border-radius: 5px 5px 0px 0px;
             border: 1px solid $c-lightgray;
@@ -112,8 +122,8 @@
   }
   //styles the internal box that players can tab through
   a.inline-roll {
-    background-color: var(--bg-c-secondary), white;
-    color: var(--text-colour), black;
+    background-color: var(--bg-c-secondary, white);
+    color: var(--text-colour, black);
   }
 
   .rollable, .fate-roll {

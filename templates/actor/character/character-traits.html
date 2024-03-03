@@ -19,9 +19,9 @@
             <div class="flexrow" style="text-align: center; align-items: center;">
                 {{#each system.traits.core as | trait key |}}
                     <div style="align-items: center; min-width: 70px;">
-                        <label for="system.traits.core.{{key}}.value" class="resource-label rollable flexlarge align-left" data-roll="(@traits.core.{{key}}.rank)d10x10" data-label="{{trait.abr}}">{{trait.abr}}</label>
+                        <label for="system.traits.core.{{key}}.value" class="resource-label rollable flexlarge align-left" data-roll="{{trait.rank}}d10x10" data-label="{{trait.abr}}">{{trait.abr}}</label>
                         <input name="system.traits.core.{{key}}.value" value="{{trait.value}}" type="number" />
-                        <div class="trait-rank rollable" data-roll="(@traits.core.{{key}}.rank)d10x10" data-label="{{trait.label}}">Rank {{numberFormat trait.rank decimals=0 sign=false}}</div>
+                        <div class="trait-rank rollable" data-roll="{{trait.rank}}d10x10" data-label="{{trait.label}}">Rank {{numberFormat trait.rank decimals=0 sign=false}}</div>
                     </div>
                 {{/each}}
             </div>

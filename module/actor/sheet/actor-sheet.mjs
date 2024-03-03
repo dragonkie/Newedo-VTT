@@ -9,6 +9,14 @@ import { Dice, Dicetray} from "../../utility/dicetray.js";
  */
 export default class NewedoActorSheet extends ActorSheet {
 
+  //control variables and static macros for them
+  static MODES = {
+    PLAY: 1,
+    EDIT: 2,
+  }
+  _mode = this.constructor.MODES.PLAY;
+  _editable = true;
+
   /** @override */
   static get defaultOptions() {
     var merged = mergeObject(super.defaultOptions, {
@@ -26,7 +34,57 @@ export default class NewedoActorSheet extends ActorSheet {
     return `systems/${game.system.id}/templates/actor/actor-${this.actor.type}-sheet.html`;
   }
 
-  /* -------------------------------------------- */
+  /* --------------------------------------------- Render functions --------------------------------------------- */
+  /** @inheritDoc */
+  async _render(force=false, options={}) {
+    await super._render(force, options);
+  }
+  
+  /** @inheritDoc */
+  async _renderOuter() {
+    const html = await super._renderOuter();
+    const header = await html[0].querySelector(".window-header");
+    
+    //injects the edit toggle button into the top left corner of the character header
+    if (this.isEditable) {
+      const toggle = document.createElement("a");
+      toggle.classList.add("switch");
+      toggle.setAttribute("mode", this._mode);
+
+      /*
+      const clicker = document.createElement("input");
+      clicker.type = "checkbox";
+      clicker.checked = (this._mode === this.constructor.MODES.PLAY);
+      */
+
+      const thumb = document.createElement("span");
+      thumb.classList.add("slider", "round");
+      
+      toggle.addEventListener("click", function(event) {
+        const toggle = event.currentTarget
+        const value = toggle.getAttribute("mode");
+
+        if (value === "1") {
+          this._mode = 2;
+        } else if (value === "2") this._mode = 1;
+
+        toggle.setAttribute("mode", this._mode);
+        this.submit();
+      }.bind(this));
+
+      toggle.appendChild(thumb);
+
+      header.insertAdjacentElement("afterbegin", toggle);
+    }
+    return html;
+  }
+
+  async _renderInner(...args) {
+    const html = await super._renderInner(...args);
+    return html;
+  }
+
+  /* ----------------------------------------------------------------------------------  ---------------------------------------------------------------------------------- */
 
   /** @override */
   getData() {
@@ -43,6 +101,7 @@ export default class NewedoActorSheet extends ActorSheet {
     context.system = actorData.system;
     context.flags = actorData.flags;
     context.items = actorData.items;
+    context.editable = this.isEditable && (this._mode === this.constructor.MODES.EDIT);
 
     // Prepare character data and items.
     if (actorData.type == 'character') {
@@ -61,15 +120,13 @@ export default class NewedoActorSheet extends ActorSheet {
 
     // Prepare active effects
     context.effects = prepareActiveEffectCategories(this.actor.effects);
-    LOGGER.debug(`ACTOR | SHEET | GETDATA`, context)
+    LOGGER.debug(`ACTOR | SHEET | GETDATA`, context);
     return context;
   }
 
   /**
    * Organize and classify Items for Character sheets.
-   *
    * @param {Object} actorData The actor to prepare.
-   *
    * @return {undefined}
    */
   _prepareCharacterData(context) {
@@ -100,9 +157,7 @@ export default class NewedoActorSheet extends ActorSheet {
 
   /**
    * Organize and classify Items for Character sheets
-   *
    * @param {Object} actorData The actor to prepare.
-   *
    * @return {undefined}
    */
   _prepareItems(context) {
@@ -135,9 +190,7 @@ export default class NewedoActorSheet extends ActorSheet {
       else if (i.type === 'feature') features.push(i);
       else if (i.type === `fate`) fates.push(i);
       else if (i.type === `kami`) kami.push(i);
-      else if (i.type === `rote`) {
-        rotes.push(i);
-      }
+      else if (i.type === `rote`) rotes.push(i);
       else if (i.type === `skill`) {
         if (i.system.trait === `pow`) skills.pow.push(i);
         else if (i.system.trait === `ref`) skills.ref.push(i);
@@ -178,14 +231,10 @@ export default class NewedoActorSheet extends ActorSheet {
   /** @override */
   activateListeners(html) {
     super.activateListeners(html);
-    LOGGER.log('Activating sheet listeners')
-
     // Render the item sheet for viewing/editing prior to the editable check.
     html.find('.item-edit').click(ev => {
       const li = $(ev.currentTarget).parents(".item");
       const item = this.actor.items.get(li.data("item-id"));
-      
-      LOGGER.log(`Opening item sheet [${li.data(`item-id`)}]`, item);
       item.sheet.render(true);
     });
 
@@ -193,9 +242,26 @@ export default class NewedoActorSheet extends ActorSheet {
     // Everything below here is only needed if the sheet is editable
     if (!this.isEditable) return;
 
+    /* ------------------------ UI interaction ------------------------ */
+
+
+    /* ------------------------ Roll Managment ------------------------ */
+    // Rollable traits.
+    html.find('.rollable').click(this._onRoll.bind(this));
+    //Skill rollable links
+    html.find('.skill-rollable').each ((i, li) => {
+      let handler = ev => this._rollSkill(ev);
+      li.addEventListener("click", handler);
+      li.addEventListener("contextmenu", handler);
+    });
+    //fate dice roll clicks
+    html.find('.fate-roll').each ((i, li) => {
+      let handler = ev => this._rollFate(ev);
+      li.addEventListener("click", handler);
+    });
+    /* --------------------- Embedded item controls --------------------- */
     // Add Inventory Item
     html.find('.item-create').click(this._onItemCreate.bind(this));
-
     // Delete Inventory Item
     html.find('.item-delete').click(ev => {
       const li = $(ev.currentTarget).parents(".item");
@@ -203,13 +269,8 @@ export default class NewedoActorSheet extends ActorSheet {
       item.delete();
       li.slideUp(200, () => this.render(false));
     });
-
     // Active Effect management
     html.find(".effect-control").click(ev => onManageActiveEffect(ev, this.actor));
-
-    // Rollable traits.
-    html.find('.rollable').click(this._onRoll.bind(this));
-
     // Drag events for macros.
     if (this.actor.isOwner) {
       let handler = ev => this._onDragStart(ev);
@@ -219,26 +280,12 @@ export default class NewedoActorSheet extends ActorSheet {
         li.addEventListener("dragstart", handler, false);
       });
     }
-
     //Skill dice button Cycler
     html.find('.skill-dice-button').each ((i, li) => {
       let handler = ev => this._cycleSkillDice(ev);
       li.addEventListener("click", handler);
       li.addEventListener("contextmenu", handler);
     });
-    //Skill rollable links
-    html.find('.skill-rollable').each ((i, li) => {
-      let handler = ev => this._rollSkill(ev);
-      li.addEventListener("click", handler);
-      li.addEventListener("contextmenu", handler);
-    });
-
-    //fate dice roll clicks
-    html.find('.fate-roll').each ((i, li) => {
-      let handler = ev => this._rollFate(ev);
-      li.addEventListener("click", handler);
-    });
-
   }
 
   /**
@@ -250,8 +297,8 @@ export default class NewedoActorSheet extends ActorSheet {
     event.preventDefault();
     const element = event.currentTarget;
 
-    const _id = element.closest('[skill-id]').getAttribute(`skill-id`);
-    const _index = element.getAttribute(`index`);
+    const _id = element.closest('.item').dataset.itemId;
+    const _index = element.dataset.index;
     const item = this.actor.items.get(_id);
     const type = event.type;
 
@@ -304,58 +351,9 @@ export default class NewedoActorSheet extends ActorSheet {
         ranks: ranks
       }
     }
-    LOGGER.debug(`About to update skill dice`)
     LOGGER.debug(`Updating skill dice item`, await item.update(updateData));
   };
 
-  async _rollSkill(event) {
-    event.preventDefault();
-    //gets
-    const eventType = event.type;
-    const actor = this.actor;
-    const skillId = event.currentTarget.closest('[skill-id]').getAttribute(`skill-id`);
-    //defines a skill object to keep things organized
-    const skill = {};
-    skill.item = actor.items.get(skillId);
-    skill.system = skill.item.system;
-    skill.formula = ``;
-    skill.ranks = systemUtility.dicetray(skill.system.ranks);
-    skill.trait = actor.system.traits.core[skill.system.trait].rank;
-
-    //rolls with advantage, adding 1d10 to the pool
-    var skillDice = new Dicetray();
-
-    if (eventType === `contextmenu`) skill.trait = 0;//sets the d10's to 0, removing all trait dice if the skill shouldnt be rolled with them
-    if (event.shiftKey && !eventType.ctrlKey) skill.trait += 1;//adds 1d10 to the pool if rolling with advantage
-
-    skillDice.add(skill.system.ranks);//adds the array of skill dice to the pool
-    //checks if the roll should have disadvantage
-    if (event.ctrlKey && !event.shiftKey) {
-      if (skill.trait > 0) skill.trait -= 1; //if the skill trait is greater than 0, meaning there are d10's, drops a d10 from the list
-      else skillDice.dropHighest(1); //if there are no d10's, drops one of the largest dice available
-    }
-
-    if (skill.trait > 0) skillDice.tray.unshift(new Dice(10, skill.trait, `x10`));//adds the d10's from traits and advantage, and adds the explode modifier to them
-    skillDice.clean();//cleans up any empty entries in the dice tray
-    
-    skill.formula = skillDice.formula();
-    LOGGER.debug(skill.formula);
-
-    //Creates the final roll formula from all the given values
-    if (skill.formula === ``) return 0; //catches if the roll ended up empty, resulting in an impossible roll
-    else {
-      let roll = new Roll(skill.formula);
-      await roll.evaluate();//actually rolls the dice
-      let rollRender = await roll.render();//gets the default roll html to render
-      let msg = await roll.toMessage({
-        speaker: ChatMessage.getSpeaker({ actor: this.actor}),
-        flavor: "<div style=\"font-size: 18px; text-align: left;\">Skill: "+[skill.item.name],
-        content: [rollRender],
-        create: true,
-        rollMode: game.settings.get('core', 'rollMode')
-      });
-    }
-  }
   /**
    * Handle creating a new Owned Item for the actor using initial data defined in the HTML dataset
    * @param {Event} event The originating click event
@@ -382,9 +380,82 @@ export default class NewedoActorSheet extends ActorSheet {
     // Finally, create the item!
     return await Item.create(itemData, {parent: this.actor});
   }
+  /* ----------------------------------------------- ROLL FUNCTIONS --------------------------------------------------------------- */
+  ///Roll functions, a general roll is called, which then specifies the specific roll type to use
+  async _onRoll(event) {
+    event.preventDefault();
 
-  /**
-   * Handle fate roll table calls.
+    const context = {};
+    context.event = event;
+    context.actor = this.actor;
+    context.item = (event.currentTarget.closest('.item') !== null) ? this.actor.items.get(event.currentTarget.closest('.item').dataset.itemId) : null;
+
+    if (context.item !== null) {
+      //if this is an item roll
+      LOGGER.debug(`Rolling with item:`, context.item);
+      switch (context.item.type) {
+        case `skill`:
+          this._rollSkill(context);
+          break;
+        default: 
+          this._rollStandard(event);
+          break;
+      }
+    } else {
+      //if this is any other kind of roll
+      LOGGER.debug(`Standard roll`);
+      this._rollStandard(event);
+    }
+  }
+
+  async _rollSkill(context) {
+
+    const event = context.event
+    const actor = context.actor;
+
+    //defines a skill object to keep things organized
+    const skill = {};
+    skill.item = context.item;
+    skill.system = context.item.system;
+    skill.formula = ``;
+    skill.ranks = systemUtility.dicetray(skill.system.ranks);
+    skill.trait = actor.system.traits.core[skill.system.trait].rank;
+
+    //rolls with advantage, adding 1d10 to the pool
+    var skillDice = new Dicetray();
+
+    if (event.type === `contextmenu`) skill.trait = 0;//sets the d10's to 0, removing all trait dice if the skill shouldnt be rolled with them
+    if (event.shiftKey && !eventType.ctrlKey) skill.trait += 1;//adds 1d10 to the pool if rolling with advantage
+
+    skillDice.add(skill.system.ranks);//adds the array of skill dice to the pool
+    //checks if the roll should have disadvantage
+    if (event.ctrlKey && !event.shiftKey) {
+      if (skill.trait > 0) skill.trait -= 1; //if the skill trait is greater than 0, meaning there are d10's, drops a d10 from the list
+      else skillDice.dropHighest(1); //if there are no d10's, drops one of the largest dice available
+    }
+
+    if (skill.trait > 0) skillDice.tray.unshift(new Dice(10, skill.trait, `x10`));//adds the d10's from traits and advantage, and adds the explode modifier to them
+    skillDice.clean();//cleans up any empty entries in the dice tray
+    
+    skill.formula = skillDice.formula;
+
+    //Creates the final roll formula from all the given values
+    if (skill.formula === ``) return 0; //catches if the roll ended up empty, resulting in an impossible roll
+    else {
+      let roll = new Roll(skill.formula);
+      await roll.evaluate();//actually rolls the dice
+      let rollRender = await roll.render();//gets the default roll html to render
+      let msg = await roll.toMessage({
+        speaker: ChatMessage.getSpeaker({ actor: this.actor}),
+        flavor: "<div style=\"font-size: 18px; text-align: left;\">Skill: "+[skill.item.name],
+        content: [rollRender],
+        create: true,
+        rollMode: game.settings.get('core', 'rollMode')
+      });
+    }
+  }
+  /**Handle fate roll table calls
+   * Managed seperately from the standard roll function to maintain simplicity
    * @param {Event} event The originating click event
    * @private
    */
@@ -425,13 +496,11 @@ export default class NewedoActorSheet extends ActorSheet {
 
   /**
    * Handle clickable roll events.
-   * 
    * @param {Event} event   The originating click event
    * @private
    */
-  _onRoll(event) {
-    LOGGER.debug(`Called a roll event`)
-    event.preventDefault();
+  _rollStandard(event) {
+    LOGGER.log(`Caught undefined roll type`)
     const element = event.currentTarget;
     const dataset = element.dataset;
 
@@ -447,7 +516,7 @@ export default class NewedoActorSheet extends ActorSheet {
     // Handle rolls that supply the formula directly.
     if (dataset.roll) {
       let label = dataset.label ? `[ability] ${dataset.label}` : '';
-      let roll = new Roll(systemUtility.diceExplode(dataset.roll), this.actor.getRollData());
+      let roll = new Roll(dataset.roll, this.actor.getRollData());
       roll.toMessage({
         speaker: ChatMessage.getSpeaker({ actor: this.actor }),
         flavor: label,

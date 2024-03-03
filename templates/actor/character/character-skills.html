@@ -11,13 +11,13 @@
                 </li>
                 <ol class="items-list">
                     {{#each skills.hrt as | skill key |}}
-                    <li class="item flexrow" skill-id="{{skill._id}}">
+                    <li class="item flexrow" data-item-id="{{skill._id}}">
                         <div class="item-name">
-                            <a class="skill-rollable" data-roll="{{skill.system.formula}}" data-label="{{skill.name}}">{{skill.name}}</a>
+                            <a class="rollable" data-roll="{{skill.system.formula}}" data-label="{{skill.name}}">{{skill.name}}</a>
                         </div>
                         <div class="item-detail flexrow skill-dice-tray">
                             {{#each skill.system.ranks as | value index |}}
-                                <input class="skill-dice-button" type="button" index="{{index}}" value="{{value}}"/>
+                                <input class="skill-dice-button" type="button" data-index="{{index}}" value="{{value}}"/>
                             {{/each}}
                         </div>
                     </li>
@@ -32,13 +32,13 @@
                 </li>
                 <ol class="items-list">
                     {{#each skills.pow as | skill key |}}
-                    <li class="item flexrow" skill-id="{{skill._id}}">
+                    <li class="item flexrow" data-item-id="{{skill._id}}">
                         <div class="item-name">
-                            <a class="skill-rollable" data-roll="{{skill.system.formula}}" data-label="{{skill.name}}">{{skill.name}}</a>
+                            <a class="rollable" data-roll="{{skill.system.formula}}" data-label="{{skill.name}}">{{skill.name}}</a>
                         </div>
                         <div class="item-detail flexrow skill-dice-tray">
                             {{#each skill.system.ranks as | value index |}}
-                                <input class="skill-dice-button" type="button" index="{{index}}" value="{{value}}"/>
+                                <input class="skill-dice-button" type="button" data-index="{{index}}" value="{{value}}"/>
                             {{/each}}
                         </div>
                     </li>
@@ -53,13 +53,13 @@
                 </li>
                 <ol class="items-list">
                     {{#each skills.ref as | skill key |}}
-                    <li class="item flexrow" skill-id="{{skill._id}}">
+                    <li class="item flexrow" data-item-id="{{skill._id}}">
                         <div class="item-name">
-                            <a class="skill-rollable" data-roll="{{skill.system.formula}}" data-label="{{skill.name}}">{{skill.name}}</a>
+                            <a class="rollable" data-roll="{{skill.system.formula}}" data-label="{{skill.name}}">{{skill.name}}</a>
                         </div>
                         <div class="item-detail flexrow skill-dice-tray">
                             {{#each skill.system.ranks as | value index |}}
-                                <input class="skill-dice-button" type="button" index="{{index}}" value="{{value}}"/>
+                                <input class="skill-dice-button" type="button" data-index="{{index}}" value="{{value}}"/>
                             {{/each}}
                         </div>
                     </li>
@@ -74,13 +74,13 @@
                 </li>
                 <ol class="items-list">
                     {{#each skills.pre as | skill key |}}
-                    <li class="item flexrow" skill-id="{{skill._id}}">
+                    <li class="item flexrow" data-item-id="{{skill._id}}">
                         <div class="item-name">
-                            <a class="skill-rollable" data-roll="{{skill.system.formula}}" data-label="{{skill.name}}">{{skill.name}}</a>
+                            <a class="rollable" data-roll="{{skill.system.formula}}" data-label="{{skill.name}}">{{skill.name}}</a>
                         </div>
                         <div class="item-detail flexrow skill-dice-tray">
                             {{#each skill.system.ranks as | value index |}}
-                                <input class="skill-dice-button" type="button" index="{{index}}" value="{{value}}"/>
+                                <input class="skill-dice-button" type="button" data-index="{{index}}" value="{{value}}"/>
                             {{/each}}
                         </div>
                     </li>
@@ -97,13 +97,13 @@
                 </li>
                 <ol class="items-list">
                     {{#each skills.per as | skill key |}}
-                    <li class="item flexrow" skill-id="{{skill._id}}">
+                    <li class="item flexrow" data-item-id="{{skill._id}}">
                         <div class="item-name">
-                            <a class="skill-rollable" data-roll="{{skill.system.formula}}" data-label="{{skill.name}}">{{skill.name}}</a>
+                            <a class="rollable" data-roll="{{skill.system.formula}}" data-label="{{skill.name}}">{{skill.name}}</a>
                         </div>
                         <div class="item-detail flexrow skill-dice-tray">
                             {{#each skill.system.ranks as | value index |}}
-                                <input class="skill-dice-button" type="button" index="{{index}}" value="{{value}}"/>
+                                <input class="skill-dice-button" type="button" data-index="{{index}}" value="{{value}}"/>
                             {{/each}}
                         </div>
                     </li>
@@ -118,13 +118,13 @@
                 </li>
                 <ol class="items-list">
                     {{#each skills.sav as | skill key |}}
-                    <li class="item flexrow" skill-id="{{skill._id}}">
+                    <li class="item flexrow" data-item-id="{{skill._id}}">
                         <div class="item-name">
-                            <a class="skill-rollable" data-roll="{{skill.system.formula}}" data-label="{{skill.name}}">{{skill.name}}</a>
+                            <a class="rollable" data-roll="{{skill.system.formula}}" data-label="{{skill.name}}">{{skill.name}}</a>
                         </div>
                         <div class="item-detail flexrow skill-dice-tray">
                             {{#each skill.system.ranks as | value index |}}
-                                <input class="skill-dice-button" type="button" index="{{index}}" value="{{value}}"/>
+                                <input class="skill-dice-button" type="button" data-index="{{index}}" value="{{value}}"/>
                             {{/each}}
                         </div>
                     </li>

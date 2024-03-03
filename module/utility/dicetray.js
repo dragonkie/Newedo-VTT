@@ -28,7 +28,7 @@ export class Dicetray {
 
     /**Converts the tray into a rollable string that is foundry compatible
      */
-    formula() {
+    get formula() {
         //checks if the dice tray is a valid array, if its not, returns a blank formula
         if (!this.validate(`FORMULA`)) return ``;
         //loops through the pool of dice and adds them in to the stringified formula
@@ -41,11 +41,11 @@ export class Dicetray {
         }
         return formula;
     }
-    roll() {
+     get roll() {
 
     }
     /**Returns the dice object that matchs the number of faces inputed */
-    get(dice) {
+    getDice(dice) {
         for (const a = 0; a < this.tray.length; a++) {
             if (this.tray[a].faces === dice) return this.tray[a];
         }

@@ -21,6 +21,7 @@
                 <span class="item-detail">{{rote.system.cost}}</span>
                 <span class="item-detail">{{rote.system.range}}</span>
                 <span class="item-detail">{{rote.system.target.type}}</span>
+                {{#if ../editable}}<span class="item-delete"><img class="icon-trashcan" src="systems/newedo/icons/trash-can.svg"></span>{{/if}}
             </li>
 
             {{/each}}

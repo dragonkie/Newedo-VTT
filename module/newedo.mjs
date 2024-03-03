@@ -9,6 +9,8 @@ import NewedoItemSheet from "./item/item-sheet.mjs";
 import NewedoActor from "./actor/actor.mjs";
 import NewedoItem from "./item/item.mjs";
 
+import { Dice, Dicetray} from "./utility/dicetray.js";
+
 //imported functions
 import preloadHandlebarsTemplates from "./helpers/preload-templates.mjs";
 import registerHooks from "./system/hooks.js";
@@ -26,7 +28,10 @@ Hooks.once('init', async function() {
     NewedoActor,
     NewedoItem,
     rollItemMacro,
-    LOGGER
+    LOGGER,
+    systemUtility,
+    Dice,
+    Dicetray
   };
 
   // Add custom constants for configuration.

@@ -8,6 +8,24 @@
             "value": 5,
             "min": 1,
             "max": 10
+          },
+          "armour": {
+            "kin": {
+              "value": 0,
+              "bonus": 0
+            },
+            "ele": {
+              "value": 0,
+              "bonus": 0
+            },
+            "bio": {
+              "value": 0,
+              "bonus": 0
+            },
+            "arc": {
+              "value": 0,
+              "bonus": 0
+            }
           }
         },
         "traits": {
@@ -15,32 +33,44 @@
             "pow": {
               "value": 10,
               "min": 0,
-              "rank": 1
+              "rank": 1,
+              "noise": 0,
+              "bonuses": []
             },
             "ref": {
               "value": 10,
               "min": 0,
-              "rank": 1
+              "rank": 1,
+              "noise": 0,
+              "bonuses": []
             },
             "hrt": {
               "value": 10,
               "min": 0,
-              "rank": 1
+              "rank": 1,
+              "noise": 0,
+              "bonuses": []
             },
             "sav": {
               "value": 10,
               "min": 0,
-              "rank": 1
+              "rank": 1,
+              "noise": 0,
+              "bonuses": []
             },
             "per": {
               "value": 10,
               "min": 0,
-              "rank": 1
+              "rank": 1,
+              "noise": 0,
+              "bonuses": []
             },
             "pre": {
               "value": 10,
               "min": 0,
-              "rank": 1
+              "rank": 1,
+              "noise": 0,
+              "bonuses": []
             }
           },
           "derived": {
@@ -75,11 +105,18 @@
           "shinpi" : {
             "min": 0,
             "value": 0,
-            "rank": 0
+            "rank": 0,
+            "bonuses": []
           }
         },
         "biography": {
           "description": ""
+        },
+        "bonuses": {
+          "attack": {
+            "weapon": {},
+            "spell": {}
+          }
         }
       }
     },
@@ -94,76 +131,36 @@
       "attributes": {
         "level": {
           "value": 1,
-          "xp": {
-            "transactions": [],
-            "min": 0,
-            "value": 0
-          }
+          "min": 1,
+          "max": 5
         },
-        "armour": {
-          "kin": {
-            "value": 0,
-            "min": 0,
-            "bonus": 0
-          },
-          "ele": {
-            "value": 0,
-            "min": 0,
-            "bonus": 0
-          },
-          "bio": {
-            "value": 0,
-            "min": 0,
-            "bonus": 0
-          },
-          "arc": {
-            "value": 0,
-            "min": 0,
-            "bonus": 0
-          }
+        "xp": {
+          "transactions": [],
+          "min": 0,
+          "value": 0
         }
       },
       "background": {
         "contacts": {
-          "value": 1,
-          "rank": 1
+          "value": {"min": 1, "max": 100, "value": 1},
+          "rank": {"min": 1, "max": 5, "value": 1}
         },
         "followers": {
-          "value": 1,
-          "rank": 1
+          "value": {"min": 1, "max": 100, "value": 1},
+          "rank": {"min": 1, "max": 5, "value": 1}
         },
         "soul": {
-          "value": 1,
-          "rank": 1
+          "value": {"min": 1, "max": 100, "value": 1},
+          "rank": {"min": 1, "max": 5, "value": 1}
         },
         "status": {
-          "value": 1,
-          "rank": 1
+          "value": {"min": 1, "max": 100, "value": 1},
+          "rank": {"min": 1, "max": 5, "value": 1}
         },
         "wealth": {
-          "value": 1,
-          "rank": 1
+          "value": {"min": 1, "max": 100, "value": 1},
+          "rank": {"min": 1, "max": 5, "value": 1}
         }
-      },
-      "fatecard": {
-        "method": "range",
-        "list": [
-          {
-            "range": {"top": 100, "bot": 96, "size": 5},
-            "label": "Crit",
-            "description" : "Your declared intent is incredibly successful! if you attacked you automatically hit unless the enemy gets a critical success on a dodge attempt. On hit you roll double the damage dice"
-          },
-          {
-            "range": {"top": 3, "bot": 1, "size": 3},
-            "label": "Botch",
-            "description" : "Your declared intent fails spectacularly. Whatever you were trying goes incredibly wrong and may have additional complications."
-          },
-          {
-            "range": {"top": 0, "bot": 0, "size": 5},
-            "label": "Bio-Feedback",
-            "description" : "Your augments flare up and cause your whole body to tense in an almost paralyzing shock, you cannot take actions this turn. Only applicable in combat"
-          }
-        ]
       },
       "biography": {
         "lineage": "",
@@ -185,14 +182,7 @@
     },
     "npc": {
       "templates": ["base"],
-      "legend": {
-        "value": 10,
-        "transactions": [],
-        "min": 0,
-        "max": 10
-      },
       "attributes": {
-        "level": 0,
         "armour": {
           "kin": {
             "value": 0,
@@ -215,51 +205,31 @@
             "bonus": 0
           }
         }
-      },
-      "skills": [
-        {
-          "label": "attack",
-          "value": 1,
-          "trait": "pow",
-          "rollCore": true,
-          "bonus": 0,
-          "bonuses": []
-        }
-      ],
-      "biography": {
-        "lineage": "",
-        "culture": "",
-        "faction": ""
-      },
-      "abilities": {
-        "active": {
-
-        },
-        "passive": {
-
-        }
       }
     }
   },
   
   "Item": {
     "types": [
-      "weapon", "armour", "ammo", "equipment", "augment", "item", "upgrade",
+      "weapon", "armour", "ammo", "augment", "upgrade",
       "rote", "kami", 
       "skill", "fate", "feature", 
-      "lineage", "culture"
+      "lineage", "culture", "path"
     ],
     "templates": {
       "base": {
         "description": "",
         "type": "none"
       },
-      "price": {
+      "justification": {
+
+      },
+      "price": { "price": {
         "base": 50,
         "mod": 1,
         "total": 50,
         "tn": 3
-      },
+      }},
       "physical": {
         "quantity": 1,
         "weight": 0
@@ -315,9 +285,6 @@
     "ammo": {
       "templates": ["base"]
     },
-    "equipment": {
-      "templates": ["base"]
-    },
     "armour": {
       "templates": ["base"],
       "soaks": [0, 0, 0, 0],
@@ -328,10 +295,19 @@
       
     },
     "augment": {
-      "templates": ["base"]
-    },
-    "item": {
-      "templates": ["base"]
+      "templates": ["base", "price", "physical"],
+      "installed": false,
+      "features": [],
+      "rank": 1,
+      "biofeedback": 0,
+      "noise": {
+        "pow": 0,
+        "ref": 0,
+        "hrt": 0,
+        "sav": 0,
+        "per": 0,
+        "pre": 0
+      }
     },
     "upgrade": {
       "templates": ["base"]
@@ -344,8 +320,6 @@
       "templates": ["base"],
 
       "kami": "none",
-      "circle": "none",
-      "tier": {"value": 0, "min": 1, "max": 4},
       "action": "full",
 
       "useTn": {
@@ -357,13 +331,13 @@
       "tn": 5,
       "cost": 5,
       "range": 10,
-      "duraiton": 10,
+      "duration": 10,
 
       "target": {
-        "type" : "actor, radius, blast, cone, line, point",
+        "type" : "All",
         "count": 0,
-        "size": 0,
-        "angle": 0
+        "size": {"x": 0, "y": 0, "z":0},
+        "readme": "size is a vec3, the values helping to define the size of an aoe, radius and blast only uses X as its a sphere / cube, line and cone use 2 for their length and width, all 3 can be used for custom areas with asymetrical dimmensions"
       },
 
       "skill": "none",
@@ -381,7 +355,7 @@
         "total": 0,
         "min": 0,
         "max": 0,
-        "bonuses": [{"source": "nothing", "value": 0}]
+        "bonuses": []
       }
     },
     "skill": {
@@ -393,11 +367,11 @@
       "bonuses": [],
       "formula": "",
       "unlocks": [
-        {"name": "rank 1 feature", "feature": "name of the feature this links too", "featureId": "identifier for the owned feature"},
-        {"name": "rank 2 feature", "feature": "name of the feature this links too", "featureId": "identifier for the owned feature"},
-        {"name": "rank 3 feature", "feature": "name of the feature this links too", "featureId": "identifier for the owned feature"},
-        {"name": "rank 4 feature", "feature": "name of the feature this links too", "featureId": "identifier for the owned feature"},
-        {"name": "rank 5 feature", "feature": "name of the feature this links too", "featureId": "identifier for the owned feature"}
+        {"name": "rank 1 feature", "feature": "name of the feature this links too", "featureId": "identifier for the owned feature item"},
+        {"name": "rank 2 feature", "feature": "name of the feature this links too", "featureId": "identifier for the owned feature item"},
+        {"name": "rank 3 feature", "feature": "name of the feature this links too", "featureId": "identifier for the owned feature item"},
+        {"name": "rank 4 feature", "feature": "name of the feature this links too", "featureId": "identifier for the owned feature item"},
+        {"name": "rank 5 feature", "feature": "name of the feature this links too", "featureId": "identifier for the owned feature item"}
       ]
     },
     "lineage": {
@@ -408,6 +382,10 @@
       "features": []
     },
     "culture": {
+      "templates": ["base"],
+      "features": []
+    },
+    "path": {
       "templates": ["base"],
       "features": []
     }

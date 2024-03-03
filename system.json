@@ -82,10 +82,24 @@
       }
     },
     {
-      "label": "Skills",
+      "label": "Internal: Skills",
       "type": "Item",
       "name": "internal_skills",
       "path": "packs/internal/skills",
+      "system": "newedo",
+      "banner": "none",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "TRUSTED": "OBSERVER",
+        "ASSISTANT": "OBSERVER",
+        "GAMEMASTER": "OWNER"
+      }
+    },
+    {
+      "label": "Internal: Fates",
+      "type": "Item",
+      "name": "internal_fates",
+      "path": "packs/internal/fates",
       "system": "newedo",
       "banner": "none",
       "ownership": {

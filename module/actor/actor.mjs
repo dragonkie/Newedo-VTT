@@ -54,7 +54,7 @@ export default class NewedoActor extends Actor {
 
     // Make separate methods for each Actor type (character, npc, etc.) to keep
     // things organized.
-    this._prepareCharacterData(actorData);
+    if (actorData.type === 'character') this._prepareCharacterData(actorData);
     this._prepareNpcData(actorData);
   }
 
@@ -62,8 +62,6 @@ export default class NewedoActor extends Actor {
    * Prepare Character type specific data
    */
   _prepareCharacterData(actorData) {
-    if (actorData.type !== 'character') return;
-
     // Make modifications to data here. For example:
     const system = this.system;
     const core = system.traits.core;
@@ -95,6 +93,7 @@ export default class NewedoActor extends Actor {
     derived.def.value = Math.ceil(derived.def.value * derived.def.mod);
     derived.res.value = Math.ceil(derived.res.value * derived.res.mod);
     derived.hp.max = Math.ceil(derived.hp.max * derived.hp.mod);
+
     LOGGER.debug(`PREPARE | ACTOR | DERIVED`, this);
   }
 

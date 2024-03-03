@@ -2,8 +2,8 @@
 
     <div>
         <li class="items-header flexrow collapsible">
-            <span>Skill</span>
             <span>Weapons</span>
+            <span>Skill</span>
             <span>Attack</span>
             <span>Damage</span>
             <span>Type</span>
@@ -14,12 +14,13 @@
             <li class="item flexrow" data-item-id="{{weapon._id}}">
                 <!-- Link to the fate opens up the item sheet -->
                 <div class="item-name flexrow">
-                    <div>{{weapon.system.skill}}</div>
                     <a class="item-edit">{{weapon.name}}</a>
+                    <div>{{weapon.system.skill}}</div>
                 </div>
                 <a class="rollable item-detail" data-roll="{{weapon.system.attack.formula}}" data-label="{{weapon.name}}">{{weapon.system.attack.formula}}</a>
                 <a class="rollable item-detail" data-roll="{{weapon.system.damage.formula}}" data-label="{{weapon.name}}">{{weapon.system.damage.formula}}</a>
                 <span class="item-detail">{{weapon.system.damage.type}}</span>
+                {{#if ../editable}}<span class="item-delete"><img class="icon-trashcan" src="systems/newedo/icons/trash-can.svg"></span>{{/if}}
             </li>
 
             {{/each}}

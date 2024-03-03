@@ -15,6 +15,7 @@
                 </div>
                 <span class="item-detail">{{fate.system.range.value}}% &nbsp &nbsp</span>
                 <span class="item-detail">{{fate.system.range.max}} - {{fate.system.range.min}}</span>
+                {{#if ../editable}}<span class="item-delete"><img class="icon-trashcan" src="systems/newedo/icons/trash-can.svg"></span>{{/if}}
             </li>
 
             {{/each}}

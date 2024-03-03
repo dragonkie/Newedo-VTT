@@ -15,9 +15,9 @@
   --text-border: 0;
 }
 .newedo.sheet [system-theme=dark] {
-  --bg-c-primary: #434343;
-  --bg-c-secondary: #333;
-  --bg-c-tertiary: #434343;
+  --bg-c-primary: rgb(61, 61, 61);
+  --bg-c-secondary: rgb(51, 51, 51);
+  --bg-c-tertiary: rgb(82, 82, 82);
   --bg-image: none;
   --text-colour: white;
   --text-placeholder: grey;
@@ -35,19 +35,20 @@
 }
 .newedo.sheet .window-content form select {
   color: var(--text-colour, black);
-  background-color: var(--bg-c-tertiary, transparent);
+  background-color: var(--bg-c-primary, transparent);
 }
 .newedo.sheet .window-content form select option {
+  color: var(--text-colour, black);
+  background-color: var(--bg-c-primary, transparent);
+}
+.newedo.sheet .window-content form select optgroup {
   color: var(--text-colour, black);
   background-color: var(--bg-c-tertiary, transparent);
 }
 .newedo.sheet .window-content form input {
   color: var(--text-colour, black);
-  background-color: var(--bg-c-tertiary, none);
+  background-color: var(--bg-c-primary, none);
   border: var(--text-border);
-}
-.newedo.sheet .window-content form input::-moz-placeholder {
-  color: var(--text-placeholder, lightgray);
 }
 .newedo.sheet .window-content form input::placeholder {
   color: var(--text-placeholder, lightgray);
@@ -58,7 +59,7 @@
 }
 .newedo.sheet .window-content form textarea {
   color: var(--text-colour, black);
-  background-color: var(--bg-c-tertiary);
+  background-color: var(--bg-c-primary);
   border: var(--text-border, 0);
 }
 .newedo.sheet .window-content form textarea:hover, .newedo.sheet .window-content form textarea:focus {
@@ -66,6 +67,9 @@
 }
 .newedo.sheet .window-content form option {
   color: var(--text-colour, black);
+}
+.newedo.sheet .window-content form img {
+  border: 0;
 }
 .newedo.sheet .window-content form .tab[data-tab].active {
   display: flex;
@@ -77,21 +81,25 @@
   background-color: var(--bg-c-secondary, gray);
   overflow: auto;
 }
+.newedo.sheet .window-content form .sheet-tabs {
+  border: 0;
+  margin: 0;
+}
 .newedo.sheet .window-content form .sheet-tabs .item.active {
   border-radius: 5px 5px 0px 0px;
-  border: 1px solid #bbb;
+  border: 1px solid rgb(112, 112, 112);
   border-bottom: 0;
   background-color: var(--bg-c-secondary);
 }
 .newedo.sheet .window-content form .sheet-tabs .item {
   border-radius: 0px;
   border: 0;
-  border-bottom: 1px solid #bbb;
+  border-bottom: 1px solid rgb(112, 112, 112);
   background-color: var(--bg-c-primary);
 }
 .newedo.sheet a.inline-roll {
-  background-color: var(--bg-c-secondary), white;
-  color: var(--text-colour), black;
+  background-color: var(--bg-c-secondary, white);
+  color: var(--text-colour, black);
 }
 .newedo.sheet .rollable:hover, .newedo.sheet .rollable:focus, .newedo.sheet .fate-roll:hover, .newedo.sheet .fate-roll:focus {
   text-shadow: var(--text-shadow, red);
@@ -337,7 +345,7 @@
   padding: 0;
 }
 .newedo .items-list .item-name {
-  flex: 2;
+  flex: 1;
   margin: 0;
   overflow: hidden;
   font-size: 13px;
@@ -397,6 +405,9 @@
   padding-left: 5px;
   text-align: left;
 }
+.newedo .items-list .item-delete {
+  flex: 0 0 24px;
+}
 .newedo .item-formula {
   flex: 0 0 200px;
   padding: 0 8px;
@@ -431,6 +442,7 @@
   padding: 5px;
   max-width: 200px;
   align-items: center;
+  overflow: auto;
 }
 .newedo .character .character-panel .container-armour {
   display: grid;
@@ -479,8 +491,7 @@
   flex: 0 0 150px;
   margin-right: 10px;
   border-radius: 15px;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   height: 150px;
   width: 150px;
 }
@@ -727,6 +738,7 @@
 .newedo.sheet.item form {
   flex-direction: column;
   flex: 1;
+  overflow: hidden;
 }
 .newedo.sheet.item form .tab[data-tab].active {
   display: flex;
@@ -756,7 +768,7 @@
   flex-direction: column;
   flex: 1;
   padding: 4px;
-  background-color: var(--bg-c-tertiary, transparent);
+  background-color: var(--bg-c-primary, transparent);
   border-radius: 6px;
 }
 .newedo.sheet.item form .description-tab .description-editor .editor {
@@ -765,4 +777,54 @@
 .newedo.sheet.item form .settings-tab {
   display: flex;
   flex-direction: column;
-}/*# sourceMappingURL=newedo.css.map */
+}
+.newedo .icon-trashcan {
+  width: 24px;
+  height: 24px;
+  background-color: hotpink;
+  align-items: center;
+}
+.newedo .switch {
+  display: inline-block;
+  position: relative;
+  width: 60px;
+  height: 24px;
+}
+.newedo .switch[mode="2"] .slider {
+  background-color: #2196F3;
+}
+.newedo .switch[mode="2"] .slider::before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+.newedo .switch .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+.newedo .switch .slider::before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+.newedo .switch .slider.round {
+  border-radius: 24px;
+}
+.newedo .switch .slider.round::before {
+  border-radius: 100%;
+}
+
+/*# sourceMappingURL=newedo.css.map */

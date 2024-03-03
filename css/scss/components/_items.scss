@@ -1,3 +1,5 @@
+//Despite being named for items, this SCSS file is for rendering lists of items on a sheet
+//rather than used on the item sheet itself
 // Section Header
 .items-header {
   height: 28px;
@@ -40,7 +42,7 @@
 
   // Item Name
   .item-name {
-    flex: 2;
+    flex: 1;
     margin: 0;
     overflow: hidden;
     font-size: 13px;
@@ -107,6 +109,11 @@
       text-align: left;
       // font-size: 16px;
     }
+  }
+
+  // Button for deleting from the list
+  .item-delete {
+    flex: 0 0 24px;
   }
 }
 

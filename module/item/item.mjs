@@ -119,7 +119,6 @@ export default class NewedoItem extends Item {
       skill = this.parent.getSkill(system.skill);
       //ensures that the right skill was found on the actor
       if (skill != null) {
-        console.log(system.attack.formula);
         if (system.isRanged) {
           //adds the perception trait dice to the attack roll
           system.attack.formula += skill.system.formula;
@@ -129,7 +128,6 @@ export default class NewedoItem extends Item {
           //adds the power traits dice to the damage
           system.damage.formula += `${rollData.pow.rank}d10`;
         }
-        console.log(system.attack.formula);
         //if there is a grit value for attacks, appen it to the attack formula
         if (system.grit.atk > 0) system.attack.formula += (system.attack.formula === ``) ? `${system.grit.atk}` : (` + ${system.grit.atk}`);
   
