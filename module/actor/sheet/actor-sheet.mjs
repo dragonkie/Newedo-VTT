@@ -84,7 +84,7 @@ export default class NewedoActorSheet extends ActorSheet {
     return html;
   }
 
-  /* ----------------------------------------------------------------------------------  ---------------------------------------------------------------------------------- */
+  /* --------------------------------------------- Prepare actor sheet --------------------------------------------- */
 
   /** @override */
   getData() {
@@ -120,7 +120,6 @@ export default class NewedoActorSheet extends ActorSheet {
 
     // Prepare active effects
     context.effects = prepareActiveEffectCategories(this.actor.effects);
-    LOGGER.debug(`ACTOR | SHEET | GETDATA`, context);
     return context;
   }
 
@@ -130,8 +129,6 @@ export default class NewedoActorSheet extends ActorSheet {
    * @return {undefined}
    */
   _prepareCharacterData(context) {
-    LOGGER.debug(`PREPARE | ACTOR | CHARACTER`);
-
     //constants to hold references to the diffrent trait links
     const { core, derived } = context.system.traits;
 
@@ -226,8 +223,6 @@ export default class NewedoActorSheet extends ActorSheet {
     fates.sort(fateCompare);
   }
 
-  /* -------------------------------------------- */
-
   /** @override */
   activateListeners(html) {
     super.activateListeners(html);
@@ -249,13 +244,13 @@ export default class NewedoActorSheet extends ActorSheet {
     // Rollable traits.
     html.find('.rollable').click(this._onRoll.bind(this));
     //Skill rollable links
-    html.find('.skill-rollable').each ((i, li) => {
+    html.find('.skill-rollable').each((i, li) => {
       let handler = ev => this._rollSkill(ev);
       li.addEventListener("click", handler);
       li.addEventListener("contextmenu", handler);
     });
     //fate dice roll clicks
-    html.find('.fate-roll').each ((i, li) => {
+    html.find('.fate-roll').each((i, li) => {
       let handler = ev => this._rollFate(ev);
       li.addEventListener("click", handler);
     });
@@ -286,14 +281,22 @@ export default class NewedoActorSheet extends ActorSheet {
       li.addEventListener("click", handler);
       li.addEventListener("contextmenu", handler);
     });
+    //installing augments
+    html.find(`.aug-install`).each((index, element) => {
+      let handler = (ev => this._installAugment(ev));
+      element.addEventListener("click", handler);
+      element.addEventListener("contextmenu", handler);
+    });
   }
 
+  /* -------------------------------------------- Sheet event handelers -------------------------------------------- */
   /**
    * Handles the cycling of skill dice with button presses
    * @param {Event} event the originating click event
    * @private
    */
   async _cycleSkillDice(event) {
+    LOGGER.debug(`Cycling skill dice`);
     event.preventDefault();
     const element = event.currentTarget;
 
@@ -351,9 +354,10 @@ export default class NewedoActorSheet extends ActorSheet {
         ranks: ranks
       }
     }
-    LOGGER.debug(`Updating skill dice item`, await item.update(updateData));
-  };
 
+    item.update(updateData);
+  };
+  /* -------------------------------------------- Item management -------------------------------------------- */
   /**
    * Handle creating a new Owned Item for the actor using initial data defined in the HTML dataset
    * @param {Event} event The originating click event
@@ -380,9 +384,24 @@ export default class NewedoActorSheet extends ActorSheet {
     // Finally, create the item!
     return await Item.create(itemData, {parent: this.actor});
   }
+
+  async _installAugment(event) {
+    LOGGER.debug("Installing augment");
+    const context = {};
+    const actor = this.actor;
+    const item = (event.currentTarget.closest('.item') !== null) ? actor.items.get(event.currentTarget.closest('.item').dataset.itemId) : null;
+
+    if (context.item !== null) {
+      await item.update({ 'system.installed' : !item.system.installed});
+
+      LOGGER.log(`Augment [${item.name}] install changed to [${item.system.installed}]`);
+      
+    }
+  }
   /* ----------------------------------------------- ROLL FUNCTIONS --------------------------------------------------------------- */
   ///Roll functions, a general roll is called, which then specifies the specific roll type to use
   async _onRoll(event) {
+    LOGGER.debug("Rolling...");
     event.preventDefault();
 
     const context = {};
@@ -392,7 +411,6 @@ export default class NewedoActorSheet extends ActorSheet {
 
     if (context.item !== null) {
       //if this is an item roll
-      LOGGER.debug(`Rolling with item:`, context.item);
       switch (context.item.type) {
         case `skill`:
           this._rollSkill(context);
@@ -403,7 +421,6 @@ export default class NewedoActorSheet extends ActorSheet {
       }
     } else {
       //if this is any other kind of roll
-      LOGGER.debug(`Standard roll`);
       this._rollStandard(event);
     }
   }
@@ -460,7 +477,7 @@ export default class NewedoActorSheet extends ActorSheet {
    * @private
    */
   async _rollFate(event) {
-    LOGGER.debug(`Rolling for fate`);
+    LOGGER.debug(`Rolling fate`);
     let roll = new Roll("1d100");
     await roll.evaluate();
     const result = roll.total;
@@ -500,7 +517,6 @@ export default class NewedoActorSheet extends ActorSheet {
    * @private
    */
   _rollStandard(event) {
-    LOGGER.log(`Caught undefined roll type`)
     const element = event.currentTarget;
     const dataset = element.dataset;
 

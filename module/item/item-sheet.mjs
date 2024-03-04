@@ -62,8 +62,6 @@ export default class NewedoItemSheet extends ItemSheet {
 
     context.itemDescriptionHTML = await TextEditor.enrichHTML(context.system.description, enrichmentOptions);
 
-    LOGGER.debug(`Preppoing item sheet data`, item)
-
     //prepares data specific to certain item types
     //mostly includes preparing locilizations for the system
     const type = item.type;

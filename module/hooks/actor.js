@@ -8,7 +8,7 @@ even if some are not used, all of them are documented and listed here for convin
 const actorHooks = () => {
     Hooks.on("createActor", async (doc, createData) => {
         if (doc.type === `character`) {
-            LOGGER.debug(`HOOK | createActor | CHARACTER`);
+            LOGGER.debug(`Adding standard items to new actor`);
             //item packs pulled from the hidden internal compendiums to provide essential items used by everyone
             const skillPack = game.packs.get(`newedo.internal_skills`);
             const fatePack = game.packs.get(`newedo.internal_fates`);

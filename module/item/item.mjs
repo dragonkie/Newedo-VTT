@@ -27,10 +27,6 @@ export default class NewedoItem extends Item {
   }
 
   prepareDerivedData() {
-
-    if (this.isOwned) LOGGER.debug(`PREPARE | ITEM | DERIVED | OWNED | ${this.type}`);
-    else if (this.isEmbedded) LOGGER.debug(`PREPARE | ITEM | DERIVED | EMBEDDED | ${this.type}`);
-    else LOGGER.debug(`PREPARE | ITEM | DERIVED | ${this.type}`);
     //variable to check what type of item this is
     const type = this.type;
     //checks through and calls the prep function based on the item type
@@ -149,9 +145,7 @@ export default class NewedoItem extends Item {
       var skill = this.parent.getSkill(system.skill);
       if (skill != null) {
         if (psys.traits.shinpi.rank > 0) system.formula += `${psys.traits.shinpi.rank}`;
-        LOGGER.debug(`Roll formula for rote = `, system.formula);
         system.formula += `${skill.system.formula}`;
-        LOGGER.debug(`Roll formula for rote = `, system.formula);
       }
     }
   }

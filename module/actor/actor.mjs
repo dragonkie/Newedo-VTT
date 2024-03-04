@@ -36,7 +36,6 @@ export default class NewedoActor extends Actor {
     derived.res.value = Math.ceil(core.hrt.value + core.pre.value);
 
     derived.hp.max = core.hrt.value;
-    LOGGER.debug(`PREPARE | ACTOR | BASE`, this);
   }
 
   /**
@@ -94,7 +93,23 @@ export default class NewedoActor extends Actor {
     derived.res.value = Math.ceil(derived.res.value * derived.res.mod);
     derived.hp.max = Math.ceil(derived.hp.max * derived.hp.mod);
 
-    LOGGER.debug(`PREPARE | ACTOR | DERIVED`, this);
+    //calculates trait noise based on installed augments
+    LOGGER.debug("Item container", this.items);
+    for (let [key, item] of this.items.entries()) {
+      if (item.type === `augment`) {
+        if (item.system.installed) {
+          LOGGER.debug("Found installed augment:", item);
+          var rank = item.system.rank;
+          var noise = item.system.noise;
+          core.pow.noise += noise.pow * rank;
+          core.ref.noise += noise.ref * rank;
+          core.hrt.noise += noise.hrt * rank;
+          core.sav.noise += noise.sav * rank;
+          core.per.noise += noise.per * rank;
+          core.pre.noise += noise.pre * rank;
+        }
+      }
+    }
   }
 
   /**
