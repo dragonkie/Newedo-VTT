@@ -1,0 +1,36 @@
+<form class="{{cssClass}} {{item.type}}" system-theme="dark">
+    <header>
+        <h1><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
+    </header>
+    <nav class="sheet-tabs tabs flexrow" data-group="primary" style="text-align: center; align-items: center; border: 0; margin: 0; padding: 0px 10px 0px 10px;">
+        <a class="item" data-tab="description">Description</a>
+        <a class="item" data-tab="settings">Settings</a>
+    </nav>
+    <section class="sheet-body" style="overflow: auto; padding: 6px; height: 1fr;">
+        <div class="tab description" data-group="primary" data-tab="description">
+            
+            <div class="description-tab">
+                <div class="summary">
+                    <!-- Details pannel on left hand side -->
+                    <div>Faction: Unaligned</div>
+                    <div>Skills: 1d8</div>
+                    <div>Backgrounds: Soul, Contacts</div>
+                    <div>Equipment: Q1, Q2</div>
+                </div>
+                <div class="description-editor">
+                    <!-- description on the right -->
+                    {{editor itemDescriptionHTML target="system.description" button=true editable=editable engine="prosemirror" collaborate=false}}
+                </div>
+            </div>
+
+        </div>
+        
+        <div class="tab settings" data-group="primary" data-tab="settings">
+
+            <div class="settings-tab">
+                <label>Advancement</label>
+            </div>
+
+        </div>
+    </body>
+</form>

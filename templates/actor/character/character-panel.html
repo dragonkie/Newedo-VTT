@@ -41,18 +41,28 @@ Armour soaks
     {{/each}}
 </div>
 
+<!-- Character XP tracker -->
+<div style="min-height: 1px; background-color: white; width: 100%;"></div>
+<div style="display: flex; flex-direction: row; align-items: center;">
+    <span>EXP:</span>
+    <input style="margin: 4px;" type="number" name="system.attributes.xp.value" value="{{system.attributes.xp.value}}" />
+</div>
+<div style="min-height: 1px; background-color: white; width: 100%;"></div>
+
 <!-- Fate card container -->
-<b class="fate-roll" style="font-size: 14px;">Fate Card</b>
-<div style="display: flex; flex-direction: column; align-items: center;">
-    <!-- Loops through the characters list of fate card options-->
-    {{#each fates as |fate key|}}
-    <span style="text-align: center;">
-        <div style="display: grid; gap: 2px; grid-template-columns: 25px 15px 25px 100px; border-bottom: 1px solid gray; align-items: center;">
-            <div>{{fate.system.range.max}}</div>
-            <div>|</div>
-            <div>{{fate.system.range.min}}</div>
-            <div style="text-align: left;">{{fate.name}}</div>
+<div class="fate-card">
+    <b class="fate-roll" style="font-size: 14px;">Fate Card</b>
+    <div class="fate-list">
+        <!-- Loops through the characters list of fate card options-->
+
+        {{#each fates as |fate key|}}
+
+        <div class="fate-item">
+            <div>{{fate.system.range.max}} / {{fate.system.range.min}}</div>
+            <div>{{fate.name}}</div>
         </div>
-    </span>
-    {{/each}}
+
+        {{/each}}
+
+    </div>
 </div>

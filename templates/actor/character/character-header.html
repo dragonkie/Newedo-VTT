@@ -1,7 +1,13 @@
 <div style="flex-direction: column;">
     <!-- Character name field-->
-    <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name"/></h1>
-    <div style="height: 1px; margin: 1px 0px 1px 0px;"></div>
+    <div style="display: flex; flex-direction: row; flex: 1;">
+        <h1 style="display: flex; flex: 1; align-items: center;">
+            <input class="character-name" name="name" type="text" value="{{actor.name}}" placeholder="Name"/>
+            <span style="flex: 1;">Rank: {{system.legend.rank}}</span>
+        </h1>
+        
+    </div>
+    
     <!-- Derived stats? -->
     <div class="list-derived">
         <span>&#x2022 <b>{{system.traits.derived.def.label}}:</b> {{system.traits.derived.def.value}}</span>

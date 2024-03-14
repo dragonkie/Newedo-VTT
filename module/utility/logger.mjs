@@ -5,10 +5,10 @@
 export default class LOGGER {
     /**
      * Logger called to send message to console, all messages are marked as from NEWEDO 
-     * @param {msg} message Text to output, will be marked as from the game system in console
-     * @param {value} value optional param that can contain and output objects, methods, etc
+     * @param {String} message Text to output, will be marked as from the game system in console
+     * @param {*} value optional param that can contain and output objects, methods, etc
      */
-    static log (msg, value) {
+    static log (msg, value=``) {
         if (typeof value !== `undefined`) console.log(`NEWEDO | ${msg}`, value);
         else console.log(`NEWEDO | ${msg}`);
     }
@@ -22,10 +22,10 @@ export default class LOGGER {
     }
     /**
      * Logger called to send message to console, all messages are marked as from NEWEDO 
-     * @param {msg} message Text to output, will be marked as from the game system in console
-     * @param {value} value optional param that can contain and output objects, methods, etc
+     * @param {String} message Text to output, will be marked as from the game system in console
+     * @param {*} value optional param that can contain and output objects, methods, etc
      */
-    static debug(msg=``, value) {
+    static debug(msg=``, value=``) {
         if (game.settings.get(game.system.id, "debugLogs") > 0) {
             if (typeof value !== `undefined`) console.debug(`NEWEDO DBG | ${msg}`, value);
             else console.debug(`NEWEDO DBG | ${msg}`);

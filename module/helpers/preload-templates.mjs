@@ -5,7 +5,7 @@ import LOGGER from "../utility/logger.mjs";
  * @return {Promise}
  */
  export default function preloadHandlebarsTemplates() {
-  LOGGER.log(`Registering handelbars templates`);
+  LOGGER.log(`Registering handelbars templates oui`);
   return loadTemplates([
     // Character Partials
     `systems/${game.system.id}/templates/actor/character/parts/actor-features.html`,

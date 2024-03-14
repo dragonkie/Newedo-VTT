@@ -1,15 +1,17 @@
 //imported objects
 import { NEWEDO } from "./system/config.mjs";
-import LOGGER from "./utility/logger.mjs"
+import LOGGER from "./utility/logger.mjs";
 import systemUtility from "./utility/systemUtility.mjs";
 
-import NewedoActorSheet from "./actor/sheet/actor-sheet.mjs";
-import NewedoItemSheet from "./item/item-sheet.mjs";
+import NewedoActorSheet from "./actor/sheet/edo-actor-sheet.mjs";
+import NewedoItemSheet from "./item/sheet/edo-item-sheet.mjs";
 
-import NewedoActor from "./actor/actor.mjs";
-import NewedoItem from "./item/item.mjs";
+import NewedoActor from "./actor/edo-actor.mjs";
+import NewedoItem from "./item/edo-item.mjs";
 
-import { Dice, Dicetray} from "./utility/dicetray.js";
+import { actorConstructor, itemConstructor } from "./proxy-manager.js";
+
+import { Dice, NewedoRoll} from "./utility/dice.js";
 
 //imported functions
 import preloadHandlebarsTemplates from "./helpers/preload-templates.mjs";
@@ -21,7 +23,7 @@ import registerSystemSettings from "./system/settings.mjs";
 /*  Init Hook                                   */
 /* -------------------------------------------- */
 Hooks.once('init', async function() {
-  LOGGER.log(`Initalizing game system`);
+  LOGGER.log(`------------------ WELCOME TO NEWEDO SAMURAI ---------------`);
   // Add utility classes to the global game object so that they're more easily
   // accessible in global contexts.
   game.newedo = {
@@ -31,7 +33,7 @@ Hooks.once('init', async function() {
     LOGGER,
     systemUtility,
     Dice,
-    Dicetray
+    NewedoRoll,
   };
 
   // Add custom constants for configuration.
@@ -46,8 +48,9 @@ Hooks.once('init', async function() {
   };
 
   // Define custom Document classes
-  CONFIG.Actor.documentClass = NewedoActor;
-  CONFIG.Item.documentClass = NewedoItem;
+  LOGGER.log("Setting document classes");
+  CONFIG.Actor.documentClass = actorConstructor;
+  CONFIG.Item.documentClass = itemConstructor;
 
   // Register sheet application classes
   Actors.unregisterSheet("core", ActorSheet);

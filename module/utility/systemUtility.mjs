@@ -1,6 +1,4 @@
 import LOGGER from "./logger.mjs";
-import {Dice, Dicetray} from "./dicetray.js";
-
 export default class systemUtility {
 
      /**
@@ -203,39 +201,36 @@ export default class systemUtility {
         return formula;
     }
 
-    /**
-     * Creates an object that holds the data needed for a roll bonus
-     * @param {String} source where the bonus originates from
-     * @param {Number} value a bonus added to roll formulas, such as a +1 to hit, or +1 to damage
-     * @param {Number} boost increases the relevant number by the boost ammount, such as strength +3
-     * @param {Dicetray} dice dicetray object holding all the compile dice objects needed
-     * @param {String} id *Optional* the origin item / actor / effect if applicable
-     */
-    static createBonus(value=0, boost=0, dice=[], source="", id="") {
-        const bonus = {};
-        bonus.source = source;
-        bonus.value = value;
-        bonus.boost = boost;
-        bonus.dice = dice;
-        bonus.id = id;
-        return bonus;
-    }
-    /**Turns an array of bonus objects into a final object bonus holding all the relevant details
-     * @param {Array} list the bonuses to be added together
-     */
-    static compileBonuses(list) {
-        
-        if (Array.isArray(list)) {
-            const counter = list.length;
-            for (let a = 0; a < counter; a++) {
-
-            }
-        }
-    }
-
     static sumArray(list) {
         var value = 0;
         for (const v in list) value += v;
         return value;
+    }
+
+    static getItemTypes() {
+        const templateTypes = game.system.template.Item.types;
+    }
+
+    static async getCompendium(name) {
+        return await game.packs.get(name);
+    }
+
+    static async getPackDocs(name) {
+        return await game.packs.get(name).getDocuments();
+    }
+
+    static async getCoreCharDocs() {
+        const documents = [];
+        const skills = await this.getCoreSkills();
+        const fates = await this.getCoreFates();
+        return documents.concat(skills, fates);
+    }
+
+    static async getCoreSkills() {
+        return await this.getPackDocs(`newedo.internal-skills`);
+    }
+
+    static async getCoreFates() {
+        return await this.getPackDocs(`newedo.internal-fates`);
     }
 }

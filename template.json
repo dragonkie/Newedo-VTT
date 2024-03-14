@@ -355,7 +355,8 @@
         "total": 0,
         "min": 0,
         "max": 0,
-        "bonuses": []
+        "bonuses": [],
+        "method": "start"
       }
     },
     "skill": {
@@ -387,7 +388,14 @@
     },
     "path": {
       "templates": ["base"],
-      "features": []
+      "rank": 1,
+      "features": [
+        [{"name": "item-giver", "type": "item", "value": {"name": "dummy-item", "uuid": "null"}}],
+        [{"name": "core-trait", "type": "core", "value": {"label": "pow", "type": "bonus", "value": 3}}],
+        [{"name": "derived-trait", "type": "derived", "value": {"label": "pow", "type": "Base, Final, Mod", "value": 3}}],
+        [{"name": "armour-up", "type": "soak", "value": {"label": "kin", "value": 1}}],
+        [{"name": "Kami-unlock", "type": "kami", "value": {"name": "Kami of Fire", "uuid": "empty"}}]
+      ]
     }
   }
 }
