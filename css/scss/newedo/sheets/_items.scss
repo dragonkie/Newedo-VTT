@@ -16,6 +16,7 @@
         .summary {
             display: block;
             flex: 0 0 200px;
+            margin-right: 4px;
             .detail {
                 display: flex;
                 flex-direction: row;
@@ -23,7 +24,7 @@
                     flex: 1 0;
                 }
                 :last-child {
-                    flex: 1;
+                    flex: 2;
                 }
             }
         }

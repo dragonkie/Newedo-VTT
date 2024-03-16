@@ -1,5 +1,6 @@
 import LOGGER from "./logger.mjs";
 import NewedoDialog from "../dialog/edo-dialog.js";
+import sysUtil from "./sysUtil.mjs";
 
 export class NewedoRoll {
     /**Accepts an optional list of dice objects to pre populate the tray */
@@ -11,22 +12,36 @@ export class NewedoRoll {
         this.critical = false;//if the roll is a critical hit
         this.options = null;
         
-        //determin what kind of roll this is based on the context of what was passed through as data
+        // Saves all input data to the roll structure
+        this.title = data.title;
+        this.label = data.label;
         this.actor = data.actor;
         this.item = data.item;
+        
         this.template = ``;
 
         if (this.item) {
             //if the roll type was manually passed through, skip checking for context clues about what the role should be
             switch (this.item.type) {
                 case "skill":
-                    if (this.actor !== undefined && this.item !== undefined) {
-                        this.template = "systems/newedo/templates/dialog/dialog-roll-skill.hbs";
+                    if (this.actor) {
+                        this.template = `systems/newedo/templates/dialog/roll/dialog-roll-skill.hbs`;
+                        this.title = sysUtil.Localize(CONFIG.NEWEDO.types.item[data.item.type])+`: `+sysUtil.Localize(CONFIG.NEWEDO.skill.label[data.item.name]);
                         var ranks = this.item.system.ranks;
                         var trait = this.actor.system.traits.core[`${this.item.system.trait}`].rank;
                         this.add(new Dice(10, trait, `x10`));
                         this.add(ranks);
-                    }
+                    } else ui.notifications.error(`Skill is missing parent actor`);
+                    break;
+
+                case "weapon":
+                    if (this.actor) {
+                        this.template = `systems/newedo/templates/dialog/roll/dialog-roll-weapon.hbs`;
+                        const skill = this.item.getSkill;
+                        var trait = skill.getTrait.rank;
+                        this.add(new Dice(10, trait, `x10`));
+                        this.add(skill.system.ranks);
+                    } else ui.notifications.error(`Weapon is missing parent actor`);
                     break;
                 default:
                     break;
@@ -54,6 +69,13 @@ export class NewedoRoll {
             first = false;
         }
         return formula;
+    }
+
+    get trait() {
+        if (this.actor && this.item) {
+            return this.item.getTrait;
+        }
+        else return undefined;
     }
     /* ------------------------------------------------------- THE IMPORTANT FUNCTION ---------------------------------------------------------*/
     async roll() {
@@ -209,7 +231,6 @@ export class NewedoRoll {
         } /* ------------------------------------Adding in a single number -----------------------------------------------------*/
         else {
             if (this.isEmpty) {
-                LOGGER.debug(`Added Integer dice to list: `, dice);
                 this.dice.push(new Dice(dice, 1));
                 return true;
             } else {
@@ -327,10 +348,10 @@ export class Dice {
  */
 async function getRollOptions(data) {
     const html = await renderTemplate(data.template, data);
-
+    const title = data.title;
     return new Promise(resolve => {
         const options = {
-            title: "Roll prompt",
+            title: title,
             content: html,
             buttons: {
                 advantage: {

@@ -1,7 +1,7 @@
 //imported objects
 import { NEWEDO } from "./system/config.mjs";
 import LOGGER from "./utility/logger.mjs";
-import systemUtility from "./utility/systemUtility.mjs";
+import sysUtil from "./utility/sysUtil.mjs";
 
 import NewedoActorSheet from "./actor/sheet/edo-actor-sheet.mjs";
 import NewedoItemSheet from "./item/sheet/edo-item-sheet.mjs";
@@ -31,7 +31,7 @@ Hooks.once('init', async function() {
     NewedoItem,
     rollItemMacro,
     LOGGER,
-    systemUtility,
+    sysUtil,
     Dice,
     NewedoRoll,
   };
@@ -82,16 +82,6 @@ Handlebars.registerHelper('concat', function() {
 
 Handlebars.registerHelper('toLowerCase', function(str) {
   return str.toLowerCase();
-});
-
-//handelbars functions
-//localization function for displaying localized details directly for when they need to be parsed
-Handlebars.registerHelper('i18n', function(str) {
-  return systemUtility.Localize(str);
-});
-//adds or removes the exploding dice text from a line
-Handlebars.registerHelper(`diceExplode`, function(str, toggle) {
-  return systemUtility.diceExplode(str, toggle);
 });
 
 /* -------------------------------------------- */

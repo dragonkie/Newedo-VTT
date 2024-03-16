@@ -1,5 +1,5 @@
 import LOGGER from "../utility/logger.mjs";
-import systemUtility from "../utility/systemUtility.mjs";
+import sysUtil from "../utility/sysUtil.mjs";
 
 /**
  * Extend the basic Item with some very simple modifications.

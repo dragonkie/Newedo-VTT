@@ -1,5 +1,5 @@
 import LOGGER from "../utility/logger.mjs";
-import systemUtility from "../utility/systemUtility.mjs";
+import sysUtil from "../utility/sysUtil.mjs";
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
  * @extends {Actor}
@@ -18,7 +18,7 @@ export default class NewedoActor extends Actor {
     if (newActor) {
       LOGGER.debug(`Creating new actor`)
       createData.items = [];
-      const coreItems = await systemUtility.getCoreCharDocs();
+      const coreItems = await sysUtil.getCoreCharDocs();
       coreItems.forEach((item) => {
         const updated = duplicate(item.system);
         const newItem = {
@@ -178,7 +178,7 @@ export default class NewedoActor extends Actor {
   }
 
   /**
-   * Override getRollData() that's supplied to rolls.
+   * @Override getRollData() that's supplied to rolls.
    */
   getRollData() {
     const data = super.getRollData();

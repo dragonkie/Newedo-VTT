@@ -1,5 +1,5 @@
 import LOGGER from "../../utility/logger.mjs";
-import systemUtility from "../../utility/systemUtility.mjs";
+import sysUtil from "../../utility/sysUtil.mjs";
 /**
  * Extend the basic ItemSheet with some very simple modifications
  * @extends {ItemSheet}
@@ -66,7 +66,7 @@ export default class NewedoItemSheet extends ItemSheet {
     //mostly includes preparing locilizations for the system
     const type = item.type;
     if (type == `weapon`) {
-      context.system.damage.label = systemUtility.Localize(CONFIG.NEWEDO.damageTypes[context.system.damage.type]);
+      context.system.damage.label = sysUtil.Localize(CONFIG.NEWEDO.damageTypes[context.system.damage.type]);
     }
     else if (type == `armour`) {
 

@@ -1,5 +1,6 @@
 import NewedoItem from "../edo-item.mjs";
-import { NewedoRoll } from "../../utility/dice.js";
+import { Dice, NewedoRoll } from "../../utility/dice.js";
+import LOGGER from "../../utility/logger.mjs";
 
 export default class NewedoSkill extends NewedoItem {
     constructor(data, options) {
@@ -18,6 +19,7 @@ export default class NewedoSkill extends NewedoItem {
         const actor = this.actor;
         if (this.actor) formula = `${actor.system.traits.core[this.system.trait].rank}d10`;
         
+        // Loop that converts the array of dice into 
         for (const r of this.system.ranks) {
             //catches empty values and prevents them from adding to the pool
             if (r <= 0) continue;
@@ -52,8 +54,36 @@ export default class NewedoSkill extends NewedoItem {
         return formula;
     }
 
+    /** Returns the trait if there is a parent actor */
+    get getTrait() {
+        const actor = this.actor
+        const key = this.system.trait;
+        if (actor) {
+            return actor.system.traits.core[key];
+        }
+    }
+    /** Returns an array of Dice objects for the skill */
+    get getDice() {
+        const list = [];
+        for (const r of this.system.ranks) {
+            if (r === 0) continue;
+            var found = false;
+            for (var i=0; i< list.length; i++) {
+                if (list[i].faces === r) {
+                    list[i].count += 1;
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) list.push(new Dice(r));
+        }
+        return list;
+    }
+
+    // Creates and rolls a NewedoRoll using this item, giving it the context that this is a skill roll
     async roll() {
         var data = {
+            title: this.name,
             label : this.name,
 			actor : this.actor,
 			item : this

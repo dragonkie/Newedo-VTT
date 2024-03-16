@@ -784,6 +784,7 @@
 .newedo.sheet.item form .description-tab .summary {
   display: block;
   flex: 0 0 200px;
+  margin-right: 4px;
 }
 .newedo.sheet.item form .description-tab .summary .detail {
   display: flex;
@@ -793,7 +794,7 @@
   flex: 1 0;
 }
 .newedo.sheet.item form .description-tab .summary .detail :last-child {
-  flex: 1;
+  flex: 2;
 }
 .newedo.sheet.item form .description-tab .description-editor {
   display: flex;

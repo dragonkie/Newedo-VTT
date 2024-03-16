@@ -23,19 +23,22 @@ NEWEDO.traits = {
     move: "NEWEDO.trait.derived.move",
     def: "NEWEDO.trait.derived.def",
     res: "NEWEDO.trait.derived.res",
+    hp: "NEWEDO.trait.derived.hp",
   },
   derivedAbbreviations: {
     init: "NEWEDO.trait.derived.abbr.init",
     move: "NEWEDO.trait.derived.abbr.move",
     def: "NEWEDO.trait.derived.abbr.def",
     res: "NEWEDO.trait.derived.abbr.res",
+    hp: "NEWEDO.trait.derived.abbr.hp",
   },
 };
 
 NEWEDO.generic = {
-  health: "NEWEDO.generic.health",
   legend: "NEWEDO.generic.legend",
   damage: "NEWEDO.generic.damage",
+  trait: "NEWEDO.generic.trait",
+  rank: "NEWEDO.generic.rank"
 };
 
 NEWEDO.damageTypes = {
@@ -51,50 +54,97 @@ NEWEDO.attributes = {
   size: "NEWEDO.AttributesSize",
 };
 //Sorted A-Z, grouped by trait
-NEWEDO.skillList = {
-  //Heart
-  crafting: "NEWEDO.global.itemType.skill.crafting",
-  meditation: "NEWEDO.global.itemType.skill.meditation",
-  rally: "NEWEDO.global.itemType.skill.rally",
-  survival: "NEWEDO.global.itemType.skill.survival",
-  //Power
-  athletics: "NEWEDO.global.itemType.skill.athletics",
-  meleeHeavy: "NEWEDO.global.itemType.skill.meleeHeavy",
-  meleeLight: "NEWEDO.global.itemType.skill.meleeLight",
-  thrown: "NEWEDO.global.itemType.skill.thrown",
-  unarmed: "NEWEDO.global.itemType.skill.unarmed",
-  //Reflex
-  banter: "NEWEDO.global.itemType.skill.banter",
-  dodge: "NEWEDO.global.itemType.skill.dodge",
-  drive: "NEWEDO.global.itemType.skill.drive",
-  sleightOfHand: "NEWEDO.global.itemType.skill.sleightOfHand",
-  stealth: "NEWEDO.global.itemType.skill.stealth",
-  //Presence
-  deception: "NEWEDO.global.itemType.skill.deception",
-  eloquence: "NEWEDO.global.itemType.skill.eloquence",
-  intimidation: "NEWEDO.global.itemType.skill.intimidation",
-  performance: "NEWEDO.global.itemType.skill.performance",
-  seduction: "NEWEDO.global.itemType.skill.seduction",
-  //Perception
-  archery: "NEWEDO.global.itemType.skill.archery",
-  commerce: "NEWEDO.global.itemType.skill.commerce",
-  gunnery: "NEWEDO.global.itemType.skill.gunnery",
-  inuition: "NEWEDO.global.itemType.skill.intuition",
-  investigation: "NEWEDO.global.itemType.skill.investigation",
-  smallArms: "NEWEDO.global.itemType.skill.smallarms",
-  //Savvy
-  arcana: "NEWEDO.global.itemType.skill.arcana",
-  computers: "NEWEDO.global.itemType.skill.computers",
-  gambling: "NEWEDO.global.itemType.skill.gambling",
-  hardware: "NEWEDO.global.itemType.skill.hardware",
-  medicine: "NEWEDO.global.itemType.skill.medicine",
-  security: "NEWEDO.global.itemType.skill.security",
-  streetwise: "NEWEDO.global.itemType.skill.streetwise",
-  study: "NEWEDO.global.itemType.skill.study",
-  surveillance: "NEWEDO.global.itemType.skill.surveillance",
-  tactics: "NEWEDO.global.itemType.skill.tactics",
-  toxicology: "NEWEDO.global.itemType.skill.toxicology",
-  wetware: "NEWEDO.global.itemType.skill.wetware",
+NEWEDO.skill = { 
+  label: {
+    //Heart
+    crafting: "NEWEDO.global.skill.label.crafting",
+    meditation: "NEWEDO.global.skill.label.meditation",
+    rally: "NEWEDO.global.skill.label.rally",
+    survival: "NEWEDO.global.skill.label.survival",
+    //Power
+    athletics: "NEWEDO.global.skill.label.athletics",
+    meleeheavy: "NEWEDO.global.skill.label.meleeHeavy",
+    meleelight: "NEWEDO.global.skill.label.meleeLight",
+    thrown: "NEWEDO.global.skill.label.thrown",
+    unarmed: "NEWEDO.global.skill.label.unarmed",
+    //Reflex
+    banter: "NEWEDO.global.skill.label.banter",
+    dodge: "NEWEDO.global.skill.label.dodge",
+    drive: "NEWEDO.global.skill.label.drive",
+    sleightofhand: "NEWEDO.global.skill.label.sleightOfHand",
+    stealth: "NEWEDO.global.skill.label.stealth",
+    //Presence
+    deception: "NEWEDO.global.skill.label.deception",
+    eloquence: "NEWEDO.global.skill.label.eloquence",
+    intimidation: "NEWEDO.global.skill.label.intimidation",
+    performance: "NEWEDO.global.skill.label.performance",
+    seduction: "NEWEDO.global.skill.label.seduction",
+    //Perception
+    archery: "NEWEDO.global.skill.label.archery",
+    commerce: "NEWEDO.global.skill.label.commerce",
+    gunnery: "NEWEDO.global.skill.label.gunnery",
+    inuition: "NEWEDO.global.skill.label.intuition",
+    investigation: "NEWEDO.global.skill.label.investigation",
+    smallarms: "NEWEDO.global.skill.label.smallarms",
+    //Savvy
+    arcana: "NEWEDO.global.skill.label.arcana",
+    computers: "NEWEDO.global.skill.label.computers",
+    gambling: "NEWEDO.global.skill.label.gambling",
+    hardware: "NEWEDO.global.skill.label.hardware",
+    medicine: "NEWEDO.global.skill.label.medicine",
+    security: "NEWEDO.global.skill.label.security",
+    streetwise: "NEWEDO.global.skill.label.streetwise",
+    study: "NEWEDO.global.skill.label.study",
+    surveillance: "NEWEDO.global.skill.label.surveillance",
+    tactics: "NEWEDO.global.skill.label.tactics",
+    toxicology: "NEWEDO.global.skill.label.toxicology",
+    wetware: "NEWEDO.global.skill.label.wetware",
+  },
+  description: {
+    //Heart
+    crafting: "NEWEDO.global.skill.description.crafting",
+    meditation: "NEWEDO.global.skill.description.meditation",
+    rally: "NEWEDO.global.skill.description.rally",
+    survival: "NEWEDO.global.skill.description.survival",
+    //Power
+    athletics: "NEWEDO.global.skill.description.athletics",
+    meleeheavy: "NEWEDO.global.skill.description.meleeHeavy",
+    meleelight: "NEWEDO.global.skill.description.meleeLight",
+    thrown: "NEWEDO.global.skill.description.thrown",
+    unarmed: "NEWEDO.global.skill.description.unarmed",
+    //Reflex
+    banter: "NEWEDO.global.skill.description.banter",
+    dodge: "NEWEDO.global.skill.description.dodge",
+    drive: "NEWEDO.global.skill.description.drive",
+    sleightofhand: "NEWEDO.global.skill.description.sleightOfHand",
+    stealth: "NEWEDO.global.skill.description.stealth",
+    //Presence
+    deception: "NEWEDO.global.skill.description.deception",
+    eloquence: "NEWEDO.global.skill.description.eloquence",
+    intimidation: "NEWEDO.global.skill.description.intimidation",
+    performance: "NEWEDO.global.skill.description.performance",
+    seduction: "NEWEDO.global.skill.description.seduction",
+    //Perception
+    archery: "NEWEDO.global.skill.description.archery",
+    commerce: "NEWEDO.global.skill.description.commerce",
+    gunnery: "NEWEDO.global.skill.description.gunnery",
+    inuition: "NEWEDO.global.skill.description.intuition",
+    investigation: "NEWEDO.global.skill.description.investigation",
+    smallarms: "NEWEDO.global.skill.description.smallarms",
+    //Savvy
+    arcana: "NEWEDO.global.skill.description.arcana",
+    computers: "NEWEDO.global.skill.description.computers",
+    gambling: "NEWEDO.global.skill.description.gambling",
+    hardware: "NEWEDO.global.skill.description.hardware",
+    medicine: "NEWEDO.global.skill.description.medicine",
+    security: "NEWEDO.global.skill.description.security",
+    streetwise: "NEWEDO.global.skill.description.streetwise",
+    study: "NEWEDO.global.skill.description.study",
+    surveillance: "NEWEDO.global.skill.description.surveillance",
+    tactics: "NEWEDO.global.skill.description.tactics",
+    toxicology: "NEWEDO.global.skill.description.toxicology",
+    wetware: "NEWEDO.global.skill.description.wetware",
+  }
 };
 
 NEWEDO.backgrounds = {
@@ -105,18 +155,12 @@ NEWEDO.backgrounds = {
   soul: "NEWEDO.global.bg.soul",
 };
 
-NEWEDO.sheets = {
-  actor: {
-    character: "TYPES.Actor.character",
-    vehicle: "TYPES.Actor.vehicle",
-    npc: "TYPES.Actor.npc",
-    pet: "TYPES.Actor.pet",
+NEWEDO.types = {
+  item : {
+    skill: "TYPES.item.skill",
+    weapon: "TYPES.item.weapon"
   },
-  item: {
-    weapon: "TYPES.Item.weapon",
-    armour: "TYPES.Item.armour",
-    augment: "TYPES.Item.augment",
-  },
-  card: {},
-  page: {},
-};
+  actor : {
+    character: "TYPES.actor.character"
+  }
+}

@@ -11,12 +11,10 @@
         <ol class="items-list">
             {{#each weapons as | weapon key |}}
 
-            <li class="item flexrow" data-item-id="{{weapon._id}}">
+            <li class="item flexrow" style="text-align: center;" data-item-id="{{weapon._id}}">
                 <!-- Link to the fate opens up the item sheet -->
-                <div class="item-name flexrow">
-                    <a class="item-edit">{{weapon.name}}</a>
-                    <div>{{weapon.system.skill}}</div>
-                </div>
+                <a class="item-edit">{{weapon.name}}</a>
+                <div>{{weapon.system.skill}}</div>
                 <a class="rollable item-detail" data-roll="{{weapon.system.attack.formula}}" data-label="{{weapon.name}}">{{weapon.system.attack.formula}}</a>
                 <a class="rollable item-detail" data-roll="{{weapon.system.damage.formula}}" data-label="{{weapon.name}}">{{weapon.system.damage.formula}}</a>
                 <span class="item-detail">{{weapon.system.damage.type}}</span>

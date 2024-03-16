@@ -1,6 +1,6 @@
 import {onManageActiveEffect, prepareActiveEffectCategories} from "../../helpers/effects.mjs";
 import LOGGER from "../../utility/logger.mjs";
-import systemUtility from "../../utility/systemUtility.mjs";
+import sysUtil from "../../utility/sysUtil.mjs";
 
 import { Dice, NewedoRoll} from "../../utility/dice.js";
 /**
@@ -134,21 +134,21 @@ export default class NewedoActorSheet extends ActorSheet {
 
     //core traits
     for (let [k, v] of Object.entries(core)) {
-      v.label = systemUtility.Localize(CONFIG.NEWEDO.traits.core[k]) ?? k;
-      v.abr = systemUtility.Localize(CONFIG.NEWEDO.traits.coreAbbreviations[k]) ?? k;
+      v.label = sysUtil.Localize(CONFIG.NEWEDO.traits.core[k]);
+      v.abr = sysUtil.Localize(CONFIG.NEWEDO.traits.coreAbbreviations[k]);
     }
     // Derived traits.
     for (let [k, v] of Object.entries(derived)) {
-      v.label = systemUtility.Localize(CONFIG.NEWEDO.traits.derived[k]) ?? k;
-      v.abr = systemUtility.Localize(CONFIG.NEWEDO.traits.derivedAbbreviations[k]) ?? k;
+      v.label = sysUtil.Localize(CONFIG.NEWEDO.traits.derived[k]);
+      v.abr = sysUtil.Localize(CONFIG.NEWEDO.traits.derivedAbbreviations[k]);
     }
     //localize armour labels
     for (let [k, v] of Object.entries(context.system.attributes.armour)) {
-      v.label = systemUtility.Localize(CONFIG.NEWEDO.damageTypes[k]) ?? k;
+      v.label = sysUtil.Localize(CONFIG.NEWEDO.damageTypes[k]);
     }
 
     for (let [k, v] of Object.entries(context.system.background)) {
-      v.label = systemUtility.Localize(CONFIG.NEWEDO.backgrounds[k]) ?? k;
+      v.label = sysUtil.Localize(CONFIG.NEWEDO.backgrounds[k]);
     }
   }
 
@@ -407,6 +407,9 @@ export default class NewedoActorSheet extends ActorSheet {
       //if this is an item roll
       switch (context.item.type) {
         case `skill`:
+          context.item.roll();
+          break;
+        case `weapon`:
           context.item.roll();
           break;
         default: 
