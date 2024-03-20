@@ -163,12 +163,11 @@
         }
       },
       "biography": {
-        "lineage": "",
-        "culture": "",
-        "faction": "",
-        "path": "",
-        "allies": "",
-        "enemies": "",
+        "fear": "",
+        "ideal": "",
+        "ambition": "",
+        "background": "",
+        "appearance": "",
         "personality": "",
 
         "gender": "",
@@ -177,7 +176,13 @@
         "height": "",
         "skin": "",
         "eyes": "",
-        "hair": ""
+        "hair": "",
+
+        "contacts": "",
+        "followers": "",
+        "soul": "",
+        "status": "",
+        "wealth": ""
       }
     },
     "npc": {
@@ -379,8 +384,7 @@
       "templates": ["base"],
       "appearance": "Dragons once ruled this land, Covered in vibrant scales, touting strong tails or even great horns and clawed hands",
       "personality": "Well dragons can have varying personalities, they tend to share a few common themes. Each dragon typically has an obssesion of some kind, colletcing treasures, objects, fame, or power",
-      "society": "Favoring isolated envirments, dragons typically do not share their territory with others",
-      "features": []
+      "society": "Favoring isolated envirments, dragons typically do not share their territory with others"
     },
     "culture": {
       "templates": ["base"],

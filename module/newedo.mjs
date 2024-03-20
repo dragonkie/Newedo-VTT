@@ -63,7 +63,7 @@ Hooks.once('init', async function() {
   registerHooks();
 
   // Preload Handlebars templates.
-  return preloadHandlebarsTemplates();
+  return console.log(preloadHandlebarsTemplates());
 });
 
 /* -------------------------------------------- */

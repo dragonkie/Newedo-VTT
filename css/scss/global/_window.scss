@@ -33,6 +33,13 @@
     --text-border: 0;
   }
 
+  .tab[data-tab].active {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 10px;
+  }
+
   //styles the main window container, this is to ensure that none of the foundry needed features for the windo are overwrittedn, only its internal bits
   //this is probably unnecesary, but better safe than sorry in the end
   .window-content {
@@ -40,6 +47,7 @@
     //everything in this area should be applied to ALL aspects of the sheet, adding all the light / dark mdoe styles to every element
     form {
       display: flex;
+      flex-direction: column;
       flex: 1;
       background: var(--bg-c-primary, white) var(--bg-image, $bg-image) repeat;
       color: var(--text-colour, black);
@@ -75,7 +83,10 @@
         color: var(--text-colour, black);
         background-color: var(--bg-c-primary);
         border: var(--text-border, 0);
-
+        min-width: 0;
+        min-height: 0;
+        padding: 4px;
+        resize: none;
         &:hover, &:focus {
           box-shadow: var(--text-shadow);
         }

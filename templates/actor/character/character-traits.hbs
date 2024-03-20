@@ -1,0 +1,75 @@
+<div class="traits-tab tab-content">
+
+    <div style="display: flex; flex-direction: column;">
+        <div style="display: flex; flex-direction: row;">
+            <input style="flex: 1;" id="bio-lineage" name="system.biography.lineage" type="text" value="{{system.biography.lineage}}" placeholder="species"/>
+            <input style="flex: 1;" id="bio-culture" name="system.biography.culture" type="text" value="{{system.biography.culture}}" placeholder="culture"/>
+        </div>
+        <div style="display: flex; flex-direction: row;">
+            <input style="flex: 1;" id="bio-faction" name="system.biography.faction" type="text" value="{{system.biography.faction}}" placeholder="faction"/>
+            <input style="flex: 1;" id="bio-path" name="system.biography.path" type="text" value="{{system.biography.path}}" placeholder="path"/>
+        </div>
+    
+    </div>
+    <!-- Core Stats -->
+    <div>
+        <div style="height: 1px; margin: 1px 0px 1px 0px; width: 100%;"></div>
+        <div class="flexrow" style="text-align: center; align-items: center;">
+            {{#each system.traits.core as | trait key |}}
+                <div style="align-items: center; min-width: 70px;">
+                    <label for="system.traits.core.{{key}}.value" class="resource-label rollable flexlarge align-left" data-roll="{{trait.rank}}d10x10" data-label="{{trait.abr}}">{{trait.abr}}</label>
+                    <input name="system.traits.core.{{key}}.value" value="{{trait.value}}" type="number" />
+                    <div class="trait-rank rollable" data-roll="{{trait.rank}}d10x10" data-label="{{trait.label}}">Rank {{numberFormat trait.rank decimals=0 sign=false}}</div>
+                </div>
+            {{/each}}
+        </div>
+    </div>
+    
+    <!-- Background rolls -->
+    <div>
+        <div style="height: 1px; margin: 1px 0px 1px 0px; width: 100%;"></div>
+        <div class="flexrow" style="text-align: center; align-items: center;">
+            {{#each system.background as | background key |}}
+                <div style="align-items: center; min-width: 70px;">
+                    <label for="system.background.{{key}}.value" class="resource-label rollable flexlarge align-left" data-roll="(@background.{{key}}.rank)d10x10" data-label="{{background.label}}">{{background.label}}</label>
+                    <input name="system.background.{{key}}.value" value="{{background.value}}" type="number" />
+                    <div class="trait-rank rollable" data-roll="(@background.{{key}}.rank)d10x10" data-label="{{background.label}}">Rank {{numberFormat background.rank decimals=0 sign=false}}</div>
+                </div>
+            {{/each}}
+        </div>
+    </div>
+
+    <!-- Background Notes -->
+    <div class="flexcol" style="flex: 1;">
+        <div class="wrap-background">
+
+            <div class="flexcol flex" style="margin-right: 4px;">
+                <div class="container soul">
+                    <b>{{system.background.soul.label}}</b>
+                    <textarea name="system.biography.soul">{{system.biography.soul}}</textarea>
+                </div>
+                <div class="container status">
+                    <b>{{system.background.status.label}}</b>
+                    <textarea name="system.biography.status">{{system.biography.status}}</textarea>
+                </div>
+                <div class="container wealth">
+                    <b>{{system.background.wealth.label}}</b>
+                    <textarea name="system.biography.wealth">{{system.biography.wealth}}</textarea>
+                </div>
+            </div>
+
+            <div class="flexcol flex" style="margin-left: 4px;">
+                <div class="container contacts">
+                    <b>{{system.background.contacts.label}}</b>
+                    <textarea name="system.biography.contacts">{{system.biography.contacts}}</textarea>
+                </div>
+                <div class="container followers">
+                    <b>{{system.background.followers.label}}</b>
+                    <textarea name="system.biography.followers">{{system.biography.followers}}</textarea>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

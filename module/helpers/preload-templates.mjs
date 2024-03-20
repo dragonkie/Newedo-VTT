@@ -5,23 +5,37 @@ import LOGGER from "../utility/logger.mjs";
  * @return {Promise}
  */
  export default function preloadHandlebarsTemplates() {
-  LOGGER.log(`Registering handelbars templates oui`);
-  return loadTemplates([
+  LOGGER.log(`Registering handelbars templates`);
+  const id = game.system.id;
+  const partials = [
     // Character Partials
-    `systems/${game.system.id}/templates/actor/character/parts/actor-features.html`,
-    `systems/${game.system.id}/templates/actor/character/parts/actor-items.html`,
-    `systems/${game.system.id}/templates/actor/character/parts/actor-spells.html`,
-    `systems/${game.system.id}/templates/actor/character/parts/actor-effects.html`,
+    `systems/${id}/templates/actor/character/parts/actor-features.hbs`,
+    `systems/${id}/templates/actor/character/parts/actor-items.hbs`,
+    `systems/${id}/templates/actor/character/parts/actor-spells.hbs`,
+    `systems/${id}/templates/actor/character/parts/actor-effects.hbs`,
 
-    //character specific partials
-    `systems/${game.system.id}/templates/actor/character/character-header.html`,
-    `systems/${game.system.id}/templates/actor/character/character-augs.html`,
-    `systems/${game.system.id}/templates/actor/character/character-bio.html`,
-    `systems/${game.system.id}/templates/actor/character/character-fates.html`,
-    `systems/${game.system.id}/templates/actor/character/character-magic.html`,
-    `systems/${game.system.id}/templates/actor/character/character-skills.html`,
-    `systems/${game.system.id}/templates/actor/character/character-traits.html`,
-    `systems/${game.system.id}/templates/actor/character/character-panel.html`,
-    `systems/${game.system.id}/templates/actor/character/character-equipment.html`
-  ]);
+    // Character specific partials
+    `systems/${id}/templates/actor/character/character-header.hbs`,
+    `systems/${id}/templates/actor/character/character-augs.hbs`,
+    `systems/${id}/templates/actor/character/character-bio.hbs`,
+    `systems/${id}/templates/actor/character/character-fates.hbs`,
+    `systems/${id}/templates/actor/character/character-magic.hbs`,
+    `systems/${id}/templates/actor/character/character-skills.hbs`,
+    `systems/${id}/templates/actor/character/character-traits.hbs`,
+    `systems/${id}/templates/actor/character/character-panel.hbs`,
+    `systems/${id}/templates/actor/character/character-equipment.hbs`,
+
+    // Item sheets
+
+    // Feature config
+    `systems/${id}/templates/dialog/feature/feature-title.hbs`
+  ];
+
+  const paths = {};
+  for ( const path of partials ) {
+    paths[path.replace(".hbs", ".html")] = path;
+    paths[`${id}.${path.split("/").pop().replace(".hbs", "")}`] = path;
+  }
+
+  return loadTemplates(paths);
 };

@@ -1,0 +1,66 @@
+.character-panel {
+    display: flex;
+    flex: 0 0 auto;
+    flex-direction: column;
+    padding: 5px;
+    max-width: 200px;
+    align-items: center;
+    overflow: auto;
+
+    .container-armour {
+        display: flex;
+        flex-direction: row;
+        text-align: center;
+        div {
+            display: flex;
+            flex-direction: column;
+            div {
+                font-size: 12px;
+            }
+            input {
+                font-size: 18px;
+                height: 18px;
+                border: 0;
+                padding: 0;
+            }
+        }
+        
+    }
+
+    .fate-card {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+
+        .fate-roll {
+            font-size: 14px;
+        }
+        .fate-list {
+            display: block;
+            width: 100%;
+            padding: 2px;
+            
+            .fate-item {
+                display: flex;
+                flex-direction: row;
+                border-bottom: 1px solid white;
+                margin-top: 4px;
+                :first-child {
+                    flex: 1;
+                    text-align: right;
+                }
+                :last-child {
+                    margin-left: 12px;
+                    text-align: left;
+                    flex: 2;
+                }
+            }
+
+            :last-child {
+                border: 0;
+            }
+        }
+    }
+}

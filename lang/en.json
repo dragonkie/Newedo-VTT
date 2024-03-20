@@ -3,6 +3,8 @@
   "NEWEDO.generic.damage": "Damage",
   "NEWEDO.generic.trait": "Trait",
   "NEWEDO.generic.rank": "Rank",
+  "NEWEDO.generic.fate": "Fate",
+  "NEWEDO.generic.hp": "Hit Points",
   
   "NEWEDO.AttributeExp": "Experience",
   "NEWEDO.AttributeLvl": "Level",
@@ -41,10 +43,14 @@
   "NEWEDO.EffectEdit": "Edit Effect",
   "NEWEDO.EffectDelete": "Delete Effect",
 
-  "NEWEDO.global.damage.kinetic": "Kinetic",
-  "NEWEDO.global.damage.elemental": "Elemental",
-  "NEWEDO.global.damage.biological": "Biological",
-  "NEWEDO.global.damage.arcane": "Arcane",
+  "NEWEDO.damage.kin": "Kinetic",
+  "NEWEDO.damage.ele": "Elemental",
+  "NEWEDO.damage.bio": "Biological",
+  "NEWEDO.damage.arc": "Arcane",
+  "NEWEDO.damage.abbr.kin": "Kin",
+  "NEWEDO.damage.abbr.ele": "Ele",
+  "NEWEDO.damage.abbr.bio": "Bio",
+  "NEWEDO.damage.abbr.arc": "Arc",
 
   "NEWEDO.global.skill.label.crafting": "Crafting",
   "NEWEDO.global.skill.label.meditation": "Meditation",
@@ -86,11 +92,11 @@
 
   "NEWEDO.Add": "Add",
 
-  "NEWEDO.global.bg.followers": "Followers",
-  "NEWEDO.global.bg.contacts": "Contacts",
-  "NEWEDO.global.bg.status": "Status",
-  "NEWEDO.global.bg.wealth": "Wealth",
-  "NEWEDO.global.bg.soul": "Soul",
+  "NEWEDO.background.followers": "Followers",
+  "NEWEDO.background.contacts": "Contacts",
+  "NEWEDO.background.status": "Status",
+  "NEWEDO.background.wealth": "Wealth",
+  "NEWEDO.background.soul": "Soul",
 
   "TYPES.actor.character": "Player Character",
   "TYPES.actor.npc": "Non-Player Character",
@@ -102,5 +108,12 @@
   "TYPES.item.augment": "Augment",
   "TYPES.item.rote": "Rote",
   "TYPES.item.kami": "Kami",
-  "TYPES.item.skill": "Skill"
+  "TYPES.item.skill": "Skill",
+
+  "NEWEDO.biography.personality": "Personality",
+  "NEWEDO.biography.appearance": "Appearance",
+  "NEWEDO.biography.background": "Background",
+  "NEWEDO.biography.ambition": "Ambitions",
+  "NEWEDO.biography.ideal": "Ideals",
+  "NEWEDO.biography.fear": "Fears"
 }

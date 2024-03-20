@@ -1,13 +1,5 @@
 //as this is include inside the .newedo class, it nees to be &.item as it specifies all newedo item sheets, not specific item types
 &.sheet.item form {
-    flex-direction: column;
-    flex: 1;
-    overflow: hidden;
-
-    .tab[data-tab].active {
-        display: flex;
-        padding: 6px;
-    }
 
     .description-tab {
         display: flex;

@@ -1,0 +1,80 @@
+<!-- Newedo banner rendered at the top of the screen-->
+<img class="banner-newedo" src="systems/newedo/images/banner-newedo.svg">
+
+<div class="portrait" style="width: 150px; align-items: center; display: flex;">
+    <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="150px" width="150px" style="object-fit: cover;"/>
+</div>
+
+<!-- Health container-->
+{{ localize 'NEWEDO.generic.hp' }}
+<div style="min-height: 1px; background-color: white; margin: 1px 0px 1px 0px; width: 100%;"></div>
+<div style="align-items: center;">
+    <div style="display: grid; font-size: 30px; grid-template-columns: 1fr 0.5fr 1fr; text-align: center; align-items: center; height: 30px;">
+        <input style="height: 32px;" id="hp-value" type="number" name="system.traits.derived.hp.value" value="{{system.traits.derived.hp.value}}"/>
+        <div>/</div>
+        <div>{{system.traits.derived.hp.max}}</div>
+    </div>
+</div>
+
+<!-- Legend container -->
+{{ localize 'NEWEDO.generic.legend'}}
+<div style="min-height: 1px; background-color: white; margin: 1px 0px 1px 0px; width: 100%;"></div>
+<div style="align-items: center;">
+    <div style="display: grid; font-size: 30px; grid-template-columns: 1fr 0.5fr 1fr; text-align: center; align-items: center; height: 30px;">
+        <input style="height: 32px;" id="legend-value" type="number" name="system.legend.value" value="{{system.legend.value}}"/>
+        <div>/</div>
+        <input style="height: 32px;" id="legend-max" type="number" name="system.legend.max" value="{{system.legend.max}}"/>
+    </div>
+</div>
+
+<!-- Armour values -->
+Armour soaks
+<div style="min-height: 1px; background-color: white; width: 100%;"></div>
+<div class="container-armour">
+    {{#with system.attributes.armour}}
+
+    <div>
+        <div class="name">{{ localize 'NEWEDO.damage.abbr.kin' }}</div>
+        <input type="number" class="score" name="system.attributes.armour.kin.value" value="{{kin.value}}" placeholder="0"/>
+    </div>
+    <div>
+        <div class="name">{{ localize 'NEWEDO.damage.abbr.ele' }}</div>
+        <input type="number" class="score" name="system.attributes.armour.ele.value" value="{{ele.value}}" placeholder="0"/>
+    </div>
+    <div>
+        <div class="name">{{ localize 'NEWEDO.damage.abbr.bio' }}</div>
+        <input type="number" class="score" name="system.attributes.armour.bio.value" value="{{bio.value}}" placeholder="0"/>
+    </div>
+    <div>
+        <div class="name">{{ localize 'NEWEDO.damage.abbr.arc' }}</div>
+        <input type="number" class="score" name="system.attributes.armour.arc.value" value="{{arc.value}}" placeholder="0"/>
+    </div>
+
+    {{/with}}
+</div>
+
+<!-- Character XP tracker -->
+<div style="min-height: 1px; background-color: white; width: 100%;"></div>
+<div style="display: flex; flex-direction: row; align-items: center;">
+    <span>EXP:</span>
+    <input style="margin: 4px;" type="number" name="system.attributes.xp.value" value="{{system.attributes.xp.value}}" />
+</div>
+<div style="min-height: 1px; background-color: white; width: 100%;"></div>
+
+<!-- Fate card container -->
+<div class="fate-card">
+    <b class="fate-roll" style="font-size: 14px;">{{localize 'NEWEDO.generic.fate'}} Card</b>
+    <div class="fate-list">
+        <!-- Loops through the characters list of fate card options-->
+
+        {{#each fates as |fate key|}}
+
+        <div class="fate-item item" data-item-id="{{fate._id}}">
+            <div>{{fate.system.range.max}} / {{fate.system.range.min}}</div>
+            <a class="item-edit">{{fate.name}}</a>
+        </div>
+
+        {{/each}}
+
+    </div>
+</div>

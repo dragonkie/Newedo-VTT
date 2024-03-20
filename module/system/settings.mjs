@@ -15,11 +15,12 @@ export default function registerSystemSettings() {
         }
     });
     //toggles between light and dark mode sheets
-    game.settings.register(game.system.id, "systemTheme", {
+    game.settings.register(game.system.id, "darkmode", {
         name: "Darkmode",
         hint: "when toggled, sheets will render out using dark mode styles",
         scope: "client",
         config: true,
+        requiresReload: true,
         type: Boolean,
         default: false,
         onChange: (value) => {

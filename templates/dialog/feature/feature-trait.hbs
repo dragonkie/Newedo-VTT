@@ -1,0 +1,91 @@
+<form autocomplete="off" system-theme="dark" style="padding: 8px;">
+    {{> "newedo.feature-title"}}
+    <div class="flexcol">
+        <!-- Core traits -->
+        <div class="form-group traits-core flexrow">
+            <div>
+                <label for="">NEWEDO.trait.core.power</label>
+                <input name="pow" type="number" value="{{data.pow}}">
+            </div>
+
+            <div>
+                <label for="">NEWEDO.trait.core.reflex</label>
+                <input name="ref" type="number" value="{{data.ref}}">
+            </div>
+
+            <div>
+                <label for="">NEWEDO.trait.core.heart</label>
+                <input name="hrt" type="number" value="{{data.hrt}}">
+            </div>
+
+            <div>
+                <label for="">NEWEDO.trait.core.savvy</label>
+                <input name="sav" type="number" value="{{data.sav}}">
+            </div>
+
+            <div>
+                <label for="">NEWEDO.trait.core.perception</label>
+                <input name="per" type="number" value="{{data.per}}">
+            </div>
+
+            <div>
+                <label for="">NEWEDO.trait.core.pressence</label>
+                <input name="pre" type="number" value="{{data.pre}}">
+            </div>
+        </div>
+        <!-- Derived traits -->
+        <div class="form-group traits-derived flexrow">
+            <div>
+                <label for="">NEWEDO.trait.derived.defence</label>
+                <input name="def" type="number" value="{{data.def}}">
+            </div>
+
+            <div>
+                <label for="">NEWEDO.trait.derived.resolve</label>
+                <input name="res" type="number" value="{{data.res}}">
+            </div>
+
+            <div>
+                <label for="">NEWEDO.trait.derived.move</label>
+                <input name="move" type="number" value="{{data.move}}">
+            </div>
+
+            <div>
+                <label for="">NEWEDO.trait.derived.initative</label>
+                <input name="init" type="number" value="{{data.init}}">
+            </div>
+
+            <div>
+                <label for="">NEWEDO.trait.derived.health</label>
+                <input name="hp" type="number" value="{{data.hp}}">
+            </div>
+            <!-- Backgrounds -->
+            <div class="form-group traits-derived flexrow">
+                <div>
+                    <label for="">NEWEDO.background.contacts</label>
+                    <input name="contacts" type="number" value="{{data.contacts}}">
+                </div>
+
+                <div>
+                    <label for="">NEWEDO.background.followers</label>
+                    <input name="followers" type="number" value="{{data.followers}}">
+                </div>
+
+                <div>
+                    <label for="">NEWEDO.background.soul</label>
+                    <input name="soul" type="number" value="{{data.soul}}">
+                </div>
+
+                <div>
+                    <label for="">NEWEDO.background.status</label>
+                    <input name="status" type="number" value="{{data.status}}">
+                </div>
+
+                <div>
+                    <label for="">NEWEDO.background.wealth</label>
+                    <input name="wealth" type="number" value="{{data.wealth}}">
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

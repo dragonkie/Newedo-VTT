@@ -21,7 +21,7 @@ export default class NewedoActorSheet extends ActorSheet {
   static get defaultOptions() {
     var merged = mergeObject(super.defaultOptions, {
       classes: ["newedo", "sheet", "actor"],
-      template: `systems/${game.system.id}/templates/actor/actor-sheet.html`,
+      template: `systems/${game.system.id}/templates/actor/actor-sheet.hbs`,
       width: 800,
       height: 700,
       tabs: [{ navSelector: ".sheet-tabs", contentSelector: ".sheet-body", initial: "traits", group: "primary"}]
@@ -29,9 +29,38 @@ export default class NewedoActorSheet extends ActorSheet {
     return merged
   }
 
+  async _onDragStart(event) {
+    await super._onDragStart(event);
+    const data = {
+      event: event,
+      files: event.dataTransfer.files,
+      items: event.dataTransfer.items,
+      types: event.dataTransfer.types,
+      data: JSON.parse(event.dataTransfer.getData("text/plain"))
+    }
+    LOGGER.debug(`ACTOR | DRAG | START`, data);
+
+  }
+
+  async _onDrop(event) {
+    super._onDrop(event);
+  }
+
+  async _onDropItem(event, data) {
+    super._onDropItem(event, data);
+  }
+
+  async _onDropActor(event, data) {
+    super._onDropActor(event, data);
+  }
+
+  async _onDropActiveEffect(event, data) {
+    super._onDropActiveEffect(event, data);
+  }
+
   /** @override */
   get template() {
-    return `systems/${game.system.id}/templates/actor/actor-${this.actor.type}-sheet.html`;
+    return `systems/${game.system.id}/templates/actor/actor-${this.actor.type}-sheet.hbs`;
   }
 
   /* --------------------------------------------- Render functions --------------------------------------------- */
@@ -102,6 +131,9 @@ export default class NewedoActorSheet extends ActorSheet {
     context.flags = actorData.flags;
     context.items = actorData.items;
     context.editable = this.isEditable && (this._mode === this.constructor.MODES.EDIT);
+    
+    if (game.settings.get(game.system.id, "darkmode")) context.theme = "dark"
+    else context.theme = "light";
 
     // Prepare character data and items.
     if (actorData.type == 'character') {
@@ -135,20 +167,20 @@ export default class NewedoActorSheet extends ActorSheet {
     //core traits
     for (let [k, v] of Object.entries(core)) {
       v.label = sysUtil.Localize(CONFIG.NEWEDO.traits.core[k]);
-      v.abr = sysUtil.Localize(CONFIG.NEWEDO.traits.coreAbbreviations[k]);
+      v.abr = sysUtil.Localize(CONFIG.NEWEDO.traits.core.abbr[k]);
     }
     // Derived traits.
     for (let [k, v] of Object.entries(derived)) {
       v.label = sysUtil.Localize(CONFIG.NEWEDO.traits.derived[k]);
-      v.abr = sysUtil.Localize(CONFIG.NEWEDO.traits.derivedAbbreviations[k]);
+      v.abr = sysUtil.Localize(CONFIG.NEWEDO.traits.derived.abbr[k]);
     }
     //localize armour labels
     for (let [k, v] of Object.entries(context.system.attributes.armour)) {
-      v.label = sysUtil.Localize(CONFIG.NEWEDO.damageTypes[k]);
+      v.label = sysUtil.Localize(CONFIG.NEWEDO.damage.abbr[k]);
     }
 
     for (let [k, v] of Object.entries(context.system.background)) {
-      v.label = sysUtil.Localize(CONFIG.NEWEDO.backgrounds[k]);
+      v.label = sysUtil.Localize(CONFIG.NEWEDO.background[k]);
     }
   }
 

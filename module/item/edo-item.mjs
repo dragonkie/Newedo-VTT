@@ -34,7 +34,6 @@ export default class NewedoItem extends Item {
     else if (type == `kami`) {}
     else if (type == `rote`) this._prepareRote();
     else if (type == `fate`) this._prepareFate();
-    else if (type == `culture`) this._prepareCulture();
   }
 
   /* ----------------------------------- Item prep functions ---------------------------------------------- */
@@ -62,10 +61,6 @@ export default class NewedoItem extends Item {
         system.formula += `${skill.system.formula}`;
       }
     }
-  }
-
-  _prepareCulture() {
-    
   }
 
   /**

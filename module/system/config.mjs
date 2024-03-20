@@ -9,14 +9,14 @@ NEWEDO.traits = {
     sav: "NEWEDO.trait.core.sav",
     per: "NEWEDO.trait.core.per",
     pre: "NEWEDO.trait.core.pre",
-  },
-  coreAbbreviations: {
-    pow: "NEWEDO.trait.core.abbr.pow",
-    ref: "NEWEDO.trait.core.abbr.ref",
-    hrt: "NEWEDO.trait.core.abbr.hrt",
-    sav: "NEWEDO.trait.core.abbr.sav",
-    per: "NEWEDO.trait.core.abbr.per",
-    pre: "NEWEDO.trait.core.abbr.pre",
+    abbr : {
+      pow: "NEWEDO.trait.core.abbr.pow",
+      ref: "NEWEDO.trait.core.abbr.ref",
+      hrt: "NEWEDO.trait.core.abbr.hrt",
+      sav: "NEWEDO.trait.core.abbr.sav",
+      per: "NEWEDO.trait.core.abbr.per",
+      pre: "NEWEDO.trait.core.abbr.pre",
+    },
   },
   derived: {
     init: "NEWEDO.trait.derived.init",
@@ -24,14 +24,14 @@ NEWEDO.traits = {
     def: "NEWEDO.trait.derived.def",
     res: "NEWEDO.trait.derived.res",
     hp: "NEWEDO.trait.derived.hp",
-  },
-  derivedAbbreviations: {
-    init: "NEWEDO.trait.derived.abbr.init",
-    move: "NEWEDO.trait.derived.abbr.move",
-    def: "NEWEDO.trait.derived.abbr.def",
-    res: "NEWEDO.trait.derived.abbr.res",
-    hp: "NEWEDO.trait.derived.abbr.hp",
-  },
+    abbr : {
+      init: "NEWEDO.trait.derived.abbr.init",
+      move: "NEWEDO.trait.derived.abbr.move",
+      def: "NEWEDO.trait.derived.abbr.def",
+      res: "NEWEDO.trait.derived.abbr.res",
+      hp: "NEWEDO.trait.derived.abbr.hp",
+    }
+  }
 };
 
 NEWEDO.generic = {
@@ -41,12 +41,18 @@ NEWEDO.generic = {
   rank: "NEWEDO.generic.rank"
 };
 
-NEWEDO.damageTypes = {
-  kin: "NEWEDO.global.damage.kinetic",
-  ele: "NEWEDO.global.damage.elemental",
-  bio: "NEWEDO.global.damage.biological",
-  arc: "NEWEDO.global.damage.arcane",
-};
+NEWEDO.damage = {
+  kin: "NEWEDO.damage.kinetic",
+  ele: "NEWEDO.damage.elemental",
+  bio: "NEWEDO.damage.biological",
+  arc: "NEWEDO.damage.arcane",
+  abbr: {
+    kin: "NEWEDO.damage.abbr.kinetic",
+    ele: "NEWEDO.damage.abbr.elemental",
+    bio: "NEWEDO.damage.abbr.biological",
+    arc: "NEWEDO.damage.abbr.arcane",
+  }
+}
 
 NEWEDO.attributes = {
   exp: "NEWEDO.AttributeExp",
@@ -147,12 +153,23 @@ NEWEDO.skill = {
   }
 };
 
-NEWEDO.backgrounds = {
-  contacts: "NEWEDO.global.bg.contacts",
-  followers: "NEWEDO.global.bg.followers",
-  status: "NEWEDO.global.bg.status",
-  wealth: "NEWEDO.global.bg.wealth",
-  soul: "NEWEDO.global.bg.soul",
+NEWEDO.sheet = {
+  tab : {// Navigation tabs
+    trait: "NEWEDO.sheet.nav.trait",
+    skill: "NEWEDO.sheet.nav.skill",
+    fate: "NEWEDO.sheet.nav.fate",
+    item: "NEWEDO.sheet.nav.item",
+    magic: "NEWEDO.sheet.nav.magic",
+    biography: "NEWEDO.sheet.nav.biography"
+  }
+}
+
+NEWEDO.background = {
+  contacts: "NEWEDO.background.contacts",
+  followers: "NEWEDO.background.followers",
+  status: "NEWEDO.background.status",
+  wealth: "NEWEDO.background.wealth",
+  soul: "NEWEDO.background.soul",
 };
 
 NEWEDO.types = {
@@ -163,4 +180,13 @@ NEWEDO.types = {
   actor : {
     character: "TYPES.actor.character"
   }
+}
+
+NEWEDO.biography = {
+  personality: "NEWEDO.biography.personality",
+  appearance: "NEWEDO.biography.appearance",
+  background: "NEWEDO.biography.background",
+  ambition: "NEWEDO.biography.ambition",
+  ideal: "NEWEDO.biography.ideal",
+  fear: "NEWEDO.biography.fear"
 }

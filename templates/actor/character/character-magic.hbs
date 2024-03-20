@@ -1,0 +1,30 @@
+<div class="magic-tab tab-content">
+    <div>
+        <li class="items-header flexrow collapsible">
+            <span>Rote</span>
+            <span>Skill</span>
+            <span>Formula</span>
+            <span>Cost</span>
+            <span>Range</span>
+            <span>Targets</span>
+        </li>
+        <ol class="items-list">
+            {{#each rotes as | rote key |}}
+
+            <li class="item flexrow" data-item-id="{{rote._id}}" style="text-align: center;">
+                <!-- Link to the fate opens up the item sheet -->
+                <div class="item-name flexrow">
+                    <a class="item-edit">{{rote.name}}</a>
+                </div>
+                <div>{{rote.system.skill}}</div>
+                <a class="rollable item-detail" data-roll="{{rote.system.formula}}" data-label="{{rote.name}}">{{rote.system.formula}}</a>
+                <span class="item-detail">{{rote.system.cost}}</span>
+                <span class="item-detail">{{rote.system.range}}</span>
+                <span class="item-detail">{{rote.system.target.type}}</span>
+                {{#if ../editable}}<span class="item-delete"><img class="icon-trashcan" src="systems/newedo/icons/trash-can.svg"></span>{{/if}}
+            </li>
+
+            {{/each}}
+        </ol>
+    </div>
+</div>

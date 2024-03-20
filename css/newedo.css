@@ -24,11 +24,18 @@
   --text-shadow: 0 0 10px hotpink;
   --text-border: 0;
 }
+.newedo.sheet .tab[data-tab].active {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 10px;
+}
 .newedo.sheet .window-content {
   padding: 0;
 }
 .newedo.sheet .window-content form {
   display: flex;
+  flex-direction: column;
   flex: 1;
   background: var(--bg-c-primary, white) var(--bg-image, url(/ui/parchment.jpg)) repeat;
   color: var(--text-colour, black);
@@ -61,6 +68,10 @@
   color: var(--text-colour, black);
   background-color: var(--bg-c-primary);
   border: var(--text-border, 0);
+  min-width: 0;
+  min-height: 0;
+  padding: 4px;
+  resize: none;
 }
 .newedo.sheet .window-content form textarea:hover, .newedo.sheet .window-content form textarea:focus {
   box-shadow: var(--text-shadow);
@@ -276,6 +287,10 @@
   flex: 0;
 }
 
+.flex {
+  flex: 1;
+}
+
 .flex-between {
   justify-content: space-between;
 }
@@ -448,26 +463,22 @@
   overflow: auto;
 }
 .newedo .character .character-panel .container-armour {
-  display: grid;
-  grid-template-columns: auto auto;
+  display: flex;
+  flex-direction: row;
   text-align: center;
-  align-items: center;
 }
-.newedo .character .character-panel .container-armour span {
+.newedo .character .character-panel .container-armour div {
   display: flex;
   flex-direction: column;
-  border-right: 1px solid gray;
 }
-.newedo .character .character-panel .container-armour span div {
-  border: 0;
-}
-.newedo .character .character-panel .container-armour span div div {
+.newedo .character .character-panel .container-armour div div {
   font-size: 12px;
 }
-.newedo .character .character-panel .container-armour span div input {
+.newedo .character .character-panel .container-armour div input {
   font-size: 18px;
   height: 18px;
   border: 0;
+  padding: 0;
 }
 .newedo .character .character-panel .fate-card {
   width: 100%;
@@ -551,36 +562,29 @@
   display: inline;
   margin-right: 5px;
 }
-.newedo .character .tab[data-tab].active {
-  padding: 8px;
-  overflow: auto;
-}
 .newedo .character .tab-content {
   flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 .newedo .character .traits-tab .wrap-background {
-  display: grid;
-  gap: 4px;
-  grid-template-areas: "wealth soul" "followers contacts" "status contacts";
+  display: flex;
+  flex: 1;
+  flex-direction: row;
 }
 .newedo .character .traits-tab .wrap-background .container {
-  border-radius: 10px;
-  padding: 5px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
-.newedo .character .traits-tab .wrap-background .contacts {
-  grid-area: contacts;
+.newedo .character .traits-tab .wrap-background .container .title {
+  flex: 0;
 }
-.newedo .character .traits-tab .wrap-background .wealth {
-  grid-area: wealth;
-}
-.newedo .character .traits-tab .wrap-background .soul {
-  grid-area: soul;
-}
-.newedo .character .traits-tab .wrap-background .followers {
-  grid-area: followers;
-}
-.newedo .character .traits-tab .wrap-background .status {
-  grid-area: status;
+.newedo .character .traits-tab .wrap-background .container textarea {
+  margin: 0;
+  flex: 1;
+  min-width: none;
+  min-height: 50px;
 }
 .newedo .character .traits-tab .container-trait-core {
   min-width: 80px;
@@ -681,100 +685,56 @@
   margin: 0;
   padding: 0;
 }
-.newedo .character .fates-tab .items-list {
-  padding: 4px 0;
-  color: var(--text-colour, black);
-}
-.newedo .character .fates-tab .items-list .item {
-  height: 2rem;
-}
-.newedo .character .fates-tab .items-list .item-name {
-  flex: 2;
-  font-weight: 24px;
-}
-.newedo .character .fates-tab ol, .newedo .character .fates-tab ul {
-  margin: 0;
-  padding: 0;
-}
-.newedo .character .inventory-tab {
-  color: white;
-}
-.newedo .character .biography-tab .tab-wrapper {
-  padding: 10px;
-  display: grid;
-  grid-template-areas: "details details" "personality description" "ambition history" "ideals history" "fears history";
-  gap: 10px;
-}
-.newedo .character .biography-tab .container {
-  padding: 5px;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-}
-.newedo .character .biography-tab .container textarea {
-  border: 0;
-  width: 100%;
-  height: 100%;
-}
-.newedo .character .biography-tab .container input {
-  border: 0;
-  text-align: left;
-  padding: 0;
-}
-.newedo .character .biography-tab .container .label {
-  font-weight: bold;
-}
-.newedo .character .biography-tab .container .barrier {
-  height: 1px;
-  width: 100%;
-}
 .newedo .character .biography-tab .details {
-  grid-area: details;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 2px;
-}
-.newedo .character .biography-tab .details div {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  flex: 0 0;
 }
-.newedo .character .biography-tab .details div span {
-  text-align: right;
+.newedo .character .biography-tab .details > div {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.newedo .character .biography-tab .details > div > div {
+  display: inline-flex;
+  align-items: center;
+  margin: 2px;
 }
 .newedo .character .biography-tab .details input {
   margin-left: 4px;
   text-align: left;
-  font-size: 15px;
-  height: 17px;
   border: 0;
+  padding: 0px 0px 0px 4px;
 }
-.newedo .character .biography-tab .personality {
-  grid-area: personality;
+.newedo .character .biography-tab .descriptions {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
 }
-.newedo .character .biography-tab .description {
-  grid-area: description;
-}
-.newedo .character .biography-tab .ambition {
-  grid-area: ambition;
-}
-.newedo .character .biography-tab .ideals {
-  grid-area: ideals;
-}
-.newedo .character .biography-tab .fears {
-  grid-area: fears;
-}
-.newedo .character .biography-tab .history {
-  grid-area: history;
-}
-.newedo.sheet.item form {
+.newedo .character .biography-tab .descriptions > :first-child {
+  display: flex;
   flex-direction: column;
   flex: 1;
-  overflow: hidden;
 }
-.newedo.sheet.item form .tab[data-tab].active {
+.newedo .character .biography-tab .descriptions > :last-child {
   display: flex;
-  padding: 6px;
+  flex-direction: column;
+  flex: 1;
+}
+.newedo .character .biography-tab .descriptions .container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 4px;
+}
+.newedo .character .biography-tab .descriptions .container textarea {
+  min-width: 0;
+  min-height: 0;
+  resize: none;
+  flex: 1;
+}
+.newedo .character .inventory-tab {
+  color: white;
 }
 .newedo.sheet.item form .description-tab {
   display: flex;
