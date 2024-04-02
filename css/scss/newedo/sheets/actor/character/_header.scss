@@ -1,48 +1,29 @@
 .sheet-header {
-    padding: 10px 10px 10px 0px;
+    padding: 10px 10px 5px 0px;
+
     .character-name {
-        height: 50px;
+        height: 40px;
         flex: 2;
         margin: 0px 4px 4px 0px;
         padding: 4px 8px;
         border: 0;
         font-weight: bold;
-        background-color: var(--bg-c-secondary, none);
     }
+
     .portrait {
         align-items: center;
         max-width: 150px;
         margin-right: 10px;
+
         .profile-img {
-            flex: 0 0 150px;
             margin-right: 10px;
             border-radius: 15px;
             object-fit: cover;
             height: 150px;
             width: 150px;
         }
-        .hp-bar {
-            align-items: center;
-            text-align: center;
-            border: 1px solid black;
-            border-radius: 15px;
+    }
 
-            input {
-                border: none;
-            }
-        }
-    }
-    .background {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        input {
-            border: 0;
-            font-size: 14px;
-            height: 16px;
-            padding: 0;
-        }
-    }
     .list-derived {
         display: inline;
         margin-right: 5px;

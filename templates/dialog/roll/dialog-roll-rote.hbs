@@ -1,0 +1,27 @@
+<form class="roll-dialog-rote">
+    <div class="form-group">
+        <label>{{shinpi.label}}:</label>
+        <input type="text" name="trait" value="{{shinpi.rank}}d10"/>
+    </div>
+    <div class="form-group">
+        <label>Skill:</label>
+        <input type="text" name="trait" value="{{skill.formula}}"/>
+    </div>
+    <div class="form-group">
+        <label>Modifiers:</label>
+        <input type="text" name="mods"/>
+    </div>
+    <div class="form-group">
+        <label>Situational Bonus:</label>
+        <input type="text" name="bonus"/>
+    </div>
+    <div class="form-group">
+        <label>Spend Legend:</label>
+        <input type="number" name="legend" max="5" min="0"/>
+    </div>
+    <div class="form-group">
+        <label>Wounds:</label>
+        <input type="checkbox" name="wounded" checked="true" />
+        <input type="text" name="woundValue" value="{{wound.penalty}}" />
+    </div>
+</form>

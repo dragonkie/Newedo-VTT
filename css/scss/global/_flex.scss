@@ -17,6 +17,16 @@
   text-align: right;
 }
 
+.flexrow {
+  display: flex;
+  flex-direction: row;
+}
+
+.flexcol {
+  display: flex;
+  flex-direction: column;
+}
+
 .flexshrink {
   flex: 0;
 }

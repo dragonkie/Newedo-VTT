@@ -1,16 +1,5 @@
-<form class="{{cssClass}} {{item.type}}" autocomplete="off" system-theme="dark">
-  <header class="sheet-header">
-    <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
-    <div class="header-fields">
-      <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
-    </div>
-  </header>
-
-  <!-- Sheet Tab Navigation -->
-  <nav class="sheet-tabs tabs flexrow" data-group="primary">
-    <a class="item" data-tab="description">Description</a>
-    <a class="item" data-tab="settings">Settings</a>
-  </nav>
+<form class="{{cssClass}} {{item.type}}" autocomplete="off" system-theme="{{theme}}">
+  {{> 'newedo.item-header'}}
 
   <!-- Sheet Body -->
   <section class="sheet-body">
@@ -52,7 +41,7 @@
     <div class="tab settings" data-group="primary" data-tab="settings">
       <div class="settings-tab flexcol">
 
-        <div class="flexrow">
+        <div class="flexrow"">
           <div>Skill:</div>
           <select name="system.skill">
             <option selected disabled hidden value="{{system.skill}}">{{system.skill}}</option>
@@ -113,26 +102,26 @@
           </select>
         </div>
 
-        <div class="flexrow">
+        <div class="flexrow"">
           <div>Legend Cost:</div>
           <input type="number" placeholder="Cost" name="system.cost" value="{{system.cost}}"/>
         </div>
 
-        <div class="flexrow">
+        <div class="flexrow"">
           <div>Range:</div>
           <input type="number" placeholder="Range" name="system.range" value="{{system.range}}"/>
         </div>
 
-        <div class="flexrow">
+        <div class="flexrow"">
           <div>Kami:</div>
         </div>
 
-        <div class="flexrow">
+        <div class="flexrow"">
           <div>Target Number:</div>
           <input type="number" placeholder="TN" name="system.tn" value="{{system.tn}}"/>
         </div>
 
-        <div class="flexrow">
+        <div class="flexrow"">
           <div>Action cost:</div>
           <select name="system.action">
             <option value="Full">Full</option>
@@ -140,16 +129,16 @@
           </select>
         </div>
 
-        <div class="flexrow">
+        <div class="flexrow"">
           <div>Casting Time:</div>
         </div>
 
-        <div class="flexrow">
+        <div class="flexrow"">
           <div>Duration:</div>
           <input type="number" placeholder="Duration" name="system.duration" value="{{system.duration}}"/>
         </div>
 
-        <div class="flexrow">
+        <div class="flexrow"">
           <div>Target type:</div>
           <select name="system.target.type">
             <option selected disabled hidden value="{{system.target.type}}">{{system.target.type}}</option>
@@ -167,11 +156,11 @@
             </optgroup>
           </select>
         </div>
-        <div class="flexrow">
+        <div class="flexrow"">
           <div>Target Count:</div>
           <input type="number" placeholder="Targets" name="system.target.count" value="{{system.target.count}}"/>
         </div>
-        <div class="flexrow">
+        <div class="flexrow"">
           <div>Area Size:</div>
           <input type="number" placeholder="Size" name="system.target.size" value="{{system.target.size}}"/>
         </div>

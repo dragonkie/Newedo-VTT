@@ -26,7 +26,7 @@ import LOGGER from "../utility/logger.mjs";
     `systems/${id}/templates/actor/character/character-equipment.hbs`,
 
     // Item sheets
-
+    `systems/${id}/templates/item/parts/item-header.hbs`,
     // Feature config
     `systems/${id}/templates/dialog/feature/feature-title.hbs`
   ];

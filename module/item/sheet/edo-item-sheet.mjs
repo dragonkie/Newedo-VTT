@@ -91,6 +91,9 @@ export default class NewedoItemSheet extends ItemSheet {
         const item = context.item;
         const source = item.toObject();
 
+        context.theme = "light";
+        if (game.settings.get(game.system.id, "darkmode")) context.theme = "dark";
+
         foundry.utils.mergeObject(context, {
             source: source.system,
             system: item.system,

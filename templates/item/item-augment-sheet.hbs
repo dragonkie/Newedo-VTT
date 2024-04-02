@@ -1,14 +1,7 @@
-<form class="{{cssClass}} {{item.type}}" system-theme="dark">
-    <header class="sheet-header">
-        <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
-        <div class="header-fields">
-          <h1 class="charname"><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
-        </div>
-    </header>
-    <nav class="sheet-tabs tabs flexrow" data-group="primary" style="text-align: center; align-items: center; border: 0; margin: 0; padding: 0px 10px 0px 10px;">
-        <a class="item" data-tab="description">Description</a>
-        <a class="item" data-tab="settings">Settings</a>
-    </nav>
+<form class="{{cssClass}} {{item.type}}" system-theme="{{theme}}">
+
+    {{> 'newedo.item-header'}}
+
     <section class="sheet-body" style="overflow: auto; padding: 6px; height: 1fr;">
         <div class="tab description" data-group="primary" data-tab="description">
             

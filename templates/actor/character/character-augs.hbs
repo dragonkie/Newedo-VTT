@@ -2,7 +2,7 @@
     <!-- Ammount of trait noise the character has gathered -->
     <div>
         Trait Noise
-        <div class="flexrow" style="text-align: center; align-items: center;">
+        <div class="flexrow"" style="text-align: center; align-items: center;">
             {{#each system.traits.core as | trait key |}}
                 <div style="align-items: center; min-width: 70px;">
                     <label for="system.traits.core.{{key}}.value" class="resource-label rollable flexlarge align-left" data-roll="{{trait.rank}}d10x10" data-label="{{trait.abr}}">{{trait.abr}}</label>
@@ -13,7 +13,7 @@
     </div>
     <!-- List of augments the character has -->
     <div>
-        <li class="items-header flexrow collapsible">
+        <li class="items-header flexrow" collapsible">
             <span>Augment</span>
             <span>Noise</span>
             <span>Biofeedback</span>
@@ -22,7 +22,7 @@
         <ol class="items-list">
             {{#each augments as | augment key |}}
 
-            <li class="item flexrow" data-item-id="{{augment._id}}">
+            <li class="item flexrow"" data-item-id="{{augment._id}}">
                 <!-- Link to the fate opens up the item sheet -->
                 <span class="item-name">
                     <a class="item-edit">{{augment.name}}</a>

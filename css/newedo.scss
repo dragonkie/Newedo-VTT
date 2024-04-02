@@ -11,6 +11,7 @@
 @import 'scss/global/window';
 @import 'scss/global/grid';
 @import 'scss/global/flex';
+@import 'scss/global/sheet';
 
 //anything imported into this group will require its PARENT have the newedo class, if it needs to share the newedo class it should start with &
 .newedo {
@@ -28,4 +29,5 @@
 
   @import 'scss/components/icons';
   @import 'scss/components/buttons';
+ 
 }

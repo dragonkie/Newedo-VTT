@@ -1,405 +1,563 @@
 {
-  "Actor": {
-    "types": ["character", "npc", "pet", "vehicle"],
-    "templates": {
-      "base": {
-        "attributes": {
-          "size": {
-            "value": 5,
-            "min": 1,
-            "max": 10
-          },
-          "armour": {
-            "kin": {
-              "value": 0,
-              "bonus": 0
-            },
-            "ele": {
-              "value": 0,
-              "bonus": 0
-            },
-            "bio": {
-              "value": 0,
-              "bonus": 0
-            },
-            "arc": {
-              "value": 0,
-              "bonus": 0
+    "Actor": {
+        "types": [
+            "character",
+            "npc",
+            "pet",
+            "vehicle"
+        ],
+        "templates": {
+            "base": {
+                "attributes": {
+                    "size": {
+                        "value": 5,
+                        "min": 1,
+                        "max": 10
+                    },
+                    "armour": {
+                        "kin": {
+                            "value": 0,
+                            "bonus": 0
+                        },
+                        "ele": {
+                            "value": 0,
+                            "bonus": 0
+                        },
+                        "bio": {
+                            "value": 0,
+                            "bonus": 0
+                        },
+                        "arc": {
+                            "value": 0,
+                            "bonus": 0
+                        }
+                    },
+                    "wound": {
+                        "value": 1.00,
+                        "label": "Healthy"
+                    }
+                },
+                "traits": {
+                    "core": {
+                        "pow": {
+                            "value": 10,
+                            "min": 0,
+                            "rank": 1,
+                            "noise": 0,
+                            "bonuses": []
+                        },
+                        "ref": {
+                            "value": 10,
+                            "min": 0,
+                            "rank": 1,
+                            "noise": 0,
+                            "bonuses": []
+                        },
+                        "hrt": {
+                            "value": 10,
+                            "min": 0,
+                            "rank": 1,
+                            "noise": 0,
+                            "bonuses": []
+                        },
+                        "sav": {
+                            "value": 10,
+                            "min": 0,
+                            "rank": 1,
+                            "noise": 0,
+                            "bonuses": []
+                        },
+                        "shi": {
+                            "min": 0,
+                            "value": 0,
+                            "rank": 0,
+                            "bonuses": []
+                        },
+                        "per": {
+                            "value": 10,
+                            "min": 0,
+                            "rank": 1,
+                            "noise": 0,
+                            "bonuses": []
+                        },
+                        "pre": {
+                            "value": 10,
+                            "min": 0,
+                            "rank": 1,
+                            "noise": 0,
+                            "bonuses": []
+                        }
+                    },
+                    "derived": {
+                        "hp": {
+                            "value": 15,
+                            "min": 0,
+                            "max": 15,
+                            "mod": 1.5,
+                            "bonuses": []
+                        },
+                        "init": {
+                            "value": 1,
+                            "mod": 1,
+                            "bonuses": []
+                        },
+                        "move": {
+                            "value": 1,
+                            "mod": 1,
+                            "bonuses": []
+                        },
+                        "def": {
+                            "value": 1,
+                            "mod": 0.4,
+                            "bonuses": []
+                        },
+                        "res": {
+                            "value": 1,
+                            "mod": 0.4,
+                            "bonuses": []
+                        }
+                    }
+                },
+                "biography": {
+                    "description": ""
+                },
+                "bonuses": {
+                    "attack": {
+                        "weapon": {},
+                        "spell": {}
+                    }
+                }
             }
-          }
         },
-        "traits": {
-          "core": {
-            "pow": {
-              "value": 10,
-              "min": 0,
-              "rank": 1,
-              "noise": 0,
-              "bonuses": []
+        "character": {
+            "templates": [
+                "base"
+            ],
+            "legend": {
+                "value": 10,
+                "transactions": [],
+                "min": 0,
+                "max": 10
             },
-            "ref": {
-              "value": 10,
-              "min": 0,
-              "rank": 1,
-              "noise": 0,
-              "bonuses": []
+            "attributes": {
+                "level": {
+                    "value": 1,
+                    "min": 1,
+                    "max": 5
+                },
+                "xp": {
+                    "transactions": [],
+                    "min": 0,
+                    "value": 0
+                }
             },
-            "hrt": {
-              "value": 10,
-              "min": 0,
-              "rank": 1,
-              "noise": 0,
-              "bonuses": []
+            "background": {
+                "contacts": {
+                    "value": {
+                        "min": 1,
+                        "max": 100,
+                        "value": 1
+                    },
+                    "rank": {
+                        "min": 1,
+                        "max": 5,
+                        "value": 1
+                    }
+                },
+                "followers": {
+                    "value": {
+                        "min": 1,
+                        "max": 100,
+                        "value": 1
+                    },
+                    "rank": {
+                        "min": 1,
+                        "max": 5,
+                        "value": 1
+                    }
+                },
+                "soul": {
+                    "value": {
+                        "min": 1,
+                        "max": 100,
+                        "value": 1
+                    },
+                    "rank": {
+                        "min": 1,
+                        "max": 5,
+                        "value": 1
+                    }
+                },
+                "status": {
+                    "value": {
+                        "min": 1,
+                        "max": 100,
+                        "value": 1
+                    },
+                    "rank": {
+                        "min": 1,
+                        "max": 5,
+                        "value": 1
+                    }
+                },
+                "wealth": {
+                    "value": {
+                        "min": 1,
+                        "max": 100,
+                        "value": 1
+                    },
+                    "rank": {
+                        "min": 1,
+                        "max": 5,
+                        "value": 1
+                    }
+                }
             },
-            "sav": {
-              "value": 10,
-              "min": 0,
-              "rank": 1,
-              "noise": 0,
-              "bonuses": []
-            },
-            "per": {
-              "value": 10,
-              "min": 0,
-              "rank": 1,
-              "noise": 0,
-              "bonuses": []
-            },
-            "pre": {
-              "value": 10,
-              "min": 0,
-              "rank": 1,
-              "noise": 0,
-              "bonuses": []
+            "biography": {
+                "fear": "",
+                "ideal": "",
+                "ambition": "",
+                "background": "",
+                "appearance": "",
+                "personality": "",
+                "gender": "",
+                "weight": "",
+                "age": "",
+                "height": "",
+                "skin": "",
+                "eyes": "",
+                "hair": "",
+                "contacts": "",
+                "followers": "",
+                "soul": "",
+                "status": "",
+                "wealth": ""
             }
-          },
-          "derived": {
-            "hp": {
-              "value": 15,
-              "min": 0,
-              "max": 15,
-              "mod": 1.5,
-              "bonuses": []
-            },
-            "init": {
-              "value": 1,
-              "mod": 1,
-              "bonuses": []
-            },
-            "move": {
-              "value": 1,
-              "mod": 1,
-              "bonuses": []
-            },
-            "def": {
-              "value": 1,
-              "mod": 0.4,
-              "bonuses": []
-            },
-            "res": {
-              "value": 1,
-              "mod": 0.4,
-              "bonuses": []
+        },
+        "npc": {
+            "templates": [
+                "base"
+            ],
+            "attributes": {
+                "armour": {
+                    "kin": {
+                        "value": 0,
+                        "min": 0,
+                        "bonus": 0
+                    },
+                    "ele": {
+                        "value": 0,
+                        "min": 0,
+                        "bonus": 0
+                    },
+                    "bio": {
+                        "value": 0,
+                        "min": 0,
+                        "bonus": 0
+                    },
+                    "arc": {
+                        "value": 0,
+                        "min": 0,
+                        "bonus": 0
+                    }
+                }
             }
-          },
-          "shinpi" : {
-            "min": 0,
-            "value": 0,
-            "rank": 0,
-            "bonuses": []
-          }
-        },
-        "biography": {
-          "description": ""
-        },
-        "bonuses": {
-          "attack": {
-            "weapon": {},
-            "spell": {}
-          }
         }
-      }
     },
-    "character": {
-      "templates": ["base"],
-      "legend": {
-        "value": 10,
-        "transactions": [],
-        "min": 0,
-        "max": 10
-      },
-      "attributes": {
-        "level": {
-          "value": 1,
-          "min": 1,
-          "max": 5
+    "Item": {
+        "types": [
+            "weapon",
+            "armour",
+            "ammo",
+            "augment",
+            "upgrade",
+            "rote",
+            "kami",
+            "skill",
+            "fate",
+            "feature",
+            "lineage",
+            "culture",
+            "path"
+        ],
+        "templates": {
+            "base": {
+                "description": "",
+                "type": "none"
+            },
+            "justification": {},
+            "price": {
+                "price": {
+                    "base": 50,
+                    "mod": 1,
+                    "total": 50,
+                    "tn": 3
+                }
+            },
+            "physical": {
+                "quantity": 1,
+                "weight": 0
+            }
         },
-        "xp": {
-          "transactions": [],
-          "min": 0,
-          "value": 0
-        }
-      },
-      "background": {
-        "contacts": {
-          "value": {"min": 1, "max": 100, "value": 1},
-          "rank": {"min": 1, "max": 5, "value": 1}
+        "weapon": {
+            "templates": [
+                "base",
+                "price",
+                "physical"
+            ],
+            "type": "melee",
+            "isRanged": false,
+            "skill": "Light Melee",
+            "attack": {
+                "bonus": 0,
+                "value": 0,
+                "total": 0,
+                "formula": ""
+            },
+            "damage": {
+                "value": "1d8",
+                "bonus": 0,
+                "total": 0,
+                "formula": "",
+                "type": "kin"
+            },
+            "quality": {
+                "value": 1,
+                "min": 1,
+                "max": 10
+            },
+            "grit": {
+                "value": 0,
+                "min": 0,
+                "max": 20,
+                "atk": 0,
+                "dmg": 0
+            },
+            "magazine": {
+                "min": 0,
+                "max": 0,
+                "value": 0
+            },
+            "burst": {
+                "roll": 0,
+                "ammo": 0
+            }
         },
-        "followers": {
-          "value": {"min": 1, "max": 100, "value": 1},
-          "rank": {"min": 1, "max": 5, "value": 1}
+        "ammo": {
+            "templates": [
+                "base"
+            ]
         },
-        "soul": {
-          "value": {"min": 1, "max": 100, "value": 1},
-          "rank": {"min": 1, "max": 5, "value": 1}
-        },
-        "status": {
-          "value": {"min": 1, "max": 100, "value": 1},
-          "rank": {"min": 1, "max": 5, "value": 1}
-        },
-        "wealth": {
-          "value": {"min": 1, "max": 100, "value": 1},
-          "rank": {"min": 1, "max": 5, "value": 1}
-        }
-      },
-      "biography": {
-        "fear": "",
-        "ideal": "",
-        "ambition": "",
-        "background": "",
-        "appearance": "",
-        "personality": "",
-
-        "gender": "",
-        "weight": "",
-        "age": "",
-        "height": "",
-        "skin": "",
-        "eyes": "",
-        "hair": "",
-
-        "contacts": "",
-        "followers": "",
-        "soul": "",
-        "status": "",
-        "wealth": ""
-      }
-    },
-    "npc": {
-      "templates": ["base"],
-      "attributes": {
         "armour": {
-          "kin": {
-            "value": 0,
-            "min": 0,
-            "bonus": 0
-          },
-          "ele": {
-            "value": 0,
-            "min": 0,
-            "bonus": 0
-          },
-          "bio": {
-            "value": 0,
-            "min": 0,
-            "bonus": 0
-          },
-          "arc": {
-            "value": 0,
-            "min": 0,
-            "bonus": 0
-          }
+            "templates": [
+                "base"
+            ],
+            "soaks": [
+                0,
+                0,
+                0,
+                0
+            ],
+            "fragile": false,
+            "stealthy": false,
+            "intimidating": false,
+            "concealable": false
+        },
+        "augment": {
+            "templates": [
+                "base",
+                "price",
+                "physical"
+            ],
+            "installed": false,
+            "features": [],
+            "rank": 1,
+            "biofeedback": 0,
+            "noise": {
+                "pow": 0,
+                "ref": 0,
+                "hrt": 0,
+                "sav": 0,
+                "per": 0,
+                "pre": 0
+            }
+        },
+        "upgrade": {
+            "templates": [
+                "base"
+            ]
+        },
+        "kami": {
+            "templates": [
+                "base"
+            ],
+            "tier": 0
+        },
+        "rote": {
+            "templates": [
+                "base"
+            ],
+            "kami": "none",
+            "action": "full",
+            "useTn": {
+                "range": false,
+                "duraiton": false,
+                "targets": false
+            },
+            "tn": 5,
+            "cost": 5,
+            "range": 10,
+            "duration": 10,
+            "target": {
+                "type": "All",
+                "count": 0,
+                "size": {
+                    "x": 0,
+                    "y": 0,
+                    "z": 0
+                },
+                "readme": "size is a vec3, the values helping to define the size of an aoe, radius and blast only uses X as its a sphere / cube, line and cone use 2 for their length and width, all 3 can be used for custom areas with asymetrical dimmensions"
+            },
+            "skill": "none",
+            "formula": "Shinpi + relevant skill"
+        },
+        "feature": {
+            "templates": [
+                "base"
+            ]
+        },
+        "fate": {
+            "templates": [
+                "base"
+            ],
+            "locked": false,
+            "source": "none",
+            "range": {
+                "value": 0,
+                "total": 0,
+                "min": 0,
+                "max": 0,
+                "bonuses": [],
+                "method": "start"
+            }
+        },
+        "skill": {
+            "templates": [
+                "base"
+            ],
+            "ranks": [
+                0,
+                0,
+                0,
+                0,
+                0
+            ],
+            "xpValue": 0,
+            "trait": "hrt",
+            "rollTrait": true,
+            "bonuses": [],
+            "formula": "",
+            "unlocks": [
+                {
+                    "name": "rank 1 feature",
+                    "feature": "name of the feature this links too",
+                    "featureId": "identifier for the owned feature item"
+                },
+                {
+                    "name": "rank 2 feature",
+                    "feature": "name of the feature this links too",
+                    "featureId": "identifier for the owned feature item"
+                },
+                {
+                    "name": "rank 3 feature",
+                    "feature": "name of the feature this links too",
+                    "featureId": "identifier for the owned feature item"
+                },
+                {
+                    "name": "rank 4 feature",
+                    "feature": "name of the feature this links too",
+                    "featureId": "identifier for the owned feature item"
+                },
+                {
+                    "name": "rank 5 feature",
+                    "feature": "name of the feature this links too",
+                    "featureId": "identifier for the owned feature item"
+                }
+            ]
+        },
+        "lineage": {
+            "templates": [
+                "base"
+            ],
+            "appearance": "Dragons once ruled this land, Covered in vibrant scales, touting strong tails or even great horns and clawed hands",
+            "personality": "Well dragons can have varying personalities, they tend to share a few common themes. Each dragon typically has an obssesion of some kind, colletcing treasures, objects, fame, or power",
+            "society": "Favoring isolated envirments, dragons typically do not share their territory with others"
+        },
+        "culture": {
+            "templates": [
+                "base"
+            ],
+            "features": []
+        },
+        "path": {
+            "templates": [
+                "base"
+            ],
+            "rank": 1,
+            "features": [
+                [
+                    {
+                        "name": "item-giver",
+                        "type": "item",
+                        "value": {
+                            "name": "dummy-item",
+                            "uuid": "null"
+                        }
+                    }
+                ],
+                [
+                    {
+                        "name": "core-trait",
+                        "type": "core",
+                        "value": {
+                            "label": "pow",
+                            "type": "bonus",
+                            "value": 3
+                        }
+                    }
+                ],
+                [
+                    {
+                        "name": "derived-trait",
+                        "type": "derived",
+                        "value": {
+                            "label": "pow",
+                            "type": "Base, Final, Mod",
+                            "value": 3
+                        }
+                    }
+                ],
+                [
+                    {
+                        "name": "armour-up",
+                        "type": "soak",
+                        "value": {
+                            "label": "kin",
+                            "value": 1
+                        }
+                    }
+                ],
+                [
+                    {
+                        "name": "Kami-unlock",
+                        "type": "kami",
+                        "value": {
+                            "name": "Kami of Fire",
+                            "uuid": "empty"
+                        }
+                    }
+                ]
+            ]
         }
-      }
     }
-  },
-  
-  "Item": {
-    "types": [
-      "weapon", "armour", "ammo", "augment", "upgrade",
-      "rote", "kami", 
-      "skill", "fate", "feature", 
-      "lineage", "culture", "path"
-    ],
-    "templates": {
-      "base": {
-        "description": "",
-        "type": "none"
-      },
-      "justification": {
-
-      },
-      "price": { "price": {
-        "base": 50,
-        "mod": 1,
-        "total": 50,
-        "tn": 3
-      }},
-      "physical": {
-        "quantity": 1,
-        "weight": 0
-      }
-    },
-    "weapon": {
-      "templates": ["base", "price", "physical"],
-      "type": "melee",
-      "isRanged": false,
-
-      "skill": "Light Melee",
-
-      "attack": {
-        "bonus": 0,
-        "value": 0,
-        "total": 0,
-        "formula": ""
-      },
-
-      "damage": {
-        "value": "1d8",
-        "bonus": 0,
-        "total": 0,
-        "formula": "",
-        "type": "kin"
-      },
-
-      "quality": {
-        "value": 1,
-        "min": 1,
-        "max": 10
-      },
-
-      "grit": {
-        "value": 0,
-        "min": 0,
-        "max": 20,
-
-        "atk": 0,
-        "dmg": 0
-      },
-
-      "magazine": {
-        "min": 0,
-        "max": 0,
-        "value": 0
-      },
-      "burst": {
-        "roll": 0,
-        "ammo": 0
-      }
-    },
-    "ammo": {
-      "templates": ["base"]
-    },
-    "armour": {
-      "templates": ["base"],
-      "soaks": [0, 0, 0, 0],
-      "fragile": false,
-      "stealthy": false,
-      "intimidating": false,
-      "concealable": false
-      
-    },
-    "augment": {
-      "templates": ["base", "price", "physical"],
-      "installed": false,
-      "features": [],
-      "rank": 1,
-      "biofeedback": 0,
-      "noise": {
-        "pow": 0,
-        "ref": 0,
-        "hrt": 0,
-        "sav": 0,
-        "per": 0,
-        "pre": 0
-      }
-    },
-    "upgrade": {
-      "templates": ["base"]
-    },
-    "kami": {
-      "templates": ["base"],
-      "tier": 0
-    },
-    "rote": {
-      "templates": ["base"],
-
-      "kami": "none",
-      "action": "full",
-
-      "useTn": {
-        "range" : false,
-        "duraiton": false,
-        "targets" : false
-      },
-
-      "tn": 5,
-      "cost": 5,
-      "range": 10,
-      "duration": 10,
-
-      "target": {
-        "type" : "All",
-        "count": 0,
-        "size": {"x": 0, "y": 0, "z":0},
-        "readme": "size is a vec3, the values helping to define the size of an aoe, radius and blast only uses X as its a sphere / cube, line and cone use 2 for their length and width, all 3 can be used for custom areas with asymetrical dimmensions"
-      },
-
-      "skill": "none",
-      "formula": "Shinpi + relevant skill"
-    },
-    "feature": {
-      "templates": ["base"]
-    },
-    "fate": {
-      "templates": ["base"],
-      "locked": false,
-      "source": "none",
-      "range": {
-        "value": 0,
-        "total": 0,
-        "min": 0,
-        "max": 0,
-        "bonuses": [],
-        "method": "start"
-      }
-    },
-    "skill": {
-      "templates": ["base"],
-      "ranks": [0, 0, 0, 0, 0],
-      "xpValue": 0,
-      "trait": "hrt",
-      "rollTrait": true,
-      "bonuses": [],
-      "formula": "",
-      "unlocks": [
-        {"name": "rank 1 feature", "feature": "name of the feature this links too", "featureId": "identifier for the owned feature item"},
-        {"name": "rank 2 feature", "feature": "name of the feature this links too", "featureId": "identifier for the owned feature item"},
-        {"name": "rank 3 feature", "feature": "name of the feature this links too", "featureId": "identifier for the owned feature item"},
-        {"name": "rank 4 feature", "feature": "name of the feature this links too", "featureId": "identifier for the owned feature item"},
-        {"name": "rank 5 feature", "feature": "name of the feature this links too", "featureId": "identifier for the owned feature item"}
-      ]
-    },
-    "lineage": {
-      "templates": ["base"],
-      "appearance": "Dragons once ruled this land, Covered in vibrant scales, touting strong tails or even great horns and clawed hands",
-      "personality": "Well dragons can have varying personalities, they tend to share a few common themes. Each dragon typically has an obssesion of some kind, colletcing treasures, objects, fame, or power",
-      "society": "Favoring isolated envirments, dragons typically do not share their territory with others"
-    },
-    "culture": {
-      "templates": ["base"],
-      "features": []
-    },
-    "path": {
-      "templates": ["base"],
-      "rank": 1,
-      "features": [
-        [{"name": "item-giver", "type": "item", "value": {"name": "dummy-item", "uuid": "null"}}],
-        [{"name": "core-trait", "type": "core", "value": {"label": "pow", "type": "bonus", "value": 3}}],
-        [{"name": "derived-trait", "type": "derived", "value": {"label": "pow", "type": "Base, Final, Mod", "value": 3}}],
-        [{"name": "armour-up", "type": "soak", "value": {"label": "kin", "value": 1}}],
-        [{"name": "Kami-unlock", "type": "kami", "value": {"name": "Kami of Fire", "uuid": "empty"}}]
-      ]
-    }
-  }
 }

@@ -1,58 +1,91 @@
 .character-panel {
     display: flex;
-    flex: 0 0 auto;
+    flex: 0;
     flex-direction: column;
-    padding: 5px;
+    padding: 10px;
     max-width: 200px;
+    min-width: 200px;
     align-items: center;
+    text-align: center;
     overflow: auto;
+    font-size: 16px;
+    border-right: var(--panel-border);
+
+    input {
+        font-size: 18px;
+        height: 28px;
+        border: 0;
+        padding: 0;
+        min-width: none;
+        min-height: none;
+    }
+
+    >* {
+        margin-bottom: 5px;
+        border-bottom: 1px solid var(--text-colour);
+        padding-bottom: 5px;
+
+        &:last-child,
+        &:first-child {
+            border: 0;
+        }
+    }
 
     .container-armour {
         display: flex;
         flex-direction: row;
         text-align: center;
-        div {
+        font-size: 12px;
+
+        &>div {
             display: flex;
             flex-direction: column;
-            div {
-                font-size: 12px;
-            }
-            input {
-                font-size: 18px;
-                height: 18px;
-                border: 0;
-                padding: 0;
-            }
+            margin: 0px 2px 0px 2px;
         }
-        
+    }
+
+    .resource-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        text-align: center;
+        font-size: 18px;
+
+        &>* {
+            flex: 1
+        }
+    }
+
+    .exp-tracker {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        text-align: center;
     }
 
     .fate-card {
+        flex: 0;
         width: 100%;
-        display: flex;
-        flex-direction: column;
         align-items: center;
         text-align: center;
+        font-size: 12px;
 
-        .fate-roll {
-            font-size: 14px;
-        }
         .fate-list {
-            display: block;
             width: 100%;
-            padding: 2px;
-            
+            padding: 0;
+            margin: 0;
+
             .fate-item {
-                display: flex;
-                flex-direction: row;
-                border-bottom: 1px solid white;
+                border-bottom: 1px solid gray;
                 margin-top: 4px;
+
                 :first-child {
                     flex: 1;
                     text-align: right;
                 }
+
                 :last-child {
-                    margin-left: 12px;
+                    margin-left: 15px;
                     text-align: left;
                     flex: 2;
                 }

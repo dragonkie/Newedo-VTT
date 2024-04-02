@@ -1,18 +1,30 @@
-<form class="roll-dialog-skill">
+<form class="roll-dialog-skill" data-roll-type="skill">
     <div class="form-group">
-        <label>Trait [{{item.system.trait}}]:</label>
-        <input type="number" name="trait" value="{{trait.value}}" placeholder="Value"/>
+        <label>Trait: <b>{{trait.label}}</b></label>
+        <input type="checkbox" name="useTrait" checked="true">
+        <input type="text" name="trait" value="{{trait.rank}}d10" />
     </div>
     <div class="form-group">
-        <label>Skill Dice:</label>
-        <input type="text" name="skill" value="{{formula}}" placeholder=""/>
+        <label>Skill:</label>
+        <input type="text" name="skill" value="{{formula}}" />
     </div>
     <div class="form-group">
-        <label>Wound Penalty:</label>
-        <input type="checkbox" name="wounds"/>
+        <label>Modifiers:</label>
+        <input type="text" name="mods" value="{{mods}}" />
+    </div>
+    {{!-- Modifiers holds any dice from any source that isnt the core trait or skill dice, such as augs and race bonuses
+    --}}
+    <div class="form-group">
+        <label>Situational Bonus:</label>
+        <input type="text" name="bonus" placeholder="" />
     </div>
     <div class="form-group">
         <label>Spend Legend:</label>
-        <input type="number" name="legend" value="0" max="5" min="0"/>
+        <input type="number" name="legend" max="5" min="0" />
+    </div>
+    <div class="form-group">
+        <label>Wounds:</label>
+        <input type="checkbox" name="wounded" checked="true" />
+        <input type="text" name="woundValue" value="{{wound.penalty}}" />
     </div>
 </form>

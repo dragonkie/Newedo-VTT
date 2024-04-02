@@ -4,115 +4,14 @@
   font-family: "Roboto", sans-serif;
 }
 
-.newedo.sheet {
-  --bg-c-primary: white;
-  --bg-c-secondary: transparent;
-  --bg-c-tertiary: transparent;
-  --bg-image: url(/ui/parchment.jpg) repeat;
-  --text-colour: black;
-  --text-placeholder: darkgrey;
-  --text-shadow: 0 0 10px hotpink;
-  --text-border: 0;
-}
-.newedo.sheet [system-theme=dark] {
-  --bg-c-primary: rgb(61, 61, 61);
-  --bg-c-secondary: rgb(51, 51, 51);
-  --bg-c-tertiary: rgb(82, 82, 82);
-  --bg-image: none;
-  --text-colour: white;
-  --text-placeholder: grey;
-  --text-shadow: 0 0 10px hotpink;
-  --text-border: 0;
-}
-.newedo.sheet .tab[data-tab].active {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  padding: 10px;
-}
-.newedo.sheet .window-content {
-  padding: 0;
-}
-.newedo.sheet .window-content form {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  background: var(--bg-c-primary, white) var(--bg-image, url(/ui/parchment.jpg)) repeat;
+a.inline-roll {
+  background-color: var(--c-secondary, white);
   color: var(--text-colour, black);
 }
-.newedo.sheet .window-content form select {
-  color: var(--text-colour, black);
-  background-color: var(--bg-c-primary, transparent);
-}
-.newedo.sheet .window-content form select option {
-  color: var(--text-colour, black);
-  background-color: var(--bg-c-primary, transparent);
-}
-.newedo.sheet .window-content form select optgroup {
-  color: var(--text-colour, black);
-  background-color: var(--bg-c-tertiary, transparent);
-}
-.newedo.sheet .window-content form input {
-  color: var(--text-colour, black);
-  background-color: var(--bg-c-primary, none);
-  border: var(--text-border);
-}
-.newedo.sheet .window-content form input::placeholder {
-  color: var(--text-placeholder, lightgray);
-}
-.newedo.sheet .window-content form input:hover, .newedo.sheet .window-content form input:focus {
-  box-shadow: var(--text-shadow);
-  cursor: pointer;
-}
-.newedo.sheet .window-content form textarea {
-  color: var(--text-colour, black);
-  background-color: var(--bg-c-primary);
-  border: var(--text-border, 0);
-  min-width: 0;
-  min-height: 0;
-  padding: 4px;
-  resize: none;
-}
-.newedo.sheet .window-content form textarea:hover, .newedo.sheet .window-content form textarea:focus {
-  box-shadow: var(--text-shadow);
-}
-.newedo.sheet .window-content form option {
-  color: var(--text-colour, black);
-}
-.newedo.sheet .window-content form img {
-  border: 0;
-}
-.newedo.sheet .window-content form .tab[data-tab].active {
-  display: flex;
-  flex: 1;
-}
-.newedo.sheet .window-content form .sheet-body {
-  flex: 1;
-  display: flex;
-  background-color: var(--bg-c-secondary, gray);
-  overflow: auto;
-}
-.newedo.sheet .window-content form .sheet-tabs {
-  border: 0;
-  margin: 0;
-}
-.newedo.sheet .window-content form .sheet-tabs .item.active {
-  border-radius: 5px 5px 0px 0px;
-  border: 1px solid rgb(112, 112, 112);
-  border-bottom: 0;
-  background-color: var(--bg-c-secondary);
-}
-.newedo.sheet .window-content form .sheet-tabs .item {
-  border-radius: 0px;
-  border: 0;
-  border-bottom: 1px solid rgb(112, 112, 112);
-  background-color: var(--bg-c-primary);
-}
-.newedo.sheet a.inline-roll {
-  background-color: var(--bg-c-secondary, white);
-  color: var(--text-colour, black);
-}
-.newedo.sheet .rollable:hover, .newedo.sheet .rollable:focus, .newedo.sheet .fate-roll:hover, .newedo.sheet .fate-roll:focus {
+
+.rollable:hover, .rollable:focus,
+.fate-roll:hover,
+.fate-roll:focus {
   text-shadow: var(--text-shadow, red);
   cursor: pointer;
 }
@@ -283,6 +182,16 @@
   text-align: right;
 }
 
+.flexrow {
+  display: flex;
+  flex-direction: row;
+}
+
+.flexcol {
+  display: flex;
+  flex-direction: column;
+}
+
 .flexshrink {
   flex: 0;
 }
@@ -312,6 +221,149 @@
 .align-center {
   justify-content: center;
   text-align: center;
+}
+
+[system-theme] {
+  --c-primary: transparent;
+  --c-secondary: transparent;
+  --c-tertiary: transparent;
+  --bg-image: url(/ui/parchment.jpg) repeat;
+  --text-colour: black;
+  --text-placeholder: darkgrey;
+  --text-shadow: 0 0 10px hotpink;
+  --text-border: 0;
+  --input-border: 1px solid gray;
+  --input-bg-inner: rgba(55, 55, 55, 0.2);
+  --input-bg-outter: rgba(55, 55, 55, 0.2);
+  --panel-border: 1px groove var(--text-colour);
+}
+
+[system-theme=dark] {
+  --c-primary: rgb(61, 61, 61);
+  --c-secondary: rgb(51, 51, 51);
+  --c-tertiary: rgb(82, 82, 82);
+  --bg-image: none;
+  --text-colour: white;
+  --text-placeholder: grey;
+  --text-shadow: 0 0 10px hotpink;
+  --text-border: 0;
+  --input-border: none;
+  --input-bg-inner: var(--c-primary);
+  --input-bg-outter: var(--c-secondary);
+  --panel-border: 0;
+}
+
+.sheet.actor .tab[data-tab].active,
+.sheet.item .tab[data-tab].active {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding: 10px;
+}
+.sheet.actor .window-content,
+.sheet.item .window-content {
+  padding: 0;
+}
+.sheet.actor form,
+.sheet.item form {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background: var(--c-primary, white) var(--bg-image, url(/ui/parchment.jpg)) repeat;
+  color: var(--text-colour, black);
+}
+.sheet.actor form select,
+.sheet.item form select {
+  color: var(--text-colour, black);
+  background-color: var(--c-primary, transparent);
+}
+.sheet.actor form select option,
+.sheet.item form select option {
+  color: var(--text-colour, black);
+  background-color: var(--c-primary, transparent);
+}
+.sheet.actor form select optgroup,
+.sheet.item form select optgroup {
+  color: var(--text-colour, black);
+  background-color: var(--c-tertiary, transparent);
+}
+.sheet.actor form input,
+.sheet.item form input {
+  color: var(--text-colour, black);
+  background-color: var(--input-bg-outter, none);
+  border: var(--text-border);
+}
+.sheet.actor form input::placeholder,
+.sheet.item form input::placeholder {
+  color: var(--text-placeholder, lightgray);
+}
+.sheet.actor form input:hover, .sheet.actor form input:focus,
+.sheet.item form input:hover,
+.sheet.item form input:focus {
+  box-shadow: var(--text-shadow);
+  cursor: pointer;
+}
+.sheet.actor form textarea,
+.sheet.item form textarea {
+  color: var(--text-colour, black);
+  background-color: var(--c-primary);
+  border: var(--text-border, 0);
+  min-width: 0;
+  min-height: 0;
+  padding: 4px;
+  resize: none;
+}
+.sheet.actor form textarea:hover, .sheet.actor form textarea:focus,
+.sheet.item form textarea:hover,
+.sheet.item form textarea:focus {
+  box-shadow: var(--text-shadow);
+}
+.sheet.actor form option,
+.sheet.item form option {
+  color: var(--text-colour, black);
+}
+.sheet.actor form img,
+.sheet.item form img {
+  border: 0;
+}
+.sheet.actor form .sheet-body,
+.sheet.item form .sheet-body {
+  flex: 1;
+  display: flex;
+  background-color: var(--c-secondary, gray);
+  overflow: auto;
+}
+.sheet.actor form .sheet-body input,
+.sheet.item form .sheet-body input {
+  background-color: var(--input-bg-inner, none);
+}
+.sheet.actor form .sheet-body textarea,
+.sheet.item form .sheet-body textarea {
+  background-color: var(--input-bg-inner, none);
+}
+.sheet.actor form .tab[data-tab].active,
+.sheet.item form .tab[data-tab].active {
+  display: flex;
+  flex: 1;
+}
+.sheet.actor form .sheet-tabs,
+.sheet.item form .sheet-tabs {
+  border: 0;
+  margin: 0;
+}
+.sheet.actor form .sheet-tabs .item.active,
+.sheet.item form .sheet-tabs .item.active {
+  border-radius: 5px 5px 0px 0px;
+  border: 1px solid rgb(112, 112, 112);
+  border-bottom: 0;
+  background-color: var(--c-secondary);
+}
+.sheet.actor form .sheet-tabs .item,
+.sheet.item form .sheet-tabs .item {
+  border-radius: 0px;
+  border: 0;
+  border-bottom: 1px solid rgb(112, 112, 112);
+  background-color: var(--c-primary);
 }
 
 .newedo {
@@ -455,50 +507,74 @@
 }
 .newedo .character .character-panel {
   display: flex;
-  flex: 0 0 auto;
+  flex: 0;
   flex-direction: column;
-  padding: 5px;
+  padding: 10px;
   max-width: 200px;
+  min-width: 200px;
   align-items: center;
+  text-align: center;
   overflow: auto;
+  font-size: 16px;
+  border-right: var(--panel-border);
+}
+.newedo .character .character-panel input {
+  font-size: 18px;
+  height: 28px;
+  border: 0;
+  padding: 0;
+  min-width: none;
+  min-height: none;
+}
+.newedo .character .character-panel > * {
+  margin-bottom: 5px;
+  border-bottom: 1px solid var(--text-colour);
+  padding-bottom: 5px;
+}
+.newedo .character .character-panel > *:last-child, .newedo .character .character-panel > *:first-child {
+  border: 0;
 }
 .newedo .character .character-panel .container-armour {
   display: flex;
   flex-direction: row;
   text-align: center;
-}
-.newedo .character .character-panel .container-armour div {
-  display: flex;
-  flex-direction: column;
-}
-.newedo .character .character-panel .container-armour div div {
   font-size: 12px;
 }
-.newedo .character .character-panel .container-armour div input {
-  font-size: 18px;
-  height: 18px;
-  border: 0;
-  padding: 0;
-}
-.newedo .character .character-panel .fate-card {
-  width: 100%;
+.newedo .character .character-panel .container-armour > div {
   display: flex;
   flex-direction: column;
+  margin: 0px 2px 0px 2px;
+}
+.newedo .character .character-panel .resource-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: center;
+  font-size: 18px;
+}
+.newedo .character .character-panel .resource-container > * {
+  flex: 1;
+}
+.newedo .character .character-panel .exp-tracker {
+  display: flex;
+  flex-direction: row;
   align-items: center;
   text-align: center;
 }
-.newedo .character .character-panel .fate-card .fate-roll {
-  font-size: 14px;
+.newedo .character .character-panel .fate-card {
+  flex: 0;
+  width: 100%;
+  align-items: center;
+  text-align: center;
+  font-size: 12px;
 }
 .newedo .character .character-panel .fate-card .fate-list {
-  display: block;
   width: 100%;
-  padding: 2px;
+  padding: 0;
+  margin: 0;
 }
 .newedo .character .character-panel .fate-card .fate-list .fate-item {
-  display: flex;
-  flex-direction: row;
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid gray;
   margin-top: 4px;
 }
 .newedo .character .character-panel .fate-card .fate-list .fate-item :first-child {
@@ -506,7 +582,7 @@
   text-align: right;
 }
 .newedo .character .character-panel .fate-card .fate-list .fate-item :last-child {
-  margin-left: 12px;
+  margin-left: 15px;
   text-align: left;
   flex: 2;
 }
@@ -514,16 +590,15 @@
   border: 0;
 }
 .newedo .character .sheet-header {
-  padding: 10px 10px 10px 0px;
+  padding: 10px 10px 5px 0px;
 }
 .newedo .character .sheet-header .character-name {
-  height: 50px;
+  height: 40px;
   flex: 2;
   margin: 0px 4px 4px 0px;
   padding: 4px 8px;
   border: 0;
   font-weight: bold;
-  background-color: var(--bg-c-secondary, none);
 }
 .newedo .character .sheet-header .portrait {
   align-items: center;
@@ -531,32 +606,11 @@
   margin-right: 10px;
 }
 .newedo .character .sheet-header .portrait .profile-img {
-  flex: 0 0 150px;
   margin-right: 10px;
   border-radius: 15px;
   object-fit: cover;
   height: 150px;
   width: 150px;
-}
-.newedo .character .sheet-header .portrait .hp-bar {
-  align-items: center;
-  text-align: center;
-  border: 1px solid black;
-  border-radius: 15px;
-}
-.newedo .character .sheet-header .portrait .hp-bar input {
-  border: none;
-}
-.newedo .character .sheet-header .background {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-.newedo .character .sheet-header .background input {
-  border: 0;
-  font-size: 14px;
-  height: 16px;
-  padding: 0;
 }
 .newedo .character .sheet-header .list-derived {
   display: inline;
@@ -660,30 +714,35 @@
   border-radius: 3px;
   height: 1.1rem;
   padding: 0;
+  margin-left: 2px;
 }
 .newedo .character .skills-tab .skill-dice-tray {
   flex: 0 0 10rem;
 }
 .newedo .character .skills-tab .items-list {
   padding: 2px 0;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
 }
 .newedo .character .skills-tab .items-list .item-name {
-  flex: 2 1 auto;
-  color: var(--text-colour, black);
+  flex: 2 0 auto;
+  text-wrap: nowrap;
+}
+.newedo .character .skills-tab .items-list .item {
+  flex: 1 0 auto;
+  flex-wrap: nowrap;
 }
 .newedo .character .skills-tab .skills-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: auto;
-  grid-template-areas: "skills-left skills-right";
-  width: inherit;
-  gap: 0.3rem;
-  padding-bottom: 0.3rem;
+  display: flex;
+  flex-direction: row;
+  flex: 1;
 }
 .newedo .character .skills-tab ol,
 .newedo .character .skills-tab ul {
   margin: 0;
   padding: 0;
+  flex: 1 0 auto;
 }
 .newedo .character .biography-tab .details {
   display: flex;
@@ -733,9 +792,6 @@
   resize: none;
   flex: 1;
 }
-.newedo .character .inventory-tab {
-  color: white;
-}
 .newedo.sheet.item form .description-tab {
   display: flex;
   flex-direction: row;
@@ -761,7 +817,7 @@
   flex-direction: column;
   flex: 1;
   padding: 4px;
-  background-color: var(--bg-c-primary, transparent);
+  background-color: var(--c-primary, transparent);
   border-radius: 6px;
 }
 .newedo.sheet.item form .description-tab .description-editor .editor {

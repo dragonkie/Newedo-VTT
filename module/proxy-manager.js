@@ -39,6 +39,7 @@ function mapProxies(entityTypes, baseClass) {
     // Construct trap
     construct: (target, args) => {
       const [data, options] = args;// Args is an array holding the entity data and its creation options
+      //Data is the standard NewedoActor or NewedoItem being created, and the .type is embedded in them at this point already
       const constructor = entityTypes[data.type];//Grabs the item type from the supplied list based on the entity type string
 
       if (!constructor)//if the constructor was not found, throw an error

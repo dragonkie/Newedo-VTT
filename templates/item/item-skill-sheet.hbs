@@ -1,13 +1,5 @@
-<form class="{{cssClass}} {{item.type}} newedo" system-theme="dark" style="flex-direction: column;">
-    <header>
-        <h1><input name="name" type="text" value="{{item.name}}" placeholder="Name"/></h1>
-    </header>
-
-    <nav class="sheet-tabs tabs flexrow" data-group="primary" style="text-align: center; align-items: center; border: 0; margin: 0; padding: 0px 10px 0px 10px;">
-        <a class="item" data-tab="description">Description</a>
-        <a class="item" data-tab="features">Features</a>
-        <a class="item" data-tab="settings">Settings</a>
-    </nav>
+<form class="{{cssClass}} {{item.type}} newedo" system-theme="{{theme}}">
+    {{> 'newedo.item-header'}}
 
     <section class="sheet-body" style="display: flex; padding: 6px; flex: 1; flex-direction: row;">
         <div class="tab description" data-group="primary" data-tab="description" style="flex-direction: row;">
@@ -30,20 +22,17 @@
             </div>
         </div>
 
-        <div class="tab features" data-group="primary" data-tab="features">
-        </div>
-
         <div class="tab settings" data-group="primary" data-tab="settings">
             <div>
                 Trait: 
                 <select name="system.trait" id="skill-type">
-                    <option selected disabled hidden>{{system.trait}}</option>
-                    <option value="pow">Power</option>
-                    <option value="ref">Reflex</option>
-                    <option value="hrt">Heart</option>
-                    <option value="pre">Pressence</option>
-                    <option value="sav">Savvy</option>
-                    <option value="per">Perception</option>
+                    <option selected disabled hidden>{{ system.trait }}</option>
+                    <option value="pow">{{ localize 'NEWEDO.trait.core.pow' }}</option>
+                    <option value="ref">{{ localize 'NEWEDO.trait.core.ref' }}</option>
+                    <option value="hrt">{{ localize 'NEWEDO.trait.core.hrt' }}</option>
+                    <option value="sav">{{ localize 'NEWEDO.trait.core.sav' }}</option>
+                    <option value="per">{{ localize 'NEWEDO.trait.core.per' }}</option>
+                    <option value="pre">{{ localize 'NEWEDO.trait.core.pre' }}</option>
                 </select>
             </div>
             <div>
@@ -55,6 +44,9 @@
                 {{#each system.ranks as | rank index |}}
                     <input type="button" id="{{item.id}}" index="{{index}}" class="skill-dice" value="{{rank}}"/>
                 {{/each}}
+            </div>
+            <div>
+                Features:
             </div>
         </div>
     </section>

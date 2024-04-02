@@ -43,60 +43,80 @@ export default class NewedoWeapon extends NewedoItem {
     async roll() {
         // Because were using a weapon to roll, we need to create 2 seperate rolls
         // One is for attacks, and the other is a delayed one to be rolled for damage
+        if (!this.actor) {
+            ui.notifications.warn(`NEWEDO.notify.item.roll.weapon.noActor`)
+            return undefined;
+        }
         var data = {
             title : this.name,
-            label : this.name,
 			actor : this.actor,
 			item : this
 		};
 
-        var rSkill = new NewedoRoll(data);
-        rSkill.roll();
+        //var rSkill = new NewedoRoll(data);
+        //rSkill.roll();
+        const atk = new Roll(this.atkFormula.replace(`d10`, `d10x10`));
+        await atk.evaluate();
+
+        const dmg = new Roll(this.dmgFormula.replace(`d10`, `d10x10`));
+        await dmg.evaluate();
+
+        const html = {
+            atk: await atk.render(),
+            dmg: await dmg.render()
+        }
+
+        let msg = await atk.toMessage({
+            speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+            flavor: `<div style="font-size: 20px; text-align: center;">${this.name} Attack</div>`,
+            content: [html.atk]+`<div>Damage</div>`+[html.dmg],
+            create: true,
+            rollMode: game.settings.get('core', 'rollMode')
+        });
+    }
+
+    async rollAttack() {
+
+    }
+
+    async rollDamage() {
+
     }
 
     get atkFormula() {
         const system = this.system;
-        const skill = this.getSkill;// Gets the skill item
+        const skill = this.skill;// Gets the skill item
         const trait = this.trait;
 
         if (!skill) return ``;
 
         var formula = skill.formula;
-        if (system.grit.atk > 0) formula += (formula === ``) ? `${system.grit.atk}` : (`+${system.grit.atk}`);
+        if (system.grit.atk > 0) formula = sysUtil.formulaAdd(formula, system.grit.atk);
+        if (system.attack.bonus != 0) formula = sysUtil.formulaAdd(formula, system.attack.bonus);
 
         return formula;
     }
 
     get dmgFormula() {
         const system = this.system;
-        const skill = this.getSkill;// Gets the skill item
-        const trait = this.trait;
-        var formula = ``;
+        const skill = this.skill;// Gets the skill item
+        const trait = skill.trait;
 
+        var formula = ``;
         if (!system.isRanged) formula += `${trait.rank}d10`;
-        formula += (formula===``) ? `${system.damage.value}`: `+${system.damage.value}`;
+        formula = sysUtil.formulaAdd(formula, system.damage.value);
+        if (system.grit.dmg > 0) formula = sysUtil.formulaAdd(formula, system.grit.dmg);
 
         return formula;
     }
 
-    /** Returns the skill item this weapon uses if the owning actor has it
-     * @returns {NewedoSkill | undefined}
-    */
-    get getSkill() {
-        if (this.actor) {
-            return this.actor.getSkill(this.system.skill);
-        } else {
-            return undefined;
-        }
+    get skill() {
+        if (this.actor) return this.actor.getSkill(this.system.skill);
+        return undefined;
     }
 
-    /** Returns the value of the trait and its rank
-     * @returns {[Label, Rank]}
-     */
     get trait() {
-        if (this.actor) {
-            return this.getSkill.getTrait;
-        }
+        if (this.actor) return this.skill.trait;
         return undefined
     }
 }

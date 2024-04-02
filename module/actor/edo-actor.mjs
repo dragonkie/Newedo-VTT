@@ -14,7 +14,7 @@ export default class NewedoActor extends Actor {
   static async create(data, options) {
     const createData = data;
     const newActor = typeof data.system === `undefined`;
-    
+
     if (newActor) {
       LOGGER.debug(`Creating new actor`)
       createData.items = [];
@@ -31,7 +31,7 @@ export default class NewedoActor extends Actor {
       })
     }
     const actor = await super.create(createData, options);
-    
+
   }
 
   /** @override */
@@ -51,20 +51,21 @@ export default class NewedoActor extends Actor {
     const core = system.traits.core;
     const derived = system.traits.derived;
 
-    // Loop through core traits and calculate their rank
+    // Loop through core traits and calculate their rank, traits are not included in the "Round everything up" rule
     for (let [key, trait] of Object.entries(core)) {
-      if ((typeof trait.value !== `number`) || (trait.value < 1)) trait.value = 10;
       trait.rank = Math.max(Math.floor(trait.value / 10), 0);
     }
 
-    //calculates the base stats for derived values, these will be affected by their mods and multipliers
-    //in prepare derived data function
+    //calculates the base stats for derived values, these will be affected by their mods and multipliers in dervied data
     derived.init.value = Math.ceil(core.ref.value + core.sav.value);
     derived.move.value = Math.ceil(core.ref.value + core.hrt.value);
     derived.def.value = Math.ceil(core.pow.value + core.ref.value);
     derived.res.value = Math.ceil(core.hrt.value + core.pre.value);
-
     derived.hp.max = core.hrt.value;
+
+    system.attributes.wound.value = derived.hp.value / derived.hp.max;
+    const wound = sysUtil.woundState(system.attributes.wound.value);
+    system.attributes.wound.penalty = wound.penalty;
   }
 
   /**
@@ -96,26 +97,17 @@ export default class NewedoActor extends Actor {
     const derived = system.traits.derived;
     const attributes = system.attributes;
 
-    // Loop through core traits and calculate their rank
+    // Loop through core traits and calculate their rank, shinpi is allowed ot be 0 unlike other traits
     for (let [key, trait] of Object.entries(core)) {
-      if ((typeof trait.value !== `number`) || (trait.value < 1)) trait.value = 1;
       trait.rank = Math.max(Math.floor(trait.value / 10), 0);
     }
 
     //calculates ranks for background, idk why it doesnt scale as just 1 rank per 20 points?
     for (let [key, background] of Object.entries(system.background)) {
-      if (background.value < 1) background.value = 1;
-
-      background.rank = 1;
-      if (background.value >= 91) background.rank = 5;
-      else if (background.value >= 66) background.rank = 4;
-      else if (background.value >= 31) background.rank = 3;
-      else if (background.value >= 11) background.rank = 2;
-      //ensures background cant be above 100, or below 1
-      if (background.value > 100) background.value = 100;
-      if (background.value < 1) background.value = 1;
+      background.value = sysUtil.clamp(background.value, 0, 100);
+      background.rank = sysUtil.backgroundRank(background.value);
     }
-    
+
     // Calculates derived traits for initative, move, defence, resolve, and max health
     derived.init.value = Math.ceil(derived.init.value * derived.init.mod);
     derived.move.value = Math.ceil((derived.move.value / system.attributes.size.value) * derived.move.mod);
@@ -124,20 +116,7 @@ export default class NewedoActor extends Actor {
     derived.hp.max = Math.ceil(derived.hp.max * derived.hp.mod);
 
     //calculates characters legend rank
-    system.legend.rank = 1;
-    if (system.legend.max > 45) system.legend.rank = 2;
-    if (system.legend.max > 75) system.legend.rank = 3;
-    if (system.legend.max > 110) system.legend.rank = 4;
-    if (system.legend.max > 160) system.legend.rank = 5;
-    
-    //checks the actors wound state
-    var hpCheck = derived.hp.value / derived.hp.max * 100;
-    if (hpCheck <= 0) derived.hp.wound = `Burning Legend`;
-    if (hpCheck <= 10) derived.hp.wound = `Hurt Bad`;
-    if (hpCheck <= 25) derived.hp.wound = `Banged Up`;
-    if (hpCheck <= 75) derived.hp.wound = `Flesh Wound`;
-    if (hpCheck <= 90) derived.hp.wound = `Grazed`;
-    if (hpCheck > 90) derived.hp.wound = `Okay`;
+    system.legend.rank = sysUtil.legendRank(system.legend.max);
 
     //checks how much noise the character has from augments
     var biofeedback = 0;
@@ -148,7 +127,7 @@ export default class NewedoActor extends Actor {
           var rank = item.system.rank;
           var noise = item.system.noise;
           biofeedback += item.system.biofeedback;
-
+          // Adds the noise from the item to the counter
           core.pow.noise += noise.pow * rank;
           core.ref.noise += noise.ref * rank;
           core.hrt.noise += noise.hrt * rank;
@@ -159,13 +138,11 @@ export default class NewedoActor extends Actor {
       }
     }
 
-    //sets the biofeedback chance based on the value totaled
+    // Calculates biofeedback fate chance
     const bioFate = this.items.getName(`Biofeedback`);
-    LOGGER.debug(`Checking if biofeedback was found`, bioFate);
     if (bioFate) {
-      LOGGER.debug(`Updating biofeedback fate`);
-      if (biofeedback > 0) bioFate.update({'system.range.min': 4, 'system.range.max': 3+biofeedback});
-      else bioFate.update({'system.range.min': 0, 'system.range.max': 0});
+      if (biofeedback > 0) bioFate.update({ 'system.range.min': 4, 'system.range.max': 3 + biofeedback });
+      else bioFate.update({ 'system.range.min': 0, 'system.range.max': 0 });
     }
   }
 
@@ -190,12 +167,20 @@ export default class NewedoActor extends Actor {
     return data;
   }
 
-  getSkill(skillName) {
+  getSkill(name) {
     const skills = this.itemTypes.skill;
     for (var skill of skills) {
-      if (skill.name === skillName) return skill;
+      if (skill.name === name) return skill;
     }
     return undefined;
+  }
+
+  get traits() {
+    return this.system.traits;
+  }
+
+  get skills() {
+    return this.itemTypes.skill;
   }
 
   /**
@@ -220,7 +205,7 @@ export default class NewedoActor extends Actor {
    * Prepare NPC roll data.
    */
   _getNpcRollData(data) {
-    
+
 
     // Process additional NPC data here.
   }

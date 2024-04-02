@@ -30,11 +30,14 @@ export default class ItemChoiceConfig extends FeatureConfig {
     item;
 
     async getData() {
-        const data = {};
-        data.items = this.items;
-        data.title = this.title;
+        const context = {};
+        context.items = this.items;
+        context.title = this.title;
+
+        context.theme = "light";
+        if (game.settings.get(game.system.id, "darkmode")) context.theme = "dark";
         
-        return data;
+        return context;
     }
 
     async _onDragStart(event) {

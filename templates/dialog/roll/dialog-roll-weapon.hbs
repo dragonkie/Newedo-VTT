@@ -1,15 +1,24 @@
-<form class="roll-dialog-skill">
+<form class="roll-dialog-weapon">
     <div class="form-group">
-        <label>Trait [@trait.labelAbbr]:</label>
-        <input type="number" name="trait" value="1" placeholder="Value"/>
+        <label>Trait: <b>{{trait.label}}</b></label>
+        <input type="number" name="trait" value="{{trait.rank}}" placeholder="Value"/>
     </div>
     <div class="form-group">
-        <label>Skill Dice:</label>
-        <input type="text" name="skill" value="{{formula}}" placeholder=""/>
+        <label>Grit:</label>
+        <input type="number" name="grit" value="{{grit.atk}}"/>
     </div>
     <div class="form-group">
-        <label>Wound Penalty:</label>
-        <input type="checkbox" name="wounds"/>
+        <label>Wounds:</label>
+        <input type="checkbox" name="wounds" checked="true"/>
+    </div>
+    {{!-- Modifying these values will not alter how the system automates rolls --}}
+    <div class="form-group">
+        <label>Situational Bonus:</label>
+        <input type="text" name="bonus" placeholder=""/>
+    </div>
+    <div class="form-group">
+        <label>Raises:</label>
+        <input type="number" name="raise"/>
     </div>
     <div class="form-group">
         <label>Spend Legend:</label>

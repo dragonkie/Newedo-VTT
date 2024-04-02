@@ -1,5 +1,7 @@
 import NewedoItem from "../edo-item.mjs";
-import { Dice, NewedoRoll } from "../../utility/dice.js";
+import NewedoDialog from "../../dialog/edo-dialog.js";
+import { Dice, RollSkill } from "../../utility/dice.js";
+import sysUtil from "../../utility/sysUtil.mjs";
 import LOGGER from "../../utility/logger.mjs";
 
 export default class NewedoSkill extends NewedoItem {
@@ -8,67 +10,43 @@ export default class NewedoSkill extends NewedoItem {
     }
 
     prepareDerivedData() {
-        console.log(`Preparing Skill data`);
         this.system.formula = this.formula
     }
-
+    /**
+     * Grabs the full dice formula including an owning actors related trait if the default roll setting includes it
+     */
     get formula() {
-        var diceList = [];
         var formula = ``;
+        // When attached to an actor, check to add their core trait to the skill roll
+        if (this.actor) {
+            const trait = this.trait;
+            if (trait.rank > 0) formula = `${trait.rank}d10`;
+        }
+        // Get the formula for the skill dice
+        const skillDice = this.diceFormula;
+        if (skillDice !== '') {
+            formula += `+${skillDice}`;
+        }
 
-        const actor = this.actor;
-        if (this.actor) formula = `${actor.system.traits.core[this.system.trait].rank}d10`;
-        
-        // Loop that converts the array of dice into 
-        for (const r of this.system.ranks) {
-            //catches empty values and prevents them from adding to the pool
-            if (r <= 0) continue;
-            //converts the value into a dice string
-            const dice = `d${r}`;
-            //checks to ensure the dicetray is an array and if it has a value
-            if (Array.isArray(diceList) && diceList.length > 0) {
-                //loops through the dice tray to check if the given dice is already found in the pool
-                var found = false;
-                for (const d of diceList) {
-                    //if the dice is found, adds to its pile then exits the loop
-                    if (d.dice == dice) {
-                        found = true;
-                        d.count += 1;
-                        break;
-                    }
-                }
-                //if no dice exist in the pool, or this type of dice isnt there, add the new dice to the array
-                if (!found) diceList.push({dice: dice, count: 1});
-            } else diceList.push({dice: dice, count: 1});
-        }
-        
-        //catches if the core trait has already been added to formula, which will mean it needs to add the `+`
-        var first = true;
-        if (formula !== ``) first = false;
-        //loops through the pool of dice and adds them in to the stringified formula
-        for (const d of diceList) {
-            if (!first) formula += `+`;
-            formula += `${d.count}${d.dice}`;
-            first = false;
-        }
+        // Return the fully compiled formula, for just the skill dice, call use: get diceFormula();
         return formula;
     }
 
     /** Returns the trait if there is a parent actor */
-    get getTrait() {
+    get trait() {
         const actor = this.actor
         const key = this.system.trait;
-        if (actor) {
-            return actor.system.traits.core[key];
-        }
+        if (actor) return actor.system.traits.core[key];
+        ui.notifications.warn(`NEWEDO.notification.warn.skill.noActor`);
+        return undefined;
     }
-    /** Returns an array of Dice objects for the skill */
-    get getDice() {
+    /** Returns an array of Dice objects for the skill, does not include the trait dice */
+    get dice() {
         const list = [];
         for (const r of this.system.ranks) {
-            if (r === 0) continue;
+            if (r === 0) continue;//skips over dice ranks that dont have a dice
             var found = false;
-            for (var i=0; i< list.length; i++) {
+            for (var i = 0; i < list.length; i++) {
                 if (list[i].faces === r) {
                     list[i].count += 1;
                     found = true;
@@ -79,17 +57,39 @@ export default class NewedoSkill extends NewedoItem {
         }
         return list;
     }
+    /** Returns a formula string just u */
+    get diceFormula() {
+        var formula = '';
+        var dice = this.dice;
+
+        var first = true;
+        for (const d of dice) {
+            const f = d.formula;
+            if (f === ``) continue;
+            if (!first) formula += '+';
+            first = false;
+            formula += f;
+        }
+
+        return formula;
+    }
 
     // Creates and rolls a NewedoRoll using this item, giving it the context that this is a skill roll
     async roll() {
-        var data = {
-            title: this.name,
-            label : this.name,
-			actor : this.actor,
-			item : this
-		};
+        LOGGER.debug(`Rolling skill`);
+        if (!this.actor) sysUtil.warn(`NEWEDO.notify.warn.noActor`);
 
-        var rSkill = new NewedoRoll(data);
-        rSkill.roll();
+        // List of data needed to roll this item
+        const data = {};
+        data.type = this.type;
+        data.dice = this.dice;
+        data.trait = this.trait;
+        data.actor = this.actor;
+        data.item = this;
+
+
+        const r = new RollSkill(data);
+        r.roll();
     }
 }
+

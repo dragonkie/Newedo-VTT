@@ -1,0 +1,19 @@
+<form class="roll-dialog-default">
+    <div class="form-group">
+        <label>Formula:</label>
+        <input type="text" name="formula" value="{{formula}}"/>
+    </div>
+    <div class="form-group">
+        <label>Situational Bonus:</label>
+        <input type="text" name="bonus" placeholder=""/>
+    </div>
+    <div class="form-group">
+        <label>Spend Legend:</label>
+        <input type="number" name="legend" max="5" min="0"/>
+    </div>
+    <div class="form-group">
+        <label>Wounds:</label>
+        <input type="checkbox" name="wounded" checked="true" />
+        <input type="number" name="woundPenalty" value="{{wound.penalty}}" />
+    </div>
+</form>

@@ -29,7 +29,6 @@ Hooks.once('init', async function() {
   game.newedo = {
     NewedoActor,
     NewedoItem,
-    rollItemMacro,
     LOGGER,
     sysUtil,
     Dice,
@@ -83,6 +82,7 @@ Handlebars.registerHelper('concat', function() {
 Handlebars.registerHelper('toLowerCase', function(str) {
   return str.toLowerCase();
 });
+
 
 /* -------------------------------------------- */
 /*  Ready Hook                                  */

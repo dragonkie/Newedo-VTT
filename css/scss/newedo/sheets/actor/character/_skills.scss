@@ -4,10 +4,9 @@
         align-items: center;
         flex: 1;
         border-radius: 3px;
-
         height: 1.1rem;
-
         padding: 0;
+        margin-left: 2px;
     }
 
     .skill-dice-tray {
@@ -16,26 +15,31 @@
 
     .items-list {
         padding: 2px 0;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
 
         .item-name {
-            flex: 2 1 auto;
-            color: var(--text-colour, black);
+            flex: 2 0 auto;
+            text-wrap: nowrap;
+        }
+
+        .item {
+            flex: 1 0 auto;
+            flex-wrap: nowrap;
         }
     }
 
     .skills-container {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: auto;
-        grid-template-areas: "skills-left skills-right";
-        width: inherit;
-        gap: 0.3rem;
-        padding-bottom: 0.3rem;
+        display: flex;
+        flex-direction: row;
+        flex: 1;
     }
 
     ol,
     ul {
         margin: 0;
         padding: 0;
+        flex: 1 0 auto;
     }
 }
