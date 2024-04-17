@@ -1,10 +1,14 @@
 import LOGGER from "../../utility/logger.mjs";
 import FeatureConfig from "./feature.js";
 
+/**
+ * Gives all items of this feature to the parent actor
+ */
 export default class FeatureItemConfig extends FeatureConfig {
     constructor(feature, options = {}) {
         super(feature, options);
         this.type = "item"
+        if (this.label == null) this.label = "NEWEDO.feature.new.item";
     }
 
     static get defaultOptions() {
@@ -36,7 +40,7 @@ export default class FeatureItemConfig extends FeatureConfig {
         if (Array.isArray(this.data) && this.data.length > 0 && item.type !== `weapon`) {
             for (const i of this.data) {
                 if (i.uuid === data.object.uuid) {
-                    ui.notifications.warn(`{NEWEDO.notification.feature.itemGift.duplicateItem}: ${item.type}`);
+                    ui.notifications.warn(`NEWEDO.notify.feature.item.duplicateItem: ${item.type}`);
                     return null;
                 }
             }

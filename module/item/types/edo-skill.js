@@ -74,6 +74,28 @@ export default class NewedoSkill extends NewedoItem {
         return formula;
     }
 
+    /**
+     * Updates a skill rank but moving the dice up or down a tier
+     * @param {Event} event 
+     * @returns 
+     */
+    async _cycleSkillDice(event) {
+        const index = event.target.dataset.index;
+        const ranks = this.system.ranks;
+
+        if (event.type === `click`) {
+            ranks[index] += 2;
+            if (ranks[index] === 2 || ranks[index] === 10) ranks[index] += 2;
+            if (ranks[index] > 12) ranks[index] = 0;
+        } else if (event.type === `contextmenu`) {
+            ranks[index] -= 2;
+            if (ranks[index] === 2 || ranks[index] === 10) ranks[index] -= 2;
+            if (ranks[index] < 0) ranks[index] = 12;
+        }
+
+        return await this.update({ [`system.ranks`]: ranks });
+    }
+
     // Creates and rolls a NewedoRoll using this item, giving it the context that this is a skill roll
     async roll() {
         LOGGER.debug(`Rolling skill`);
@@ -86,7 +108,6 @@ export default class NewedoSkill extends NewedoItem {
         data.trait = this.trait;
         data.actor = this.actor;
         data.item = this;
-
 
         const r = new RollSkill(data);
         r.roll();

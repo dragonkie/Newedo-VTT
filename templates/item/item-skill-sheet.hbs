@@ -42,7 +42,7 @@
             <div>
                 Ranks:
                 {{#each system.ranks as | rank index |}}
-                    <input type="button" id="{{item.id}}" index="{{index}}" class="skill-dice" value="{{rank}}"/>
+                    <input type="button" id="{{item.id}}" data-index="{{index}}" class="skill-dice" value="{{rank}}"/>
                 {{/each}}
             </div>
             <div>

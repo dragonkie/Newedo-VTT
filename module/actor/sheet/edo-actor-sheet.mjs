@@ -29,35 +29,6 @@ export default class NewedoActorSheet extends ActorSheet {
         return merged
     }
 
-    async _onDragStart(event) {
-        await super._onDragStart(event);
-        const data = {
-            event: event,
-            files: event.dataTransfer.files,
-            items: event.dataTransfer.items,
-            types: event.dataTransfer.types,
-            data: JSON.parse(event.dataTransfer.getData("text/plain"))
-        }
-        LOGGER.debug(`ACTOR | DRAG | START`, data);
-
-    }
-
-    async _onDrop(event) {
-        super._onDrop(event);
-    }
-
-    async _onDropItem(event, data) {
-        super._onDropItem(event, data);
-    }
-
-    async _onDropActor(event, data) {
-        super._onDropActor(event, data);
-    }
-
-    async _onDropActiveEffect(event, data) {
-        super._onDropActiveEffect(event, data);
-    }
-
     /** @override */
     get template() {
         return `systems/${game.system.id}/templates/actor/actor-${this.actor.type}-sheet.hbs`;
@@ -135,12 +106,6 @@ export default class NewedoActorSheet extends ActorSheet {
             this._prepareItems(context);
             this._prepareCharacterData(context);
         }
-
-        /*/ Prepare NPC data and items.
-        if (actorData.type == 'npc') {
-          this._prepareItems(context);
-        }
-        */
 
         // Add roll data for TinyMCE editors.
         context.rollData = context.actor.getRollData();
@@ -279,8 +244,6 @@ export default class NewedoActorSheet extends ActorSheet {
             li.addEventListener("click", handler);
         });
         /* --------------------- Embedded item controls --------------------- */
-        // Add Inventory Item
-        html.find('.item-create').click(this._onItemCreate.bind(this));
         // Delete Inventory Item
         html.find('.item-delete').click(ev => {
             const li = $(ev.currentTarget).parents(".item");
@@ -315,111 +278,24 @@ export default class NewedoActorSheet extends ActorSheet {
 
     /* -------------------------------------------- Sheet event handelers -------------------------------------------- */
     /**
-     * Handles the cycling of skill dice with button presses
+     * Calls the relevant skills cycle dice function
      * @param {Event} event the originating click event
      * @private
      */
     async _cycleSkillDice(event) {
-        LOGGER.debug(`Cycling skill dice`);
-        event.preventDefault();
         const element = event.currentTarget;
-
         const _id = element.closest('.item').dataset.itemId;
-        const _index = element.dataset.index;
-        const item = this.actor.items.get(_id);
-        const type = event.type;
-
-        //copies the ranks from the item as the whole array is overriden when Document#update(); is called
-        var ranks = foundry.utils.deepClone(item.system.ranks);
-
-        if (type === `click`) {
-            switch (ranks[_index]) {
-                case 0:
-                    ranks[_index] = 4;
-                    break;
-                case 4:
-                    ranks[_index] = 6;
-                    break;
-                case 6:
-                    ranks[_index] = 8;
-                    break;
-                case 8:
-                    ranks[_index] = 12;
-                    break;
-                default:
-                    ranks[_index] = 0;
-                    break;
-            }
-        } else if (type === `contextmenu`) {
-            switch (ranks[_index]) {
-                case 0:
-                    ranks[_index] = 12;
-                    break;
-                case 4:
-                    ranks[_index] = 0;
-                    break;
-                case 6:
-                    ranks[_index] = 4;
-                    break;
-                case 8:
-                    ranks[_index] = 6;
-                    break;
-                case 12:
-                    ranks[_index] = 8;
-                    break;
-                default:
-                    ranks[_index] = 0;
-                    break;
-            }
-        }
-        //scheme for the updated skil lranks to be sent to the item
-        const updateData = {
-            system: {
-                ranks: ranks
-            }
-        }
-
-        item.update(updateData);
+        return this.actor.items.get(_id)._cycleSkillDice(event);
     };
     /* -------------------------------------------- Item management -------------------------------------------- */
-    /**
-     * Handle creating a new Owned Item for the actor using initial data defined in the HTML dataset
-     * @param {Event} event The originating click event
-     * @private
-     */
-    async _onItemCreate(event) {
-        event.preventDefault();
-        const header = event.currentTarget;
-        // Get the type of item to create.
-        const type = header.dataset.type;
-        // Grab any data associated with this control.
-        const data = duplicate(header.dataset);
-        // Initialize a default name.
-        const name = `New ${type.capitalize()}`;
-        // Prepare the item object.
-        const itemData = {
-            name: name,
-            type: type,
-            system: data
-        };
-        // Remove the type from the dataset since it's in the itemData.type prop.
-        delete itemData.system["type"];
-
-        // Finally, create the item!
-        return await Item.create(itemData, { parent: this.actor });
-    }
-
     async _installAugment(event) {
         LOGGER.debug("Installing augment");
-        const context = {};
         const actor = this.actor;
         const item = (event.currentTarget.closest('.item') !== null) ? actor.items.get(event.currentTarget.closest('.item').dataset.itemId) : null;
 
-        if (context.item !== null) {
+        if (item !== null) {
             await item.update({ 'system.installed': !item.system.installed });
-
             LOGGER.log(`Augment [${item.name}] install changed to [${item.system.installed}]`);
-
         }
     }
     /* ----------------------------------------------- ROLL FUNCTIONS --------------------------------------------------------------- */

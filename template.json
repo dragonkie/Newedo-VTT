@@ -283,7 +283,8 @@
         "templates": {
             "base": {
                 "description": "",
-                "type": "none"
+                "type": "none",
+                "slug": "none"
             },
             "justification": {},
             "price": {

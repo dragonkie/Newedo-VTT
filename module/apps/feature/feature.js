@@ -22,7 +22,7 @@ export default class FeatureConfig extends FormApplication {
         this.item = data.item;
         // Any data we want to be stored inside the data obejct
         this.data = data.data ?? [];
-        this.label = data.label ?? "New Feature";
+        this.label = data.label ?? null;
         this.type = null
         // Unique id used for the datas map
         this.linkID = data.id ?? randomID();
@@ -107,36 +107,30 @@ export default class FeatureConfig extends FormApplication {
      */
     _updateObject(event, formdata) {
         //Copies the original features array, then sends an updated version back to the object
-        //Not sure if theres any way to specifically singal out and udpate individual array values yet
-        LOGGER.debug(`Updating object`, formdata);
+        //Not sure if theres any way to specifically single out and udpate individual array values yet
         this.label = formdata.label;
-        LOGGER.debug("Item:", this.item)
-        var array = duplicate(this.item.system.features);
+        var array = this.item.system.features;
         var found = false;
+        var feature = {
+            label: formdata.label,
+            type: this.type,
+            data: this.data,
+            id: this.linkID
+        };
+
         //double checks that there is a data array here
         if (Array.isArray(array) && array.length > 0) {
-            //checks the array for existing objects
+            //checks the array to see if this object exists already to update
             for (var a = 0; a < array.length; a++) {
-                console.log(array[a])
                 if (array[a].id === this.linkID) {
                     found = true;
-                    array[a] = {
-                        label: formdata.label,
-                        type: this.type,
-                        data: this.data,
-                        id: this.linkID
-                    }
+                    array[a] = feature;
                 }
             }
         }
-        if (!found) {
-            array.push({
-                label: formdata.label,
-                type: this.type,
-                data: this.data,
-                id: this.linkID
-            });
-        }
+        //if this feature doesnt already exist, add it to the list
+        if (!found) array.push(feature);
+        //send the updated feature list back to the parent object
         this.item.update({ "system.features": array })
     }
 }

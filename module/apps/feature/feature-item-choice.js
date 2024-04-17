@@ -1,6 +1,10 @@
 import LOGGER from "../../utility/logger.mjs";
+import sysUtil from "../../utility/sysUtil.mjs";
 import FeatureConfig from "./feature.js";
 
+/**
+ * Gives a number of selected items from this feature to the parent actor
+ */
 export default class ItemChoiceConfig extends FeatureConfig {
     constructor(feature, options={}) {
         super(feature, options);
@@ -10,9 +14,11 @@ export default class ItemChoiceConfig extends FeatureConfig {
         
         if (!options.id) this.linkId = randomID();
     }
+
     get items(){
         return this._itemList;
     }
+
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
             classes: ["newedo", "item-grant-config", "dialog"],
@@ -25,9 +31,6 @@ export default class ItemChoiceConfig extends FeatureConfig {
             dragDrop: [{dragSelector: ".item-list .item", dropSelector: null}]
         });
     }
-
-    // The item that this feature is attached too
-    item;
 
     async getData() {
         const context = {};
@@ -47,7 +50,7 @@ export default class ItemChoiceConfig extends FeatureConfig {
             files: event.dataTransfer.files,
             items: event.dataTransfer.items,
             types: event.dataTransfer.types,
-            data: JSON.parse(event.dataTransfer.getData(`text/plain`))
+            data: sysUtil.parseDrop(event)
         }
         LOGGER.debug(`ITEM | DRAG | START`, data);
     }
@@ -58,7 +61,7 @@ export default class ItemChoiceConfig extends FeatureConfig {
           files: event.dataTransfer.files,
           items: event.dataTransfer.items,
           types: event.dataTransfer.types,
-          object: JSON.parse(event.dataTransfer.getData(`text/plain`))
+          object: sysUtil.parseDrop(event)
         }
         LOGGER.debug(`ITEM | DRAG | DROP`, data);
     

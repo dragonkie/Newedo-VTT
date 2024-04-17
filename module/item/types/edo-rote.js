@@ -49,8 +49,9 @@ export default class NewedoRote extends NewedoItem {
         data.trait = this.trait;
         data.actor = this.actor;
         data.item = this;
+        data.template = `systems/newedo/templates/dialog/roll/dialog-roll-rote.hbs`;
 
-
+        //Proccesses the roll
         const r = new RollRote(data);
         r.roll();
     }

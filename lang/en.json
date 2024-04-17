@@ -8,6 +8,8 @@
   "NEWEDO.generic.exp": "EXP",
   "NEWEDO.generic.armour": "Armour",
   "NEWEDO.generic.soak": "Soak",
+  "NEWEDO.generic.background": "Background",
+  "NEWEDO.generic.item": "Item",
   
   "NEWEDO.attribute.lvl": "Level",
   "NEWEDO.attribute.size": "Size",
@@ -141,8 +143,6 @@
   "NEWEDO.skill.description.toxicology": "Toxicology",
   "NEWEDO.skill.description.wetware": "Wetware",
 
-  "NEWEDO.Add": "Add",
-
   "NEWEDO.background.followers": "Followers",
   "NEWEDO.background.contacts": "Contacts",
   "NEWEDO.background.status": "Status",
@@ -166,5 +166,9 @@
   "NEWEDO.biography.background": "Background",
   "NEWEDO.biography.ambition": "Ambitions",
   "NEWEDO.biography.ideal": "Ideals",
-  "NEWEDO.biography.fear": "Fears"
+  "NEWEDO.biography.fear": "Fears",
+
+  "NEWEDO.feature.item": "Item",
+  "NEWEDO.feature.background": "Background",
+  "NEWEDO.feature.trait": "Trait"
 }

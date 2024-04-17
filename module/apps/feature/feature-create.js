@@ -3,7 +3,11 @@ import FeatureAttributeConfig from "./feature-attribute.js";
 import FeatureItemConfig from "./feature-item.js";
 import FeatureTraitConfig from "./feature-trait.js";
 
-
+/**
+ * Creates a dialog window to let users select the type of feature they're creating
+ * this is not linked to the actual features in any way other than it
+ * is the menu used to create them
+ */
 export default class FeatureCreate extends FormApplication {
     constructor(data, options={}) {
         super(data, options);
@@ -53,6 +57,15 @@ export default class FeatureCreate extends FormApplication {
         });
 
         html.find(".button-item").each((i, li) => {
+            let handler = (ev) => {
+                let f = new FeatureItemConfig({item: this.item}).render(true);
+                this.close();
+            };
+            handler.bind(this.item);
+            li.addEventListener("click", handler);
+        });
+
+        html.find(".button-background").each((i, li) => {
             let handler = (ev) => {
                 let f = new FeatureItemConfig({item: this.item}).render(true);
                 this.close();

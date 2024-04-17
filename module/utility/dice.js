@@ -2,27 +2,6 @@ import LOGGER from "./logger.mjs";
 import NewedoDialog from "../dialog/edo-dialog.js";
 import sysUtil from "./sysUtil.mjs";
 
-/*
-The newedo roll is to cluttered. I need to remove all the nonsense from this thing that is
-cluttering it up. 
-
-The issue is that the generic roll here is wasting a lto of time and making a lot of clutter
-just trying to organize and sort through the data based off roll type because its not sure which
-it should be using, but whenever I create the roll function I already know which kind of roll
-it should be so its com pletely redundant for it to be checking again when i already know
-what the roll should be, so instead it will act as a basis for a more general roll class
-whcich can be extended by an actual roll class specific to each use case
-
-the best way to handel this will be to jsut remove all the calculations and such from teh default roll, and at best leave it with a standard roll function
-that just calls the formula getter and rolls whatever that vies
-*/
-
-
-/**Dice class used by all dicetray functions, these dice can be created in 2 ways, as generic, or advanced dice
- * Generic dice only need a numeric value assigned to them
- * advanced dice can have an array of their different face values, allowing for weighted dies
- * such as a d6 with the faces [1,2,3,4,6,6]
- */
 export class Dice {
     constructor(faces = 6, count = 1, mod = ``) {
         this.count = count;//the number of this kind of dice, lets you hold multiple dice in one object
@@ -42,21 +21,6 @@ export class NewedoRoll {
     constructor(data) {
         this.dice = [];
         this.bonuses = [];// Array of numebrs to be added together in the final formula
-
-        /* Mods are an important part of how the dice system will work each mod is an object storing a bit of data about what it is, and where its from
-        a mod can be flat value such as +5, a string "1d8+2d4", or the class Dice();
-        during roll calculation, the list of mods is compiled into the final formula, dice are added to the dice list as normal where they are joined with existing dice, or pushed on if they dont have a match
-        flat bonuses are compiled down together to maintain legability ex: 1d10+3+4+2+1 -> 1d10+10
-        then lastly strings are appended to the very end of the formula with no further proccessing
-
-        mods of any other invalid type will be bypassed, and a warning thrown to the console to help track down where these invalid modifiers are ocming from
-        modifiers should typically have a bit of data to explain why theyre there as well
-        this includes
-            label - such as item features, racial bonuses, equipment unlocks, etc
-            origin - a link we can sue to trace our way back to where this bonus came from
-            Type - what the modifiers type is, that way if the value is invalid for some reason, we know what it should have been instead
-            value - the actual data for the modifier
-        */
         this.mods = [];
 
         // Saves all input data for use later
@@ -95,9 +59,9 @@ export class NewedoRoll {
             formula += d.formula;
             first = false;
         }
-        
+
         // Return the final formula
-        if (bonus > 0) return formula +`+`+bonus;
+        if (bonus > 0) return formula + `+` + bonus;
         if (bonus < 0) return formula + bonus;
         return formula;
     }
@@ -124,12 +88,8 @@ export class NewedoRoll {
     }
     // Function called to quickly get the roll options and pass them this object as the context
     async _getRollOptions() {
-        const options = await getRollOptions(this.getData());
-        return this._proccessRoll(options);
-    }
-    //should be overriden by extended classes to proccess their unique data, does nothing here
-    _proccessRoll(data) {
-        return data;
+        const options = await this.getRollOptions(this.getData());
+        return options;
     }
     /**Returns true or false if there are dice in this roll */
     get isEmpty() {
@@ -189,7 +149,6 @@ export class NewedoRoll {
         //concat returns the new array, so calling it with no entries creates a shallow copy preventing us from editing the input array
         /* ---------------------------------- Adding an array of numbers as a list of dice ------------------------------------ */
         if (Array.isArray(dice)) {
-            LOGGER.debug(`Adding dice array`, dice);
             var diceList = duplicate(dice)
             for (var a = 0; a < diceList.length; a++) {
                 //loops through the dice being added
@@ -219,7 +178,6 @@ export class NewedoRoll {
             return 0;
         } /* -------------------------------------------- Adding an already formed dice object ------------------------------------*/
         else if (typeof dice === "object" && dice.constructor.name === "Dice") {
-            LOGGER.debug(`Adding dice object`, dice);
             if (this.isEmpty) {//if there are no dice
                 this.dice.push(dice);
                 return true;
@@ -235,7 +193,6 @@ export class NewedoRoll {
             }
         } /* ------------------------------------Adding in a single number -----------------------------------------------------*/
         else {
-            LOGGER.debug(`Adding integer dice`, dice);
             if (this.isEmpty) {
                 this.dice.push(new Dice(dice, 1));
                 return true;
@@ -252,12 +209,14 @@ export class NewedoRoll {
         }
         return false;
     }
+
     drop(faces, count = 1, mod = ``) {
         var d = this.find(faces, mod)
         if (d) d.count -= count;
         this.clean
         return this.dice;
     }
+
     /** Searches for a dice based on given specifiers
      * @param {Number} faces number of sides of the dice to get
      * @param {String} mod Modifiers applied to this dice
@@ -274,6 +233,7 @@ export class NewedoRoll {
         }
         return undefined; //no dice matched the given specifiers
     }
+
     /**Drops a number of the largest dice from the pool, will exit if the array is empty
     * if dropping multiple dice, it will check through all dice types
     * if hte largest pool runs out but more dice are available, it will drop the next highest
@@ -315,68 +275,77 @@ export class NewedoRoll {
         if (type === `advantage`) this._advantage();
         if (type === `disadvantage`) this._disadvantage();
     }
-};
 
-/**
+    /**
  * Creates a dialog box to retrieve roll options from the player
  * This allows a player to give a situational bonus, spend legend, and apply advantage / disadvantage
  * certain roll modes will include other options, such as skills allowing you to opt out from 
  * rolling trait dice
+ * These are controlled by the different loadable templates
  * @param {NewedoRoll} roll of data to construct the final roll from
  * @returns {Promise} The data from the selected options
  * 
  */
-async function getRollOptions(data) {
-    LOGGER.debug(`Roll options:`, data);
-    const html = await renderTemplate(data.template, data);
-    const title = data.title;
-    return new Promise(resolve => {
-        const options = {
-            title: title,
-            content: html,
-            buttons: {
-                advantage: {
-                    label: "Advantage",
-                    callback: (html) => resolve(proccessRoll(html[0].querySelector("form"), "advantage"))
+    async getRollOptions(data) {
+        LOGGER.debug(`Roll options:`, data);
+        const html = await renderTemplate(data.template, data);
+        const title = data.title;
+        return new Promise(resolve => {
+            const options = {
+                title: title,
+                content: html,
+                buttons: {
+                    advantage: {
+                        label: "Advantage",
+                        callback: (html) => resolve(this._proccessRoll(html[0].querySelector("form"), "advantage"))
+                    },
+                    normal: {
+                        label: "Normal",
+                        callback: (html) => resolve(this._proccessRoll(html[0].querySelector("form"), "normal"))
+                    },
+                    disadvantage: {
+                        label: "Disadvantage",
+                        callback: (html) => resolve(this._proccessRoll(html[0].querySelector("form"), "disadvantage"))
+                    }
                 },
-                normal: {
-                    label: "Normal",
-                    callback: (html) => resolve(proccessRoll(html[0].querySelector("form"), "normal"))
-                },
-                disadvantage: {
-                    label: "Disadvantage",
-                    callback: (html) => resolve(proccessRoll(html[0].querySelector("form"), "disadvantage"))
-                }
-            },
-            close: () => resolve({ canceled: true }),
-            submit: (html) => resolve(proccessRoll(html[0].querySelector("form"), "normal"))
+                close: () => resolve({ canceled: true }),
+                submit: (html) => resolve(this._proccessRoll(html[0].querySelector("form"), "normal"))
+            }
+            new NewedoDialog(options, null).render(true);
+        });
+    }
+
+    /**
+     * prepares all the submitted data from the roll dialog box
+     * @param {*} form 
+     * @param {*} type 
+     * @returns 
+     */
+    _proccessRoll(form, type) {
+        const data = {
+            form: form,//keeps the form data for future reference just in case
+            advantage: type,
+        };
+
+        //Parses the list of named inputs into the data object
+        for (var ele of form.querySelectorAll(`[name]`)) {
+            //Certain inputs require different checks, and some data parsing based on their type
+            if (ele.type === `checkbox`) {
+                data[ele.name] = ele.checked;
+            } else if (ele.type === "number") 
+                data[ele.name] = Number(ele.value);
+            else {
+                data[ele.name] = ele.value;    
+            }
+            
         }
-        new NewedoDialog(options, null).render(true);
-    });
-}
 
-/**
- * prepares all the submitted data from the roll dialog box
- * @param {*} form 
- * @param {*} type 
- * @returns 
- */
-function proccessRoll(form, type) {
-    const data = {
-        form: form,
-        advantage: type,
+        LOGGER.warn('Data:', data);
+        return data;
+    }
+};
 
-        legend: sysUtil.clamp(form.legend.value, 0, 5),
-        bonus: form.bonus.value,
-        wounded: form.wounded.checked,
-        useTrait: true
-    };
 
-    if (form.dataset.rollType === `skill`) data.useTrait = form.useTrait.checked
-
-    LOGGER.debug('Data:', data);
-    return data;
-}
 
 export class RollSkill extends NewedoRoll {
     constructor(data) {
@@ -400,19 +369,27 @@ export class RollSkill extends NewedoRoll {
 
         // Apply advantage / disadvantage
         this._checkAdvantage(options.advantage);
-
         let formula = this.formula;
+
         // Adds the string modifiers from the input 
         formula = sysUtil.formulaAdd(formula, options.mods);
         formula = sysUtil.formulaAdd(formula, options.bonus);
+
         // Adds legend bonus
-        var l = sysUtil.spendLegend(this.actor, options.legend);
-        if (l === null) return undefined;
-        formula = sysUtil.formulaAdd(formula, l);
+        if (options.legend > 0) {
+            var l = await sysUtil.spendLegend(this.actor, options.legend);
+            if (l === null) return undefined;//if the legend couldnt be spent, cancel the roll
+            formula = sysUtil.formulaAdd(formula, l);
+        }
+
+        //Applies the wound penalty
         if (options.wounded) formula = sysUtil.formulaSub(formula, data.wound.penalty);
 
+        LOGGER.warn("Formula:", formula)
+
         // Creates the final roll
-        let skill = await new Roll(formula, context).evaluate();
+        let skill = await new Roll(formula, data);
+        await skill.evaluate();
         return await skill.toMessage();
     }
 
@@ -425,19 +402,7 @@ export class RollSkill extends NewedoRoll {
 
         return data;
     }
-
-    _proccessRoll(data) {
-        //prepares the data from the form unique to this roll type
-        data.useTrait = data.form.useTrait.checked;
-        data.mods = data.form.mods.value;
-
-        return data;
-    }
 }
-
-
-
-
 
 export class RollRote extends NewedoRoll {
     constructor(data) {
@@ -474,7 +439,8 @@ export class RollRote extends NewedoRoll {
     async roll() {
         LOGGER.debug(`Rolling rote`);
         if (this.item.system.cost > this.actor.system.legend.value) {
-            
+            sysUtil.warn(`NEWEDO.notify.warn.roteToExpensive`);
+            return undefined;
         }
 
         // Check if the actor has enough legend to cast the rote
@@ -491,7 +457,7 @@ export class RollRote extends NewedoRoll {
         formula = sysUtil.formulaAdd(formula, options.bonus);
 
         // Adds legend bonus and spell cost
-        var l = sysUtil.spendLegend(this.actor, options.legend + this.item.system.cost);
+        var l = await sysUtil.spendLegend(this.actor, options.legend + this.item.system.cost);
         if (l === null) return undefined;
         l -= this.item.system.cost;
         formula = sysUtil.formulaAdd(formula, l);
@@ -502,11 +468,5 @@ export class RollRote extends NewedoRoll {
         // Creates the final roll
         let skill = await new Roll(formula, context).evaluate();
         return await skill.toMessage();
-    }
-
-    _proccessRoll(data) {
-        //prepares the data from the form unique to this roll type
-        data.mods = data.form.mods.value;
-        return data;
     }
 }

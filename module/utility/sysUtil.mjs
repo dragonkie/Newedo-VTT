@@ -82,23 +82,23 @@ export default class sysUtil {
 
         if (value <= 0.90) {
             label = `NEWEDO.wound.grazed`;
-            penalty = 1;
+            penalty = -1;
         }
         if (value <= 0.75) {
             label = `NEWEDO.wound.wounded`;
-            penalty = 3;
+            penalty = -3;
         }
         if (value <= 0.25) {
             label = `NEWEDO.wound.bloody`;
-            penalty = 5;
+            penalty = -5;
         }
         if (value <= 0.10) {
             label = `NEWEDO.wound.beaten`;
-            penalty = 7;
+            penalty = -7;
         }
         if (value <= 0.0) {
             label = `NEWEDO.wound.burning`;
-            penalty = 10;
+            penalty = -10;
         }
 
         return {
@@ -160,14 +160,19 @@ export default class sysUtil {
         if (cost > 0) {
             if (actor.system.legend.value >= cost) {
                 // Has enough legend to spend
-                console.log(`spent ${cost} legend`)
+                LOGGER.debug(`spent ${cost} legend`)
                 actor.update({ 'system.legend.value': actor.system.legend.value - cost });
                 return cost;
             } else {
-                // Doesnt have enough legend to spend
+                // Doesnt have enough legend to spend, and returns null
                 this.warn(`NEWEDO.notify.warn.noLegend`);
                 return null;
             }
-        } else return '';
+        }
+        return '';//returns an empty string if you didnt actually spend any legend
+    }
+
+    static parseDrop(event) {
+        return JSON.parse(event.dataTransfer.getData(`text/plain`));
     }
 }

@@ -14,13 +14,11 @@ export default class NewedoItemSheet extends ItemSheet {
             classes: ["newedo", "sheet", "item"],
             width: 520,
             height: 360,
-            tabs: [
-                {
-                    navSelector: ".sheet-tabs",
-                    contentSelector: ".sheet-body",
-                    initial: "description",
-                },
-            ],
+            tabs: [{
+                navSelector: ".sheet-tabs",
+                contentSelector: ".sheet-body",
+                initial: "description",
+            }],
             dragDrop: [{ dragSelector: ".item-list .item", dropSelector: null }],
         });
     }
@@ -39,54 +37,26 @@ export default class NewedoItemSheet extends ItemSheet {
 
     async _onDrop(event) {
         await super._onDrop(event);
-        const data = {
-            files: event.dataTransfer.files,
-            items: event.dataTransfer.items,
-            types: event.dataTransfer.types,
-            object: JSON.parse(event.dataTransfer.getData(`text/plain`)),
-        };
-        LOGGER.debug(`ITEM | DRAG | DROP`, data);
+        const data = JSON.parse(event.dataTransfer.getData(`text/plain`));
+        const item = this.item;
 
-        switch (data.object.type) {
-            case "ActiveEffect":
-                return this._onDropActiveEffect(event, data);
-            case "Actor":
-                return this._onDropActor(event, data);
-            case "Item":
-                return this._onDropItem(event, data);
-            case "Folder":
-                return this._onDropFolder(event, data);
-        }
-    }
-
-    async _onDropActor(event, data) {
-        LOGGER.debug(`Actor Dropped`);
-    }
-
-    async _onDropActiveEffect(event, data) {
-        LOGGER.debug(`Active Effect Dropped`);
-    }
-
-    async _onDropFolder(event, data) {
-        LOGGER.debug(`Folder Dropped`);
+        if (typeof item._onDrop === `function`) item._onDrop(data);
+        else LOGGER.warn(`No drop function defined for item type ${item.type}`);
     }
 
     /** @override */
     get template() {
         const path = `systems/${game.system.id}/templates/item`;
-        // Return a single sheet for all item types.
-        // return `${path}/item-sheet.html`;
-
-        // Alternatively, you could use the following return statement to do a
-        // unique item sheet by type, like `item-weapon-sheet.html`.
         return `${path}/item-${this.item.type}-sheet.hbs`;
     }
 
     /* -------------------------------------------- */
 
-    /** @override */
+    /**
+     * @override 
+     * Passes the context data used to render the HTML template
+    */
     async getData() {
-        // Retrieve base data structure.
         const context = await super.getData();
         const item = context.item;
         const source = item.toObject();
@@ -105,9 +75,7 @@ export default class NewedoItemSheet extends ItemSheet {
 
         // Retrieve the roll data for TinyMCE editors.
         let actor = this.object.parent ?? null;
-        if (actor) {
-            context.rollData = actor.getRollData();
-        }
+        if (actor) context.rollData = actor.getRollData();
 
         // Add the actor's data to context.data for easier access, as well as flags.
         context.system = itemData.system;
@@ -139,8 +107,9 @@ export default class NewedoItemSheet extends ItemSheet {
         if (!this.isEditable) return;
 
         html.find(".skill-dice").each((i, li) => {
-            let handler = (ev) => this._cycleSkillDice(ev);
+            let handler = (ev) => this.item._cycleSkillDice(ev);
             li.addEventListener("click", handler);
+            li.addEventListener("contextmenu", handler);
         });
 
         // ---------------------------------------- FEATURE EDITING -------------------------------------------------------
@@ -150,48 +119,25 @@ export default class NewedoItemSheet extends ItemSheet {
             li.addEventListener("click", handler);
         });
 
+        //Handels feature creation
         html.find(".feature-create").each((i, li) => {
-            let handler = (ev) => new FeatureCreate({item: this.item}).render(true);
+            let handler = (ev) => new FeatureCreate({ item: this.item }).render(true);
             li.addEventListener("click", handler);
         });
-
+        //Delete button for the given feature
         html.find(".feature-delete").each((i, li) => {
             let handler = (ev) => this.item._featureDelete(ev);
             li.addEventListener("click", handler);
         });
-        
-    }
-
-    async _cycleSkillDice(_click) {
-        _click.preventDefault();
-
-        const _index = _click.target.attributes.index.value;
-        const itemData = this.item;
-        let system = itemData.system;
-        let ranks = system.ranks;
-
-        switch (ranks[_index]) {
-            case 0:
-                ranks[_index] = 4;
-                break;
-            case 4:
-                ranks[_index] = 6;
-                break;
-            case 6:
-                ranks[_index] = 8;
-                break;
-            case 8:
-                ranks[_index] = 12;
-                break;
-            default:
-                ranks[_index] = 0;
-                break;
-        }
-
-        await this.item.update({ [`system.ranks`]: ranks });
     }
 }
 
+/**
+ * Opens up an application window corresponding to the feature type
+ * @param {Event} event 
+ * @param {NewedoItem} item 
+ * @returns 
+ */
 async function _featureOpen(event, item) {
     LOGGER.debug(`event`, event);
     LOGGER.debug(`item`, item);
@@ -199,11 +145,11 @@ async function _featureOpen(event, item) {
     const element = event.target.closest(".feature");
     const id = element.dataset.featureId;
     const features = item.system.features;
-    
+
     for (var a = 0; a < features.length; a++) {
         if (features[a].id === id) {
+            //Prepares the data object iwth everything we need to load the feature
             const target = features[a];
-
             const feature = {}
             feature.item = item;
             feature.data = target.data;
