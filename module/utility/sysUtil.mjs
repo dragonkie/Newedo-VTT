@@ -1,4 +1,6 @@
 import LOGGER from "./logger.mjs";
+import NewedoDialog from "../dialog/edo-dialog.js";
+
 export default class sysUtil {
 
     /**
@@ -175,4 +177,71 @@ export default class sysUtil {
     static parseDrop(event) {
         return JSON.parse(event.dataTransfer.getData(`text/plain`));
     }
+
+    /**
+     * creates a new data object holding the details of the submitted form
+     * ...selectors holds an array of all the different selector values to get if searching for a non standard one
+     * @argument {FormData} form
+     * @param {...string} selectors 
+     * @returns 
+     */
+    static parseForm(form, ...selectors) {
+        if (selectors.length <= 0) {
+            LOGGER.error("Cannot parse form with no specifiers!", form);
+            return {};
+        }
+        const data = { form: form };//includes the original form
+        //Parses the list of named inputs into the data object
+        for (var select of selectors) {
+            for (var ele of form.querySelectorAll(select)) {
+                //Certain inputs require different checks, and some data parsing based on their type
+                if (ele.type === `checkbox`) {
+                    data[ele.name] = ele.checked;
+                } else if (ele.type === "number")
+                    data[ele.name] = Number(ele.value);
+                else {
+                    data[ele.name] = ele.value;
+                }
+            }
+        }
+        return data;
+    }
+
+    static async getRollOptions(template, data) {
+        const html = await renderTemplate(template, data);
+        const title = data.title;
+
+        const handler = (h, method) => {
+            const f = this.parseForm(h[0].querySelector("form"), "[name]", "[id]" );
+            const d = {advantage: method, ...f};
+            LOGGER.debug("Roll option handler:", d);
+            return d;
+        }
+
+        // the promise constructor provides the resolve and reject functions
+        // You can call the resolve or reject function to return the promise with the value provided to the resolve / reject
+        return new Promise((resolve, reject) => {
+            const options = {
+                title: title,
+                content: html,
+                buttons: {
+                    advantage: {
+                        label: "Advantage",
+                        callback: (html) => resolve(handler(html, "advantage"))
+                    },
+                    normal: {
+                        label: "Normal",
+                        callback: (html) => resolve(handler(html, "normal"))
+                    },
+                    disadvantage: {
+                        label: "Disadvantage",
+                        callback: (html) => resolve(handler(html, "disadvantage"))
+                    }
+                },
+                close: () => resolve({ canceled: true }),
+                submit: (html) => resolve(handler(html, "normal"))
+            }
+            new NewedoDialog(options, null).render(true);
+        })
+    }// endof getRollData();
 }

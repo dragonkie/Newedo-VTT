@@ -179,6 +179,10 @@ export default class NewedoActor extends Actor {
     return this.system.traits;
   }
 
+  get woundPenalty() {
+    return this.system.attributes.wound.penalty;
+  }
+
   get skills() {
     return this.itemTypes.skill;
   }

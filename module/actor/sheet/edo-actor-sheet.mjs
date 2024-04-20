@@ -325,7 +325,7 @@ export default class NewedoActorSheet extends ActorSheet {
         if (context.item) {
             //if this is an item roll
             switch (context.item.type) {
-                case `skill`:// Intentional fallthrough, all these items include a roll function
+                case `skill`:// Intentional fallthrough, all items that can be rolled specify it themselves
                 case `rote`:
                 case `weapon`:
                     context.item.roll();
@@ -335,11 +335,11 @@ export default class NewedoActorSheet extends ActorSheet {
                     break;
             }
         } else if (context.background) {
-            var r = new NewedoRoll(context);
+            var r = new NewedoRoll();
             r.add(new Dice(10, context.background.rank, 'x10'));
             r.roll();
         } else if (context.trait) {
-            var r = new NewedoRoll(context);
+            var r = new NewedoRoll();
             r.add(new Dice(10, context.trait.rank, 'x10'));
             r.roll();
         } else {
@@ -348,10 +348,6 @@ export default class NewedoActorSheet extends ActorSheet {
         }
     }
 
-    async _rollSkill(context) {
-
-
-    }
     /**Handle fate roll table calls
      * Managed seperately from the standard roll function to maintain simplicity
      * @param {Event} event The originating click event

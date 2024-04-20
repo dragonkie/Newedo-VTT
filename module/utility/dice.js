@@ -18,15 +18,10 @@ export class Dice {
 // This roll type can be used for standard rolls such as traits and backgrounds
 export class NewedoRoll {
     /**Accepts an optional list of dice objects to pre populate the tray */
-    constructor(data) {
+    constructor() {
         this.dice = [];
         this.bonuses = [];// Array of numebrs to be added together in the final formula
         this.mods = [];
-
-        // Saves all input data for use later
-        this.title = data.title;
-        this.actor = data.actor;
-        this.item = data.item;
 
         this.template = `systems/newedo/templates/dialog/roll/dialog-roll-default.hbs`;
     }
@@ -67,39 +62,25 @@ export class NewedoRoll {
     }
     /**Standard role used by backgrounds and traits as they dont need any further options */
     async roll() {
-        const options = await this._getRollOptions();
-        const data = this.getData();
-        // If the roll was cancled
-        if (options.canceled) return null;
-        // Applies advantage / disadvantage
-        this._checkAdvantage(options.advantage);
-        // Adds legend bonus to the roll
-        const l = sysUtil.spendLegend(this.actor, options.legend);
-        if (l === null) return undefined;
-        this.bonuses.push(options.legend);
-        // Adds wound penalty to the role
-        if (options.wounded) this.bonuses.push(-data.wound.penalty);
         // Gets the final roll evaluation
         var formula = this.formula;
-        formula = sysUtil.formulaAdd(formula, options.bonus);
+
         // Sends the roll formula to foundry to evaluate
         const roll = await new Roll(formula).evaluate();
         return roll.toMessage();
     }
-    // Function called to quickly get the roll options and pass them this object as the context
-    async _getRollOptions() {
-        const options = await this.getRollOptions(this.getData());
-        return options;
+
+    /**quick referenance to the roll function to maintain parity with foundry rolls */
+    async evaluate() {
+        return await this.roll();
     }
+
     /**Returns true or false if there are dice in this roll */
     get isEmpty() {
         if (!Array.isArray(this.dice) || this.dice.length < 1) return true;
         return false;
     }
 
-    get hasBonus() {
-
-    }
     /**Cleans the roll of any invalid values
      * will be called after most functions that add or remove dice
      * @param {Boolean} sort Default false, wether the dice should be sorted after the clean is finished
@@ -136,7 +117,6 @@ export class NewedoRoll {
             if (b.faces == 10) return 1;
             return a.faces - b.faces;
         });
-
     }
     /**Accepts an integer or an array to be converted into dice 
      * @param {integer, array} dice accepts integer, or array of them, and dice objects
@@ -235,8 +215,6 @@ export class NewedoRoll {
     }
 
     /**Drops a number of the largest dice from the pool, will exit if the array is empty
-    * if dropping multiple dice, it will check through all dice types
-    * if hte largest pool runs out but more dice are available, it will drop the next highest
     * @param {Number} count The number of dice to be dropped
     * @returns {Boolean} true if a dice is removed, false if it failed
     */
@@ -259,214 +237,27 @@ export class NewedoRoll {
         }
         this.clean(); //cleans up the array when were done with it
     }
-    /**Adds a d10 to the dice pool */
-    _advantage() {
-        return this.add(10);
-    }
-    /**Drops 1d10 from the dice pool, if there arent any, drops the next highest dice available */
-    _disadvantage() {
-        var d10 = this.find(10);
-        if (d10) d10.count -= 1;
-        else this.dropHighest();
-        this.clean;
-    }
 
-    _checkAdvantage(type) {
-        if (type === `advantage`) this._advantage();
-        if (type === `disadvantage`) this._disadvantage();
-    }
-
-    /**
- * Creates a dialog box to retrieve roll options from the player
- * This allows a player to give a situational bonus, spend legend, and apply advantage / disadvantage
- * certain roll modes will include other options, such as skills allowing you to opt out from 
- * rolling trait dice
- * These are controlled by the different loadable templates
- * @param {NewedoRoll} roll of data to construct the final roll from
- * @returns {Promise} The data from the selected options
- * 
- */
-    async getRollOptions(data) {
-        LOGGER.debug(`Roll options:`, data);
-        const html = await renderTemplate(data.template, data);
-        const title = data.title;
-        return new Promise(resolve => {
-            const options = {
-                title: title,
-                content: html,
-                buttons: {
-                    advantage: {
-                        label: "Advantage",
-                        callback: (html) => resolve(this._proccessRoll(html[0].querySelector("form"), "advantage"))
-                    },
-                    normal: {
-                        label: "Normal",
-                        callback: (html) => resolve(this._proccessRoll(html[0].querySelector("form"), "normal"))
-                    },
-                    disadvantage: {
-                        label: "Disadvantage",
-                        callback: (html) => resolve(this._proccessRoll(html[0].querySelector("form"), "disadvantage"))
-                    }
-                },
-                close: () => resolve({ canceled: true }),
-                submit: (html) => resolve(this._proccessRoll(html[0].querySelector("form"), "normal"))
-            }
-            new NewedoDialog(options, null).render(true);
-        });
-    }
-
-    /**
-     * prepares all the submitted data from the roll dialog box
-     * @param {*} form 
-     * @param {*} type 
-     * @returns 
-     */
-    _proccessRoll(form, type) {
-        const data = {
-            form: form,//keeps the form data for future reference just in case
-            advantage: type,
-        };
-
-        //Parses the list of named inputs into the data object
-        for (var ele of form.querySelectorAll(`[name]`)) {
-            //Certain inputs require different checks, and some data parsing based on their type
-            if (ele.type === `checkbox`) {
-                data[ele.name] = ele.checked;
-            } else if (ele.type === "number") 
-                data[ele.name] = Number(ele.value);
-            else {
-                data[ele.name] = ele.value;    
-            }
-            
+    checkAdvantage(type) {
+        if (type === `advantage`) {
+            return this.add(10);
         }
-
-        LOGGER.warn('Data:', data);
-        return data;
+        if (type === `disadvantage`) {
+            var d10 = this.find(10);
+            if (d10) d10.count -= 1;
+            else this.dropHighest();
+            this.clean;
+        }
     }
+
+    /**
+    * Creates a dialog box to retrieve roll options from the player
+    * This allows a player to give a situational bonus, spend legend, and apply advantage / disadvantage
+    * certain roll modes will include other options, such as skills allowing you to opt out from 
+    * rolling trait dice
+    * These are controlled by the different loadable templates
+    * @param {NewedoRoll} roll of data to construct the final roll from
+    * @returns {Promise} The data from the selected options
+    * 
+    */
 };
-
-
-
-export class RollSkill extends NewedoRoll {
-    constructor(data) {
-        super(data);
-        this.template = `systems/newedo/templates/dialog/roll/dialog-roll-skill.hbs`; // sets the template we should be using
-
-        if (this.item.type !== `skill`) {
-            LOGGER.error(`Cant pass non skil litem to skill roll`);
-            return undefined;
-        }
-    }
-
-    async roll() {
-        LOGGER.debug(`Rolling skill`)
-        const options = await this._getRollOptions();
-        const data = this.getData();
-
-        // Uses dice objects to add traits and ranks etc to the roll
-        if (options.useTrait) this.dice.push(new Dice(10, this.item.trait.rank, `x10`));
-        this.add(this.item.system.ranks);
-
-        // Apply advantage / disadvantage
-        this._checkAdvantage(options.advantage);
-        let formula = this.formula;
-
-        // Adds the string modifiers from the input 
-        formula = sysUtil.formulaAdd(formula, options.mods);
-        formula = sysUtil.formulaAdd(formula, options.bonus);
-
-        // Adds legend bonus
-        if (options.legend > 0) {
-            var l = await sysUtil.spendLegend(this.actor, options.legend);
-            if (l === null) return undefined;//if the legend couldnt be spent, cancel the roll
-            formula = sysUtil.formulaAdd(formula, l);
-        }
-
-        //Applies the wound penalty
-        if (options.wounded) formula = sysUtil.formulaSub(formula, data.wound.penalty);
-
-        LOGGER.warn("Formula:", formula)
-
-        // Creates the final roll
-        let skill = await new Roll(formula, data);
-        await skill.evaluate();
-        return await skill.toMessage();
-    }
-
-    getData() {
-        var data = super.getData();
-        data.trait = duplicate(this.item.trait);
-        data.trait.label = sysUtil.Localize(`NEWEDO.trait.core.${this.item.system.trait}`);
-
-        data.formula = sysUtil.diceFormula(this.item.dice);
-
-        return data;
-    }
-}
-
-export class RollRote extends NewedoRoll {
-    constructor(data) {
-        super(data);
-        this.template = `systems/newedo/templates/dialog/roll/dialog-roll-rote.hbs`; // sets the template we should be using
-
-        // Adds the skill and trait dice to the pool to be used later
-        this.skill = data.item.skill;
-        this.trait = this.skill.trait;
-
-        if (this.trait.rank > 0) this.add(new Dice(10, this.trait.rank, `x10`));
-        this.add(this.skill.system.ranks);
-
-        LOGGER.debug(`Rote dice`, this.dice)
-
-        if (this.item.type !== `rote`) {
-            LOGGER.error(`Cant pass non skil litem to rote roll`);
-            return undefined;
-        }
-    }
-
-    getData() {
-        var data = super.getData();
-        data.shinpi = duplicate(this.item.trait);
-        data.shinpi.label = sysUtil.Localize(`NEWEDO.trait.core.shi`);
-        data.skill = duplicate(this.skill);
-        data.skill.formula = sysUtil.diceFormula(this.skill.dice);
-
-        data.formula = this.formula;
-
-        return data;
-    }
-
-    async roll() {
-        LOGGER.debug(`Rolling rote`);
-        if (this.item.system.cost > this.actor.system.legend.value) {
-            sysUtil.warn(`NEWEDO.notify.warn.roteToExpensive`);
-            return undefined;
-        }
-
-        // Check if the actor has enough legend to cast the rote
-
-        const options = await this._getRollOptions();
-        const data = this.getData();
-
-        // Apply advantage / disadvantage
-        this._checkAdvantage(options.advantage);
-
-        let formula = this.formula;
-        // Adds the string modifiers from the input 
-        formula = sysUtil.formulaAdd(formula, options.mods);
-        formula = sysUtil.formulaAdd(formula, options.bonus);
-
-        // Adds legend bonus and spell cost
-        var l = await sysUtil.spendLegend(this.actor, options.legend + this.item.system.cost);
-        if (l === null) return undefined;
-        l -= this.item.system.cost;
-        formula = sysUtil.formulaAdd(formula, l);
-
-        // Adds wound penalty to formula
-        if (options.wounded) formula = sysUtil.formulaSub(formula, data.wound.penalty);
-
-        // Creates the final roll
-        let skill = await new Roll(formula, context).evaluate();
-        return await skill.toMessage();
-    }
-}

@@ -1,4 +1,3 @@
-import { RollRote } from "../../utility/dice.js";
 import LOGGER from "../../utility/logger.mjs";
 import NewedoItem from "../edo-item.mjs";
 
@@ -40,7 +39,6 @@ export default class NewedoRote extends NewedoItem {
     }
 
     async roll() {
-        LOGGER.debug(`Rolling skill`);
         if (!this.actor) sysUtil.warn(`NEWEDO.notify.warn.noActor`);
 
         // List of data needed to roll this item
@@ -52,7 +50,5 @@ export default class NewedoRote extends NewedoItem {
         data.template = `systems/newedo/templates/dialog/roll/dialog-roll-rote.hbs`;
 
         //Proccesses the roll
-        const r = new RollRote(data);
-        r.roll();
     }
 }

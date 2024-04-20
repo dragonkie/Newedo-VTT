@@ -1,6 +1,6 @@
 import NewedoItem from "../edo-item.mjs";
 import NewedoDialog from "../../dialog/edo-dialog.js";
-import { Dice, RollSkill } from "../../utility/dice.js";
+import { Dice, NewedoRoll } from "../../utility/dice.js";
 import sysUtil from "../../utility/sysUtil.mjs";
 import LOGGER from "../../utility/logger.mjs";
 
@@ -9,55 +9,42 @@ export default class NewedoSkill extends NewedoItem {
         super(data, options);
     }
 
+    prepareBaseData() {
+        this.system.rollTrait = true;
+    }
+
     prepareDerivedData() {
         this.system.formula = this.formula
+    }
+
+    getRollData() {
+        const data = super.getRollData();
+        data.trait = this.trait;
+        data.formula = this.diceFormula;
+        return data;
     }
     /**
      * Grabs the full dice formula including an owning actors related trait if the default roll setting includes it
      */
     get formula() {
         var formula = ``;
-        // When attached to an actor, check to add their core trait to the skill roll
-        if (this.actor) {
+        if (!this.actor) return null;
+
+        // Grabs the trait dice if applicable
+        if (this.system.rollTrait) {
             const trait = this.trait;
             if (trait.rank > 0) formula = `${trait.rank}d10`;
         }
+
         // Get the formula for the skill dice
         const skillDice = this.diceFormula;
-        if (skillDice !== '') {
-            formula += `+${skillDice}`;
-        }
+        if (skillDice !== '') formula += `+${skillDice}`;
 
         // Return the fully compiled formula, for just the skill dice, call use: get diceFormula();
         return formula;
     }
 
-    /** Returns the trait if there is a parent actor */
-    get trait() {
-        const actor = this.actor
-        const key = this.system.trait;
-        if (actor) return actor.system.traits.core[key];
-        ui.notifications.warn(`NEWEDO.notification.warn.skill.noActor`);
-        return undefined;
-    }
-    /** Returns an array of Dice objects for the skill, does not include the trait dice */
-    get dice() {
-        const list = [];
-        for (const r of this.system.ranks) {
-            if (r === 0) continue;//skips over dice ranks that dont have a dice
-            var found = false;
-            for (var i = 0; i < list.length; i++) {
-                if (list[i].faces === r) {
-                    list[i].count += 1;
-                    found = true;
-                    break;
-                }
-            }
-            if (!found) list.push(new Dice(r));
-        }
-        return list;
-    }
-    /** Returns a formula string just u */
+    /** Returns a formula string just using the skill ranks */
     get diceFormula() {
         var formula = '';
         var dice = this.dice;
@@ -72,6 +59,35 @@ export default class NewedoSkill extends NewedoItem {
         }
 
         return formula;
+    }
+
+    /** Returns the trait if there is a parent actor */
+    get trait() {
+        const actor = this.actor
+        const key = this.system.trait;
+        if (actor) return actor.system.traits.core[key];
+        sysUtil.warn(`NEWEDO.notification.warn.skill.noActor`);
+        return undefined;
+    }
+
+    /** Returns an array of Dice objects for the skill, does not include the trait dice */
+    get dice() {
+        const list = [];
+        for (const r of this.system.ranks) {
+            if (r <= 0) continue;//skips over dice ranks that dont have real dice
+            var found = false;
+            for (var i = 0; i < list.length; i++) {
+                //if a matching dice was found, add it to their pool
+                if (list[i].faces === r) {
+                    list[i].count += 1;
+                    found = true;
+                    break;
+                }
+            }
+            //if the dice doesnt exist yet, add it to the list
+            if (!found) list.push(new Dice(r));
+        }
+        return list;
     }
 
     /**
@@ -98,19 +114,47 @@ export default class NewedoSkill extends NewedoItem {
 
     // Creates and rolls a NewedoRoll using this item, giving it the context that this is a skill roll
     async roll() {
-        LOGGER.debug(`Rolling skill`);
-        if (!this.actor) sysUtil.warn(`NEWEDO.notify.warn.noActor`);
+        // Handelbars template to use for getting rolldata
+        const template = `systems/newedo/templates/dialog/roll/dialog-roll-skill.hbs`;
+        if (!this.actor) {
+            sysUtil.warn(`NEWEDO.notify.warn.noActor`);
+            return null;
+        }
 
-        // List of data needed to roll this item
-        const data = {};
-        data.type = this.type;
-        data.dice = this.dice;
-        data.trait = this.trait;
-        data.actor = this.actor;
-        data.item = this;
+        // Creates the popup dialog asking for your roll data
+        const options = await sysUtil.getRollOptions(template, this.getRollData());
+        if (options.cancled) return null;// Stops the roll if they decided they didnt want to have fun
 
-        const r = new RollSkill(data);
-        r.roll();
+        // Create a new roll instance
+        const roll = new NewedoRoll;
+
+        /* --- Proccess the roll data --- */
+        // Apply wounds
+        if (options.wounded && this.actor.woundPenalty < 0) roll.bonuses.push(this.actor.woundPenalty);
+        
+        // Spend legend
+        if (options.legend > 0) {
+            if (sysUtil.spendLegend(this.actor, options.legend) === null) {
+                sysUtil.warn("NEWEDO.notify.notEnoughLegend");
+                return null;
+            }
+            roll.bonuses.push(options.legend);
+        }
+
+        // Add skill dice
+        roll.dice = roll.dice.concat(this.dice);
+
+        // Add trait dice
+        if (options.useTrait) roll.dice.unshift(new Dice(10, this.trait.rank, `x10`));
+
+        // Advantage and disadvantage
+        roll.checkAdvantage(options.advantage);
+
+        // Apply any final bonuses from the situational options
+
+        LOGGER.debug("Roll", roll);
+        // Rolls the dice
+        roll.roll(options);
     }
 }
 
