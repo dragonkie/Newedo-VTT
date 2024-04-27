@@ -13,4 +13,4 @@ foundry
 *.log
 *.old
 MANIFEST*
-LOG*
+LOG
