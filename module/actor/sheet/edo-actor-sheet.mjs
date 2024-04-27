@@ -2,7 +2,6 @@ import { onManageActiveEffect, prepareActiveEffectCategories } from "../../helpe
 import LOGGER from "../../utility/logger.mjs";
 import sysUtil from "../../utility/sysUtil.mjs";
 
-import { Dice, NewedoRoll } from "../../utility/dice.js";
 /**
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
@@ -304,6 +303,9 @@ export default class NewedoActorSheet extends ActorSheet {
         LOGGER.debug("ACTOR | SHEET | ROLLING");
         event.preventDefault();
 
+        // the closest() function will search up the hierachy for a match
+        // if it cant find a match for the given roll, then we can assume its not that roll
+        // There is probably a more efficient way to run this, but this works for now
         const data = {
             item: event.currentTarget.closest('.item'),
             trait: event.currentTarget.closest('[data-trait]'),
@@ -334,17 +336,64 @@ export default class NewedoActorSheet extends ActorSheet {
                     this._rollStandard(event);
                     break;
             }
-        } else if (context.background) {
-            var r = new NewedoRoll();
-            r.add(new Dice(10, context.background.rank, 'x10'));
-            r.roll();
-        } else if (context.trait) {
-            var r = new NewedoRoll();
-            r.add(new Dice(10, context.trait.rank, 'x10'));
-            r.roll();
         } else {
-            //if this is any other kind of roll
-            this._rollStandard(event);
+            /* STANDARD ROLL DIALOG
+            This should be used whenever you arent sure of what the fuck you should be doing, this gives a dialog with editable formula box
+            and the automated option to spend legend and apply wounds, toggled on or off, and the option to roll advantage or disadvantage
+            */
+            var formula = "";
+            const rollData = this.actor.getRollData();
+            rollData.title = "Roll";
+            rollData.formula = "";
+
+            // Adds the respecitve dice to the roll, and sets their string value to render in the template
+            if (context.background) rollData.formula = `${context.background.rank}d10x10`;
+            else if (context.trait) rollData.formula = `${context.trait.rank}d10x10`;
+
+
+            const options = await sysUtil.getRollOptions(rollData);
+            if (options.canceled) return null;// Stops the roll if they decided they didnt want to have fun
+
+            // Grabs the formula
+            formula = options.formula;
+            var bonus = 0;
+
+            // Apply legend
+            if (options.legend > 0) {
+                if (sysUtil.spendLegend(this.actor, options.legend) === null) {
+                    sysUtil.warn("NEWEDO.notify.notEnoughLegend");
+                    return null;
+                }
+                bonus += options.legend;
+            }
+
+            // Apply wounds
+            if (options.wounded && rollData.wound.penalty < 0) bonus += rollData.wound.penalty;
+
+            if (bonus > 0) formula += `+` + bonus;
+            if (bonus < 0) formula += bonus;
+
+            // Make the roll object
+            let r = new Roll(formula, rollData);
+            LOGGER.debug("Dice terms:", r.dice);
+            // Managed if we have advantage / disadvantage
+            if (options.advantage == "advantage") {
+                for (var a of r.dice) {
+                    if (a.faces == 10) {
+                        a.number += 1;
+                    }
+                }
+            } else if (options.advantage == `disadvantage`) {
+                for (var a of r.dice) {
+                    if (a.faces == 10) {
+                        a.number -= 1;
+                    }
+                }
+            }
+
+
+            await r.evaluate();
+            r.toMessage();
         }
     }
 
@@ -394,6 +443,7 @@ export default class NewedoActorSheet extends ActorSheet {
      * @private
      */
     _rollStandard(event) {
+        LOGGER.debug("Caught an unhandled roll request");
         const element = event.currentTarget;
         const dataset = element.dataset;
 

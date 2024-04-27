@@ -19,28 +19,19 @@ export class Dice {
 export class NewedoRoll {
     /**Accepts an optional list of dice objects to pre populate the tray */
     constructor() {
-        this.dice = [];
-        this.bonuses = [];// Array of numebrs to be added together in the final formula
-        this.mods = [];
+        this.dice = [];// List of dice objects on the list
+        this.bonuses = [];// Array of numebrs to be added together in the final formula, such as wounds, augs, buffs, and passives
+        this.addon = "";// Additional formula bits to append to the final roll
 
         this.template = `systems/newedo/templates/dialog/roll/dialog-roll-default.hbs`;
+
+        this._roll = null;
     }
 
-    getData() {
-        var data = {};
-        data.template = this.template;
-        if (this.item) data.item = this.item.toObject();
-        if (this.actor) {
-            data.actor = this.actor.toObject();
-            data.wound = sysUtil.woundState(this.actor.system.attributes.wound.value);
-        }
-        data.formula = this.formula;
-        return data;
-    }
     /**Converts the list of dice into a rollable string that is foundry compatible*/
     get formula() {
         // Adds the bonuses array to the formula
-        var bonus = 0;// Flate value of numeric bonuses added up
+        var bonus = 0;// Flate value of numeric bonuses added up for the sake of legibility
         for (const b of this.bonuses) {
             if (isNaN(b)) continue;
             bonus += b;
@@ -56,23 +47,50 @@ export class NewedoRoll {
         }
 
         // Return the final formula
-        if (bonus > 0) return formula + `+` + bonus;
-        if (bonus < 0) return formula + bonus;
+        if (bonus > 0) formula += `+` + bonus;
+        if (bonus < 0) formula += bonus;
+
+        if (this.addon != ``) {
+            if (this.addon.charAt(0) != `-` && this.addon.charAt(0) != `+`) {
+                formula += `+ ${this.addon}`
+            }
+            else formula += this.addon;
+        }
+
         return formula;
     }
     /**Standard role used by backgrounds and traits as they dont need any further options */
     async roll() {
         // Gets the final roll evaluation
         var formula = this.formula;
+        if (!formula || formula == ``) {
+            sysUtil.warn(`NEWEDO.warn.invalidRoll`);
+            return null;
+        }
 
         // Sends the roll formula to foundry to evaluate
-        const roll = await new Roll(formula).evaluate();
-        return roll.toMessage();
+        this._roll = await new Roll(formula).evaluate();
+        return this._roll;
     }
 
     /**quick referenance to the roll function to maintain parity with foundry rolls */
     async evaluate() {
         return await this.roll();
+    }
+
+    async toMessage(options) {
+        if (this._roll) return await this._roll.toMessage(options);
+        return null;
+    }
+
+    // quick use function so you only need to call one instead of 2 functions
+    async toRollMessage(options) {
+        await this.evaluate();
+        return await this.toMessage(options);
+    }
+
+    async render() {
+        if (this._roll) return await this._roll.render();
     }
 
     /**Returns true or false if there are dice in this roll */

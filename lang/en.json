@@ -10,7 +10,12 @@
   "NEWEDO.generic.soak": "Soak",
   "NEWEDO.generic.background": "Background",
   "NEWEDO.generic.item": "Item",
+  "NEWEDO.generic.skill": "Skill",
   
+  "NEWEDO.generic.wound": "Wound",
+
+  "NEWEDO.generic.plrl.wound": "Wounds",
+
   "NEWEDO.attribute.lvl": "Level",
   "NEWEDO.attribute.size": "Size",
 

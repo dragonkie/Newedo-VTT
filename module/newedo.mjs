@@ -11,7 +11,7 @@ import NewedoItem from "./item/edo-item.mjs";
 
 import { actorConstructor, itemConstructor } from "./proxy-manager.js";
 
-import { Dice, NewedoRoll } from "./utility/dice.js";
+import { Dice, NewedoRoll } from "./utility/dice.mjs";
 
 //imported functions
 import preloadHandlebarsTemplates from "./helpers/preload-templates.mjs";

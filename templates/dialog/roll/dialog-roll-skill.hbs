@@ -1,4 +1,4 @@
-<form class="roll-dialog-skill" data-roll-type="skill">
+<form class="roll-dialog-skill">
     <div class="form-group">
         <label>Trait: <b>{{trait.label}}</b></label>
         <input type="checkbox" name="useTrait" checked="true">
@@ -8,23 +8,5 @@
         <label>Skill:</label>
         <input type="text" name="skill" disabled value="{{formula}}" />
     </div>
-    <div class="form-group">
-        <label>Modifiers:</label>
-        <input type="text" name="mods" value="{{mods}}" />
-    </div>
-    {{!-- Modifiers holds any dice from any source that isnt the core trait or skill dice, such as augs and race bonuses
-    --}}
-    <div class="form-group">
-        <label>Situational Bonus:</label>
-        <input type="text" name="bonus" placeholder="" />
-    </div>
-    <div class="form-group">
-        <label>Spend Legend:</label>
-        <input type="number" name="legend" max="5" min="0" />
-    </div>
-    <div class="form-group">
-        <label>Wounds:</label>
-        <input type="checkbox" name="wounded" checked="true" />
-        <input type="number" disabled name="woundValue" value="{{attributes.wound.penalty}}" />
-    </div>
+    {{> "newedo.dialog-roll-part-options" }}
 </form>

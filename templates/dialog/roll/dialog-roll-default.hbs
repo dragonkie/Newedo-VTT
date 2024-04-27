@@ -1,19 +1,15 @@
-<form class="roll-dialog-default">
+<form class="roll-dialog-default" system-theme="dark">
     <div class="form-group">
         <label>Formula:</label>
-        <input type="text" name="formula" value="{{formula}}"/>
-    </div>
-    <div class="form-group">
-        <label>Situational Bonus:</label>
-        <input type="text" name="bonus" placeholder=""/>
+        <input type="text" name="formula" value="{{formula}}" />
     </div>
     <div class="form-group">
         <label>Spend Legend:</label>
-        <input type="number" name="legend" max="5" min="0"/>
+        <input type="number" name="legend" max="5" min="0" placeholder="0 - 5" />
     </div>
     <div class="form-group">
-        <label>Wounds:</label>
+        <label>{{localize "NEWEDO.generic.plrl.wound"}}:</label>
         <input type="checkbox" name="wounded" checked="true" />
-        <input type="number" name="woundPenalty" value="{{wound.penalty}}" />
+        <input type="text" name="woundValue" disabled value="{{wound.penalty}}" />
     </div>
 </form>

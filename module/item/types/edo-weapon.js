@@ -1,7 +1,8 @@
 import sysUtil from "../../utility/sysUtil.mjs";
 import NewedoItem from "../edo-item.mjs";
 import NewedoSkill from "./edo-skill.js";
-import { Dice, NewedoRoll } from "../../utility/dice.js";
+import { Dice, NewedoRoll } from "../../utility/dice.mjs";
+import LOGGER from "../../utility/logger.mjs";
 
 export default class NewedoWeapon extends NewedoItem {
     constructor(data, options) {
@@ -16,7 +17,7 @@ export default class NewedoWeapon extends NewedoItem {
         if (system.quality.value > system.quality.max) system.quality.value = system.quality.max;
         if (system.quality.value < 1) system.quality.value = 1;
         // Corrects grit values
-        if (system.grit.value > system.quality.value * 2) system.grit.value = system.quality.value*2;// Maximum grit is the quality of the weapon * 2
+        if (system.grit.value > system.quality.value * 2) system.grit.value = system.quality.value * 2;// Maximum grit is the quality of the weapon * 2
         if (system.grit.value < 0) system.grit.value = 0;// Minimum of 0 grit
         // If the grit modifiers are higher than what the grit allows, lowers them evenly until they are acceptable
         while (system.grit.atk + system.grit.dmg > Math.floor(system.grit.value / 2)) {
@@ -25,14 +26,14 @@ export default class NewedoWeapon extends NewedoItem {
         }
         // clears the formulas to make sure no garbage is in them
         switch (system.skill) {
-        case `Archery`: 
-        case `Gunnery`:
-        case `Small Arms`:
-            system.isRanged = true;
-            break;
-        default:
-            system.isRanged = false;
-            break;
+            case `Archery`:
+            case `Gunnery`:
+            case `Small Arms`:
+                system.isRanged = true;
+                break;
+            default:
+                system.isRanged = false;
+                break;
         }
 
         // Checks to see if there is a parent actor
@@ -44,43 +45,83 @@ export default class NewedoWeapon extends NewedoItem {
         // Because were using a weapon to roll, we need to create 2 seperate rolls
         // One is for attacks, and the other is a delayed one to be rolled for damage
         if (!this.actor) {
-            ui.notifications.warn(`NEWEDO.notify.item.roll.weapon.noActor`)
+            sysUtil.warn(`NEWEDO.notify.itemNoActor`);
             return undefined;
         }
-        var data = {
-            title : this.name,
-			actor : this.actor,
-			item : this
-		};
 
-        //var rSkill = new NewedoRoll(data);
-        //rSkill.roll();
-        const atk = new Roll(this.atkFormula.replace(`d10`, `d10x10`));
-        await atk.evaluate();
+        const rollData = this.getRollData();
+        const template = `systems/${game.system.id}/templates/dialog/roll/dialog-roll-weapon.hbs`;
 
-        const dmg = new Roll(this.dmgFormula.replace(`d10`, `d10x10`));
-        await dmg.evaluate();
+        LOGGER.debug("Roll data:", rollData);
 
-        const html = {
-            atk: await atk.render(),
-            dmg: await dmg.render()
+        const options = await sysUtil.getRollOptions(rollData, template);
+        if (options.canceled) return null;
+
+        const atk = await this._rollAttack(options);
+        const dmg = await this._rollDamage(options);
+    }
+
+    getRollData() {
+        if (!this.actor) return null;
+        let data = super.getRollData();
+
+        data.formula = {
+            atk: this.atkFormula,
+            dmg: this.dmgFormula
         }
 
-        let msg = await atk.toMessage({
+        data.skill = this.skill;
+
+        return data;
+    }
+
+    async _rollAttack(options) {
+        // Create a new roll instance
+        const roll = new NewedoRoll;
+
+        /* --- Proccess the roll data --- */
+        // Apply wounds
+        if (options.wounded && this.actor.woundPenalty < 0) roll.bonuses.push(this.actor.woundPenalty);
+
+        // Spend legend
+        if (options.legend > 0) {
+            if (sysUtil.spendLegend(this.actor, options.legend) === null) {
+                sysUtil.warn("NEWEDO.notify.notEnoughLegend");
+                return null;
+            }
+            roll.bonuses.push(options.legend);
+        }
+
+        // Add situational bonuses
+        if (options.bonus != ``) roll.addon = options.bonus;
+
+        // Add skill dice
+        roll.dice = roll.dice.concat(this.skill.dice);
+
+        // Add trait dice
+        roll.dice.unshift(new Dice(10, this.trait.rank, `x10`));
+
+        // Advantage and disadvantage
+        roll.checkAdvantage(options.advantage);
+
+        // Rolls the dice
+        await roll.toRollMessage({
             speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-            flavor: `<div style="font-size: 20px; text-align: center;">${this.name} Attack</div>`,
-            content: [html.atk]+`<div>Damage</div>`+[html.dmg],
-            create: true,
-            rollMode: game.settings.get('core', 'rollMode')
+            flavor: `<p style="font-size: 14px; margin: 4px 0 4px 0;">${this.name}: Attack</p>`
         });
+
+        return roll;
     }
 
-    async rollAttack() {
+    async _rollDamage(options) {
+        const dmg = new Roll(this.dmgFormula.replace(`d10`, `d10x10`));
+        await dmg.evaluate();
+        await dmg.toMessage({
+            speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+            flavor: `<p style="font-size: 14px; margin: 4px 0 4px 0;">${this.name}: Damage</p>`
+        });
 
-    }
-
-    async rollDamage() {
-
+        return dmg;
     }
 
     get atkFormula() {

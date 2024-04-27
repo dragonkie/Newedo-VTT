@@ -1,27 +1,15 @@
 <form class="roll-dialog-weapon">
     <div class="form-group">
-        <label>Trait: <b>{{trait.label}}</b></label>
-        <input type="number" name="trait" value="{{trait.rank}}" placeholder="Value"/>
+        <label>{{localize 'NEWEDO.generic.trait'}}:</label>
+        <input type="text" name="trait" disabled value="{{skill.trait.rank}}d10"/>
     </div>
     <div class="form-group">
-        <label>Grit:</label>
-        <input type="number" name="grit" value="{{grit.atk}}"/>
+        <label>{{localize 'NEWEDO.generic.skill'}}:</label>
+        <input type="text" name="trait" disabled value="{{skill.diceFormula}}"/>
     </div>
     <div class="form-group">
-        <label>Wounds:</label>
-        <input type="checkbox" name="wounds" checked="true"/>
+        <label>{{localize 'NEWEDO.generic.damage'}}:</label>
+        <input type="text" name="damage" disabled value="{{formula.dmg}}"/>
     </div>
-    {{!-- Modifying these values will not alter how the system automates rolls --}}
-    <div class="form-group">
-        <label>Situational Bonus:</label>
-        <input type="text" name="bonus" placeholder=""/>
-    </div>
-    <div class="form-group">
-        <label>Raises:</label>
-        <input type="number" name="raise"/>
-    </div>
-    <div class="form-group">
-        <label>Spend Legend:</label>
-        <input type="number" name="legend" value="0" max="5" min="0"/>
-    </div>
+    {{> "newedo.dialog-roll-part-options" }}
 </form>

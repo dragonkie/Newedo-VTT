@@ -163,7 +163,7 @@ export default class sysUtil {
             if (actor.system.legend.value >= cost) {
                 // Has enough legend to spend
                 LOGGER.debug(`spent ${cost} legend`)
-                actor.update({ 'system.legend.value': actor.system.legend.value - cost });
+                await actor.update({ 'system.legend.value': actor.system.legend.value - cost });
                 return cost;
             } else {
                 // Doesnt have enough legend to spend, and returns null
@@ -207,7 +207,10 @@ export default class sysUtil {
         return data;
     }
 
-    static async getRollOptions(template, data) {
+    static async getRollOptions(data, template) {
+        
+        if (!template || template === ``) template = `systems/newedo/templates/dialog/roll/dialog-roll-default.hbs`;
+
         const html = await renderTemplate(template, data);
         const title = data.title;
 
@@ -215,6 +218,13 @@ export default class sysUtil {
             const f = this.parseForm(h[0].querySelector("form"), "[name]", "[id]" );
             const d = {advantage: method, ...f};
             LOGGER.debug("Roll option handler:", d);
+
+            // Check if the option to add an additional string modifier is valid or not
+            // Roll.validate() will flag an empty string as invalid, so we need to catch for that as well
+            if (d.bonus && d.bonus != "" && !Roll.validate(d.bonus)) {
+                sysUtil.warn("NEWEDO.warn.invalidBonus");
+                d.canceled = true; // Flags that this roll should be discarded
+            }
             return d;
         }
 
@@ -242,6 +252,6 @@ export default class sysUtil {
                 submit: (html) => resolve(handler(html, "normal"))
             }
             new NewedoDialog(options, null).render(true);
-        })
+        });
     }// endof getRollData();
 }

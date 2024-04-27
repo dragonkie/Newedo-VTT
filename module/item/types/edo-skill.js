@@ -1,6 +1,5 @@
 import NewedoItem from "../edo-item.mjs";
-import NewedoDialog from "../../dialog/edo-dialog.js";
-import { Dice, NewedoRoll } from "../../utility/dice.js";
+import { Dice, NewedoRoll } from "../../utility/dice.mjs";
 import sysUtil from "../../utility/sysUtil.mjs";
 import LOGGER from "../../utility/logger.mjs";
 
@@ -66,7 +65,7 @@ export default class NewedoSkill extends NewedoItem {
         const actor = this.actor
         const key = this.system.trait;
         if (actor) return actor.system.traits.core[key];
-        sysUtil.warn(`NEWEDO.notification.warn.skill.noActor`);
+        sysUtil.warn(`NEWEDO.warn.itemNoActor`);
         return undefined;
     }
 
@@ -114,16 +113,16 @@ export default class NewedoSkill extends NewedoItem {
 
     // Creates and rolls a NewedoRoll using this item, giving it the context that this is a skill roll
     async roll() {
-        // Handelbars template to use for getting rolldata
-        const template = `systems/newedo/templates/dialog/roll/dialog-roll-skill.hbs`;
         if (!this.actor) {
             sysUtil.warn(`NEWEDO.notify.warn.noActor`);
             return null;
         }
+        // Handelbars template to use for getting rolldata
+        const template = `systems/${game.system.id}/templates/dialog/roll/dialog-roll-skill.hbs`;
 
         // Creates the popup dialog asking for your roll data
-        const options = await sysUtil.getRollOptions(template, this.getRollData());
-        if (options.cancled) return null;// Stops the roll if they decided they didnt want to have fun
+        const options = await sysUtil.getRollOptions(this.getRollData(), template);
+        if (options.canceled) return null;// Stops the roll if they decided they didnt want to have fun
 
         // Create a new roll instance
         const roll = new NewedoRoll;
@@ -141,6 +140,9 @@ export default class NewedoSkill extends NewedoItem {
             roll.bonuses.push(options.legend);
         }
 
+        // Add situational bonuses
+        if (options.bonus != ``) roll.addon = options.bonus;
+
         // Add skill dice
         roll.dice = roll.dice.concat(this.dice);
 
@@ -150,11 +152,11 @@ export default class NewedoSkill extends NewedoItem {
         // Advantage and disadvantage
         roll.checkAdvantage(options.advantage);
 
-        // Apply any final bonuses from the situational options
-
-        LOGGER.debug("Roll", roll);
         // Rolls the dice
-        roll.roll(options);
+        roll.toRollMessage({
+            speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+            flavor: `<p style="font-size: 14px; margin: 4px 0 4px 0;">${this.name}</p>`
+        });
     }
 }
 
