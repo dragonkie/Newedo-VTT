@@ -253,5 +253,5 @@ export default class sysUtil {
             }
             new NewedoDialog(options, null).render(true);
         });
-    }// endof getRollData();
+    }// endof getRollOptions();
 }
