@@ -65,7 +65,7 @@ export default class NewedoSkill extends NewedoItem {
         const actor = this.actor
         const key = this.system.trait;
         if (actor) return actor.system.traits.core[key];
-        sysUtil.warn(`NEWEDO.warn.itemNoActor`);
+        LOGGER.warn(`NEWEDO.warn.itemNoActor`);
         return undefined;
     }
 

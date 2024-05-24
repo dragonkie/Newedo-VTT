@@ -10,7 +10,7 @@ import sysUtil from "../../utility/sysUtil.mjs";
 export default class NewedoItemSheet extends ItemSheet {
     /** @override */
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             classes: ["newedo", "sheet", "item"],
             width: 520,
             height: 360,

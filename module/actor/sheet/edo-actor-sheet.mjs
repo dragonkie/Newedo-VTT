@@ -18,7 +18,7 @@ export default class NewedoActorSheet extends ActorSheet {
 
     /** @override */
     static get defaultOptions() {
-        var merged = mergeObject(super.defaultOptions, {
+        var merged = foundry.utils.mergeObject(super.defaultOptions, {
             classes: ["newedo", "sheet", "actor"],
             template: `systems/${game.system.id}/templates/actor/actor-sheet.hbs`,
             width: 800,
