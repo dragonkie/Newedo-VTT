@@ -167,7 +167,7 @@ export default class sysUtil {
                 return cost;
             } else {
                 // Doesnt have enough legend to spend, and returns null
-                this.warn(`NEWEDO.notify.warn.noLegend`);
+                this.warn(`NEWEDO.warn.notEnoughLegend`);
                 return null;
             }
         }

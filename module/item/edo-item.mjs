@@ -39,10 +39,14 @@ export default class NewedoItem extends Item {
      */
     getRollData() {
         // If present, return the actor's roll data.
-        if (this.actor === null) return null;
-        const rollData = this.actor.getRollData();
+        const rollData = {};
+        if (this.actor) foundry.utils.mergeObject(rollData, this.actor.getRollData());
         // Grab the item's system data as well.
         rollData.item = foundry.utils.deepClone(this.system);
         return rollData;
+    }
+
+    get localizedName() {
+        return sysUtil.Localize(this.name);
     }
 }

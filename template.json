@@ -353,12 +353,12 @@
             "templates": [
                 "base"
             ],
-            "soaks": [
-                0,
-                0,
-                0,
-                0
-            ],
+            "soaks": {
+                "kin": 0,
+                "arc": 0,
+                "bio": 0,
+                "ele": 0
+            },
             "fragile": false,
             "stealthy": false,
             "intimidating": false,

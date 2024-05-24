@@ -68,6 +68,8 @@ export default class NewedoItemSheet extends ItemSheet {
             source: source.system,
             system: item.system,
             rollData: this.item.getRollData(),
+            editable: this.isEditable,
+            localizedName: this.item.localizedName
         });
 
         // Use a safe clone of the item data for further operations.

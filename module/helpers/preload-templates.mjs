@@ -28,6 +28,7 @@ import LOGGER from "../utility/logger.mjs";
 
     // Item sheets
     `${path}/item/parts/item-header.hbs`,
+    `${path}/item/parts/item-rules.hbs`,
 
     // Feature config
     `${path}/dialog/feature/feature-title.hbs`,

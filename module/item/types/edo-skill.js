@@ -158,5 +158,9 @@ export default class NewedoSkill extends NewedoItem {
             flavor: `<p style="font-size: 14px; margin: 4px 0 4px 0;">${this.name}</p>`
         });
     }
+
+    get localizedName() {
+        return game.i18n.localize(`NEWEDO.skill.label.${this.name.toLowerCase()}`) ?? this.name;
+    }
 }
 

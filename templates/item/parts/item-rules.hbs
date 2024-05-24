@@ -1,0 +1,18 @@
+{{#if editable}}
+
+<div class="tab rules" data-group="primary" data-tab="rules">
+
+    <div class="rules-tab" style="display: flex; flex-direction: column;">
+        <div style="display: flex; flex-direction: row; margin-bottom: 4px;">
+            <label style="flex: 1;">UUID:</label>
+            <input style="flex: 3;" type="text" disabled value="{{item.uuid}}" />
+        </div>
+        <div style="display: flex; flex-direction: row;">
+            <label style="flex: 1;">Slug:</label>
+            <input style="flex: 3;" type="text" disabled value="{{system.slug}}" />
+        </div>
+    </div>
+
+</div>
+
+{{/if}}
