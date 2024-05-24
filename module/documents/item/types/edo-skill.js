@@ -1,7 +1,7 @@
 import NewedoItem from "../edo-item.mjs";
-import { Dice, NewedoRoll } from "../../utility/dice.mjs";
-import sysUtil from "../../utility/sysUtil.mjs";
-import LOGGER from "../../utility/logger.mjs";
+import { Dice, NewedoRoll } from "../../../system/dice.mjs";
+import sysUtil from "../../../system/sysUtil.mjs";
+import LOGGER from "../../../system/logger.mjs";
 
 export default class NewedoSkill extends NewedoItem {
     constructor(data, options) {
@@ -157,10 +157,6 @@ export default class NewedoSkill extends NewedoItem {
             speaker: ChatMessage.getSpeaker({ actor: this.actor }),
             flavor: `<p style="font-size: 14px; margin: 4px 0 4px 0;">${this.name}</p>`
         });
-    }
-
-    get localizedName() {
-        return game.i18n.localize(`NEWEDO.skill.label.${this.name.toLowerCase()}`) ?? this.name;
     }
 }
 

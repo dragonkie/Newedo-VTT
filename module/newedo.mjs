@@ -1,17 +1,17 @@
 //imported objects
 import { NEWEDO } from "./system/config.mjs";
-import LOGGER from "./utility/logger.mjs";
-import sysUtil from "./utility/sysUtil.mjs";
+import LOGGER from "./system/logger.mjs";
+import sysUtil from "./system/sysUtil.mjs";
 
-import NewedoActorSheet from "./actor/sheet/edo-actor-sheet.mjs";
-import NewedoItemSheet from "./item/sheet/edo-item-sheet.mjs";
+import NewedoActorSheet from "./sheets/edo-actor-sheet.mjs"
+import NewedoItemSheet from "./sheets/edo-item-sheet.mjs";
 
-import NewedoActor from "./actor/edo-actor.mjs";
-import NewedoItem from "./item/edo-item.mjs";
+import NewedoActor from "./documents/actor/edo-actor.mjs";
+import NewedoItem from "./documents/item/edo-item.mjs";
 
 import { actorConstructor, itemConstructor } from "./proxy-manager.js";
 
-import { Dice, NewedoRoll } from "./utility/dice.mjs";
+import { Dice, NewedoRoll } from "./system/dice.mjs";
 
 //imported functions
 import preloadHandlebarsTemplates from "./helpers/preload-templates.mjs";
@@ -62,7 +62,7 @@ Hooks.once('init', async function () {
     registerHooks();
 
     // Preload Handlebars templates.
-    return console.log(preloadHandlebarsTemplates());
+    return LOGGER.log("Loading templates", preloadHandlebarsTemplates());
 });
 
 /* -------------------------------------------- */

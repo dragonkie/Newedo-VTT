@@ -313,7 +313,8 @@
                 "bonus": 0,
                 "value": 0,
                 "total": 0,
-                "formula": ""
+                "formula": "",
+                "trait": "pow"
             },
             "damage": {
                 "value": "1d8",

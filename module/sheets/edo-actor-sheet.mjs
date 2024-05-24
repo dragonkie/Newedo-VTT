@@ -1,6 +1,6 @@
-import { onManageActiveEffect, prepareActiveEffectCategories } from "../../helpers/effects.mjs";
-import LOGGER from "../../utility/logger.mjs";
-import sysUtil from "../../utility/sysUtil.mjs";
+import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
+import LOGGER from "../system/logger.mjs";
+import sysUtil from "../system/sysUtil.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications

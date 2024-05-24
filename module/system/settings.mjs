@@ -1,4 +1,4 @@
-import LOGGER from "../utility/logger.mjs";
+import LOGGER from "./logger.mjs";
 
 export default function registerSystemSettings() {
     LOGGER.log(`Registering system settings`);

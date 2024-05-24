@@ -1,5 +1,5 @@
 import LOGGER from "./logger.mjs";
-import NewedoDialog from "../dialog/edo-dialog.js";
+import NewedoDialog from "../documents/dialog/edo-dialog.js";
 
 export default class sysUtil {
 

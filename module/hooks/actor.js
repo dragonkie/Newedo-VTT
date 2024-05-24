@@ -1,4 +1,4 @@
-import sysUtil from "../utility/sysUtil.mjs";
+import sysUtil from "../system/sysUtil.mjs";
 
 /* 
 prepares the hook calls for all actors

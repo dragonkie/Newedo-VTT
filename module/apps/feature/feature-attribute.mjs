@@ -1,5 +1,4 @@
-import LOGGER from "../../utility/logger.mjs";
-import FeatureConfig from "./feature.js";
+import FeatureConfig from "./feature.mjs";
 
 export default class FeatureAttributeConfig extends FeatureConfig {
     constructor(feature, options = {}) {

@@ -1,7 +1,7 @@
-import LOGGER from "../../utility/logger.mjs";
-import FeatureAttributeConfig from "./feature-attribute.js";
-import FeatureItemConfig from "./feature-item.js";
-import FeatureTraitConfig from "./feature-trait.js";
+import LOGGER from "../../system/logger.mjs";
+import FeatureAttributeConfig from "./feature-attribute.mjs";
+import FeatureItemConfig from "./feature-item.mjs";
+import FeatureTraitConfig from "./feature-trait.mjs";
 
 /**
  * Creates a dialog window to let users select the type of feature they're creating

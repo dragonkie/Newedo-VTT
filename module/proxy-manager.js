@@ -1,27 +1,24 @@
 // Base classes
-import NewedoActor from "./actor/edo-actor.mjs";
-import NewedoItem from "./item/edo-item.mjs";
+import NewedoActor from "./documents/actor/edo-actor.mjs";
+import NewedoItem from "./documents/item/edo-item.mjs";
 
 // Actor Types
-import NewedoCharacter from "./actor/types/edo-character.js";
-import NewedoNPC from "./actor/types/edo-npc.js";
-import NewedoPet from "./actor/types/edo-pet.js";
-import NewedoVehicle from "./actor/types/edo-vehicle.js";
+import NewedoCharacter from "./documents/actor/types/edo-character.js";
+import NewedoNPC from "./documents/actor/types/edo-npc.js";
+import NewedoPet from "./documents/actor/types/edo-pet.js";
+import NewedoVehicle from "./documents/actor/types/edo-vehicle.js";
 
 // Item Types
-import NewedoAmmo from "./item/types/edo-ammo.js";
-import NewedoArmour from "./item/types/edo-armour.js";
-import NewedoAugment from "./item/types/edo-augment.js";
-import NewedoCulture from "./item/types/edo-culture.js";
-import NewedoFate from "./item/types/edo-fate.js";
-import NewedoKami from "./item/types/edo-kami.js";
-import NewedoLineage from "./item/types/edo-lineage.js";
-import NewedoRote from "./item/types/edo-rote.js";
-import NewedoSkill from "./item/types/edo-skill.js"
-import NewedoWeapon from "./item/types/edo-weapon.js";
-
-// Utilities
-import LOGGER from "./utility/logger.mjs";
+import NewedoAmmo from "./documents/item/types/edo-ammo.js";
+import NewedoArmour from "./documents/item/types/edo-armour.js";
+import NewedoAugment from "./documents/item/types/edo-augment.js";
+import NewedoCulture from "./documents/item/types/edo-culture.js";
+import NewedoFate from "./documents/item/types/edo-fate.js";
+import NewedoKami from "./documents/item/types/edo-kami.js";
+import NewedoLineage from "./documents/item/types/edo-lineage.js";
+import NewedoRote from "./documents/item/types/edo-rote.js";
+import NewedoSkill from "./documents/item/types/edo-skill.js"
+import NewedoWeapon from "./documents/item/types/edo-weapon.js";
 
 //This code has been shamelessly stolen from the Cyberpunk red system
 //Bless your souls for making well documented code to learn from

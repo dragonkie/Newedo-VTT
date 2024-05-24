@@ -1,5 +1,4 @@
-import LOGGER from "../../utility/logger.mjs";
-import FeatureConfig from "./feature.js";
+import FeatureConfig from "./feature.mjs";
 
 /**
  * Gives all items of this feature to the parent actor

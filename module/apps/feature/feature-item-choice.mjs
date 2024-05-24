@@ -1,6 +1,6 @@
-import LOGGER from "../../utility/logger.mjs";
-import sysUtil from "../../utility/sysUtil.mjs";
-import FeatureConfig from "./feature.js";
+import LOGGER from "../../system/logger.mjs";
+import sysUtil from "../../system/sysUtil.mjs";
+import FeatureConfig from "./feature.mjs";
 
 /**
  * Gives a number of selected items from this feature to the parent actor
