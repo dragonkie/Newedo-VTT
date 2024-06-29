@@ -21,14 +21,7 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
     }
 
     static PARTS = {
-        header: { template: "systems/newedo/templates/actor/character/character-header.hbs" },
-        tabs: { template: "systems/newedo/templates/actor/character/character-tabs.hbs" },
-        traits: { template: "systems/newedo/templates/actor/character/character-traits.hbs" },
-        skills: { template: "systems/newedo/templates/actor/character/character-skills.hbs" },
-        equipment: { template: "systems/newedo/templates/actor/character/character-equipment.hbs" },
-        magic: { template: "systems/newedo/templates/actor/character/character-magic.hbs" },
-        augments: { template: "systems/newedo/templates/actor/character/character-augs.hbs" },
-        description: { template: "systems/newedo/templates/actor/character/character-bio.hbs" }
+        body: { template: "systems/newedo/templates/actor/actor-character-sheet.hbs"}
     }
 
     static TABS = {

@@ -14,7 +14,7 @@
 @import 'scss/global/sheet';
 
 //anything imported into this group will require its PARENT have the newedo class, if it needs to share the newedo class it should start with &
-/*
+
 .newedo {
   @import 'scss/components/forms';
   @import 'scss/components/resource';
@@ -32,4 +32,3 @@
   @import 'scss/components/buttons';
  
 }
-*/

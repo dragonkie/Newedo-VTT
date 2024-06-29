@@ -9,6 +9,10 @@ import LOGGER from "../system/logger.mjs";
   const id = game.system.id;
   const path = `systems/${id}/templates`;
   const partials = [
+
+    //Sheet Partials
+    `${path}/actor/character/character-tabs.hbs`,
+
     // Actor Partials
     `${path}/actor/character/parts/actor-features.hbs`,
     `${path}/actor/character/parts/actor-items.hbs`,

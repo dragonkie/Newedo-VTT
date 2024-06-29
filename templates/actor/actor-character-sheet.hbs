@@ -13,41 +13,22 @@
     </header>
 
     <!-- Navigation Tabs -->
-    <nav class="sheet-tabs tabs flexrow character-nav" data-group="primary">
-      <a class="item" data-tab="traits">Traits</a>
-      <a class="item" data-tab="skills">Skills</a>
-      <a class="item" data-tab="equipment">Equipment</a>
-      <a class="item" data-tab="augments">Augments</a>
-      <a class="item" data-tab="magic">Magic</a>
-      <a class="item" data-tab="description">Biography</a>
-    </nav>
+    {{> "newedo.character-tabs"}}
 
     <!-- Tab Bodies -->
     <section class="sheet-body">
 
-      <div class="tab traits" data-group="primary" data-tab="traits">
         {{> "newedo.character-traits"}}
-      </div>
 
-      <div class="tab skills" data-group="primary" data-tab="skills">
         {{> "newedo.character-skills"}}
-      </div>
 
-      <div class="tab bio" data-group="primary" data-tab="bio">
         {{> "newedo.character-bio"}}
-      </div>
 
-      <div class="tab equipment" data-group="primary" data-tab="equipment">
         {{> "newedo.character-equipment"}}
-      </div>
 
-      <div class="tab magic" data-group="primary" data-tab="magic">
         {{> "newedo.character-magic"}}
-      </div>
 
-      <div class="tab augs" data-group="primary" data-tab="augs">
         {{> "newedo.character-augs"}}
-      </div>
       
     </section>
   </section>
