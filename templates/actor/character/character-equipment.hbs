@@ -1,27 +1,29 @@
-<div class="inventory-tab tab-content">
-
-    <div>
-        <li class="items-header flexrow collapsible">
-            <span>Weapons</span>
-            <span>Skill</span>
-            <span>Attack</span>
-            <span>Damage</span>
-            <span>Type</span>
-        </li>
-        <ol class="items-list">
-            {{#each weapons as | weapon key |}}
-
-            <li class="item flexrow" style="text-align: center;" data-item-id="{{weapon._id}}">
-                <!-- Link to the fate opens up the item sheet -->
-                <a class="item-edit">{{weapon.name}}</a>
-                <div>{{weapon.system.skill}}</div>
-                <a class="rollable item-detail" data-roll="{{weapon.system.attack.formula}}" data-label="{{weapon.name}}">{{weapon.system.attack.formula}}</a>
-                <a class="rollable item-detail" data-roll="{{weapon.system.damage.formula}}" data-label="{{weapon.name}}">{{weapon.system.damage.formula}}</a>
-                <span class="item-detail">{{weapon.system.damage.type}}</span>
-                {{#if ../editable}}<span class="item-delete"><img class="icon-trashcan" src="systems/newedo/icons/trash-can.svg"></span>{{/if}}
+<div class="tab equipment" data-group="primary" data-tab="equipment">
+    <div class="inventory-tab tab-content">
+    
+        <div>
+            <li class="items-header flexrow collapsible">
+                <span>Weapons</span>
+                <span>Skill</span>
+                <span>Attack</span>
+                <span>Damage</span>
+                <span>Type</span>
             </li>
-
-            {{/each}}
-        </ol>
+            <ol class="items-list">
+                {{#each weapons as | weapon key |}}
+    
+                <li class="item flexrow" style="text-align: center;" data-item-id="{{weapon._id}}">
+                    <!-- Link to the fate opens up the item sheet -->
+                    <a class="item-edit">{{weapon.name}}</a>
+                    <div>{{weapon.system.skill}}</div>
+                    <a class="rollable item-detail" data-roll="{{weapon.system.attack.formula}}" data-label="{{weapon.name}}">{{weapon.system.attack.formula}}</a>
+                    <a class="rollable item-detail" data-roll="{{weapon.system.damage.formula}}" data-label="{{weapon.name}}">{{weapon.system.damage.formula}}</a>
+                    <span class="item-detail">{{weapon.system.damage.type}}</span>
+                    {{#if ../editable}}<span class="item-delete"><img class="icon-trashcan" src="systems/newedo/icons/trash-can.svg"></span>{{/if}}
+                </li>
+    
+                {{/each}}
+            </ol>
+        </div>
     </div>
 </div>

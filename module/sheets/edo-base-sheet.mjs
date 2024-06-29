@@ -1,3 +1,4 @@
+import LOGGER from "../system/logger.mjs";
 
 
 export const NewedoSheetMixin = Base => {
@@ -10,6 +11,9 @@ export const NewedoSheetMixin = Base => {
 
         static DEFAULT_OPTIONS = {
             form: { submitOnChange: true },
+            window: {
+                resizable: true,
+            },
             actions: {// Default actions must be static functions
                 editImage: this._onEditImage,
                 toggleSheet: this._onToggleSheet,
@@ -43,6 +47,7 @@ export const NewedoSheetMixin = Base => {
         _getTabs() {
             return Object.values(this.constructor.TABS).reduce((acc, v) => {
                 const isActive = this.tabGroups[v.group] === v.id;
+                if (isActive) LOGGER.log(`[${v.id}] is Active!`);
                 acc[v.id] = {
                     ...v,
                     active: isActive,
@@ -156,6 +161,45 @@ export const NewedoSheetMixin = Base => {
 
         async _onDropActor() {
             LOGGER.error(`Unhandled actor drop`, this);
+        }
+
+        _syncPartState(partId, newElement, priorElement, state) {
+            LOGGER.log(`BaseSheet | _syncPartState`, partId);
+            LOGGER.log(`BaseSheet | _syncPartState`, newElement);
+            LOGGER.log(`BaseSheet | _syncPartState`, priorElement);
+            LOGGER.log(`BaseSheet | _syncPartState`, state);
+
+            super._syncPartState(partId, newElement, priorElement, state);
+
+            // Refocus on a delta.
+            const focus = newElement.querySelector(":focus");
+            if (focus && focus.classList.contains("delta")) focus.select();
+
+            // Fade in or out a toggled effect.
+            if (partId === "effects") {
+                newElement.querySelectorAll("[data-item-uuid].effect").forEach(n => {
+                    const uuid = n.dataset.itemUuid;
+                    const newWrapper = n.querySelector(".wrapper");
+                    const oldWrapper = priorElement.querySelector(`[data-item-uuid="${uuid}"].effect .wrapper`);
+                    if (oldWrapper) {
+                        newWrapper.animate([
+                            { opacity: oldWrapper.style.opacity },
+                            { opacity: newWrapper.style.opacity }
+                        ], { duration: 200, easing: "ease-in-out" });
+                    }
+                });
+            }
+        }
+
+        _setupContextMenu() {
+            new artichron.applications.ContextMenuArtichron(this.element, "[data-item-uuid]", [], {
+                onOpen: element => {
+                    const item = fromUuidSync(element.dataset.itemUuid);
+                    if (!item) return;
+                    if (item.documentName === "ActiveEffect") ui.context.menuItems = this._getEffectContextOptions(item);
+                    else if (item.documentName === "Item") ui.context.menuItems = this._getItemContextOptions(item);
+                }
+            });
         }
 
         static _onEditImage(event, target) {

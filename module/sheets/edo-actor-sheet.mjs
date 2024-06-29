@@ -1,12 +1,48 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../helpers/effects.mjs";
 import LOGGER from "../system/logger.mjs";
 import sysUtil from "../system/sysUtil.mjs";
+import { NewedoSheetMixin } from "./edo-base-sheet.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
  */
-export default class NewedoActorSheet extends ActorSheet {
+export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applications.sheets.ActorSheetV2) {
+
+    static DEFAULT_OPTIONS = {
+        classes: ["tfm", "sheet", "actor"],
+        position: { height: 600, width: 700, top: 100, left: 200 },
+        actions: {
+            useItem: this._onUseItem,
+            editItem: this._onEditItem,
+            deleteItem: this._onDeleteItem,
+            rollFate: this._onRollFate
+        }
+    }
+
+    static PARTS = {
+        header: { template: "systems/newedo/templates/actor/character/character-header.hbs" },
+        tabs: { template: "systems/newedo/templates/actor/character/character-tabs.hbs" },
+        traits: { template: "systems/newedo/templates/actor/character/character-traits.hbs" },
+        skills: { template: "systems/newedo/templates/actor/character/character-skills.hbs" },
+        equipment: { template: "systems/newedo/templates/actor/character/character-equipment.hbs" },
+        magic: { template: "systems/newedo/templates/actor/character/character-magic.hbs" },
+        augments: { template: "systems/newedo/templates/actor/character/character-augs.hbs" },
+        description: { template: "systems/newedo/templates/actor/character/character-bio.hbs" }
+    }
+
+    static TABS = {
+        traits: { id: "traits", group: "primary", label: "NEWEDO.tab.traits" },
+        skills: { id: "skills", group: "primary", label: "NEWEDO.tab.skills" },
+        equipment: { id: "equipment", group: "primary", label: "NEWEDO.tab.equipment" },
+        augments: { id: "augments", group: "primary", label: "NEWEDO.tab.augs" },
+        magic: { id: "magic", group: "primary", label: "NEWEDO.tab.magic" },
+        description: { id: "description", group: "primary", label: "NEWEDO.tab.bio" }
+    }
+
+    tabGroups = {
+        primary: "traits"
+    }
 
     //control variables and static macros for them
     static MODES = {
@@ -33,52 +69,29 @@ export default class NewedoActorSheet extends ActorSheet {
         return `systems/${game.system.id}/templates/actor/actor-${this.actor.type}-sheet.hbs`;
     }
 
-    /* --------------------------------------------- Render functions --------------------------------------------- */
-    /** @inheritDoc */
-    async _render(force = false, options = {}) {
-        await super._render(force, options);
-    }
-
-    /** @inheritDoc */
-    async _renderOuter() {
-        const html = await super._renderOuter();
-        const header = await html[0].querySelector(".window-header");
-
-        //injects the edit toggle button into the top left corner of the character header
-        if (this.isEditable) {
-            const toggle = document.createElement("a");
-            toggle.classList.add("switch");
-            toggle.setAttribute("mode", this._mode);
-
-            const thumb = document.createElement("span");
-            thumb.classList.add("slider", "round");
-
-            toggle.addEventListener("click", async function (event) {
-                const toggle = event.currentTarget
-                const value = toggle.getAttribute("mode");
-
-                if (value === "1") {
-                    this._mode = 2;
-                } else if (value === "2") this._mode = 1;
-
-                toggle.setAttribute("mode", this._mode);
-                await this.submit();
-                this.render(false);
-            }.bind(this));
-
-            toggle.appendChild(thumb);
-
-            header.insertAdjacentElement("afterbegin", toggle);
-        }
-        return html;
-    }
-
-    async _renderInner(...args) {
-        const html = await super._renderInner(...args);
-        return html;
-    }
-
     /* --------------------------------------------- Prepare actor sheet --------------------------------------------- */
+
+    /** @override */
+    _prepareContext(options) {
+        const doc = this.document;
+        const rollData = doc.getRollData();
+
+        const context = {
+            document: doc,
+            config: CONFIG.NEWEDO,
+            system: doc.system,
+            name: doc.name,
+            items: doc.items,
+            itemTypes: doc.itemTypes,
+            rollData: rollData,
+            tabs: this._getTabs(),
+            isEditMode: this.isEditMode,
+            isPlayMode: this.isPlayMode,
+            isEditable: this.isEditable
+        }
+
+        return context;
+    }
 
     /** @override */
     getData() {
@@ -239,7 +252,7 @@ export default class NewedoActorSheet extends ActorSheet {
         html.find('.rollable').click(this._onRoll.bind(this));
         //fate dice roll clicks
         html.find('.fate-roll').each((i, li) => {
-            let handler = ev => this._rollFate(ev);
+            let handler = ev => this._onRollFate(ev);
             li.addEventListener("click", handler);
         });
         /* --------------------- Embedded item controls --------------------- */
@@ -286,6 +299,7 @@ export default class NewedoActorSheet extends ActorSheet {
         const _id = element.closest('.item').dataset.itemId;
         return this.actor.items.get(_id)._cycleSkillDice(event);
     };
+
     /* -------------------------------------------- Item management -------------------------------------------- */
     async _installAugment(event) {
         LOGGER.debug("Installing augment");
@@ -402,7 +416,7 @@ export default class NewedoActorSheet extends ActorSheet {
      * @param {Event} event The originating click event
      * @private
      */
-    async _rollFate(event) {
+    async _onRollFate(event) {
         LOGGER.debug(`Rolling fate`);
         let roll = new Roll("1d100");
         await roll.evaluate();

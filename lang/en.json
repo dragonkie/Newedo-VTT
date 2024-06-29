@@ -13,8 +13,14 @@
   "NEWEDO.generic.skill": "Skill",
   
   "NEWEDO.generic.wound": "Wound",
-
   "NEWEDO.generic.plrl.wound": "Wounds",
+
+  "NEWEDO.tab.traits": "Traits",
+  "NEWEDO.tab.equipment": "Equipment",
+  "NEWEDO.tab.skills": "Skills",
+  "NEWEDO.tab.augs": "Augments",
+  "NEWEDO.tab.magic": "Magic",
+  "NEWEDO.tab.bio": "Biography",
 
   "NEWEDO.attribute.lvl": "Level",
   "NEWEDO.attribute.size": "Size",

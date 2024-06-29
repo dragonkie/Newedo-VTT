@@ -1,0 +1,19 @@
+<div style="flex-direction: column;">
+    <!-- Character name field-->
+    <div style="display: flex; flex-direction: row; flex: 1;">
+        <h1 style="display: flex; flex: 1; align-items: center;">
+            <input class="character-name" name="name" type="text" value="{{actor.name}}" placeholder="Name"/>
+            <span style="flex: 1;">Rank: {{system.legend.rank}}</span>
+        </h1>
+        
+    </div>
+    
+    <!-- Derived stats? -->
+    <div class="list-derived">
+        <span>&#x2022 <b>{{system.traits.derived.def.label}}:</b> {{system.traits.derived.def.value}}</span>
+        <span>&#x2022 <b>{{system.traits.derived.res.label}}:</b> {{system.traits.derived.res.value}}</span>
+        <span>&#x2022 <b>{{system.traits.derived.move.label}}:</b> {{system.traits.derived.move.value}}</span>
+        <span>&#x2022 <b>{{system.traits.derived.init.label}}:</b> {{system.traits.derived.init.value}}</span>
+        <span>&#x2022 <b>{{ localize "NEWEDO.attribute.size" }}:</b> {{system.attributes.size.value}}</span>
+    </div>
+</div>
