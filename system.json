@@ -1,0 +1,181 @@
+{
+  "id": "newedo",
+  "title": "NewEdo",
+  "description": "Official adaptation of the Newedo system for FVTT",
+  "version": "0.1.31",
+  "compatibility": {
+    "minimum": 11,
+    "verified": 12.324,
+    "maximum": 13
+  },
+  "authors": [
+    {
+    "name": "dragonkie",
+    "url": "https://github.com/dragonkie"
+    },
+    {
+      "name": "Salty Games",
+      "url": "https://salty-games.com"
+    }
+  ],
+  "esmodules": ["module/newedo.mjs"],
+  "styles": ["css/newedo.css"],
+  
+  "packFolders": [
+    {
+      "name": "Newedo: Core",
+      "sorting": "a",
+      "packs": [
+        "core-kami",
+        "core-rote",
+        "core-weapon",
+        "core-armour",
+        "core-ammo",
+        "core-fates",
+        "core-paths"
+      ]
+    },
+    {
+      "name": "Newedo: Internal",
+      "sorting": "a",
+      "packs": [
+        "internal-skills",
+        "internal-fates",
+        "internal-features"
+      ]
+    }
+  ],
+  "packs": [
+    {
+      "label": "Core: Kami",
+      "type": "Item",
+      "name": "core-kami",
+      "path": "packs/core/kami",
+      "system": "newedo",
+      "banner": "systems/newedo/assets/images/banner/banner-item.jpg",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "TRUSTED": "OBSERVER",
+        "ASSISTANT": "OBSERVER",
+        "GAMEMASTER": "OWNER"
+      }
+    },
+    {
+      "label": "Core: Fates",
+      "type": "Item",
+      "name": "core-fates",
+      "path": "packs/core/fates",
+      "system": "newedo",
+      "banner": "systems/newedo/assets/images/banner/banner-item.jpg",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "TRUSTED": "OBSERVER",
+        "ASSISTANT": "OBSERVER",
+        "GAMEMASTER": "OWNER"
+      }
+    },
+    {
+      "label": "Core: Paths",
+      "type": "Item",
+      "name": "core-paths",
+      "path": "packs/core/paths",
+      "system": "newedo",
+      "banner": "systems/newedo/assets/images/banner/banner-item.jpg",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "TRUSTED": "OBSERVER",
+        "ASSISTANT": "OBSERVER",
+        "GAMEMASTER": "OWNER"
+      }
+    },
+    {
+      "label": "Core: Rotes",
+      "type": "Item",
+      "name": "core-rote",
+      "path": "packs/core/rote",
+      "system": "newedo",
+      "banner": "none",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "TRUSTED": "OBSERVER",
+        "ASSISTANT": "OBSERVER",
+        "GAMEMASTER": "OWNER"
+      }
+    },
+    {
+      "label": "Core: Weapons",
+      "type": "Item",
+      "name": "core-weapon",
+      "path": "packs/core/weapons",
+      "system": "newedo",
+      "banner": "none",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "TRUSTED": "OBSERVER",
+        "ASSISTANT": "OBSERVER",
+        "GAMEMASTER": "OWNER"
+      }
+    },
+    {
+      "label": "internal-features",
+      "type": "Item",
+      "name": "internal-features",
+      "path": "packs/internal/features",
+      "system": "newedo",
+      "banner": "none",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "TRUSTED": "OBSERVER",
+        "ASSISTANT": "OBSERVER",
+        "GAMEMASTER": "OWNER"
+      }
+    },
+    {
+      "label": "internal-skills",
+      "type": "Item",
+      "name": "internal-skills",
+      "path": "packs/internal/skills",
+      "system": "newedo",
+      "banner": "none",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "TRUSTED": "OBSERVER",
+        "ASSISTANT": "OBSERVER",
+        "GAMEMASTER": "OWNER"
+      }
+    },
+    {
+      "label": "internal-fates",
+      "type": "Item",
+      "name": "internal-fates",
+      "path": "packs/internal/fates",
+      "system": "newedo",
+      "banner": "none",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "TRUSTED": "OBSERVER",
+        "ASSISTANT": "OBSERVER",
+        "GAMEMASTER": "OWNER"
+      }
+    }
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+
+  "gridDistance": 1,
+  "gridUnits": "m",
+  "initative": "traits.derived.init",
+  "primaryTokenAttribute": "traits.derived.hp",
+  "secondaryTokenAttribute": "legend",
+
+  "url": "https://github.com/dragonkie/Newedo-VTT",
+  "manifest": "https://github.com/dragonkie/Newedo-VTT/blob/main/system.json",
+  "download": "https://github.com/dragonkie/Newedo-VTT/zipball/master",
+
+  "license": "LICENSE.txt"
+}

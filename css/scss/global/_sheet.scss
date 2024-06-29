@@ -1,0 +1,159 @@
+[system-theme] {
+    --c-primary: transparent;
+    --c-secondary: transparent;
+    --c-tertiary: transparent;
+
+    --bg-image: #{$bg-image} repeat;
+
+    --text-colour: black;
+    --text-placeholder: darkgrey;
+    --text-shadow: #{$shadow-pink};
+    --text-border: 0;
+
+    --input-border: #{$border-thin};
+    --input-bg-inner: #{$c-darkened};
+    --input-bg-outter: #{$c-darkened};
+
+    --panel-border: 1px groove var(--text-colour);
+}
+
+[system-theme="dark"] {
+    --c-primary: #{$c-lowgray};
+    --c-secondary: #{$c-darkgray};
+    --c-tertiary: #{$c-gray};
+
+    --bg-image: none;
+
+    --text-colour: white;
+    --text-placeholder: grey;
+    --text-shadow: #{$shadow-pink};
+    --text-border: 0;
+
+    --input-border: none;
+    --input-bg-inner: var(--c-primary);
+    --input-bg-outter: var(--c-secondary);
+
+    --panel-border: 0;
+}
+
+// For now, these styles only apply to actor and item sheets
+.sheet.actor,
+.sheet.item {
+    // Controls the displaying of the active tab
+    .tab[data-tab].active {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        padding: 10px;
+    }
+
+    //Removes padding from
+    .window-content {
+        padding: 0;
+    }
+
+    //everything in this area should be applied to ALL aspects of the sheet, adding all the light / dark mdoe styles to every element
+    form {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        background: var(--c-primary, white) var(--bg-image, $bg-image) repeat;
+        color: var(--text-colour, black);
+
+        select {
+            color: var(--text-colour, black);
+            background-color: var(--c-primary, transparent);
+
+            option {
+                color: var(--text-colour, black);
+                background-color: var(--c-primary, transparent);
+            }
+
+            optgroup {
+                color: var(--text-colour, black);
+                background-color: var(--c-tertiary, transparent);
+            }
+        }
+
+        input {
+            color: var(--text-colour, black);
+            background-color: var(--input-bg-outter, none);
+            border: var(--text-border);
+
+            &::placeholder {
+                color: var(--text-placeholder, lightgray);
+            }
+
+            &:hover,
+            &:focus {
+                box-shadow: var(--text-shadow);
+                cursor: pointer;
+            }
+        }
+
+        textarea {
+            color: var(--text-colour, black);
+            background-color: var(--c-primary);
+            border: var(--text-border, 0);
+            min-width: 0;
+            min-height: 0;
+            padding: 4px;
+            resize: none;
+
+            &:hover,
+            &:focus {
+                box-shadow: var(--text-shadow);
+            }
+        }
+
+        option {
+            color: var(--text-colour, black);
+        }
+
+        img {
+            border: 0;
+        }
+
+        // Any styles set for sheet body will only apply to the internal part of a tab
+        .sheet-body {
+            flex: 1;
+            display: flex;
+            background-color: var(--c-secondary, gray);
+            overflow: auto;
+
+            input {
+                background-color: var(--input-bg-inner, none);
+            }
+
+            textarea {
+                background-color: var(--input-bg-inner, none);
+            }
+        }
+
+        // Makes the active tab visible
+        .tab[data-tab].active {
+            display: flex;
+            flex: 1;
+        }
+
+        .sheet-tabs {
+            border: 0;
+            margin: 0;
+
+            .item.active {
+                border-radius: 5px 5px 0px 0px;
+                border: 1px solid $c-lightgray;
+                border-bottom: 0;
+                background-color: var(--c-secondary);
+
+            }
+
+            .item {
+                border-radius: 0px;
+                border: 0;
+                border-bottom: 1px solid $c-lightgray;
+                background-color: var(--c-primary);
+            }
+        }
+    }
+}
