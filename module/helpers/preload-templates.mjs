@@ -1,4 +1,4 @@
-import LOGGER from "../utility/logger.mjs";
+import LOGGER from "../system/logger.mjs";
 /**
  * Define a set of template paths to pre-load
  * Pre-loaded templates are compiled and cached for fast access when rendering
@@ -9,6 +9,10 @@ import LOGGER from "../utility/logger.mjs";
   const id = game.system.id;
   const path = `systems/${id}/templates`;
   const partials = [
+
+    //Sheet Partials
+    `${path}/actor/character/character-tabs.hbs`,
+
     // Actor Partials
     `${path}/actor/character/parts/actor-features.hbs`,
     `${path}/actor/character/parts/actor-items.hbs`,

@@ -1,6 +1,6 @@
 import NewedoItem from "../edo-item.mjs";
-import FeatureItemConfig from "../../apps/feature/feature-item.js";
-import LOGGER from "../../utility/logger.mjs";
+import FeatureItemConfig from "../../../apps/feature/feature-item.mjs";
+import LOGGER from "../../../system/logger.mjs";
 
 export default class NewedoCulture extends NewedoItem {
 

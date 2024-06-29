@@ -1,8 +1,8 @@
-import FeatureCreate from "../../apps/feature/feature-create.js";
-import FeatureItemConfig from "../../apps/feature/feature-item.js";
-import FeatureTraitConfig from "../../apps/feature/feature-trait.js";
-import LOGGER from "../../utility/logger.mjs";
-import sysUtil from "../../utility/sysUtil.mjs";
+import FeatureCreate from "../apps/feature/feature-create.mjs";
+import FeatureItemConfig from "../apps/feature/feature-item.mjs";
+import FeatureTraitConfig from "../apps/feature/feature-trait.mjs";
+import LOGGER from "../system/logger.mjs";
+
 /**
  * Extend the basic ItemSheet with some very simple modifications
  * @extends {ItemSheet}
@@ -69,11 +69,10 @@ export default class NewedoItemSheet extends ItemSheet {
             system: item.system,
             rollData: this.item.getRollData(),
             editable: this.isEditable,
-            localizedName: this.item.localizedName
         });
 
         // Use a safe clone of the item data for further operations.
-        const itemData = context.item;
+        const itemData = context.item.toObject();
 
         // Retrieve the roll data for TinyMCE editors.
         let actor = this.object.parent ?? null;

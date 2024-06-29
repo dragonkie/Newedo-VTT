@@ -1,5 +1,5 @@
-import LOGGER from "../utility/logger.mjs";
-import sysUtil from "../utility/sysUtil.mjs";
+import LOGGER from "../../system/logger.mjs";
+import sysUtil from "../../system/sysUtil.mjs";
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
  * @extends {Actor}

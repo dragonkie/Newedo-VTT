@@ -1,4 +1,4 @@
-import LOGGER from "../../utility/logger.mjs";
+import LOGGER from "../../system/logger.mjs";
 
 /**
  * Class extension for making feature configuration windows

@@ -1,8 +1,8 @@
-import sysUtil from "../../utility/sysUtil.mjs";
+import sysUtil from "../../../system/sysUtil.mjs";
 import NewedoItem from "../edo-item.mjs";
 import NewedoSkill from "./edo-skill.js";
-import { Dice, NewedoRoll } from "../../utility/dice.mjs";
-import LOGGER from "../../utility/logger.mjs";
+import { Dice, NewedoRoll } from "../../../system/dice.mjs";
+import LOGGER from "../../../system/logger.mjs";
 
 export default class NewedoWeapon extends NewedoItem {
     constructor(data, options) {
@@ -76,6 +76,8 @@ export default class NewedoWeapon extends NewedoItem {
     }
 
     async _rollAttack(options) {
+        if (!this.isOwned) return;
+
         // Create a new roll instance
         const roll = new NewedoRoll;
 
@@ -125,11 +127,9 @@ export default class NewedoWeapon extends NewedoItem {
     }
 
     get atkFormula() {
+        if (!this.isOwned) return undefined;
         const system = this.system;
         const skill = this.skill;// Gets the skill item
-        const trait = this.trait;
-
-        if (!skill) return ``;
 
         var formula = skill.formula;
         if (system.grit.atk > 0) formula = sysUtil.formulaAdd(formula, system.grit.atk);
@@ -139,6 +139,8 @@ export default class NewedoWeapon extends NewedoItem {
     }
 
     get dmgFormula() {
+        if (!this.isOwned) return undefined;
+        
         const system = this.system;
         const skill = this.skill;// Gets the skill item
         const trait = skill.trait;
@@ -157,7 +159,8 @@ export default class NewedoWeapon extends NewedoItem {
     }
 
     get trait() {
-        if (this.actor) return this.skill.trait;
+        LOGGER.log('getting trait');
+        if (this.actor) return this.actor.getSkill(this.system.skill).trait;
         return undefined
     }
 }

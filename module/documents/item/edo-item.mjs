@@ -1,5 +1,4 @@
-import LOGGER from "../utility/logger.mjs";
-import sysUtil from "../utility/sysUtil.mjs";
+import sysUtil from "../../system/sysUtil.mjs";
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -31,8 +30,6 @@ export default class NewedoItem extends Item {
 
     /* ----------------------------------- Item prep functions ---------------------------------------------- */
 
-    
-
     /**
      * Prepare a data object which is passed to any Roll formulas which are related to this Item
      * @private
@@ -44,9 +41,5 @@ export default class NewedoItem extends Item {
         // Grab the item's system data as well.
         rollData.item = foundry.utils.deepClone(this.system);
         return rollData;
-    }
-
-    get localizedName() {
-        return sysUtil.Localize(this.name);
     }
 }

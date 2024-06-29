@@ -1,5 +1,5 @@
-import LOGGER from "../../utility/logger.mjs";
-import FeatureConfig from "./feature.js";
+import LOGGER from "../../system/logger.mjs";
+import FeatureConfig from "./feature.mjs";
 
 export default class FeatureTraitConfig extends FeatureConfig {
     constructor(feature, options = {}) {
