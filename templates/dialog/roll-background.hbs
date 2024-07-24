@@ -1,0 +1,19 @@
+<form class="roll-dialog-background">
+    <div class="form-group">
+        <label>Formula:</label>
+        <input type="text" name="formula" value="{{background.rank}}d10"/>
+    </div>
+    {{!-- Modifiers holds any dice from any source that isnt the core trait or skill dice, such as augs and race bonuses --}}
+    <div class="form-group">
+        <label>Situational Bonus:</label>
+        <input type="text" name="bonus" placeholder=""/>
+    </div>
+    <div class="form-group">
+        <label>Spend Legend:</label>
+        <input type="number" name="legend" max="5" min="0"/>
+    </div>
+    <div class="form-group">
+        <label>Wounds:</label>
+        <input type="checkbox" name="wounds" checked="true"/>
+    </div>
+</form>
