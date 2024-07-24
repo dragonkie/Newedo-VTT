@@ -1,36 +1,21 @@
-<form class="{{cssClass}} {{actor.type}}" system-theme="{{theme}}" autocomplete="off" style="overflow: hidden; flex-direction: row; padding: 0px">
+<div class="character" system-theme="{{theme}}" autocomplete="off" style="overflow: hidden; flex-direction: row; padding: 0px; display: flex;">
 
-  <!-- Character important info panel -->
-  <section class="character-panel">
-    {{> "newedo.character-panel"}}
-  </section>
+    <!-- Character important info panel -->
+    <div data-application-part="panel"></div>
 
-  <!-- Sheet Body -->
-  <section class="character-body">
+    <!-- Sheet Body -->
+    <section class="character-body">
 
-    <header class="sheet-header">
-      {{> "newedo.character-header"}}
-    </header>
+        <div data-application-part="header"></div>
 
-    <!-- Navigation Tabs -->
-    {{> "newedo.character-tabs"}}
+        <!-- Navigation Tabs -->
+        {{> "newedo.tabs-nav"}}
 
-    <!-- Tab Bodies -->
-    <section class="sheet-body">
+        <!-- Tab Bodies -->
+        <section class="sheet-body scrollable">
 
-        {{> "newedo.character-traits"}}
-
-        {{> "newedo.character-skills"}}
-
-        {{> "newedo.character-bio"}}
-
-        {{> "newedo.character-equipment"}}
-
-        {{> "newedo.character-magic"}}
-
-        {{> "newedo.character-augs"}}
-      
+            <!-- Creates a holder for all the different tabs contents -->
+            {{> "newedo.tabs-content"}}
+        </section>
     </section>
-  </section>
-</form>
-
+</div>

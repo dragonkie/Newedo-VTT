@@ -3,14 +3,15 @@ import { NEWEDO } from "./system/config.mjs";
 import LOGGER from "./system/logger.mjs";
 import sysUtil from "./system/sysUtil.mjs";
 
-import NewedoActorSheet from "./sheets/edo-actor-sheet.mjs"
-import NewedoItemSheet from "./sheets/edo-item-sheet.mjs";
+import * as applications from "./applications/_module.mjs";
+import * as documents from "./documents/_module.mjs";
 
-import NewedoActor from "./documents/actor/edo-actor.mjs";
-import NewedoItem from "./documents/item/edo-item.mjs";
+import NewedoActorSheet from "./applications/actor/actor-sheet.mjs"
+import NewedoItemSheet from "./applications/item/item-sheet.mjs";
+import NewedoActor from "./documents/actor/actor.mjs";
+import NewedoItem from "./documents/item/item.mjs";
 
 import { actorConstructor, itemConstructor } from "./proxy-manager.js";
-
 import { Dice, NewedoRoll } from "./system/dice.mjs";
 
 //imported functions
@@ -19,6 +20,15 @@ import registerHooks from "./system/hooks.js";
 
 //system settings
 import registerSystemSettings from "./system/settings.mjs";
+
+globalThis.newedo = {
+    applications: applications,
+    documents: documents.documentClasses,
+    dataModels: documents.dataModels,
+    CONFIG: NEWEDO,
+    util: sysUtil
+}
+
 /* -------------------------------------------- */
 /*  Init Hook                                   */
 /* -------------------------------------------- */

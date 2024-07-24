@@ -1,6 +1,6 @@
 .character-panel {
     display: flex;
-    flex: 0;
+    flex: 0 0 200px;
     flex-direction: column;
     padding: 10px;
     max-width: 200px;
@@ -9,7 +9,6 @@
     text-align: center;
     overflow: auto;
     font-size: 16px;
-    border-right: var(--panel-border);
 
     input {
         font-size: 18px;
@@ -22,7 +21,6 @@
 
     >* {
         margin-bottom: 5px;
-        border-bottom: 1px solid var(--text-colour);
         padding-bottom: 5px;
 
         &:last-child,

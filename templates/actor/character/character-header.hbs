@@ -1,10 +1,10 @@
-<div style="flex-direction: column;">
+<header style="flex-direction: column;">
     <!-- Character name field-->
-    <div style="display: flex; flex-direction: row; flex: 1;">
-        <h1 style="display: flex; flex: 1; align-items: center;">
-            <input class="character-name" name="name" type="text" value="{{actor.name}}" placeholder="Name"/>
-            <span style="flex: 1;">Rank: {{system.legend.rank}}</span>
+    <div style="display: flex; flex-direction: row; flex: 1; padding: 6px">
+        <h1 style="display: flex; flex: 1; align-items: center; border: 0">
+            <input style="background-color: transparent; font-size: 28px" class="character-name" name="name" type="text" value="{{name}}" placeholder="Name"/>
         </h1>
+        <span style="flex: 1;">Rank: {{system.legend.rank}}</span>
         
     </div>
     
@@ -16,4 +16,4 @@
         <span>&#x2022 <b>{{system.traits.derived.init.label}}:</b> {{system.traits.derived.init.value}}</span>
         <span>&#x2022 <b>{{ localize "NEWEDO.attribute.size" }}:</b> {{system.attributes.size.value}}</span>
     </div>
-</div>
+</header>

@@ -1,5 +1,4 @@
 import LOGGER from "./logger.mjs";
-import NewedoDialog from "../documents/dialog/edo-dialog.js";
 
 export default class sysUtil {
 
@@ -158,20 +157,19 @@ export default class sysUtil {
      * @param {*} cost 
      * @returns {String} returns a string of the legend spent, or null if it couldnt be spent
      */
-    static async spendLegend(actor, cost) {
+    static spendLegend(actor, cost) {
         if (cost > 0) {
             if (actor.system.legend.value >= cost) {
                 // Has enough legend to spend
-                LOGGER.debug(`spent ${cost} legend`)
-                await actor.update({ 'system.legend.value': actor.system.legend.value - cost });
-                return cost;
+                LOGGER.debug(`spent ${cost} legend`);
+                actor.update({ 'system.legend.value': actor.system.legend.value - cost });
+                return true;
             } else {
                 // Doesnt have enough legend to spend, and returns null
                 this.warn(`NEWEDO.warn.notEnoughLegend`);
-                return null;
             }
         }
-        return '';//returns an empty string if you didnt actually spend any legend
+        return false;//returns nothing if there was no legend spent
     }
 
     static parseDrop(event) {
@@ -179,48 +177,59 @@ export default class sysUtil {
     }
 
     /**
-     * creates a new data object holding the details of the submitted form
-     * ...selectors holds an array of all the different selector values to get if searching for a non standard one
-     * @argument {FormData} form
-     * @param {...string} selectors 
+     * creates a new data object holding the details of the form passed as an argument
+     * @argument {FormData} form the element to query
+     * @param {String} selectors string of selectors to use
      * @returns 
      */
-    static parseForm(form, ...selectors) {
-        if (selectors.length <= 0) {
-            LOGGER.error("Cannot parse form with no specifiers!", form);
-            return {};
-        }
-        const data = { form: form };//includes the original form
-        //Parses the list of named inputs into the data object
-        for (var select of selectors) {
-            for (var ele of form.querySelectorAll(select)) {
-                //Certain inputs require different checks, and some data parsing based on their type
-                if (ele.type === `checkbox`) {
-                    data[ele.name] = ele.checked;
-                } else if (ele.type === "number")
-                    data[ele.name] = Number(ele.value);
-                else {
-                    data[ele.name] = ele.value;
-                }
+    static getFormData(form, selectors) {
+        const matches = form.querySelectorAll(selectors);
+        LOGGER.log(matches)
+        const data = {};
+        for (const element of matches) {
+            // Parse the input data based on type
+            switch (element.type) {
+                case 'number':// Converts a string to a number
+                    data[element.name] = +element.value;
+                    break;
+                case 'checkbox':// Returns boolean based on if the box is checked
+                    data[element.name] = element.checked;
+                    break;
+                default:// Other values are taken in as strings
+                    data[element.name] = element.value;
+                    break;
             }
         }
+
         return data;
     }
 
-    static async getRollOptions(data, template) {
-        
-        if (!template || template === ``) template = `systems/newedo/templates/dialog/roll/dialog-roll-default.hbs`;
+    static duplicate(original) {
+        return JSON.parse(JSON.stringify(original));
+    }
 
-        const html = await renderTemplate(template, data);
+    /**
+     * Creates a roll dialog prompt with the the advantage / disadvantage roll buttons
+     * @param {*} data Relevant roll data to whats being rendered
+     * @param {*} template  Path to the .html or .hbs file to load in, defaults to a standard roll setup for ease of use
+     * @returns 
+     */
+    static async getRollOptions(data, template = `systems/newedo/templates/dialog/roll-default.hbs`) {
+
+        const render = await renderTemplate(template, data);
         const title = data.title;
 
-        const handler = (h, method) => {
-            const f = this.parseForm(h[0].querySelector("form"), "[name]", "[id]" );
-            const d = {advantage: method, ...f};
-            LOGGER.debug("Roll option handler:", d);
+        /**
+         * Small internal function to handel the data form we recieve
+         * @param {*} html 
+         * @param {*} method 
+         * @returns 
+         */
+        const handler = (html, method) => {
+            const f = this.getFormData(html, "[name], [id]");
+            const d = { advantage: method, ...f };// spreads the form data across this new object
 
-            // Check if the option to add an additional string modifier is valid or not
-            // Roll.validate() will flag an empty string as invalid, so we need to catch for that as well
+            // Ensures the number text in the bonus field is valid for the roll
             if (d.bonus && d.bonus != "" && !Roll.validate(d.bonus)) {
                 sysUtil.warn("NEWEDO.warn.invalidBonus");
                 d.canceled = true; // Flags that this roll should be discarded
@@ -232,26 +241,26 @@ export default class sysUtil {
         // You can call the resolve or reject function to return the promise with the value provided to the resolve / reject
         return new Promise((resolve, reject) => {
             const options = {
-                title: title,
-                content: html,
-                buttons: {
-                    advantage: {
-                        label: "Advantage",
-                        callback: (html) => resolve(handler(html, "advantage"))
-                    },
-                    normal: {
-                        label: "Normal",
-                        callback: (html) => resolve(handler(html, "normal"))
-                    },
-                    disadvantage: {
-                        label: "Disadvantage",
-                        callback: (html) => resolve(handler(html, "disadvantage"))
-                    }
-                },
+                window: { title: title },
+                content: render,
+                buttons: [{
+                    label: "Disadvantage",
+                    action: 'disadvantage',
+                    callback: (event, button, dialog) => resolve(handler(dialog, "disadvantage"))
+                }, {
+                    label: "Normal",
+                    action: 'normal',
+                    callback: (event, button, dialog) => resolve(handler(dialog, "normal"))
+                }, {
+                    label: "Advantage",
+                    action: 'advantage',
+                    callback: (event, button, dialog) => resolve(handler(dialog, "advantage"))
+                }],
                 close: () => resolve({ canceled: true }),
-                submit: (html) => resolve(handler(html, "normal"))
+                submit: (result) => resolve(result)
             }
-            new NewedoDialog(options, null).render(true);
+            LOGGER.debug('dialog opts', options)
+            new foundry.applications.api.DialogV2(options, null).render(true);
         });
-    }// endof getRollOptions();
+    }
 }

@@ -11,7 +11,8 @@ import LOGGER from "../system/logger.mjs";
   const partials = [
 
     //Sheet Partials
-    `${path}/actor/character/character-tabs.hbs`,
+    `${path}/shared/tabs-nav.hbs`,
+    `${path}/shared/tabs-content.hbs`,
 
     // Actor Partials
     `${path}/actor/character/parts/actor-features.hbs`,
@@ -38,7 +39,7 @@ import LOGGER from "../system/logger.mjs";
     `${path}/dialog/feature/feature-title.hbs`,
 
     // Dialog popups
-    `${path}/dialog/roll/parts/dialog-roll-part-options.hbs`,
+    `${path}/dialog/parts/roll-options.hbs`,
   ];
 
   const paths = {};

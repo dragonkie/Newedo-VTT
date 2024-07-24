@@ -1,12 +1,14 @@
 import LOGGER from "./logger.mjs";
-import NewedoDialog from "../documents/dialog/edo-dialog.js";
 import sysUtil from "./sysUtil.mjs";
 
 export class Dice {
-    constructor(faces = 6, count = 1, mod = ``) {
-        this.count = count;//the number of this kind of dice, lets you hold multiple dice in one object
-        this.faces = faces;//the number of sides to the die
-        this.mod = mod;//roll modifiers to be added to the end of this dices roll string. if mods are diffrent, 2 dice sets won't be combined
+    constructor(term) {
+        //regex to convert a dice roll into a number, face count, and modifiers list
+        const rx = /(\d+)|(dl\d+)|([^d][a-z]+\d+)/gi;
+        const result = term.match(rx);
+        this.count = Number(result[0]);//the number of this kind of dice, lets you hold multiple dice in one object
+        this.faces = Number(result[1]);//the number of sides to the die
+        this.mod = result[2];//roll modifiers to be added to the end of this dices roll string. if mods are diffrent, 2 dice sets won't be combined
     }
     /**Converts the dice to a readable string for foundry*/
     get formula() {
@@ -15,28 +17,25 @@ export class Dice {
     }
 };
 
-// This roll type can be used for standard rolls such as traits and backgrounds
+/**
+ * Expanded roll option for use with the vast number of dice used in newedo
+ * This is mostly for ease of use adding and removing dice from the roll
+ * allows the formula given in chat to be condensed down into easy to read
+ * formats despite containg potentially 10+ different dice and multiple modifier
+ * sources
+ */
 export class NewedoRoll {
     /**Accepts an optional list of dice objects to pre populate the tray */
     constructor() {
         this.dice = [];// List of dice objects on the list
-        this.bonuses = [];// Array of numebrs to be added together in the final formula, such as wounds, augs, buffs, and passives
+        this.bonus = 0;// Array of numebrs to be added together in the final formula, such as wounds, augs, buffs, and passives
         this.addon = "";// Additional formula bits to append to the final roll
-
-        this.template = `systems/newedo/templates/dialog/roll/dialog-roll-default.hbs`;
-
         this._roll = null;
     }
 
     /**Converts the list of dice into a rollable string that is foundry compatible*/
     get formula() {
-        // Adds the bonuses array to the formula
-        var bonus = 0;// Flate value of numeric bonuses added up for the sake of legibility
-        for (const b of this.bonuses) {
-            if (isNaN(b)) continue;
-            bonus += b;
-        }
-
+        var bonus = this.bonus;
         var first = true;
         var formula = ``;
         // Adds the dice array to the formula
@@ -128,6 +127,7 @@ export class NewedoRoll {
         if (this.isEmpty) return 0;
         this.sort();
     }
+
     /**Sorts the dice list from smallest to highest, but places d10's at the front */
     sort() {
         dice.sort((a, b) => {
@@ -136,84 +136,104 @@ export class NewedoRoll {
             return a.faces - b.faces;
         });
     }
+
     /**Accepts an integer or an array to be converted into dice 
      * @param {integer, array} dice accepts integer, or array of them, and dice objects
     */
     add(dice) {
         if (!dice) {
-            LOGGER.debug(`Cant add non existant dice`);
+            LOGGER.warn(`Cant add dice that dont exist to roll`);
             return null;
         }
-        //concat returns the new array, so calling it with no entries creates a shallow copy preventing us from editing the input array
-        /* ---------------------------------- Adding an array of numbers as a list of dice ------------------------------------ */
+        
+        const t = typeof dice;
+
         if (Array.isArray(dice)) {
-            var diceList = duplicate(dice)
-            for (var a = 0; a < diceList.length; a++) {
-                //loops through the dice being added
-                if (diceList[a] < 2) continue;
-                if (this.isEmpty) {
-                    this.dice.push(new Dice(diceList[a], 1));
-                    diceList[a] = 0;
-                } else {
-                    var found = false;
-                    for (var b = 0; b < this.dice.length; b++) {
-                        //steps through the dice this.dice, checking for which dice should be added to it
-                        if (this.dice[b].faces == diceList[a]) {
-                            //if the existing dice is found, increase its counter
-                            this.dice[b].count += 1;
-                            //sets the new dice list to be -1 so its ignored in a future check
-                            diceList[a] = 0;
-                            found = true;
-                            break;
-                        }
-                    }
-                    if (!found) {
-                        this.dice.push(new Dice(diceList[a], 1));
-                        diceList[a] = 0;
-                    }
-                }
-            }
-            return 0;
-        } /* -------------------------------------------- Adding an already formed dice object ------------------------------------*/
-        else if (typeof dice === "object" && dice.constructor.name === "Dice") {
-            if (this.isEmpty) {//if there are no dice
-                this.dice.push(dice);
-                return true;
-            } else {
-                for (var a = 0; a < this.dice.length; a++) {
-                    //loops through the dice being added
-                    if (this.dice[a].faces === dice.faces && this.dice[a].mod === dice.mod) {
-                        this.dice[a].count += 1;
-                        return true;//returns if the value is found, ending the loop
-                    }
-                }
-                this.dice.push(dice);
-            }
-        } /* ------------------------------------Adding in a single number -----------------------------------------------------*/
-        else {
-            if (this.isEmpty) {
-                this.dice.push(new Dice(dice, 1));
-                return true;
-            } else {
-                for (var a = 0; a < this.dice.length; a++) {
-                    //loops through the dice being added
-                    if (this.dice[a].faces === dice) {
-                        this.dice[a].count += 1;
-                        return true;//returns if the value is found, ending the loop
-                    }
-                }
-                this.dice.push(new Dice(dice, 1));
-            }
+            if (dice.length <= 0) return false;
+            return this._onAddArray(dice);
         }
-        return false;
+        else if (t === 'object' && dice.constructor.name === "Dice") return this._onAddDie(dice);
+        else if (t === 'string') return this._onAddString(dice);
+        else return this._onAddInt(dice);
+    };
+
+    /**
+     * Loops through the dice array, calling the add function on all its values
+     * @param {Array} dice list of dice to be added
+     * @returns 
+     */
+    _onAddArray(dice) {
+        var diceList = foundry.utils.deepClone(dice); // Safely clones the dice list
+        for (var a = 0; a < diceList.length; a++) {
+            this.add(diceList[a]);
+        }
+        return 0;
     }
+
+    _onAddInt(dice) {
+        if (this.isEmpty) {
+            this.dice.push(new Dice(dice, 1));
+        } else {
+            for (var a = 0; a < this.dice.length; a++) {
+                //loops through the dice being added
+                if (this.dice[a].faces === dice) {
+                    this.dice[a].count += 1;
+                    return true;//returns if the value is found, ending the loop
+                }
+            }
+            this.dice.push(new Dice(dice, 1));
+        }
+
+        return true;
+    }
+
+    _onAddDie(dice) {
+        if (this.isEmpty) {
+            // when there are no dice in this pool, just add it in
+            this.dice.push(dice);
+        } else {
+            for (var a = 0; a < this.dice.length; a++) {
+                //loops through the dice being added
+                if (this.dice[a].faces === dice.faces && this.dice[a].mod === dice.mod) {
+                    this.dice[a].count += 1;
+                    return true;//returns if the value is found, ending the loop
+                }
+            }
+            this.dice.push(dice);// when no dice are found, push this dice in
+        }
+        return true;
+    }
+
+    _onAddString(term) {
+        /* Regex references to parse formula */
+        const rDie = /(?<!\/)\-?\b\w+\b/gi;// gets all dice instances from the line
+        const rTerm = /(\-?\b\d+)d(\d+)([^\s\-\+]*)\b/gi; //seperates them out into their parts
+
+        const mDice = term.match(rx);
+
+        for (const match of matches) {
+            const d = new Dice(match);
+            this.add(d);
+        }
+
+        return matched;
+    }
+
+    _onAddTerm() {
+
+    }
+
+
+
+
+    
 
     drop(faces, count = 1, mod = ``) {
         var d = this.find(faces, mod)
         if (d) d.count -= count;
         this.clean
         return this.dice;
-    }
+    };
 
     /** Searches for a dice based on given specifiers
      * @param {Number} faces number of sides of the dice to get
@@ -267,15 +287,4 @@ export class NewedoRoll {
             this.clean;
         }
     }
-
-    /**
-    * Creates a dialog box to retrieve roll options from the player
-    * This allows a player to give a situational bonus, spend legend, and apply advantage / disadvantage
-    * certain roll modes will include other options, such as skills allowing you to opt out from 
-    * rolling trait dice
-    * These are controlled by the different loadable templates
-    * @param {NewedoRoll} roll of data to construct the final roll from
-    * @returns {Promise} The data from the selected options
-    * 
-    */
 };

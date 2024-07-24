@@ -2,20 +2,7 @@
   font-family: $font-primary;
 }
 
-//styles to be applied to all newedo system sheets
-
-//styles the internal box that players can tab through
-a.inline-roll {
-  background-color: var(--c-secondary, white);
-  color: var(--text-colour, black);
-}
-
-.rollable,
-.fate-roll {
-
-  &:hover,
-  &:focus {
-    text-shadow: var(--text-shadow, red);
-    cursor: pointer;
-  }
+[data-action]:hover,
+[data-action]:focus {
+  cursor: pointer;
 }

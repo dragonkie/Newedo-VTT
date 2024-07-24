@@ -13,106 +13,53 @@
                         "value": 5,
                         "min": 1,
                         "max": 10
-                    },
-                    "armour": {
-                        "kin": {
-                            "value": 0,
-                            "bonus": 0
-                        },
-                        "ele": {
-                            "value": 0,
-                            "bonus": 0
-                        },
-                        "bio": {
-                            "value": 0,
-                            "bonus": 0
-                        },
-                        "arc": {
-                            "value": 0,
-                            "bonus": 0
-                        }
-                    },
-                    "wound": {
-                        "value": 1.00,
-                        "label": "Healthy"
                     }
                 },
                 "traits": {
                     "core": {
                         "pow": {
                             "value": 10,
-                            "min": 0,
-                            "rank": 1,
-                            "noise": 0,
                             "bonuses": []
                         },
                         "ref": {
                             "value": 10,
-                            "min": 0,
-                            "rank": 1,
-                            "noise": 0,
                             "bonuses": []
                         },
                         "hrt": {
                             "value": 10,
-                            "min": 0,
-                            "rank": 1,
-                            "noise": 0,
                             "bonuses": []
                         },
                         "sav": {
                             "value": 10,
-                            "min": 0,
-                            "rank": 1,
-                            "noise": 0,
                             "bonuses": []
                         },
                         "shi": {
-                            "min": 0,
                             "value": 0,
-                            "rank": 0,
                             "bonuses": []
                         },
                         "per": {
                             "value": 10,
-                            "min": 0,
-                            "rank": 1,
-                            "noise": 0,
                             "bonuses": []
                         },
                         "pre": {
                             "value": 10,
-                            "min": 0,
-                            "rank": 1,
-                            "noise": 0,
                             "bonuses": []
                         }
                     },
                     "derived": {
-                        "hp": {
-                            "value": 15,
-                            "min": 0,
-                            "max": 15,
-                            "mod": 1.5,
-                            "bonuses": []
-                        },
                         "init": {
-                            "value": 1,
                             "mod": 1,
                             "bonuses": []
                         },
                         "move": {
-                            "value": 1,
                             "mod": 1,
                             "bonuses": []
                         },
                         "def": {
-                            "value": 1,
                             "mod": 0.4,
                             "bonuses": []
                         },
                         "res": {
-                            "value": 1,
                             "mod": 0.4,
                             "bonuses": []
                         }
@@ -121,11 +68,30 @@
                 "biography": {
                     "description": ""
                 },
-                "bonuses": {
-                    "attack": {
-                        "weapon": {},
-                        "spell": {}
+                "hp": {
+                    "value": 15,
+                    "mod": 1.5,
+                    "bonuses": []
+                },
+                "armour": {
+                    "kin": {
+                        "value": 0
+                    },
+                    "ele": {
+                        "value": 0
+                    },
+                    "bio": {
+                        "value": 0
+                    },
+                    "arc": {
+                        "value": 0
                     }
+                },
+                "bonuses": {
+                    "mwatk": 0,
+                    "rwatk": 0,
+                    "msatk": 0,
+                    "rsatk": 0
                 }
             }
         },
@@ -140,77 +106,36 @@
                 "max": 10
             },
             "attributes": {
-                "level": {
-                    "value": 1,
-                    "min": 1,
-                    "max": 5
-                },
                 "xp": {
                     "transactions": [],
-                    "min": 0,
                     "value": 0
                 }
             },
             "background": {
                 "contacts": {
-                    "value": {
-                        "min": 1,
-                        "max": 100,
-                        "value": 1
-                    },
-                    "rank": {
-                        "min": 1,
-                        "max": 5,
-                        "value": 1
-                    }
+                    "min": 1,
+                    "max": 100,
+                    "value": 1
                 },
                 "followers": {
-                    "value": {
-                        "min": 1,
-                        "max": 100,
-                        "value": 1
-                    },
-                    "rank": {
-                        "min": 1,
-                        "max": 5,
-                        "value": 1
-                    }
+                    "min": 1,
+                    "max": 100,
+                    "value": 1
                 },
                 "soul": {
-                    "value": {
-                        "min": 1,
-                        "max": 100,
-                        "value": 1
-                    },
-                    "rank": {
-                        "min": 1,
-                        "max": 5,
-                        "value": 1
-                    }
+                    "min": 1,
+                    "max": 100,
+                    "value": 1
                 },
                 "status": {
-                    "value": {
-                        "min": 1,
-                        "max": 100,
-                        "value": 1
-                    },
-                    "rank": {
-                        "min": 1,
-                        "max": 5,
-                        "value": 1
-                    }
+                    "min": 1,
+                    "max": 100,
+                    "value": 1
                 },
                 "wealth": {
-                    "value": {
-                        "min": 1,
-                        "max": 100,
-                        "value": 1
-                    },
-                    "rank": {
-                        "min": 1,
-                        "max": 5,
-                        "value": 1
-                    }
+                    "min": 1,
+                    "max": 100,
+                    "value": 1
                 }
             },
             "biography": {
@@ -237,31 +162,7 @@
         "npc": {
             "templates": [
                 "base"
-            ],
-            "attributes": {
-                "armour": {
-                    "kin": {
-                        "value": 0,
-                        "min": 0,
-                        "bonus": 0
-                    },
-                    "ele": {
-                        "value": 0,
-                        "min": 0,
-                        "bonus": 0
-                    },
-                    "bio": {
-                        "value": 0,
-                        "min": 0,
-                        "bonus": 0
-                    },
-                    "arc": {
-                        "value": 0,
-                        "min": 0,
-                        "bonus": 0
-                    }
-                }
-            }
+            ]
         }
     },
     "Item": {
