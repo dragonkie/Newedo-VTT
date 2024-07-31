@@ -1,0 +1,31 @@
+<form autocomplete="off" system-theme="dark" style="padding: 8px;">
+    {{> "newedo.feature-title"}}
+    <div class="flexcol">
+        <div class="form-group traits-derived flexrow">
+            <div>
+                <label for="contacts">{{localize "NEWEDO.background.contacts"}}</label>
+                <input name="contacts" type="number" value="{{data.contacts}}">
+            </div>
+
+            <div>
+                <label for="followes">{{localize "NEWEDO.background.followers"}}</label>
+                <input name="followers" type="number" value="{{data.followers}}">
+            </div>
+
+            <div>
+                <label for="soul">{{localize "NEWEDO.background.soul"}}</label>
+                <input name="soul" type="number" value="{{data.soul}}">
+            </div>
+
+            <div>
+                <label for="status">{{localize "NEWEDO.background.status"}}</label>
+                <input name="status" type="number" value="{{data.status}}">
+            </div>
+
+            <div>
+                <label for="wealth">{{localize "NEWEDO.background.wealth"}}</label>
+                <input name="wealth" type="number" value="{{data.wealth}}">
+            </div>
+        </div>
+    </div>
+</form>
