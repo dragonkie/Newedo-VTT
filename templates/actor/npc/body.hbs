@@ -1,0 +1,23 @@
+<div class="character" system-theme="{{theme}}" autocomplete="off" style="overflow: hidden; flex-direction: row; padding: 0px; display: flex;">
+    <!-- Sheet Body -->
+    <section class="character-body">
+        <div class="flexrow" style="text-align: center; align-items: center; gap: 2px">
+            {{#each system.traits.core as | trait key |}}
+                <div style="align-items: center; min-width: 70px;" data-trait="{{key}}">
+                    <label class="resource-label flexlarge align-left" data-action="roll" data-roll="{{trait.rank}}d10x10" data-label="{{trait.label}}">{{trait.abr}}</label>
+                    <input name="system.traits.core.{{key}}.value" value="{{trait.value}}" type="number" />
+                    <div class="trait-rank" data-action="roll" data-roll="{{trait.rank}}d10x10" data-label="{{trait.label}}">Rank {{trait.rank}}</div>
+                </div>
+            {{/each}}
+        </div>
+        <!-- Navigation Tabs -->
+        {{> "newedo.tabs-nav"}}
+
+        <!-- Tab Bodies -->
+        <section class="sheet-body scrollable">
+
+            <!-- Creates a holder for all the different tabs contents -->
+            {{> "newedo.tabs-content"}}
+        </section>
+    </section>
+</div>
