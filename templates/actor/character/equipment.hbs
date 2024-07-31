@@ -1,0 +1,26 @@
+<div class="tab-content">
+
+
+    <li class="items-header flexrow collapsible">
+        <span>Weapons</span>
+        <span>Skill</span>
+        <span>Attack</span>
+        <span>Damage</span>
+        <span>Type</span>
+    </li>
+    <ol class="items-list">
+        {{#each itemTypes.weapon as | weapon key |}}
+
+        <li class="item flexrow" style="text-align: center;" data-item-uuid="{{weapon.uuid}}">
+            <!-- Link to the fate opens up the item sheet -->
+            <a data-action="editItem">{{weapon.name}}</a>
+            <div>{{weapon.system.skill}}</div>
+            <a class="item-detail" data-action="useItem" data-use="attack">{{weapon.atkFormula}}</a>
+            <a class="item-detail" data-action="useItem" data-use="damage">{{weapon.dmgFormula}}</a>
+            <span class="item-detail">{{weapon.system.damage.type}}</span>
+            <span data-action="deleteItem"><img class="icon-trashcan" src="systems/newedo/icons/trash-can.svg"></span>
+        </li>
+
+        {{/each}}
+    </ol>
+</div>

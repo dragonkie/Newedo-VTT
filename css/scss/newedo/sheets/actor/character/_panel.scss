@@ -1,0 +1,97 @@
+.character-panel {
+    display: flex;
+    flex: 0 0 200px;
+    flex-direction: column;
+    padding: 10px;
+    max-width: 200px;
+    min-width: 200px;
+    align-items: center;
+    text-align: center;
+    overflow: auto;
+    font-size: 16px;
+
+    input {
+        font-size: 18px;
+        height: 28px;
+        border: 0;
+        padding: 0;
+        min-width: none;
+        min-height: none;
+    }
+
+    >* {
+        margin-bottom: 5px;
+        padding-bottom: 5px;
+
+        &:last-child,
+        &:first-child {
+            border: 0;
+        }
+    }
+
+    .container-armour {
+        display: flex;
+        flex-direction: row;
+        text-align: center;
+        font-size: 12px;
+
+        &>div {
+            display: flex;
+            flex-direction: column;
+            margin: 0px 2px 0px 2px;
+        }
+    }
+
+    .resource-container {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        text-align: center;
+        font-size: 18px;
+
+        &>* {
+            flex: 1
+        }
+    }
+
+    .exp-tracker {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        text-align: center;
+    }
+
+    .fate-card {
+        flex: 0;
+        width: 100%;
+        align-items: center;
+        text-align: center;
+        font-size: 12px;
+
+        .fate-list {
+            width: 100%;
+            padding: 0;
+            margin: 0;
+
+            .fate-item {
+                border-bottom: 1px solid gray;
+                margin-top: 4px;
+
+                :first-child {
+                    flex: 1;
+                    text-align: right;
+                }
+
+                :last-child {
+                    margin-left: 15px;
+                    text-align: left;
+                    flex: 2;
+                }
+            }
+
+            :last-child {
+                border: 0;
+            }
+        }
+    }
+}

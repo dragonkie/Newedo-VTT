@@ -1,0 +1,34 @@
+// Add custom fonts by visiting and search https://fonts.google.com
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+// Import utilities.
+@import 'scss/utils/typography';
+@import 'scss/utils/colors';
+@import 'scss/utils/mixins';
+@import 'scss/utils/variables';
+
+/* Global styles */
+@import 'scss/global/window';
+@import 'scss/global/grid';
+@import 'scss/global/flex';
+@import 'scss/global/sheet';
+
+//anything imported into this group will require its PARENT have the newedo class, if it needs to share the newedo class it should start with &
+
+.newedo {
+  @import 'scss/components/forms';
+  @import 'scss/components/resource';
+  @import 'scss/components/items';
+  @import 'scss/components/effects';
+  @import 'scss/components/images';
+
+  @import 'scss/newedo/sheets/actor/character';
+
+  @import 'scss/newedo/sheets/item/fate';
+  @import 'scss/newedo/sheets/item/weapon';
+  @import 'scss/newedo/sheets/items';
+
+  @import 'scss/components/icons';
+  @import 'scss/components/buttons';
+ 
+}

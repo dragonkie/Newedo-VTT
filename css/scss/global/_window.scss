@@ -1,0 +1,8 @@
+.window-app {
+  font-family: $font-primary;
+}
+
+[data-action]:hover,
+[data-action]:focus {
+  cursor: pointer;
+}

@@ -1,0 +1,14 @@
+{{!-- Basic form fields found available on any roll --}}
+<div class="form-group">
+    <label>{{localize 'NEWEDO.dialog.situationBonus'}}:</label>
+    <input type="text" name="bonus" />
+</div>
+<div class="form-group">
+    <label>{{localize 'NEWEDO.generic.legend'}}:</label>
+    <input type="number" name="legend" max="5" min="0" placeholder="max 5"/>
+</div>
+<div class="form-group">
+    <label>{{localize "NEWEDO.generic.plrl.wound"}}:</label>
+    <input type="checkbox" name="wounded" checked="true" />
+    <input type="text" name="woundValue" disabled value="{{wound.penalty}}" />
+</div>

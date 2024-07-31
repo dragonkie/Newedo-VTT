@@ -1,0 +1,65 @@
+// For now, these styles only apply to actor and item sheets
+.sheet.actor,
+.sheet.item {
+    // Controls the displaying of the active tab
+    .tab[data-tab].active {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+
+    //Removes padding from
+    .window-content {
+        padding: 0;
+    }
+
+    //everything in this area should be applied to ALL aspects of the sheet, adding all the light / dark mdoe styles to every element
+    form {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+
+        textarea {
+            min-width: 0;
+            min-height: 0;
+            padding: 4px;
+            resize: none;
+        }
+
+        img {
+            border: 0;
+        }
+
+        // Any styles set for sheet body will only apply to the internal part of a tab
+        .sheet-body {
+            flex: 1;
+            display: flex;
+            overflow: auto;
+        }
+
+        
+
+        // Makes the active tab visible
+        .tab[data-tab].active {
+            display: flex;
+            flex: 1;
+        }
+
+        .sheet-tabs {
+            border: 0;
+            margin: 0;
+
+            .item.active {
+                border-radius: 5px 5px 0px 0px;
+                border: 1px solid $c-lightgray;
+                border-bottom: 0;
+            }
+
+            .item {
+                border-radius: 0px;
+                border: 0;
+                border-bottom: 1px solid $c-lightgray;
+            }
+        }
+    }
+}

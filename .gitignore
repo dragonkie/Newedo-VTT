@@ -13,6 +13,11 @@ foundry
 *.log
 *.old
 MANIFEST*
+<<<<<<< HEAD
 LOG*
 CURRENT
 .ldb
+=======
+LOG
+*.ldb
+>>>>>>> v2-Character-Sheet

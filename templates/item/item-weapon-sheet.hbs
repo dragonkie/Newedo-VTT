@@ -1,0 +1,136 @@
+<form class="{{cssClass}} {{item.type}}" system-theme="{{theme}}" autocomplete="off">
+
+    {{> 'newedo.item-header'}}
+
+    {{!-- Sheet Body --}}
+    <section class="sheet-body">
+        {{!-- Description Tab --}}
+        <div class="tab description" data-group="primary" data-tab="description">
+            <!-- Summary sidebar that lists weapon details without all the config opptions alongside the description-->
+            <div class="flexrow description-tab">
+
+                <div class="summary">
+                    <div class="detail">
+                        <div>Price:</div>
+                        <div><b>{{system.price.base}}</b> ¥ / <b>{{system.price.tn}}</b> tn</div>
+                    </div>
+                    <div class="detail">
+                        <div>Quantity:</div>
+                        <div>{{system.quantity}}</div>
+                    </div>
+                    <div class="detail">
+                        <div>Skill:</div>
+                        <div>{{system.skill}}</div>
+                    </div>
+                    <div class="detail">
+                        <div>Damage:</div>
+                        <div>{{system.damage.value}} {{system.damage.label}}</div>
+                    </div>
+                    <div class="detail">
+                        <div>Range:</div>
+                        <div>{{system.range.short}}m / {{system.range.long}}m</div>
+                    </div>
+                    <div class="detail">
+                        <div>Quality:</div>
+                        <div>{{system.quality.value}}</div>
+                    </div>
+                    <div class="detail">
+                        <div>Grit:</div>
+                        <input name="system.grit.value" value="{{system.grit.value}}" style="min-width: 0;" />
+                    </div>
+                </div>
+
+                <div class="description-editor">
+                    {{editor itemDescriptionHTML target="system.description" button=true editable=editable
+                    engine="prosemirror"
+                    collaborate=false}}
+                </div>
+
+            </div>
+        </div>
+
+
+        <!--- Settings Tab --->
+        <div class="tab settings" data-group="primary" data-tab="settings">
+            <div class="settings-tab">
+                <!-- Item price and wealth target number -->
+                <div>
+                    <div>Price</div>
+                    <div>Total: {{system.price.total}}</div>
+                    <div style="display: flex; flex-direction: row; align-items: center;">
+                        <div style="display: flex; flex-direction: row;">
+                            <div>Base:</div>
+                            <input type="number" name="system.price.base" value="{{system.price.base}}" />
+                        </div>
+                        <div style="display: flex; flex-direction: row;">
+                            <div>Mod:</div>
+                            <input type="number" name="system.price.mod" value="{{system.price.mod}}" />
+                        </div>
+                        <div style="display: flex; flex-direction: row;">
+                            <div>TN:</div>
+                            <input type="number" name="system.price.tn" value="{{system.price.tn}}" />
+                        </div>
+                    </div>
+                </div>
+                <!-- Damage Formula -->
+                <div>
+                    <div>Dice Formula</div>
+                    <div
+                                                                                                                                                                                                                            style="display: grid; grid-template-columns: 1fr 2fr 1fr; align-items: center; gap: 3px 3px; padding: 0px;">
+                        <select name="system.skill" id="weapon-type">
+                            <option selected disabled hidden>{{system.skill}}</option>
+                            <optgroup label="Melee">
+                                <option value="Light Melee">Light Melee</option>
+                                <option value="Heavy Melee">Heavy Melee</option>
+                                <option value="Thrown">Thrown</option>
+                                <option value="Unarmed">Unarmed</option>
+                            </optgroup>
+                            <optgroup label="Ranged">
+                                <option value="Archery">Archery</option>
+                                <option value="Small Arms">Small Arms</option>
+                                <option value="Gunnery">Gunnery</option>
+                            </optgroup>
+                        </select>
+                        <input type="text" name="system.damage.value" value="{{system.damage.value}}" />
+                        <select name="system.damage.type" id="damage-type">
+                            <option selected disabled hidden value="{{system.damage.type}}">{{system.damage.label}}
+                            </option>
+                            <option value="kin">Kinetic</option>
+                            <option value="ele">Elemental</option>
+                            <option value="bio">Biological</option>
+                            <option value="arc">Arcane</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Ranged specific details, ranged toggles on when a ranged weapon type is selected for the sheet, and will be locked on well it stays that way-->
+                <div>Ranged Details</div>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr);">
+                    <div>
+                        <div>Magazine</div>
+                        <div
+                                                                                                                                                                                                                                style="display: grid; grid-template-columns: 40px 30px 40px; text-align: center; align-items: center;">
+                            <input type="number" name="system.magazine.value" value="{{system.magazine.value}}" />
+                            <div>/</div>
+                            <input type="number" name="system.magazine.max" value="{{system.magazine.max}}" />
+                        </div>
+                    </div>
+
+                    <!-- Burstfire values -->
+                    <div style="text-align: center; align-items: center;">
+                        <label for="system.burst.ammo">Burst Ammo</label>
+                        <input type="number" name="system.burst.ammo" value="{{system.burst.ammo}}" />
+                    </div>
+                    <div style="text-align: center; align-items: center;">
+                        <label for="system.burst.roll">Burst Roll</label>
+                        <input type="number" name="system.burst.roll" value="{{system.burst.roll}}" />
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        {{> 'newedo.item-rules'}}
+    </section>
+</form>

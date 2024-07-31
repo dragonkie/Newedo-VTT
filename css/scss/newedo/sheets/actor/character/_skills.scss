@@ -1,0 +1,63 @@
+.skill-dice-button {
+    text-align: center;
+    align-items: center;
+    flex: 1;
+    border-radius: 3px;
+    height: 1.1rem;
+    padding: 0;
+    margin-left: 2px;
+}
+
+.skill-dice-tray {
+    flex: 0 0 10rem;
+
+    input[type="button"] {
+        background-color: var(--input-background-color);
+        border: 0;
+        border-radius: 2px;
+        margin-left: 2px;
+        color: var(--input-text-color);
+    }
+}
+
+.skill-lists {
+    align-items: start;
+
+    .item-list {
+        padding: 4px;
+    }
+
+    li.item {
+        padding: 4px 0px;
+    }
+}
+
+.items-list {
+    padding: 2px 0;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+
+    .item-name {
+        flex: 2 0 auto;
+        text-wrap: nowrap;
+    }
+
+    .item {
+        flex: 1 0 auto;
+        flex-wrap: nowrap;
+    }
+}
+
+.skills-container {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+}
+
+ol,
+ul {
+    margin: 0;
+    padding: 0;
+    flex: 1 0 auto;
+}
