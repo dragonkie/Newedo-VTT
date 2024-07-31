@@ -1,7 +1,7 @@
 import NewedoItem from "../item.mjs";
-import { Dice, NewedoRoll } from "../../../system/dice.mjs";
-import sysUtil from "../../../system/sysUtil.mjs";
-import LOGGER from "../../../system/logger.mjs";
+import { Dice, NewedoRoll } from "../../../helpers/dice.mjs";
+import sysUtil from "../../../helpers/sysUtil.mjs";
+import LOGGER from "../../../helpers/logger.mjs";
 
 export default class NewedoSkill extends NewedoItem {
     constructor(data, options) {

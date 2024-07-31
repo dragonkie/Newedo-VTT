@@ -1,16 +1,20 @@
-import LOGGER from "../system/logger.mjs";
-
+import LOGGER from "../helpers/logger.mjs";
 
 export const NewedoSheetMixin = Base => {
     const mixin = foundry.applications.api.HandlebarsApplicationMixin;
     return class NewedoDocumentSheet extends mixin(Base) {
+
         static SHEET_MODES = { EDIT: 0, PLAY: 1 };
+        static MODES = {
+            PLAY: 1,
+            EDIT: 2,
+        }
+        _mode = this.constructor.MODES.PLAY;
 
         static DEFAULT_OPTIONS = {
+            classes: ['newedo', 'sheet'],
             form: { submitOnChange: true },
-            window: {
-                resizable: true,
-            },
+            window: { resizable: true },
             actions: {// Default actions must be static functions
                 editImage: this._onEditImage,
                 toggleSheet: this._onToggleSheet,
@@ -24,6 +28,8 @@ export const NewedoSheetMixin = Base => {
         };
 
         /* -------------------------------- SHEET MODE CONTROLS -------------------------------- */
+        _sheetMode = this.constructor.SHEET_MODES.PLAY;
+
         get sheetMode() {
             return this._sheetMode;
         }
@@ -37,6 +43,18 @@ export const NewedoSheetMixin = Base => {
         }
 
         /* -------------------------------- ACTION EVENTS -------------------------------- */
+        static _onEditImage(event, target) {
+            if (!this.isEditable) return;
+            const current = this.document.img;
+            const fp = new FilePicker({
+                type: "image",
+                current: current,
+                callback: path => this.document.update({ 'img': path }),
+                top: this.position.top + 40,
+                left: this.position.left + 10
+            });
+            fp.browse();
+        }
 
         /* -------------------------------- TAB GROUPINGS -------------------------------- */
         tabGroups = {};
@@ -58,6 +76,24 @@ export const NewedoSheetMixin = Base => {
         }
 
         /* -------------------------------- RENDER FUNCTIONS -------------------------------- */
+        _prepareContext(options) {
+            const doc = this.document;
+    
+            const context = {
+                document: doc,
+                config: CONFIG.NEWEDO,
+                system: doc.system,
+                name: doc.name,
+                img: doc.img,
+                tabs: this._getTabs(),
+                isEditMode: this.isEditMode,
+                isPlayMode: this.isPlayMode,
+                isEditable: this.isEditable
+            }
+    
+            return context;
+        }
+
         _onRender(context, options) {
             super._onRender(context, options);
             if (!this.isEditable) {

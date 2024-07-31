@@ -1,24 +1,24 @@
 // Base classes
-import NewedoActor from "./documents/actor/actor.mjs";
-import NewedoItem from "./documents/item/item.mjs";
+import NewedoActor from "./actor/actor.mjs";
+import NewedoItem from "./item/item.mjs";
 
 // Actor Types
-import NewedoCharacter from "./documents/actor/types/character.mjs";
-import NewedoNPC from "./documents/actor/types/npc.mjs";
-import NewedoPet from "./documents/actor/types/pet.mjs";
-import NewedoVehicle from "./documents/actor/types/vehicle.mjs";
+import NewedoCharacter from "./actor/types/character.mjs";
+import NewedoNPC from "./actor/types/npc.mjs";
+import NewedoPet from "./actor/types/pet.mjs";
+import NewedoVehicle from "./actor/types/vehicle.mjs";
 
 // Item Types
-import NewedoAmmo from "./documents/item/types/ammo.mjs";
-import NewedoArmour from "./documents/item/types/armour.mjs";
-import NewedoAugment from "./documents/item/types/augment.mjs";
-import NewedoCulture from "./documents/item/types/culture.mjs";
-import NewedoFate from "./documents/item/types/fate.mjs";
-import NewedoKami from "./documents/item/types/kami.mjs";
-import NewedoLineage from "./documents/item/types/lineage.mjs";
-import NewedoRote from "./documents/item/types/rote.mjs";
-import NewedoSkill from "./documents/item/types/skill.mjs"
-import NewedoWeapon from "./documents/item/types/weapon.mjs";
+import NewedoAmmo from "./item/types/ammo.mjs";
+import NewedoArmour from "./item/types/armour.mjs";
+import NewedoAugment from "./item/types/augment.mjs";
+import NewedoCulture from "./item/types/culture.mjs";
+import NewedoFate from "./item/types/fate.mjs";
+import NewedoKami from "./item/types/kami.mjs";
+import NewedoLineage from "./item/types/lineage.mjs";
+import NewedoRote from "./item/types/rote.mjs";
+import NewedoSkill from "./item/types/skill.mjs"
+import NewedoWeapon from "./item/types/weapon.mjs";
 
 //This code has been shamelessly stolen from the Cyberpunk red system
 //Bless your souls for making well documented code to learn from

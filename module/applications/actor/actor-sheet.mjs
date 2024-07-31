@@ -1,6 +1,6 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../../helpers/effects.mjs";
-import LOGGER from "../../system/logger.mjs";
-import sysUtil from "../../system/sysUtil.mjs";
+import LOGGER from "../../helpers/logger.mjs";
+import sysUtil from "../../helpers/sysUtil.mjs";
 import { NewedoSheetMixin } from "../base-sheet.mjs";
 
 /**
@@ -10,7 +10,7 @@ import { NewedoSheetMixin } from "../base-sheet.mjs";
 export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applications.sheets.ActorSheetV2) {
 
     static DEFAULT_OPTIONS = {
-        classes: ["newedo", "sheet", "actor"],
+        classes: ["actor"],
         position: { height: 600, width: 700, top: 100, left: 200 },
         actions: {
             useItem: this._onUseItem,
@@ -83,7 +83,7 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
         }
 
         this._prepareItems(context);
-        this._prepareCharacterData(context);
+        //this._prepareCharacterData(context);
 
         return context;
     }
@@ -111,7 +111,6 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
         // Prepare character data and items.
         if (actorData.type == 'character') {
             this._prepareItems(context);
-            this._prepareCharacterData(context);
         }
 
         // Add roll data for TinyMCE editors.
@@ -120,39 +119,6 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
         // Prepare active effects
         context.effects = prepareActiveEffectCategories(this.document.effects);
         return context;
-    }
-
-    /**
-     * Organize and classify Items for Character sheets.
-     * @param {Object} actorData The actor to prepare.
-     * @return {undefined}
-     */
-    _prepareCharacterData(context) {
-        //constants to hold references to the diffrent trait links
-        const { core, derived } = context.system.traits;
-        const attributes = context.system.attributes;
-
-        //core traits
-        for (let [k, v] of Object.entries(core)) {
-            v.label = sysUtil.Localize(CONFIG.NEWEDO.trait.core[k]);
-            v.abr = sysUtil.Localize(CONFIG.NEWEDO.trait.core.abbr[k]);
-        }
-        
-        // Derived traits.
-        for (let [k, v] of Object.entries(derived)) {
-            v.label = sysUtil.Localize(CONFIG.NEWEDO.trait.derived[k]);
-            v.abr = sysUtil.Localize(CONFIG.NEWEDO.trait.derived.abbr[k]);
-        }
-
-        //localize armour labels
-        for (let [k, v] of Object.entries(context.system.armour)) {
-            v.label = sysUtil.Localize(CONFIG.NEWEDO.damage[k]);
-            v.abr = sysUtil.Localize(CONFIG.NEWEDO.damage.abbr[k]);
-        }
-
-        for (let [k, v] of Object.entries(context.system.background)) {
-            v.label = sysUtil.Localize(CONFIG.NEWEDO.background[k]);
-        }
     }
 
     /**
@@ -220,7 +186,7 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
 
         // Grabs an optional argument to pass to the item, useful for when an item has multiple use cases such as weapons attacking / damaging
         const action = target.closest("[data-use]")?.dataset.use;
-        
+
         return item.use(action);
     };
 
@@ -233,7 +199,7 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
         const item = await fromUuid(uuid);
         const content = TextEditor
         const confirm = await foundry.applications.api.DialogV2.confirm({
-            content: `${sysUtil.Localize('NEWEDO.confirm.deleteItem')}: ${item.name}`,
+            content: `${sysUtil.localize('NEWEDO.confirm.deleteItem')}: ${item.name}`,
             rejectClose: false,
             modal: true
         });
@@ -297,7 +263,7 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
         if (options.advantage != `normal`) {
             label += `<div>${options.advantage}</div>`;
         }
-        
+
 
         await r.evaluate();
         var render = r.render();
@@ -340,7 +306,7 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
         //The description is enrichedHTML and can have inlineroles and UUID links
         return roll.toMessage({
             speaker: ChatMessage.getSpeaker({ actor: this.document }),
-            flavor: `<div style="font-size: 20px; text-align: center;">${sysUtil.Localize('NEWEDO.generic.fate')}` + [label] + `</div>`,
+            flavor: `<div style="font-size: 20px; text-align: center;">${sysUtil.localize('NEWEDO.generic.fate')}` + [label] + `</div>`,
             content: [render] + "<div>" + [description] + "</div>",
             create: true,
             rollMode: game.settings.get('core', 'rollMode')
@@ -364,7 +330,7 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
     }
 
     async _onDropItem(event, item) {
-        
+
         return 'default'; // Tells sheet to use default item drop handler
     }
     /* -------------------------------------------- Item management -------------------------------------------- */

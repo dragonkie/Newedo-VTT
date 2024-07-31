@@ -1,4 +1,4 @@
-import LOGGER from "../system/logger.mjs";
+import LOGGER from "./logger.mjs";
 /**
  * Define a set of template paths to pre-load
  * Pre-loaded templates are compiled and cached for fast access when rendering
@@ -13,27 +13,6 @@ import LOGGER from "../system/logger.mjs";
     //Sheet Partials
     `${path}/shared/tabs-nav.hbs`,
     `${path}/shared/tabs-content.hbs`,
-
-    // Actor Partials
-    `${path}/actor/character/parts/actor-features.hbs`,
-    `${path}/actor/character/parts/actor-items.hbs`,
-    `${path}/actor/character/parts/actor-spells.hbs`,
-    `${path}/actor/character/parts/actor-effects.hbs`,
-
-    // Character specific partials
-    `${path}/actor/character/character-header.hbs`,
-    `${path}/actor/character/character-augs.hbs`,
-    `${path}/actor/character/character-bio.hbs`,
-    `${path}/actor/character/character-fates.hbs`,
-    `${path}/actor/character/character-magic.hbs`,
-    `${path}/actor/character/character-skills.hbs`,
-    `${path}/actor/character/character-traits.hbs`,
-    `${path}/actor/character/character-panel.hbs`,
-    `${path}/actor/character/character-equipment.hbs`,
-
-    // Item sheets
-    `${path}/item/parts/item-header.hbs`,
-    `${path}/item/parts/item-rules.hbs`,
 
     // Feature config
     `${path}/dialog/feature/feature-title.hbs`,

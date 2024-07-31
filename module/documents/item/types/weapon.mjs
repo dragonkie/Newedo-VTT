@@ -1,8 +1,8 @@
-import sysUtil from "../../../system/sysUtil.mjs";
+import sysUtil from "../../../helpers/sysUtil.mjs";
 import NewedoItem from "../item.mjs";
 import NewedoSkill from "./skill.mjs";
-import { Dice, NewedoRoll } from "../../../system/dice.mjs";
-import LOGGER from "../../../system/logger.mjs";
+import { Dice, NewedoRoll } from "../../../helpers/dice.mjs";
+import LOGGER from "../../../helpers/logger.mjs";
 
 export default class NewedoWeapon extends NewedoItem {
     constructor(data, options) {

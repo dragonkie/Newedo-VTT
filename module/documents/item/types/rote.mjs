@@ -1,7 +1,7 @@
-import LOGGER from "../../../system/logger.mjs";
+import LOGGER from "../../../helpers/logger.mjs";
 import NewedoItem from "../item.mjs";
-import sysUtil from "../../../system/sysUtil.mjs";
-import { Dice, NewedoRoll } from "../../../system/dice.mjs";
+import sysUtil from "../../../helpers/sysUtil.mjs";
+import { Dice, NewedoRoll } from "../../../helpers/dice.mjs";
 
 export default class NewedoRote extends NewedoItem {
     constructor(data, options) {

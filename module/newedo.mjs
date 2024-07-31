@@ -1,25 +1,23 @@
 //imported objects
-import { NEWEDO } from "./system/config.mjs";
-import LOGGER from "./system/logger.mjs";
-import sysUtil from "./system/sysUtil.mjs";
+import { NEWEDO } from "./config.mjs";
+import LOGGER from "./helpers/logger.mjs";
+import sysUtil from "./helpers/sysUtil.mjs";
 
 import * as applications from "./applications/_module.mjs";
 import * as documents from "./documents/_module.mjs";
 
-import NewedoActorSheet from "./applications/actor/actor-sheet.mjs"
 import NewedoItemSheet from "./applications/item/item-sheet.mjs";
-import NewedoActor from "./documents/actor/actor.mjs";
-import NewedoItem from "./documents/item/item.mjs";
 
-import { actorConstructor, itemConstructor } from "./proxy-manager.js";
-import { Dice, NewedoRoll } from "./system/dice.mjs";
+import { actorConstructor, itemConstructor } from "./documents/proxy-manager.js";
+import { Dice, NewedoRoll } from "./helpers/dice.mjs";
 
 //imported functions
 import preloadHandlebarsTemplates from "./helpers/preload-templates.mjs";
-import registerHooks from "./system/hooks.js";
 
 //system settings
-import registerSystemSettings from "./system/settings.mjs";
+import registerSystemSettings from "./helpers/settings.mjs";
+
+LOGGER.log('Loading Newedo.mjs...')
 
 globalThis.newedo = {
     applications: applications,
@@ -33,17 +31,7 @@ globalThis.newedo = {
 /*  Init Hook                                   */
 /* -------------------------------------------- */
 Hooks.once('init', async function () {
-    LOGGER.log(`------------------ WELCOME TO NEWEDO SAMURAI ---------------`);
-    // Add utility classes to the global game object so that they're more easily
-    // accessible in global contexts.
-    game.newedo = {
-        NewedoActor,
-        NewedoItem,
-        LOGGER,
-        sysUtil,
-        Dice,
-        NewedoRoll,
-    };
+    console.log(`----> 🌸 WELCOME TO NEWEDO SAMURAI 🌸<----`);
 
     // Add custom constants for configuration.
     CONFIG.NEWEDO = NEWEDO;
@@ -63,13 +51,37 @@ Hooks.once('init', async function () {
 
     // Register sheet application classes
     Actors.unregisterSheet("core", ActorSheet);
-    Actors.registerSheet("newedo", NewedoActorSheet, { makeDefault: true });
+
+    Actors.registerSheet("newedo", applications.CharacterSheet, {
+        makeDefault: true,
+        label: "NEWEDO.ActorSheet.character",
+        types: ['character']
+    });
+    Actors.registerSheet("newedo", applications.NpcSheet, {
+        makeDefault: true,
+        label: "NEWEDO.ActorSheet.npc",
+        types: ['npc']
+    });
+    Actors.registerSheet("newedo", applications.CharacterSheet, {
+        makeDefault: true,
+        label: "NEWEDO.ActorSheet.pet",
+        types: ['pet']
+    });
+    Actors.registerSheet("newedo", applications.CharacterSheet, {
+        makeDefault: true,
+        label: "NEWEDO.ActorSheet.vehicle",
+        types: ['vehicle']
+    });
+
     Items.unregisterSheet("core", ItemSheet);
-    Items.registerSheet("newedo", NewedoItemSheet, { makeDefault: true });
+    Items.registerSheet("newedo", applications.NewedoItemSheet, { 
+        makeDefault: true,
+        label: "NEWEDO.ItemSheet.item"
+    });
 
     //register the system specific settings
     registerSystemSettings();
-    registerHooks();
+    //registerHooks();
 
     // Preload Handlebars templates.
     return LOGGER.log("Loading templates", preloadHandlebarsTemplates());

@@ -9,33 +9,30 @@
             <input id="bio-faction" name="system.biography.faction" type="text" value="{{system.biography.faction}}" placeholder="faction" />
             <input id="bio-path" name="system.biography.path" type="text" value="{{system.biography.path}}" placeholder="path" />
         </div>
-
     </div>
+    
     <!-- Core Stats -->
-    <div>
-        <div class="flexrow" style="text-align: center; align-items: center; gap: 2px">
-            {{#each system.traits.core as | trait key |}}
-                <div style="align-items: center; min-width: 70px;" data-trait="{{key}}">
-                    <label class="resource-label flexlarge align-left" data-action="roll" data-roll="{{trait.rank}}d10x10" data-label="{{trait.label}}">{{trait.abr}}</label>
-                    <input name="system.traits.core.{{key}}.value" value="{{trait.value}}" type="number" />
-                    <div class="trait-rank" data-action="roll" data-roll="{{trait.rank}}d10x10" data-label="{{trait.label}}">Rank {{trait.rank}}</div>
-                </div>
-            {{/each}}
-        </div>
+    <div class="flexrow" style="text-align: center; align-items: center; gap: 2px">
+        {{#each system.traits.core as | trait key |}}
+            <div style="align-items: center; min-width: 70px;" data-trait="{{key}}">
+                <label class="resource-label flexlarge align-left" data-action="roll" data-roll="{{trait.rank}}d10x10" data-label="{{trait.label}}">{{trait.abr}}</label>
+                <input name="system.traits.core.{{key}}.value" value="{{trait.value}}" type="number" />
+                <div class="trait-rank" data-action="roll" data-roll="{{trait.rank}}d10x10" data-label="{{trait.label}}">Rank {{trait.rank}}</div>
+            </div>
+        {{/each}}
     </div>
 
     <!-- Background rolls -->
-    <div>
-        <div class="flexrow" style="text-align: center; align-items: center; gap: 2px;">
-            {{#each system.background as | background key |}}
-                <div style="align-items: center; min-width: 70px;" data-background="{{key}}">
-                    <label class="resource-label flexlarge align-left" data-action="roll" data-roll="{{background.rank}}d10x10" data-label="{{background.label}}">{{background.label}}</label>
-                    <input name="system.background.{{key}}.value" value="{{background.value}}" type="number" />
-                    <div class="trait-rank" data-action="roll" data-roll="{{background.rank}}d10x10" data-label="{{background.label}}">Rank {{ background.rank }}</div>
-                </div>
-            {{/each}}
-        </div>
+    <div class="flexrow" style="text-align: center; align-items: center; gap: 2px;">
+        {{#each system.background as | background key |}}
+            <div style="align-items: center; min-width: 70px;" data-background="{{key}}">
+                <label class="resource-label flexlarge align-left" data-action="roll" data-roll="{{background.rank}}d10x10" data-label="{{background.label}}">{{background.label}}</label>
+                <input name="system.background.{{key}}.value" value="{{background.value}}" type="number" />
+                <div class="trait-rank" data-action="roll" data-roll="{{background.rank}}d10x10" data-label="{{background.label}}">Rank {{ background.rank }}</div>
+            </div>
+        {{/each}}
     </div>
+
 
     <!-- Background Notes -->
     <div class="flexcol" style="flex: 1;">

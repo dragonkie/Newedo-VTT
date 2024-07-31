@@ -1,5 +1,5 @@
 import LOGGER from "./logger.mjs";
-import sysUtil from "./sysUtil.mjs";
+import sysUtil from "../helpers/sysUtil.mjs";
 
 export class Dice {
     constructor(term) {

@@ -1,23 +1,33 @@
-import LOGGER from "../../system/logger.mjs";
+import LOGGER from "../../helpers/logger.mjs";
+import { NewedoSheetMixin } from "../base-sheet.mjs";
 
 /**
  * Extend the basic ItemSheet with some very simple modifications
  * @extends {ItemSheet}
  */
-export default class NewedoItemSheet extends ItemSheet {
+export default class NewedoItemSheet extends NewedoSheetMixin(foundry.applications.sheets.ItemSheetV2) {
     /** @override */
-    static get defaultOptions() {
-        return foundry.utils.mergeObject(super.defaultOptions, {
-            classes: ["newedo", "sheet", "item"],
-            width: 520,
-            height: 360,
-            tabs: [{
-                navSelector: ".sheet-tabs",
-                contentSelector: ".sheet-body",
-                initial: "description",
-            }],
-            dragDrop: [{ dragSelector: ".item-list .item", dropSelector: null }],
-        });
+    static DEFAULT_OPTIONS = {
+        classes: ['item'],
+        position: {height: 360, width: 520, top: 100, left: 200},
+        actions: {
+
+        }
+    }
+
+    static PARTS = {
+        body: { template: "systems/newedo/templates/item/body.hbs" },
+        header: { template: "systems/newedo/templates/item/header.hbs" }
+    }
+
+    static TABS = {
+        description: { id: "description", group: "primary", label: "NEWEDO.tab.description" },
+        settings: { id: "settings", group: "primary", label: "NEWEDO.tab.settings" },
+        rules: { id: "rules", group: "primary", label: "NEWEDO.tab.rules" }
+    }
+
+    tabGroups = {
+        
     }
 
     async _onDragStart(event) {

@@ -1,5 +1,5 @@
-import LOGGER from "../../system/logger.mjs";
-import sysUtil from "../../system/sysUtil.mjs";
+import LOGGER from "../../helpers/logger.mjs";
+import sysUtil from "../../helpers/sysUtil.mjs";
 /**
  * Extend the base Actor document by defining a custom roll data structure which is ideal for the Simple system.
  * @extends {Actor}
@@ -139,6 +139,20 @@ export default class NewedoActor extends Actor {
     _prepareNpcData(actorData) {
         if (actorData.type !== 'npc') return;
         // Make modifications to data here. For example:
+    }
+
+    async deleteDialog(options={}) {
+        const type = newedo.util.localize(this.constructor.metadata.label);
+        let confirm = await foundry.applications.api.DialogV2.confirm({
+            title: `${game.i18n.format("DOCUMENT.Delete", { type })}: ${this.name}`,
+            content: `<h4>${game.i18n.localize("AreYouSure")}</h4><p>${game.i18n.format("SIDEBAR.DeleteWarning", { type })}</p>`,
+            options: options
+        });
+
+        if (confirm) {
+            this.delete();
+            return true;
+        } else return false;
     }
 
     /**

@@ -9,7 +9,7 @@ export default class sysUtil {
   * @param {string} str - The string to localized
   * @returns {string} The localized string
   */
-    static Localize(str) {
+    static localize(str) {
         return game.i18n.localize(str) ?? str;
     }
 
@@ -103,7 +103,7 @@ export default class sysUtil {
         }
 
         return {
-            label: this.Localize(label),
+            label: this.localize(label),
             penalty: penalty
         }
     }
@@ -113,15 +113,15 @@ export default class sysUtil {
     }
 
     static notify(message) {
-        ui.notifications.notify(this.Localize(message));
+        ui.notifications.notify(this.localize(message));
     }
 
     static warn(message) {
-        ui.notifications.warn(this.Localize(message));
+        ui.notifications.warn(this.localize(message));
     }
 
     static error(message) {
-        ui.notifications.error(this.Localize(message));
+        ui.notifications.error(this.localize(message));
     }
 
     static formulaAdd(base, string) {
@@ -263,4 +263,6 @@ export default class sysUtil {
             new foundry.applications.api.DialogV2(options, null).render(true);
         });
     }
+
+    
 }

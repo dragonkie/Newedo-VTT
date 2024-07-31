@@ -1,5 +1,5 @@
 import NewedoItem from "../item.mjs";
-import LOGGER from "../../../system/logger.mjs";
+import LOGGER from "../../../helpers/logger.mjs";
 
 export default class NewedoCulture extends NewedoItem {
 
