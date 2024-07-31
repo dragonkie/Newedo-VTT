@@ -3,7 +3,7 @@ import NewedoActorSheet from "../actor-sheet.mjs";
 export default class CharacterSheet extends NewedoActorSheet {
     static DEFAULT_OPTIONS = {
         classes: ["character"],
-        position: { height: 600, width: 700, top: 100, left: 200 }
+        position: { height: 680, width: 780, top: 60, left: 125 }
     }
 
     static PARTS = {

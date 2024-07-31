@@ -39,6 +39,22 @@
   justify-content: space-between;
 }
 
+.flex-start {
+  justify-content: flex-start;
+}
+
+.flex-align-start {
+  align-items: flex-start;
+}
+
+.flex-end {
+  justify-content: flex-end;
+}
+
+.flex-align-end {
+  align-items: flex-end;
+}
+
 .flexlarge {
   flex: 2;
 }

@@ -197,6 +197,22 @@
   justify-content: space-between;
 }
 
+.flex-start {
+  justify-content: flex-start;
+}
+
+.flex-align-start {
+  align-items: flex-start;
+}
+
+.flex-end {
+  justify-content: flex-end;
+}
+
+.flex-align-end {
+  align-items: flex-end;
+}
+
 .flexlarge {
   flex: 2;
 }
@@ -226,51 +242,6 @@
 .sheet.item .window-content {
   padding: 0;
 }
-.sheet.actor form,
-.sheet.item form {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-.sheet.actor form textarea,
-.sheet.item form textarea {
-  min-width: 0;
-  min-height: 0;
-  padding: 4px;
-  resize: none;
-}
-.sheet.actor form img,
-.sheet.item form img {
-  border: 0;
-}
-.sheet.actor form .sheet-body,
-.sheet.item form .sheet-body {
-  flex: 1;
-  display: flex;
-  overflow: auto;
-}
-.sheet.actor form .tab[data-tab].active,
-.sheet.item form .tab[data-tab].active {
-  display: flex;
-  flex: 1;
-}
-.sheet.actor form .sheet-tabs,
-.sheet.item form .sheet-tabs {
-  border: 0;
-  margin: 0;
-}
-.sheet.actor form .sheet-tabs .item.active,
-.sheet.item form .sheet-tabs .item.active {
-  border-radius: 5px 5px 0px 0px;
-  border: 1px solid rgb(112, 112, 112);
-  border-bottom: 0;
-}
-.sheet.actor form .sheet-tabs .item,
-.sheet.item form .sheet-tabs .item {
-  border-radius: 0px;
-  border: 0;
-  border-bottom: 1px solid rgb(112, 112, 112);
-}
 
 .newedo {
   /* ----------------------------------------- */
@@ -279,9 +250,6 @@
 }
 .newedo .item-form {
   font-family: "Roboto", sans-serif;
-}
-.newedo .sheet-tabs {
-  flex: 0;
 }
 .newedo .resource-label {
   font-weight: bold;
@@ -399,10 +367,17 @@
 .newedo .banner-newedo {
   margin-bottom: 4px;
 }
+.newedo .character {
+  overflow: hidden;
+  flex-direction: row;
+  padding: 0px;
+  display: flex;
+}
 .newedo .character .character-body {
   display: flex;
   flex: 1;
   flex-direction: column;
+  padding: 10px;
 }
 .newedo .character .sheet-body {
   display: flex;
@@ -416,11 +391,28 @@
   margin: 0;
   padding: 0;
 }
+.newedo .character .skill-dice-tray {
+  flex: 0 0 10rem;
+}
+.newedo .character .skill-dice-tray input[type=button] {
+  background-color: var(--input-background-color);
+  border: 0;
+  border-radius: 2px;
+  margin-left: 2px;
+  color: var(--input-text-color);
+}
+.newedo .character .skill-lists {
+  align-items: start;
+  gap: 8px;
+}
+.newedo .character .skill-lists li.item {
+  padding: 2px 0;
+}
 .newedo .character .character-panel {
   display: flex;
   flex: 0 0 200px;
   flex-direction: column;
-  padding: 10px;
+  padding: 10px 0 0 10px;
   max-width: 200px;
   min-width: 200px;
   align-items: center;
@@ -437,45 +429,15 @@
   min-height: none;
 }
 .newedo .character .character-panel > * {
-  margin-bottom: 5px;
-  padding-bottom: 5px;
+  margin-bottom: 10px;
 }
 .newedo .character .character-panel > *:last-child, .newedo .character .character-panel > *:first-child {
   border: 0;
 }
-.newedo .character .character-panel .container-armour {
-  display: flex;
-  flex-direction: row;
-  text-align: center;
-  font-size: 12px;
-}
-.newedo .character .character-panel .container-armour > div {
-  display: flex;
-  flex-direction: column;
-  margin: 0px 2px 0px 2px;
-}
-.newedo .character .character-panel .resource-container {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  text-align: center;
-  font-size: 18px;
-}
-.newedo .character .character-panel .resource-container > * {
-  flex: 1;
-}
-.newedo .character .character-panel .exp-tracker {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  text-align: center;
-}
 .newedo .character .character-panel .fate-card {
   flex: 0;
   width: 100%;
-  align-items: center;
-  text-align: center;
-  font-size: 12px;
+  font-size: 14px;
 }
 .newedo .character .character-panel .fate-card .fate-list {
   width: 100%;
@@ -484,10 +446,8 @@
 }
 .newedo .character .character-panel .fate-card .fate-list .fate-item {
   border-bottom: 1px solid gray;
-  margin-top: 4px;
 }
 .newedo .character .character-panel .fate-card .fate-list .fate-item :first-child {
-  flex: 1;
   text-align: right;
 }
 .newedo .character .character-panel .fate-card .fate-list .fate-item :last-child {
@@ -524,199 +484,6 @@
 .newedo .character .sheet-header .list-derived {
   display: inline;
   margin-right: 5px;
-}
-.newedo .character .tab-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
-}
-.newedo .character .wrap-background {
-  display: flex;
-  flex: 1;
-  flex-direction: row;
-}
-.newedo .character .wrap-background .container {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-.newedo .character .wrap-background .container .title {
-  flex: 0;
-}
-.newedo .character .wrap-background .container textarea {
-  margin: 0;
-  flex: 1;
-  min-width: none;
-  min-height: 50px;
-}
-.newedo .character .container-trait-core {
-  min-width: 80px;
-  max-width: 80px;
-  text-align: center;
-  margin-right: 5px;
-  display: flex;
-  flex-direction: column;
-}
-.newedo .character .container-trait-core div {
-  border-bottom: 1px solid gray;
-}
-.newedo .character .container-trait-core div .barrier {
-  border: 0;
-  margin-left: 10px;
-  height: 1px;
-  min-width: calc(100% - 20px);
-  max-width: calc(100% - 20px);
-}
-.newedo .character .container-trait-core div input {
-  font-size: 36px;
-  border: 0;
-  margin: 5px 0px 5px 0px;
-}
-.newedo .character .container-trait-core div span {
-  font-size: 12px;
-  border: 0;
-}
-.newedo .character .container-trait-derived {
-  min-height: 65px;
-  max-height: 65px;
-  min-width: 250px;
-  max-width: 250px;
-  display: flex;
-  flex-direction: row;
-  text-align: center;
-}
-.newedo .character .container-trait-derived span {
-  border: 0;
-  border-right: 1px solid gray;
-}
-.newedo .character .container-trait-derived span div {
-  border: 0;
-}
-.newedo .character .container-trait-derived span div .name {
-  font-size: 12px;
-}
-.newedo .character .container-trait-derived span div .score {
-  font-size: 18px;
-}
-.newedo .character .container-trait-derived span div .wrap-mod {
-  padding-top: 2px;
-  margin-left: 2px;
-  margin-right: 2px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  border-top: 1px solid gray;
-  font-size: 12px;
-}
-.newedo .character .container-trait-derived span div .wrap-mod input {
-  font-size: 16px;
-  height: 18px;
-  padding: 0px;
-  margin: 0px;
-  margin-left: 2px;
-  min-width: 0px;
-}
-.newedo .character .skill-dice-button {
-  text-align: center;
-  align-items: center;
-  flex: 1;
-  border-radius: 3px;
-  height: 1.1rem;
-  padding: 0;
-  margin-left: 2px;
-}
-.newedo .character .skill-dice-tray {
-  flex: 0 0 10rem;
-}
-.newedo .character .skill-dice-tray input[type=button] {
-  background-color: var(--input-background-color);
-  border: 0;
-  border-radius: 2px;
-  margin-left: 2px;
-  color: var(--input-text-color);
-}
-.newedo .character .skill-lists {
-  align-items: start;
-}
-.newedo .character .skill-lists .item-list {
-  padding: 4px;
-}
-.newedo .character .skill-lists li.item {
-  padding: 4px 0px;
-}
-.newedo .character .items-list {
-  padding: 2px 0;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: nowrap;
-}
-.newedo .character .items-list .item-name {
-  flex: 2 0 auto;
-  text-wrap: nowrap;
-}
-.newedo .character .items-list .item {
-  flex: 1 0 auto;
-  flex-wrap: nowrap;
-}
-.newedo .character .skills-container {
-  display: flex;
-  flex-direction: row;
-  flex: 1;
-}
-.newedo .character ol,
-.newedo .character ul {
-  margin: 0;
-  padding: 0;
-  flex: 1 0 auto;
-}
-.newedo .character .details {
-  display: flex;
-  flex-direction: row;
-  flex: 0 0;
-}
-.newedo .character .details > div {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-.newedo .character .details > div > div {
-  display: inline-flex;
-  align-items: center;
-  margin: 2px;
-}
-.newedo .character .details input {
-  margin-left: 4px;
-  text-align: left;
-  border: 0;
-  padding: 0px 0px 0px 4px;
-}
-.newedo .character .descriptions {
-  display: flex;
-  flex-direction: row;
-  flex: 1;
-}
-.newedo .character .descriptions > :first-child {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-.newedo .character .descriptions > :last-child {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-.newedo .character .descriptions .container {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  padding: 4px;
-}
-.newedo .character .descriptions .container textarea {
-  min-width: 0;
-  min-height: 0;
-  resize: none;
-  flex: 1;
 }
 .newedo.sheet.item form .description-tab {
   display: flex;

@@ -14,7 +14,7 @@
     <!-- Core Stats -->
     <div class="flexrow" style="text-align: center; align-items: center; gap: 2px">
         {{#each system.traits.core as | trait key |}}
-            <div style="align-items: center; min-width: 70px;" data-trait="{{key}}">
+            <div style="align-items: center; min-width: 30px;" data-trait="{{key}}">
                 <label class="resource-label flexlarge align-left" data-action="roll" data-roll="{{trait.rank}}d10x10" data-label="{{trait.label}}">{{trait.abr}}</label>
                 <input name="system.traits.core.{{key}}.value" value="{{trait.value}}" type="number" />
                 <div class="trait-rank" data-action="roll" data-roll="{{trait.rank}}d10x10" data-label="{{trait.label}}">Rank {{trait.rank}}</div>
@@ -25,7 +25,7 @@
     <!-- Background rolls -->
     <div class="flexrow" style="text-align: center; align-items: center; gap: 2px;">
         {{#each system.background as | background key |}}
-            <div style="align-items: center; min-width: 70px;" data-background="{{key}}">
+            <div style="align-items: center; min-width: 30px;" data-background="{{key}}">
                 <label class="resource-label flexlarge align-left" data-action="roll" data-roll="{{background.rank}}d10x10" data-label="{{background.label}}">{{background.label}}</label>
                 <input name="system.background.{{key}}.value" value="{{background.value}}" type="number" />
                 <div class="trait-rank" data-action="roll" data-roll="{{background.rank}}d10x10" data-label="{{background.label}}">Rank {{ background.rank }}</div>

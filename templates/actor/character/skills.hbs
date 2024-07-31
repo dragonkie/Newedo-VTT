@@ -3,136 +3,121 @@
     <div class="flexrow skill-lists">
 
 
-        <ol class="item-list">
+        <ol class="items-list">
+            <li class="items-header flexrow">
+                <span>Heart</span>
+                <span>Dice</span>
+            </li>
+            <ol class="items-list">
+                {{#each skills.hrt as | skill key |}}
+                    <li class="item flexrow" data-item-uuid="{{skill.uuid}}">
+                        <div class="item-name">
+                            <a data-action="useItem">{{skill.name}}</a>
+                        </div>
+                        <div class="item-detail flexrow skill-dice-tray">
+                            {{#each skill.system.ranks as | value index |}}
+                                <input type="button" data-action="skillDice" data-index="{{index}}" value="{{value}}" />
+                            {{/each}}
+                        </div>
+                    </li>
+                {{/each}}
+            </ol>
 
-            <div class="collapsible">
-                <li class="items-header flexrow collapsible">
-                    <span>Heart</span>
-                    <span>Dice</span>
-                </li>
-                <ol class="items-list">
-                    {{#each skills.hrt as | skill key |}}
-                        <li class="item flexrow" data-item-uuid="{{skill.uuid}}">
-                            <div class="item-name">
-                                <a data-action="useItem">{{skill.name}}</a>
-                            </div>
-                            <div class="item-detail flexrow skill-dice-tray">
-                                {{#each skill.system.ranks as | value index |}}
-                                    <input type="button" data-action="skillDice" data-index="{{index}}" value="{{value}}" />
-                                {{/each}}
-                            </div>
-                        </li>
-                    {{/each}}
-                </ol>
-            </div>
+            <li class="items-header flexrow">
+                <span>Power</span>
+                <span>Dice</span>
+            </li>
+            <ol class="items-list">
+                {{#each skills.pow as | skill key |}}
+                    <li class="item flexrow" data-item-uuid="{{skill.uuid}}">
+                        <div class="item-name">
+                            <a data-action="useItem">{{skill.name}}</a>
+                        </div>
+                        <div class="item-detail flexrow skill-dice-tray">
+                            {{#each skill.system.ranks as | value index |}}
+                                <input type="button" data-action="skillDice" data-index="{{index}}" value="{{value}}" />
+                            {{/each}}
+                        </div>
+                    </li>
+                {{/each}}
+            </ol>
 
-            <div class="collapsible">
-                <li class="items-header flexrow collapsible">
-                    <span>Power</span>
-                    <span>Dice</span>
-                </li>
-                <ol class="items-list">
-                    {{#each skills.pow as | skill key |}}
-                        <li class="item flexrow" data-item-uuid="{{skill.uuid}}">
-                            <div class="item-name">
-                                <a data-action="useItem">{{skill.name}}</a>
-                            </div>
-                            <div class="item-detail flexrow skill-dice-tray">
-                                {{#each skill.system.ranks as | value index |}}
-                                    <input type="button" data-action="skillDice" data-index="{{index}}" value="{{value}}" />
-                                {{/each}}
-                            </div>
-                        </li>
-                    {{/each}}
-                </ol>
-            </div>
+            <li class="items-header flexrow">
+                <span>Reflex</span>
+                <span>Dice</span>
+            </li>
+            <ol class="items-list">
+                {{#each skills.ref as | skill key |}}
+                    <li class="item flexrow" data-item-uuid="{{skill.uuid}}">
+                        <div class="item-name">
+                            <a data-action="useItem">{{skill.name}}</a>
+                        </div>
+                        <div class="item-detail flexrow skill-dice-tray">
+                            {{#each skill.system.ranks as | value index |}}
+                                <input type="button" data-action="skillDice" data-index="{{index}}" value="{{value}}" />
+                            {{/each}}
+                        </div>
+                    </li>
+                {{/each}}
+            </ol>
 
-            <div class="collapsible">
-                <li class="items-header flexrow collapsible">
-                    <span>Reflex</span>
-                    <span>Dice</span>
-                </li>
-                <ol class="items-list">
-                    {{#each skills.ref as | skill key |}}
-                        <li class="item flexrow" data-item-uuid="{{skill.uuid}}">
-                            <div class="item-name">
-                                <a data-action="useItem">{{skill.name}}</a>
-                            </div>
-                            <div class="item-detail flexrow skill-dice-tray">
-                                {{#each skill.system.ranks as | value index |}}
-                                    <input type="button" data-action="skillDice" data-index="{{index}}" value="{{value}}" />
-                                {{/each}}
-                            </div>
-                        </li>
-                    {{/each}}
-                </ol>
-            </div>
-
-            <div class="collapsible">
-                <li class="items-header flexrow collapsible">
-                    <span>Pressence</span>
-                    <span>Dice</span>
-                </li>
-                <ol class="items-list">
-                    {{#each skills.pre as | skill key |}}
-                        <li class="item flexrow" data-item-uuid="{{skill.uuid}}">
-                            <div class="item-name">
-                                <a data-action="useItem">{{skill.name}}</a>
-                            </div>
-                            <div class="item-detail flexrow skill-dice-tray">
-                                {{#each skill.system.ranks as | value index |}}
-                                    <input type="button" data-action="skillDice" data-index="{{index}}" value="{{value}}" />
-                                {{/each}}
-                            </div>
-                        </li>
-                    {{/each}}
-                </ol>
-            </div>
-
+            <li class="items-header flexrow">
+                <span>Pressence</span>
+                <span>Dice</span>
+            </li>
+            <ol class="items-list">
+                {{#each skills.pre as | skill key |}}
+                    <li class="item flexrow" data-item-uuid="{{skill.uuid}}">
+                        <div class="item-name">
+                            <a data-action="useItem">{{skill.name}}</a>
+                        </div>
+                        <div class="item-detail flexrow skill-dice-tray">
+                            {{#each skill.system.ranks as | value index |}}
+                                <input type="button" data-action="skillDice" data-index="{{index}}" value="{{value}}" />
+                            {{/each}}
+                        </div>
+                    </li>
+                {{/each}}
+            </ol>
         </ol>
-        <ol class="item-list">
-            <div class="collapsible">
-                <li class="items-header flexrow collapsible">
-                    <span>Perception</span>
-                    <span>Dice</span>
-                </li>
-                <ol class="items-list">
-                    {{#each skills.per as | skill key |}}
-                        <li class="item flexrow" data-item-uuid="{{skill.uuid}}">
-                            <div class="item-name">
-                                <a data-action="useItem">{{skill.name}}</a>
-                            </div>
-                            <div class="item-detail flexrow skill-dice-tray">
-                                {{#each skill.system.ranks as | value index |}}
-                                    <input type="button" data-action="skillDice" data-index="{{index}}" value="{{value}}" />
-                                {{/each}}
-                            </div>
-                        </li>
-                    {{/each}}
-                </ol>
-            </div>
+        <ol class="items-list">
+            <li class="items-header flexrow">
+                <span>Perception</span>
+                <span>Dice</span>
+            </li>
+            <ol class="items-list">
+                {{#each skills.per as | skill key |}}
+                    <li class="item flexrow" data-item-uuid="{{skill.uuid}}">
+                        <div class="item-name">
+                            <a data-action="useItem">{{skill.name}}</a>
+                        </div>
+                        <div class="item-detail flexrow skill-dice-tray">
+                            {{#each skill.system.ranks as | value index |}}
+                                <input type="button" data-action="skillDice" data-index="{{index}}" value="{{value}}" />
+                            {{/each}}
+                        </div>
+                    </li>
+                {{/each}}
+            </ol>
 
-            <div class="collapsible">
-                <li class="items-header flexrow collapsible">
-                    <span>Savvy</span>
-                    <span>Dice</span>
-                </li>
-                <ol class="items-list">
-                    {{#each skills.sav as | skill key |}}
-                        <li class="item flexrow" data-item-uuid="{{skill.uuid}}">
-                            <div class="item-name">
-                                <a data-action="useItem">{{skill.name}}</a>
-                            </div>
-                            <div class="item-detail flexrow skill-dice-tray">
-                                {{#each skill.system.ranks as | value index |}}
-                                    <input type="button" data-action="skillDice" data-index="{{index}}" value="{{value}}" />
-                                {{/each}}
-                            </div>
-                        </li>
-                    {{/each}}
-                </ol>
-            </div>
-
+            <li class="items-header flexrow">
+                <span>Savvy</span>
+                <span>Dice</span>
+            </li>
+            <ol class="items-list">
+                {{#each skills.sav as | skill key |}}
+                    <li class="item flexrow" data-item-uuid="{{skill.uuid}}">
+                        <div class="item-name">
+                            <a data-action="useItem">{{skill.name}}</a>
+                        </div>
+                        <div class="item-detail flexrow skill-dice-tray">
+                            {{#each skill.system.ranks as | value index |}}
+                                <input type="button" data-action="skillDice" data-index="{{index}}" value="{{value}}" />
+                            {{/each}}
+                        </div>
+                    </li>
+                {{/each}}
+            </ol>
         </ol>
     </div>
 </div>

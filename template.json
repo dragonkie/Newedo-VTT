@@ -167,19 +167,19 @@
     },
     "Item": {
         "types": [
-            "weapon",
-            "armour",
             "ammo",
+            "armour",
             "augment",
-            "upgrade",
-            "rote",
-            "kami",
-            "skill",
+            "culture",
             "fate",
             "feature",
+            "kami",
             "lineage",
-            "culture",
-            "path"
+            "path",
+            "rote",
+            "skill",
+            "upgrade",
+            "weapon"
         ],
         "templates": {
             "base": {

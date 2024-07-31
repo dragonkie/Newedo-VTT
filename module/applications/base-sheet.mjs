@@ -4,13 +4,11 @@ export const NewedoSheetMixin = Base => {
     const mixin = foundry.applications.api.HandlebarsApplicationMixin;
     return class NewedoDocumentSheet extends mixin(Base) {
 
-        static SHEET_MODES = { EDIT: 0, PLAY: 1 };
-        static MODES = {
+        static SHEET_MODES = {
             PLAY: 1,
             EDIT: 2,
         }
-        _mode = this.constructor.MODES.PLAY;
-
+        
         static DEFAULT_OPTIONS = {
             classes: ['newedo', 'sheet'],
             form: { submitOnChange: true },

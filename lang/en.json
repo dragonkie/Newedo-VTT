@@ -21,6 +21,9 @@
   "NEWEDO.tab.augs": "Augments",
   "NEWEDO.tab.magic": "Magic",
   "NEWEDO.tab.bio": "Biography",
+  "NEWEDO.tab.description": "Description",
+  "NEWEDO.tab.settings": "Settings",
+  "NEWEDO.tab.rules": "Rules",
 
   "NEWEDO.attribute.lvl": "Level",
   "NEWEDO.attribute.size": "Size",
@@ -160,17 +163,18 @@
   "NEWEDO.background.wealth": "Wealth",
   "NEWEDO.background.soul": "Soul",
 
-  "TYPES.actor.character": "Player Character",
-  "TYPES.actor.npc": "Non-Player Character",
-  "TYPES.actor.pet": "Pet",
-  "TYPES.actor.vehicle": "Vehicle",
+  "TYPES.Actor.character": "Character",
+  "TYPES.Actor.npc": "Non-Player Character",
+  "TYPES.Actor.pet": "Pet",
+  "TYPES.Actor.vehicle": "Vehicle",
 
-  "TYPES.item.weapon": "Weapon",
-  "TYPES.item.armour": "Armour",
-  "TYPES.item.augment": "Augment",
-  "TYPES.item.rote": "Rote",
-  "TYPES.item.kami": "Kami",
-  "TYPES.item.skill": "Skill",
+  "TYPES.Item.weapon": "Weapon",
+  "TYPES.Item.armour": "Armour",
+  "TYPES.Item.augment": "Augment",
+  "TYPES.Item.rote": "Rote",
+  "TYPES.Item.kami": "Kami",
+  "TYPES.Item.skill": "Skill",
+  "TYPES.Item.culture": "Culture",
 
   "NEWEDO.biography.personality": "Personality",
   "NEWEDO.biography.appearance": "Appearance",
@@ -184,6 +188,8 @@
   "NEWEDO.feature.trait": "Trait",
 
   "NEWEDO.dialog.situationBonus": "Situational Bonus",
+
+  "NEWEDO.confirm.deleteItem": "Are you sure you would like to delete",
 
   "NEWEDO.warn.notEnoughLegend": "Not enough legend"
 }

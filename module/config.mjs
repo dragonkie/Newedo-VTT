@@ -10,7 +10,7 @@ NEWEDO.trait = {
     shi: "NEWEDO.trait.core.shi",
     per: "NEWEDO.trait.core.per",
     pre: "NEWEDO.trait.core.pre",
-    abbr : {
+    abbr: {
       pow: "NEWEDO.trait.core.abbr.pow",
       ref: "NEWEDO.trait.core.abbr.ref",
       hrt: "NEWEDO.trait.core.abbr.hrt",
@@ -26,7 +26,7 @@ NEWEDO.trait = {
     def: "NEWEDO.trait.derived.def",
     res: "NEWEDO.trait.derived.res",
     hp: "NEWEDO.trait.derived.hp",
-    abbr : {
+    abbr: {
       init: "NEWEDO.trait.derived.abbr.init",
       move: "NEWEDO.trait.derived.abbr.move",
       def: "NEWEDO.trait.derived.abbr.def",
@@ -43,15 +43,23 @@ NEWEDO.generic = {
   rank: "NEWEDO.generic.rank",
   armour: "NEWEDO.generic.armour",
   soak: "NEWEDO.generic.soak",
+  level: "NEWEDO.generic.level"
 };
 
+NEWEDO.effect = {
+  create: "NEWEDO.EffectCreate",
+  delete: "NEWEDO.EffectDelete",
+  toggle: "NEWEDO.EffectToggle",
+  edit: "NEWEDO.EffectEdit"
+}
+
 NEWEDO.wound = {
-  healthy : "NEWEDO.wound.healthy",
-  grazed : "NEWEDO.wound.grazed",
-  wounded : "NEWEDO.wound.wounded",
-  bloody : "NEWEDO.wound.bloody",
-  beaten : "NEWEDO.wound.beaten",
-  burning : "NEWEDO.wound.burning",
+  healthy: "NEWEDO.wound.healthy",
+  grazed: "NEWEDO.wound.grazed",
+  wounded: "NEWEDO.wound.wounded",
+  bloody: "NEWEDO.wound.bloody",
+  beaten: "NEWEDO.wound.beaten",
+  burning: "NEWEDO.wound.burning",
 }
 
 NEWEDO.damage = {
@@ -73,7 +81,7 @@ NEWEDO.attribute = {
   size: "NEWEDO.attribute.size",
 };
 //Sorted A-Z, grouped by trait
-NEWEDO.skill = { 
+NEWEDO.skill = {
   label: {
     //Heart
     crafting: "NEWEDO.skill.crafting",
@@ -167,13 +175,13 @@ NEWEDO.skill = {
 };
 
 NEWEDO.sheet = {
-  tab : {// Navigation tabs
-    trait: "NEWEDO.sheet.nav.trait",
-    skill: "NEWEDO.sheet.nav.skill",
-    fate: "NEWEDO.sheet.nav.fate",
-    item: "NEWEDO.sheet.nav.item",
-    magic: "NEWEDO.sheet.nav.magic",
-    biography: "NEWEDO.sheet.nav.biography"
+  tab: {// Navigation tabs
+    trait: "NEWEDO.tab.traits",
+    skill: "NEWEDO.tab.skill",
+    fate: "NEWEDO.tab.fate",
+    item: "NEWEDO.tab.item",
+    magic: "NEWEDO.tab.magic",
+    biography: "NEWEDO.tab.biography"
   }
 }
 
@@ -186,12 +194,26 @@ NEWEDO.background = {
 };
 
 NEWEDO.types = {
-  item : {
-    skill: "TYPES.item.skill",
-    weapon: "TYPES.item.weapon"
+  item: {
+    ammo: "TYPES.Item.ammo",
+    armour: "TYPES.Item.armour",
+    augment: "TYPES.Item.augment",
+    culture: "TYPES.Item.culture",
+    fate: "TYPES.Item.fate",
+    feature: "TYPES.Item.feature",
+    kami: "TYPES.Item.kami",
+    lineage: "TYPES.Item.lineage",
+    path: "TYPES.Item.path",
+    rote: "TYPES.Item.rote",
+    skill: "TYPES.Item.skill",
+    upgrade: "TYPES.Item.upgrade",
+    weapon: "TYPES.Item.weapon"
   },
-  actor : {
-    character: "TYPES.actor.character"
+  actor: {
+    character: "TYPES.Actor.character",
+    npc: "TYPES.Actor.npc",
+    pet: "TYPES.Actor.pet",
+    vehicle: "TYPES.Actor.vehicle",
   }
 }
 

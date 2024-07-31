@@ -9,7 +9,7 @@
 
     <!-- Health container-->
     {{ localize 'NEWEDO.generic.hp' }}: {{ system.wound.label }}
-    <div class="resource-container">
+    <div class="flexrow">
         <input type="number" name="system.hp.value" value="{{system.hp.value}}" />
         <div>/</div>
         <input type="number" value="{{system.hp.max}}" disabled />
@@ -17,7 +17,7 @@
 
     <!-- Legend container -->
     {{ localize 'NEWEDO.generic.legend'}}
-    <div class="resource-container">
+    <div class="flexrow">
         <input type="number" name="system.legend.value" value="{{system.legend.value}}" />
         <div>/</div>
         <input type="number" name="system.legend.max" value="{{system.legend.max}}" />
@@ -25,7 +25,7 @@
 
     <!-- Armour values -->
     {{ localize 'NEWEDO.generic.soak'}}
-    <div class="container-armour">
+    <div class="flexrow" style="gap: 4px;">
         {{#with system.armour}}
 
             <div>
@@ -49,9 +49,9 @@
     </div>
 
     <!-- Character XP tracker -->
-    <div class="exp-tracker">
+    <div class="flexrow" style="gap: 4px;">
         <span>{{localize 'NEWEDO.generic.exp'}}:</span>
-        <input style="margin: 4px;" type="number" name="system.attributes.xp.value" value="{{system.attributes.xp.value}}" />
+        <input type="number" name="system.attributes.xp.value" value="{{system.attributes.xp.value}}" />
     </div>
 
     <!-- Fate card container -->
