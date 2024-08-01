@@ -1,0 +1,44 @@
+.bar {
+    --padding: 2px;
+    --height: 24px;
+
+    width: 100%;
+    display: grid;
+    flex: 0;
+    background-color: var(--color-dark-1);
+    border-radius: calc(var(--height) / 2 + var(--padding));
+    padding: var(--padding);
+    >* {
+        // All children of the hp bar are set to start in the same row / column
+        grid-column-start: 1;
+        grid-row-start: 1;
+    }
+
+    .fill {
+        background-color: rgb(74, 186, 74);
+        width: 50%;
+        height: var(--height);
+        border-radius: calc(var(--height) / 2 + var(--padding));
+        transition: width 1s ease-out;
+        max-width: 100%;
+        min-width: 0%;
+
+        &.blue {
+            background-color: rgb(24, 136, 255);
+        }
+    }
+
+    .value {
+        text-align: center;
+        >* {
+            font-weight: bold;
+            padding: 0;
+            font-size: 1.2em;
+        }
+        input {
+            height: var(--height);
+            background: transparent;
+            border: 0;
+        }
+    }
+}

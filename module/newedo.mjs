@@ -74,14 +74,13 @@ Hooks.once('init', async function () {
     });
 
     Items.unregisterSheet("core", ItemSheet);
-    Items.registerSheet("newedo", applications.NewedoItemSheet, { 
+    Items.registerSheet("newedo", applications.NewedoItemSheet, {
         makeDefault: true,
         label: "NEWEDO.ItemSheet.item"
     });
 
     //register the system specific settings
     registerSystemSettings();
-    //registerHooks();
 
     // Preload Handlebars templates.
     return LOGGER.log("Loading templates", preloadHandlebarsTemplates());
@@ -90,7 +89,6 @@ Hooks.once('init', async function () {
 /* -------------------------------------------- */
 /*  Handlebars Helpers                          */
 /* -------------------------------------------- */
-// If you need to add Handlebars helpers, here are a few useful examples:
 Handlebars.registerHelper('concat', function () {
     var outStr = '';
     for (var arg in arguments) {
@@ -105,6 +103,12 @@ Handlebars.registerHelper('toLowerCase', function (str) {
     return str.toLowerCase();
 });
 
+Handlebars.registerHelper('divide', (a, b) => a / b);
+Handlebars.registerHelper('multiply', (a, b) => a * b);
+Handlebars.registerHelper('addition', (a, b) => a + b);
+Handlebars.registerHelper('subtraction', (a, b) => a - b);
+Handlebars.registerHelper('percent', (a, b) => a / b * 100);
+Handlebars.registerHelper('disabled', (a) => a == true ? 'disabled' : '');
 
 /* -------------------------------------------- */
 /*  Ready Hook                                  */

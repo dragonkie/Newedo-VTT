@@ -8,7 +8,7 @@ export const NewedoSheetMixin = Base => {
             PLAY: 1,
             EDIT: 2,
         }
-        
+
         static DEFAULT_OPTIONS = {
             classes: ['newedo', 'sheet'],
             form: { submitOnChange: true },
@@ -16,6 +16,7 @@ export const NewedoSheetMixin = Base => {
             actions: {// Default actions must be static functions
                 editImage: this._onEditImage,
                 toggleSheet: this._onToggleSheet,
+                toggleMode: this._onToggleMode,
                 toggleOpacity: this._ontoggleOpacity,
                 toggleEffect: this._onToggleEffect,
                 editEffect: this._onEditEffect,
@@ -76,7 +77,7 @@ export const NewedoSheetMixin = Base => {
         /* -------------------------------- RENDER FUNCTIONS -------------------------------- */
         _prepareContext(options) {
             const doc = this.document;
-    
+
             const context = {
                 document: doc,
                 config: CONFIG.NEWEDO,
@@ -88,8 +89,17 @@ export const NewedoSheetMixin = Base => {
                 isPlayMode: this.isPlayMode,
                 isEditable: this.isEditable
             }
-    
+
             return context;
+        }
+
+        async render(options, _options) {
+            return super.render(options, _options);
+        }
+
+        _onFirstRender(context, options) {
+            super._onFirstRender(context, options);
+            this._setupContextMenu();
         }
 
         _onRender(context, options) {
@@ -101,6 +111,25 @@ export const NewedoSheetMixin = Base => {
                 })
             }
             this._setupDragAndDrop();
+        }
+
+        async _renderHTML(context, options) {
+            return super._renderHTML(context, options);
+        }
+
+        async _renderFrame(options) {
+            const frame = super._renderFrame(options);
+
+            // Insert additional buttons into the window header
+            // In this scenario we want to add a lock button
+            if (this.isEditable && !this.document.getFlag("core", "sheetLock")) {
+                const label = game.i18n.localize("SHEETS.toggleLock");
+                let icon = this.isEditMode ? 'fa-lock-open' : 'fa-lock';
+                const sheetConfig = `<button type="button" class="header-control fa-solid ${icon}" data-action="toggleMode" data-tooltip="${label}" aria-label="${label}"></button>`;
+                this.window.close.insertAdjacentHTML("beforebegin", sheetConfig);
+            }
+
+            return frame;
         }
 
         /* -------------------------------- DRAG AND DROP -------------------------------- */
@@ -267,6 +296,15 @@ export const NewedoSheetMixin = Base => {
                 left: this.position.left + 10
             });
             fp.browse();
+        }
+
+        static _onToggleMode() {
+            if (this.isPlayMode) this._sheetMode = this.constructor.SHEET_MODES.EDIT;
+            else this._sheetMode = this.constructor.SHEET_MODES.PLAY;
+            const lock = this.window.header.querySelector('.fa-lock, .fa-lock-open');
+            lock.classList.toggle('fa-lock');
+            lock.classList.toggle('fa-lock-open');
+            this.render(true);
         }
 
         async createEmbeddedDocuments(type, list) {

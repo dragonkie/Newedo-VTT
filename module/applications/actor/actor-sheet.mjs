@@ -48,14 +48,6 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
         primary: "traits"
     }
 
-    //control variables and static macros for them
-    static MODES = {
-        PLAY: 1,
-        EDIT: 2,
-    }
-    _mode = this.constructor.MODES.PLAY;
-    _editable = true;
-
     /** @override */
     get template() {
         return `systems/${game.system.id}/templates/actor/actor-${this.document.type}-sheet.hbs`;

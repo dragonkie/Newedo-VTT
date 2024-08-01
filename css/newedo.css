@@ -413,20 +413,9 @@
   flex: 0 0 200px;
   flex-direction: column;
   padding: 10px 0 0 10px;
-  max-width: 200px;
-  min-width: 200px;
   align-items: center;
   text-align: center;
   overflow: auto;
-  font-size: 16px;
-}
-.newedo .character .character-panel input {
-  font-size: 18px;
-  height: 28px;
-  border: 0;
-  padding: 0;
-  min-width: none;
-  min-height: none;
 }
 .newedo .character .character-panel > * {
   margin-bottom: 10px;
@@ -526,52 +515,44 @@
 .newedo.sheet.item form .settings-tab select {
   flex: 2;
 }
-.newedo .icon-trashcan {
-  width: 24px;
-  height: 24px;
-  align-items: center;
+.newedo .bar {
+  --padding: 2px;
+  --height: 24px;
+  width: 100%;
+  display: grid;
+  flex: 0;
+  background-color: var(--color-dark-1);
+  border-radius: calc(var(--height) / 2 + var(--padding));
+  padding: var(--padding);
 }
-.newedo .switch {
-  display: inline-block;
-  position: relative;
-  width: 60px;
-  height: 24px;
+.newedo .bar > * {
+  grid-column-start: 1;
+  grid-row-start: 1;
 }
-.newedo .switch[mode="2"] .slider {
-  background-color: #2196F3;
+.newedo .bar .fill {
+  background-color: rgb(74, 186, 74);
+  width: 50%;
+  height: var(--height);
+  border-radius: calc(var(--height) / 2 + var(--padding));
+  transition: width 1s ease-out;
+  max-width: 100%;
+  min-width: 0%;
 }
-.newedo .switch[mode="2"] .slider::before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
+.newedo .bar .fill.blue {
+  background-color: rgb(24, 136, 255);
 }
-.newedo .switch .slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: 0.4s;
-  transition: 0.4s;
+.newedo .bar .value {
+  text-align: center;
 }
-.newedo .switch .slider::before {
-  position: absolute;
-  content: "";
-  height: 18px;
-  width: 18px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  -webkit-transition: 0.4s;
-  transition: 0.4s;
+.newedo .bar .value > * {
+  font-weight: bold;
+  padding: 0;
+  font-size: 1.2em;
 }
-.newedo .switch .slider.round {
-  border-radius: 24px;
-}
-.newedo .switch .slider.round::before {
-  border-radius: 100%;
+.newedo .bar .value input {
+  height: var(--height);
+  background: transparent;
+  border: 0;
 }
 
 /*# sourceMappingURL=newedo.css.map */
