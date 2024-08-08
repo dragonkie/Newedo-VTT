@@ -23,7 +23,7 @@
   "grid": {
     "distance": 1,
     "units": "m"
-  }
+  },
   "initative": "traits.derived.init",
   "primaryTokenAttribute": "traits.derived.hp",
   "secondaryTokenAttribute": "legend",
