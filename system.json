@@ -174,7 +174,7 @@
   "secondaryTokenAttribute": "legend",
 
   "url": "https://github.com/dragonkie/Newedo-VTT",
-  "manifest": "https://github.com/dragonkie/Newedo-VTT/blob/main/system.json",
+  "manifest": "https://raw.githubusercontent.com/dragonkie/Newedo-VTT/main/system.json",
   "download": "https://github.com/dragonkie/Newedo-VTT/zipball/master",
 
   "license": "LICENSE.txt"
