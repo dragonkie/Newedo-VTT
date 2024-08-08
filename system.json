@@ -20,7 +20,17 @@
   ],
   "esmodules": ["module/newedo.mjs"],
   "styles": ["css/newedo.css"],
-  
+  "grid": {
+    "distance": 1,
+    "units": "m"
+  }
+  "initative": "traits.derived.init",
+  "primaryTokenAttribute": "traits.derived.hp",
+  "secondaryTokenAttribute": "legend",
+
+  "url": "https://github.com/dragonkie/Newedo-VTT",
+  "manifest": "https://raw.githubusercontent.com/dragonkie/Newedo-VTT/main/system.json",
+  "download": "https://github.com/dragonkie/Newedo-VTT/zipball/master",
   "packFolders": [
     {
       "name": "Newedo: Core",
@@ -166,16 +176,5 @@
       "path": "lang/en.json"
     }
   ],
-
-  "gridDistance": 1,
-  "gridUnits": "m",
-  "initative": "traits.derived.init",
-  "primaryTokenAttribute": "traits.derived.hp",
-  "secondaryTokenAttribute": "legend",
-
-  "url": "https://github.com/dragonkie/Newedo-VTT",
-  "manifest": "https://raw.githubusercontent.com/dragonkie/Newedo-VTT/main/system.json",
-  "download": "https://github.com/dragonkie/Newedo-VTT/zipball/master",
-
   "license": "LICENSE.txt"
 }
