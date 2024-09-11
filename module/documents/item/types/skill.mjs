@@ -9,20 +9,16 @@ export default class NewedoSkill extends NewedoItem {
     }
 
     prepareBaseData() {
-        this.system.rollTrait = true;
+        
     }
 
     prepareDerivedData() {
-        this.system.formula = this.formula
+        
     }
 
     getRollData() {
         const data = super.getRollData();
         data.trait = this.trait;
-        data.formula = {
-            full: this.getFormula(),
-            ranks: this.getFormula(false)
-        }
         return foundry.utils.deepClone(data);
     }
 
@@ -43,12 +39,12 @@ export default class NewedoSkill extends NewedoItem {
 
     // shorthand for calling full dice formula, usable in handelbars
     get formula() {
-        if (!this.actor) return null;
+        if (!this.parent) return null;
         return this.getFormula(true);
     }
 
     get ranksFormula() {
-        if (!this.actor) return null;
+        if (!this.parent) return null;
         return this.getFormula(false);
     }
 
@@ -56,7 +52,7 @@ export default class NewedoSkill extends NewedoItem {
     getFormula(trait = true) {
         let formula = '';
         let dice = this.dice(trait);
-
+        LOGGER.debug('Skill | getFormula:', dice);
         for (const d of dice) {
             let f = `${d.count}d${d.faces}`;
             if (formula != '') formula += '+';
@@ -102,6 +98,7 @@ export default class NewedoSkill extends NewedoItem {
             if (!this.actor) return;
             list.unshift({ faces: 10, count: this.trait.rank });
         }
+        LOGGER.debug('Skill | Dice ', list)
         return list;
     }
 
@@ -113,7 +110,7 @@ export default class NewedoSkill extends NewedoItem {
     async _cycleSkillDice(event) {
         const index = event.target.dataset.index;
         const ranks = this.system.ranks;
-        LOGGER.debug(`Event`, event);
+        LOGGER.debug(`Changing skill rank:`, event);
 
         if (event.type === `click`) {
             ranks[index] += 2;
@@ -149,7 +146,7 @@ export default class NewedoSkill extends NewedoItem {
             if (dice > 0) formula += dice + 'd10x10';
         }
 
-        console.log(options)
+        LOGGER.debug('Roll options:', options)
 
         if (options.skill != '') formula += '+' + options.skill
         if (options.useWound) mods += options.wound;

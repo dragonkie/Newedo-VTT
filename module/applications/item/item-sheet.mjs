@@ -14,8 +14,9 @@ export default class NewedoItemSheet extends NewedoSheetMixin(foundry.applicatio
     }
 
     static PARTS = {
-        body: { template: "systems/newedo/templates/item/body.hbs" },
         header: { template: "systems/newedo/templates/item/header.hbs" },
+        tabs: { template: "systems/newedo/templates/shared/tabs-nav.hbs" },
+        body: { template: "systems/newedo/templates/item/body.hbs" },
         rules: { template: "systems/newedo/templates/item/rules.hbs" },
         description: { template: "systems/newedo/templates/item/description.hbs" },
         settings: { template: "systems/newedo/templates/item/settings.hbs" }
@@ -67,14 +68,35 @@ export default class NewedoItemSheet extends NewedoSheetMixin(foundry.applicatio
     async _prepareContext() {
         const context = await super._prepareContext();
 
-        switch (this.document.type) {
-            case 'weapon':
-                break;
-            default:
-                context.settings = await renderTemplate(`systems/newedo/templates/item/settings/${this.document.type}.hbs`, context);
-                break;
+        // Creates custom skill list from owning actors skills if available, otherwise uses the default list
+        context.skills = [];
+        context.selectSkills = '';
+        if (this.document.actor != null) {
+            // create the list of skills
+            for (const skill of this.document.actor.itemTypes.skill) {
+                context.skills.push({
+                    label: skill.name,
+                    trait: skill.system.trait,
+                    group: 'NEWEDO.trait.core.' + skill.system.trait,
+                    value: skill.system.slug
+                })
+            }
+
+            context.selectSkills = foundry.applications.fields.createSelectInput({
+                options: context.skills,
+                value: this.document.system.skill,
+                valueAttr: "value",
+                labelAttr: "label",
+                localize: true,
+                sort: true,
+                name: 'system.skill'
+            }).outerHTML
+
+        } else {
+            context.selectSkills = newedo.element.select.Skills(this.document.system.skill, 'system.skill')
         }
 
+        context.settings = await renderTemplate(`systems/newedo/templates/item/settings/${this.document.type}.hbs`, context);
         const enrichmentOptions = {
             secrets: this.document.isOwner,
             async: true,
@@ -85,74 +107,4 @@ export default class NewedoItemSheet extends NewedoSheetMixin(foundry.applicatio
 
         return context;
     }
-
-    async getData() {
-        const context = await super.getData();
-        const item = context.item;
-        const source = item.toObject();
-
-        context.theme = "light";
-        if (game.settings.get(game.system.id, "darkmode")) context.theme = "dark";
-
-        foundry.utils.mergeObject(context, {
-            source: source.system,
-            system: item.system,
-            rollData: this.item.getRollData(),
-            editable: this.isEditable,
-        });
-
-        // Use a safe clone of the item data for further operations.
-        const itemData = context.item.toObject();
-
-        // Retrieve the roll data for TinyMCE editors.
-        let actor = this.object.parent ?? null;
-        if (actor) context.rollData = actor.getRollData();
-
-        // Add the actor's data to context.data for easier access, as well as flags.
-        context.system = itemData.system;
-        context.flags = itemData.flags;
-
-        //HTML enrichment areas for editing text on items
-        const enrichmentOptions = {
-            secrets: item.isOwner,
-            async: true,
-            relativeTo: this.item,
-            rollData: context.rollData,
-        };
-
-        context.itemDescriptionHTML = await TextEditor.enrichHTML(
-            context.system.description,
-            enrichmentOptions
-        );
-
-        return context;
-    }
-
-    /* 
-    activateListeners(html) {
-        super.activateListeners(html);
-
-        // Everything below here is only needed if the sheet is editable
-        if (!this.isEditable) return;
-
-        html.find(".skill-dice").each((i, li) => {
-            let handler = (ev) => this.item._cycleSkillDice(ev);
-            li.addEventListener("click", handler);
-            li.addEventListener("contextmenu", handler);
-        });
-
-        // ---------------------------------------- FEATURE EDITING -------------------------------------------------------
-        html.find(".feature-edit").each((i, li) => {
-            // Sets function to open up the 
-            let handler = (ev) => _featureOpen(ev, this.item);
-            li.addEventListener("click", handler);
-        });
-
-        //Delete button for the given feature
-        html.find(".feature-delete").each((i, li) => {
-            let handler = (ev) => this.item._featureDelete(ev);
-            li.addEventListener("click", handler);
-        });
-    }
-        */
 }

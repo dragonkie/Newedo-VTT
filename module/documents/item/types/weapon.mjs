@@ -25,10 +25,10 @@ export default class NewedoWeapon extends NewedoItem {
             else system.grit.dmg -= 1;
         }
         // clears the formulas to make sure no garbage is in them
-        switch (system.skill) {
-            case `Archery`:
-            case `Gunnery`:
-            case `Small Arms`:
+        switch (system.slug) {
+            case `archery`:
+            case `gunnery`:
+            case `smallarms`:
                 system.ranged = true;
                 break;
             default:
@@ -49,12 +49,9 @@ export default class NewedoWeapon extends NewedoItem {
 
     async _onUseEquip() {
         await this.update({ 'system.equipped': !this.system.equipped });
-        LOGGER.log('Equipped Item:', this.system.equipped);
     }
 
     async _onUseAttack() {
-        LOGGER.debug(' --- Weapon Attack --- ');
-
         // if there isnt an owning actor
         if (!this.actor) return;
 
@@ -102,44 +99,41 @@ export default class NewedoWeapon extends NewedoItem {
     }
 
     getRollData() {
-        if (!this.actor) return null;
+        if (this.actor == null) return null;
         let data = super.getRollData();
-
+        data.skill = this.skill;
+        if (!data.skill) return data;
+        
         data.formula = {
             atk: this.atkFormula,
             dmg: this.dmgFormula,
             skill: this.skill.getFormula(false)
         }
 
-        data.skill = this.skill;
-
         return data;
     }
 
     get atkFormula() {
-        if (!this.isOwned) return undefined;
         const system = this.system;
         const skill = this.skill;// Gets the skill item
+        if (!skill) return null;
 
         let formula = skill.formula;
         if (system.grit.atk > 0) formula = sysUtil.formulaAdd(formula, system.grit.atk);
         if (system.attack.bonus != 0) formula = sysUtil.formulaAdd(formula, system.attack.bonus);
-
         return formula;
     }
 
     get dmgFormula() {
-        if (!this.isOwned) return undefined;
-
         const system = this.system;
         const skill = this.skill;// Gets the skill item
-        const trait = skill.trait;
+        if (!skill) return null;
 
+        const trait = skill.trait;
         let formula = ``;
         if (!system.isRanged) formula += `${trait.rank}d10`;
         formula = sysUtil.formulaAdd(formula, system.damage.value);
         if (system.grit.dmg > 0) formula = sysUtil.formulaAdd(formula, system.grit.dmg);
-
         return formula;
     }
 
@@ -147,8 +141,8 @@ export default class NewedoWeapon extends NewedoItem {
      * Returns the skill item used by this item as found on the owning actor
      */
     get skill() {
-        if (this.actor) return this.actor.getSkill(this.system.skill);
-        return undefined;
+        if (this.actor != null) return this.actor.getSkill(this.system.skill);
+        return null;
     }
 
     /**

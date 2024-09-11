@@ -73,4 +73,8 @@ export default class NewedoItem extends Item {
         rollData.item = foundry.utils.deepClone(this.system);
         return rollData;
     }
+
+    _generateSlug() {
+        return this.update({'system.slug': this.name.replace(/\W/g, '').toLowerCase()})
+    }
 }

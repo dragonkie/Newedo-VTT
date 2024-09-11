@@ -5,6 +5,7 @@ import sysUtil from "./helpers/sysUtil.mjs";
 
 import applications from "./applications/_module.mjs";
 import * as documents from "./documents/_module.mjs";
+import dialog from "./dialog/_module.mjs"
 
 import NewedoItemSheet from "./applications/item/item-sheet.mjs";
 
@@ -16,6 +17,7 @@ import preloadHandlebarsTemplates from "./helpers/preload-templates.mjs";
 
 //system settings
 import registerSystemSettings from "./helpers/settings.mjs";
+import selectors from "./helpers/selectors.mjs";
 
 LOGGER.log('Loading Newedo.mjs...')
 
@@ -24,7 +26,11 @@ globalThis.newedo = {
     documents: documents.documentClasses,
     dataModels: documents.dataModels,
     CONFIG: NEWEDO,
-    util: sysUtil
+    util: sysUtil,
+    element: {
+        select: selectors
+    },
+    dialog: dialog
 }
 
 /* -------------------------------------------- */
@@ -111,6 +117,14 @@ Handlebars.registerHelper('addition', (a, b) => a + b);
 Handlebars.registerHelper('subtraction', (a, b) => a - b);
 Handlebars.registerHelper('percent', (a, b) => a / b * 100);
 Handlebars.registerHelper('disabled', (a) => a == true ? 'disabled' : '');
+Handlebars.registerHelper('selectDamage', (v, n) => newedo.element.select.DamageTypes(v, n));
+Handlebars.registerHelper('selectSkill', (v, n) => newedo.element.select.Skills(v, n));
+Handlebars.registerHelper('selectWeaponSkill', (v, n) => newedo.element.select.WeaponSkills(v, n));
+Handlebars.registerHelper('selectTrait', (v, n) => newedo.element.select.Traits(v, n));
+Handlebars.registerHelper('ledger', (path, label) => { 
+    return `<a data-action="editLedger" data-path="${path}" data-label="${label}"><i class="fa-solid fa-memo-pad"></i></a>` 
+});
+Handlebars.registerHelper('isGM', () => game.user.isGM);
 
 /* -------------------------------------------- */
 /*  Ready Hook                                  */

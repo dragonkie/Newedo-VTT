@@ -8,6 +8,8 @@ import PetSheet from "./actor/types/pet.mjs";
 import VehicleSheet from "./actor/types/vehicle.mjs";
 
 import ItemWeaponSheet from "./item/types/weapon.mjs";
+import NewedoApplication from "./base-application.mjs";
+import NewedoLedger from "./ledger.mjs";
 
 export default {
     NewedoActorSheet,
@@ -17,5 +19,7 @@ export default {
     PetSheet,
     VehicleSheet,
     ItemWeaponSheet,
-    NewedoContextMenu
+    NewedoContextMenu,
+    NewedoApplication,
+    NewedoLedger
 }

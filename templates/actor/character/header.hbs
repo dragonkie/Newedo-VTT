@@ -11,12 +11,12 @@
         <span>&#x2022 {{localize 'NEWEDO.trait.derived.abbr.move'}}: <b>{{system.traits.derived.move.value}}</b></span>
         <span>&#x2022 {{localize 'NEWEDO.trait.derived.abbr.init'}}: <b>{{system.traits.derived.init.value}}</b></span>
         {{#if isPlayMode}}
-            <span>&#x2022 {{ localize "NEWEDO.attribute.size" }}: <b>{{system.attributes.size.value}}</b></span>
+            <span>&#x2022 {{ localize "NEWEDO.attribute.size" }}: <b>{{system.size.value}}</b></span>
         {{/if}}
         {{#if isEditMode}}
             <span>
                 &#x2022 {{ localize "NEWEDO.attribute.size" }}:
-                <input style="width: 3rem; height: 1rem; text-align: center; padding: 0;" name="system.attributes.size.value" type="number" value="{{system.attributes.size.value}}">
+                <input style="width: 3rem; height: 1rem; text-align: center; padding: 0;" name="system.size.value" type="number" value="{{system.size.value}}">
             </span>
         {{/if}}
     </div>

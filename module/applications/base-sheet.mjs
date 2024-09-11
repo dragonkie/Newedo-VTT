@@ -54,6 +54,7 @@ export const NewedoSheetMixin = Base => {
                 document: doc,
                 config: CONFIG.NEWEDO,
                 system: doc.system,
+                flags: doc.flags,
                 name: doc.name,
                 items: doc.items,
                 itemTypes: doc.itemTypes,
@@ -71,7 +72,6 @@ export const NewedoSheetMixin = Base => {
         _getTabs() {
             return Object.values(this.constructor.TABS).reduce((acc, v) => {
                 const isActive = this.tabGroups[v.group] === v.id;
-                if (isActive) LOGGER.debug(`[${v.id}] is Active!`);
                 acc[v.id] = {
                     ...v,
                     active: isActive,
@@ -98,16 +98,23 @@ export const NewedoSheetMixin = Base => {
 
         /* -------------------------------- RENDER FUNCTIONS -------------------------------- */
         async render(options, _options) {
+            LOGGER.trace(`BASE SHEET | render(); `, this);
+            LOGGER.log(`BASE SHEET | render(); `, options);
+            LOGGER.log(`BASE SHEET | render(); `, _options);
             return super.render(options, _options);
         }
 
         _onFirstRender(context, options) {
-            super._onFirstRender(context, options);
+            LOGGER.debug('_onFirstRender', context)
+            let r = super._onFirstRender(context, options);
             this._setupContextMenu();
+
+            return r;
         }
 
         _onRender(context, options) {
-            super._onRender(context, options);
+            LOGGER.debug('_onRender', context);
+            let r = super._onRender(context, options);
             
             if (!this.isEditable) {
                 // Disables sheet inputs for non owners
@@ -117,13 +124,16 @@ export const NewedoSheetMixin = Base => {
             }
             
             this._setupDragAndDrop();
+            return r;
         }
 
         async _renderHTML(context, options) {
+            LOGGER.debug('_renderHTML', context)
             return super._renderHTML(context, options);
         }
 
         async _renderFrame(options) {
+            LOGGER.debug("Injecting sheet lock button", this);
             const frame = super._renderFrame(options);
 
             // Insert additional buttons into the window header
@@ -310,19 +320,6 @@ export const NewedoSheetMixin = Base => {
 
         _getEffectContextOptions(item) {
 
-        }
-
-        static _onEditImage(event, target) {
-            if (!this.isEditable) return;
-            const current = this.document.img;
-            const fp = new FilePicker({
-                type: "image",
-                current: current,
-                callback: path => this.document.update({ img: path }),
-                top: this.position.top + 40,
-                left: this.position.left + 10
-            });
-            fp.browse();
         }
 
         static _onToggleMode() {

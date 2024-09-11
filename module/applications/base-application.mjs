@@ -1,69 +1,29 @@
 import sysUtil from "../helpers/sysUtil.mjs"
+let {HandlebarsApplicationMixin, ApplicationV2} = foundry.applications.api
 
-
-export default class NewedoApplication extends foundry.applications.api.ApplicationV2 {
+export default class NewedoApplication extends HandlebarsApplicationMixin(ApplicationV2) {
     static DEFAULT_OPTIONS = {
+        id: 'newedo-app-{id}',
         tag: 'form',
+        classes: ['ledger', 'newedo'],
+        window: {
+            frame: true,
+            positioned: true,
+            title: "Ledger: {actor}'s {currency}",
+            icon: "fa-solid fa-note-sticky",
+            minimizable: false,
+            resizeable: true
+        },
         form: {
-            handler: MyApp.formHandler,
             submitOnChange: false,
             closeOnSubmit: false,
         },
-        actions: {
-            cancel: this._onCancel,
-            confirm: this._onConfirm,
-            createTransaction: this._onTransaction,
-            notify: this._onNotify
-        },
-        window: {
-            controls: [
-                {
-                    icon: 'fa-gun',
-                    label: 'Notfication',
-                    action: 'notify'
-                }
-            ]
+        position: {
+            top: 300,
+            left: 300,
+            width: 650,
+            height: 500,
+            scale: 1.0
         }
-    }
-
-    _onRender(context, options) {
-        _activateListeners();
-    }
-
-    _activateListeners() {
-        
-    }
-
-    static _onCancel() {
-
-    }
-
-    static _onConfirm() {
-
-    }
-
-    static _onTransaction() {
-
-    }
-
-    static _onNotify() {
-        sysUtil.notification('notified mother fucker!')
-    }
-
-    /** @override */
-    _configureRenderOptions(options) {
-        // Super populares the options.parts key and is neccessary
-        super._configureRenderOptions(options);
-        // We can overide the list of parts to change which ones are being rendered
-        // This lets us change whats rendering based on who's looking
-        /*
-        options.parts =['header', 'settings']
-        if (!gm) return;
-        options.parts.push('secrets');
-        */
-    }
-
-    _onRender() {
-
     }
 }

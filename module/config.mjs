@@ -82,38 +82,42 @@ NEWEDO.attribute = {
 };
 //Sorted A-Z, grouped by trait
 NEWEDO.skill = {
-  label: {
-    //Heart
+  hrt: {
     crafting: "NEWEDO.skill.crafting",
     meditation: "NEWEDO.skill.meditation",
     rally: "NEWEDO.skill.rally",
     survival: "NEWEDO.skill.survival",
-    //Power
+  },
+  pow: {
     athletics: "NEWEDO.skill.athletics",
     meleeheavy: "NEWEDO.skill.meleeHeavy",
     meleelight: "NEWEDO.skill.meleeLight",
     thrown: "NEWEDO.skill.thrown",
     unarmed: "NEWEDO.skill.unarmed",
-    //Reflex
+  },
+  ref: {
     banter: "NEWEDO.skill.banter",
     dodge: "NEWEDO.skill.dodge",
     drive: "NEWEDO.skill.drive",
     sleightofhand: "NEWEDO.skill.sleightOfHand",
     stealth: "NEWEDO.skill.stealth",
-    //Presence
+  },
+  pre: {
     deception: "NEWEDO.skill.deception",
     eloquence: "NEWEDO.skill.eloquence",
     intimidation: "NEWEDO.skill.intimidation",
     performance: "NEWEDO.skill.performance",
     seduction: "NEWEDO.skill.seduction",
-    //Perception
+  },
+  per: {
     archery: "NEWEDO.skill.archery",
     commerce: "NEWEDO.skill.commerce",
     gunnery: "NEWEDO.skill.gunnery",
     inuition: "NEWEDO.skill.intuition",
     investigation: "NEWEDO.skill.investigation",
     smallarms: "NEWEDO.skill.smallarms",
-    //Savvy
+  },
+  sav: {
     arcana: "NEWEDO.skill.arcana",
     computers: "NEWEDO.skill.computers",
     gambling: "NEWEDO.skill.gambling",
@@ -126,51 +130,6 @@ NEWEDO.skill = {
     tactics: "NEWEDO.skill.tactics",
     toxicology: "NEWEDO.skill.toxicology",
     wetware: "NEWEDO.skill.wetware",
-  },
-  description: {
-    //Heart
-    crafting: "NEWEDO.skill.description.crafting",
-    meditation: "NEWEDO.skill.description.meditation",
-    rally: "NEWEDO.skill.description.rally",
-    survival: "NEWEDO.skill.description.survival",
-    //Power
-    athletics: "NEWEDO.skill.description.athletics",
-    meleeheavy: "NEWEDO.skill.description.meleeHeavy",
-    meleelight: "NEWEDO.skill.description.meleeLight",
-    thrown: "NEWEDO.skill.description.thrown",
-    unarmed: "NEWEDO.skill.description.unarmed",
-    //Reflex
-    banter: "NEWEDO.skill.description.banter",
-    dodge: "NEWEDO.skill.description.dodge",
-    drive: "NEWEDO.skill.description.drive",
-    sleightofhand: "NEWEDO.skill.description.sleightOfHand",
-    stealth: "NEWEDO.skill.description.stealth",
-    //Presence
-    deception: "NEWEDO.skill.description.deception",
-    eloquence: "NEWEDO.skill.description.eloquence",
-    intimidation: "NEWEDO.skill.description.intimidation",
-    performance: "NEWEDO.skill.description.performance",
-    seduction: "NEWEDO.skill.description.seduction",
-    //Perception
-    archery: "NEWEDO.skill.description.archery",
-    commerce: "NEWEDO.skill.description.commerce",
-    gunnery: "NEWEDO.skill.description.gunnery",
-    inuition: "NEWEDO.skill.description.intuition",
-    investigation: "NEWEDO.skill.description.investigation",
-    smallarms: "NEWEDO.skill.description.smallarms",
-    //Savvy
-    arcana: "NEWEDO.skill.description.arcana",
-    computers: "NEWEDO.skill.description.computers",
-    gambling: "NEWEDO.skill.description.gambling",
-    hardware: "NEWEDO.skill.description.hardware",
-    medicine: "NEWEDO.skill.description.medicine",
-    security: "NEWEDO.skill.description.security",
-    streetwise: "NEWEDO.skill.description.streetwise",
-    study: "NEWEDO.skill.description.study",
-    surveillance: "NEWEDO.skill.description.surveillance",
-    tactics: "NEWEDO.skill.description.tactics",
-    toxicology: "NEWEDO.skill.description.toxicology",
-    wetware: "NEWEDO.skill.description.wetware",
   }
 };
 

@@ -1,0 +1,55 @@
+<div style="height: 100%;">
+    <div class="header flexrow" style="margin-bottom: 12px; height: 88px">
+        <h1 class="total flexrow" style="align-items: center; border: 0; margin: 0;">
+            <div style="border: 0; margin: 0; flex: 1">{{localize label}}</div>
+            <input style="flex: 1; font-size: 0.7em; height: 3rem" type="text" disabled value="{{sum}}">
+        </h1>
+        <div class="atm flexcol" style="gap: 4px;">
+            <div class="currency flexrow">
+                <input name="value" style="flex: 3; margin-right: 4px;" type="number" min="0" placeholder="0" />
+                <div class="flexrow" style="flex: 1; align-items: center; gap: 4px;">
+                    <a data-operation="add"><i class="fa-solid fa-plus"></i></a>
+                    <a data-operation="sub"><i class="fa-solid fa-minus"></i></a>
+                    <a data-operation="set"><i class="fa-solid fa-equals"></i></a>
+                </div>
+            </div>
+            <input name="note" type="text" placeholder="balance change note" />
+        </div>
+    </div>
+    <div class="transactions scrollable" style="flex: 1; height: calc(100% - 100px);">
+        <span class="flexrow" style="gap: 8px;">
+            <span data-action="sortById" style="flex: 1;">ID</span>
+            <span data-action="sortByUser" style="flex: 1;">Value</span>
+            <span data-action="sortByUser" style="flex: 1;">Date</span>
+            <span data-action="sortByUser" style="flex: 4;">Note</span>
+            <span data-action="sortByUser" style="flex: 1;">User</span>
+            {{#if (isGM)}}
+                <span style="flex: 1;">Admin</span>
+            {{/if}}
+        </span>
+        <ol style="padding: 0; display: flex; justify-content: flex-end; flex-direction: column;">
+            {{#each transactions as | record key |}}
+                <li data-index="{{record.id}}" class="flexrow" style="gap: 8px; align-items:flex-start">
+                    <span style="flex: 1">{{record.id}}</span>
+                    <span style="flex: 1" class="flexrow">
+                        {{#if (eq record.operation 'add')}}
+                            + {{record.value}}
+                        {{/if}}
+                        {{#if (eq record.operation 'sub')}}
+                            - {{record.value}}
+                        {{/if}}
+                        {{#if (eq record.operation 'set')}}
+                            = {{record.value}}
+                        {{/if}}
+                    </span>
+                    <span style="flex: 1">{{record.date}}</span>
+                    <span style="flex: 4">{{record.note}}</span>
+                    <span style="flex: 1">{{record.user}}</span>
+                    {{#if (isGM)}}
+                        <a data-action="deleteIndex"><i class="fa-solid fa-trash"></i></a>
+                    {{/if}}
+                </li>
+            {{/each}}
+        </ol>
+    </div>
+</div>

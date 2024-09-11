@@ -2,10 +2,10 @@
   "id": "newedo",
   "title": "NewEdo",
   "description": "Official adaptation of the Newedo system for FVTT",
-  "version": "0.1.31",
+  "version": "0.2.10",
   "compatibility": {
-    "minimum": 11,
-    "verified": 12.330,
+    "minimum": 12,
+    "verified": 12.334,
     "maximum": 13
   },
   "authors": [

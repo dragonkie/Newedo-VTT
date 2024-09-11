@@ -32,6 +32,7 @@ export default class NewedoActor extends Actor {
 
     /** @override */
     prepareData() {
+        LOGGER.trace('Actor | prepareData();', this)
         // Prepare data for the actor. Calling the super version of this executes
         // the following, in order: data reset (to clear active effects),
         // prepareBaseData(), prepareEmbeddedDocuments() (including active effects), prepareDerivedData();
@@ -40,12 +41,15 @@ export default class NewedoActor extends Actor {
 
     /** @override */
     prepareBaseData() {
+        LOGGER.debug('Actor | prepareBaseData();', this)
         // Data modifications in this step occur before processing embedded
         // documents or derived data.
         const actorData = this;
         const system = actorData.system;
         const core = system.traits.core;
         const derived = system.traits.derived;
+
+        
     }
 
     /**
@@ -58,6 +62,7 @@ export default class NewedoActor extends Actor {
      * is queried and has a roll executed directly from it).
      */
     prepareDerivedData() {
+        LOGGER.debug('Actor | PrepareDerivedData();', this)
         const actorData = this;
         const system = actorData.system;
         const { core, derived } = system.traits;
@@ -69,10 +74,10 @@ export default class NewedoActor extends Actor {
         }
 
         // Calculates derived traits for initative, move, defence, resolve, and max health
-        derived.init.value = Math.ceil( (core.sav.value + core.ref.value) * derived.init.mod );
-        derived.move.value = Math.ceil( ((core.hrt.value + core.ref.value) / system.attributes.size.value) * derived.move.mod );
-        derived.def.value = Math.ceil( (core.pow.value + core.ref.value) * derived.def.mod );
-        derived.res.value = Math.ceil( (core.hrt.value + core.pre.value) * derived.res.mod );
+        derived.init.value = Math.ceil((core.sav.value + core.ref.value) * derived.init.mod);
+        derived.move.value = Math.ceil(((core.hrt.value + core.ref.value) / system.size.value) * derived.move.mod);
+        derived.def.value = Math.ceil((core.pow.value + core.ref.value) * derived.def.mod);
+        derived.res.value = Math.ceil((core.hrt.value + core.pre.value) * derived.res.mod);
 
         // Sets health range, MIN is included for use with the token resource bars
         system.hp.max = Math.ceil(core.hrt.value * system.hp.mod);
@@ -84,17 +89,16 @@ export default class NewedoActor extends Actor {
         // Make separate methods for each Actor type (character, npc, etc.) to keep
         // things organized.
         if (actorData.type === 'character') this._prepareCharacterData(actorData);
-        this._prepareNpcData(actorData);
     }
 
     /**
      * Prepare Character type specific data
      */
     _prepareCharacterData(actorData) {
+        LOGGER.debug('Actor | _prepareCharacterData();', this)
         // Make modifications to data here. For example:
         const system = this.system;
-        const {core, derived} = system.traits;
-        const attributes = system.attributes;
+        const { core, derived } = system.traits;
 
         //calculates ranks for background, idk why it doesnt scale as just 1 rank per 20 points?
         for (let [key, background] of Object.entries(system.background)) {
@@ -104,7 +108,7 @@ export default class NewedoActor extends Actor {
 
         //calculates characters legend rank
         system.legend.rank = sysUtil.legendRank(system.legend.max);
-
+        
         //checks how much noise the character has from augments
         let biofeedback = 0;
         for (let [key, item] of this.items.entries()) {
@@ -124,24 +128,29 @@ export default class NewedoActor extends Actor {
                 }
             }
         }
-
-        // Calculates biofeedback fate chance
-        const bioFate = this.items.getName(`Biofeedback`);
-        if (bioFate) {
-            if (biofeedback > 0) bioFate.update({ 'system.range.min': 4, 'system.range.max': 3 + biofeedback });
-            else bioFate.update({ 'system.range.min': 0, 'system.range.max': 0 });
-        }
     }
 
-    /**
-     * Prepare NPC type specific data.
-     */
-    _prepareNpcData(actorData) {
-        if (actorData.type !== 'npc') return;
-        // Make modifications to data here. For example:
+    /***************************************************************/
+    /*                     UPDATE FUNCTIONS                        */
+    /***************************************************************/
+
+    _onUpdate(changed, options, userId) {
+        LOGGER.debug('_onUpdate Started', this);
+        LOGGER.debug('Changed', changed);
+        LOGGER.debug('Options', options);
+        LOGGER.debug('User ID', userId);
+        super._onUpdate(changed, options, userId);
+        LOGGER.debug('_onUpdate Ended');
     }
 
-    async deleteDialog(options={}) {
+    update(data, operation) {
+        LOGGER.debug('update Started');
+        let d = super.update(data, operation);
+        LOGGER.debug('update Ended');
+        return d;
+    }
+
+    async deleteDialog(options = {}) {
         const type = newedo.util.localize(this.constructor.metadata.label);
         let confirm = await foundry.applications.api.DialogV2.confirm({
             title: `${game.i18n.format("DOCUMENT.Delete", { type })}: ${this.name}`,
@@ -179,10 +188,14 @@ export default class NewedoActor extends Actor {
         return data;
     }
 
-    getSkill(name) {
-        const skills = this.itemTypes.skill;
-        for (let skill of skills) {
-            if (skill.name === name) return skill;
+    /**
+     * 
+     * @param {String} slug the identifying slug of the actor to retrieve 
+     * @returns 
+     */
+    getSkill(slug) {
+        for (let skill of this.itemTypes.skill) {
+            if (skill.system.slug == slug) return skill;
         }
         return undefined;
     }
@@ -193,7 +206,7 @@ export default class NewedoActor extends Actor {
      * @returns {Object} safe clone of requested data
      */
     getTrait(tag) {
-        switch(tag) {
+        switch (tag) {
             case 'pow':
             case 'ref':
             case 'hrt':
@@ -220,10 +233,6 @@ export default class NewedoActor extends Actor {
 
     get traits() {
         return this.system.traits;
-    }
-
-    get attributes() {
-        return this.system.attributes;
     }
 
     get woundPenalty() {

@@ -8,27 +8,32 @@ export default class LOGGER {
      * @param {String} message Text to output, will be marked as from the game system in console
      * @param {*} value optional param that can contain and output objects, methods, etc
      */
-    static log (msg, value=``) {
-        if (typeof value !== `undefined`) console.log(`NEWEDO | ${msg}`, value);
-        else console.log(`NEWEDO | ${msg}`);
+    static log(msg, ...value) {
+        if (typeof value !== undefined) console.log(`NEWEDO | ${msg}`, ...value);
+        else console.log(`NEWEDO LOG | ${msg}`);
     }
-    static warn (msg, value) {
-        if (typeof value !== `undefined`) console.warn(`NEWEDO | ${msg}`, value);
-        else console.warn(`NEWEDO | ${msg}`);
+    static warn(msg, ...value) {
+        if (typeof value !== undefined) console.warn(`NEWEDO | ${msg}`, ...value);
+        else console.warn(`NEWEDO WRN | ${msg}`);
     }
-    static error (msg, value) {
-        if (typeof value !== `undefined`) console.error(`NEWEDO | ${msg}`, value);
-        else console.error(`NEWEDO | ${msg}`);
+    static error(msg, ...value) {
+        if (typeof value !== undefined) console.error(`NEWEDO | ${msg}`, ...value);
+        else console.error(`NEWEDO ERR | ${msg}`);
+    }
+    static trace(msg, ...value) {
+        console.groupCollapsed(`NEWEDO TRC | ${msg}`);
+        if (typeof value !== undefined) console.log(...value);
+        console.trace();
+        console.groupEnd();
     }
     /**
      * Logger called to send message to console, all messages are marked as from NEWEDO 
      * @param {String} message Text to output, will be marked as from the game system in console
      * @param {*} value optional param that can contain and output objects, methods, etc
      */
-    static debug(msg=``, value=``) {
-        if (game.settings.get(game.system.id, "debugLogs") > 0) {
-            if (typeof value !== `undefined`) console.debug(`NEWEDO DBG | ${msg}`, value);
-            else console.debug(`NEWEDO DBG | ${msg}`);
+    static debug(msg = ``, value = ``, priority = 1) {
+        if (game.settings.get(game.system.id, "debugLogs") >= priority) {
+            console.log(`NEWEDO DBG | ${msg}`, value);
         }
     }
 }

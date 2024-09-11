@@ -1,10 +1,10 @@
 <div class="tab-content" style="display: flex; flex-direction: column;">
-    <div style="display: flex; flex-direction: row; margin-bottom: 4px;">
+    <div class="flexrow">
         <label style="flex: 1;">UUID:</label>
         <input style="flex: 3;" type="text" disabled value="{{document.uuid}}" />
     </div>
-    <div style="display: flex; flex-direction: row;">
+    <div class="flexrow">
         <label style="flex: 1;">Slug:</label>
-        <input style="flex: 3;" type="text" disabled value="{{system.slug}}" />
+        <input style="flex: 3;" type="text" name="system.slug" {{#if (not isEditMode)}}disabled{{/if}} value="{{system.slug}}" />
     </div>
 </div>

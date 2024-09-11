@@ -8,12 +8,10 @@
         ],
         "templates": {
             "base": {
-                "attributes": {
-                    "size": {
-                        "value": 5,
-                        "min": 1,
-                        "max": 10
-                    }
+                "size": {
+                    "value": 5,
+                    "min": 1,
+                    "max": 10
                 },
                 "traits": {
                     "core": {
@@ -101,20 +99,21 @@
                 "base"
             ],
             "legend": {
-                "value": 10,
+                "value": 0,
                 "transactions": [],
                 "min": 0,
-                "max": 10
+                "max": 0,
+                "record": "max"
             },
-            "attributes": {
-                "xp": {
-                    "transactions": [],
-                    "value": 0
-                },
-                "money": {
-                    "transactions": [],
-                    "value": 0
-                }
+            "xp": {
+                "transactions": [],
+                "value": 0,
+                "record": "value"
+            },
+            "money": {
+                "transactions": [],
+                "value": 0,
+                "record": "value"
             },
             "background": {
                 "contacts": {
@@ -370,6 +369,7 @@
             "xpValue": 0,
             "trait": "hrt",
             "rollTrait": true,
+            "weaponSkill": false,
             "bonuses": [],
             "formula": "",
             "unlocks": [

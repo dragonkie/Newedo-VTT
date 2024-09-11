@@ -21,6 +21,7 @@
             <input type="number" name="system.hp.value" value="{{system.hp.value}}" />
             <div>/</div>
             <input type="number" value="{{system.hp.max}}" disabled />
+            <a><i class="fa-solid fa-calculator"></i></a>
         </div>
     </div>
     {{!-- Legend container --}}
@@ -30,9 +31,12 @@
         <div class="value flexrow">
             <input type="number" name="system.legend.value" value="{{system.legend.value}}" />
             <div>/</div>
-            <input type="number" name="system.legend.max" value="{{system.legend.max}}" {{disabled isPlayMode}} />
+            <input type="number" name="system.legend.max" value="{{system.legend.max}}" disabled />
+            <a><i class="fa-solid fa-calculator"></i></a>
         </div>
     </div>
+    {{{ledger 'system.legend' 'NEWEDO.ledger.legend'}}}
+    
     {{!-- Armour values --}}
     {{ localize 'NEWEDO.generic.soak' }}
     <div class="flexrow" style="gap: 4px;">
@@ -58,12 +62,14 @@
     {{!-- Character XP tracker --}}
     <div class="flexrow" style="gap: 4px;">
         <span>{{localize 'NEWEDO.generic.exp'}}:</span>
-        <input type="number" name="system.attributes.xp.value" value="{{system.attributes.xp.value}}" />
+        <input type="number" value="{{system.xp.value}}" disabled />
+        {{{ledger 'system.xp' 'NEWEDO.ledger.exp'}}}
     </div>
     {{!-- Character money tracker --}}
     <div class="flexrow" style="gap: 4px;">
         <span>{{localize 'NEWEDO.generic.money'}}:</span>
-        <input type="number" name="system.attributes.money.value" value="{{system.attributes.money.value}}" />
+        <input type="number" value="{{system.money.value}}" disabled />
+        {{{ledger 'system.money' 'NEWEDO.ledger.money'}}}
     </div>
     {{!-- Fate card container --}}
     <div class="fate-card flexcol">

@@ -16,10 +16,10 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
             useItem: this._onUseItem,
             editItem: this._onEditItem,
             deleteItem: this._onDeleteItem,
-            equipItem: this._onEquipItem,
             skillDice: this._onSkillDice,
             roll: this._onRoll,
             rollFate: this._onRollFate,
+            editLedger: this._onEditLedger
         }
     }
 
@@ -92,6 +92,7 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
      */
     _prepareItems(context) {
         // Initialize containers.
+        let slugs = [];
         let skills = {
             pow: {
                 label: sysUtil.localize('NEWEDO.trait.core.pow'),
@@ -173,8 +174,6 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
     }
 
     /* ------------------------------------------- Action Event Handlers ------------------------------------------- */
-
-    //_________________________________________________________________________________________________Item Events
     static async _onEditItem(event, target) {
         const uuid = target.closest(".item[data-item-uuid]").dataset.itemUuid;
         const item = await fromUuid(uuid);
@@ -194,9 +193,26 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
         return item.use(action);
     };
 
-    static async _onEquipItem(event, target) {
+    static async _onEditLedger(event, target) {
+        let key = target.dataset?.path;
+        let label = target.dataset?.label;
 
-    };
+        if (!key) {
+            LOGGER.error('Missing ledger key')
+            return null;
+        }
+
+        function index(obj, i) {return obj[i]}
+        let ledger = key.split('.').reduce(index, this.document)
+        let transactions = ledger.transactions;
+
+        if (!transactions) {
+            LOGGER.error('Ledger points to invalid transaction record');
+            return;
+        }
+
+        let app = new newedo.applications.NewedoLedger(this.document, ledger, key, label).render(true);
+    }
 
     static async _onDeleteItem(event, target) {
         const uuid = target.closest(".item[data-item-uuid]").dataset.itemUuid;
@@ -336,16 +352,5 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
     async _onDropItem(event, item) {
 
         return 'default'; // Tells sheet to use default item drop handler
-    }
-    /* -------------------------------------------- Item management -------------------------------------------- */
-    async _installAugment(event) {
-        LOGGER.debug("Installing augment");
-        const actor = this.document;
-        const item = (event.currentTarget.closest('.item') !== null) ? actor.items.get(event.currentTarget.closest('.item').dataset.itemId) : null;
-
-        if (item !== null) {
-            await item.update({ 'system.installed': !item.system.installed });
-            LOGGER.log(`Augment [${item.name}] install changed to [${item.system.installed}]`);
-        }
     }
 }

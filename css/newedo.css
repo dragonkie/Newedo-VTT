@@ -419,6 +419,7 @@
 }
 .newedo.character .window-content .body {
   padding: 10px;
+  flex: 1;
 }
 .newedo.character .window-content .skill-lists {
   align-items: start;
@@ -427,9 +428,8 @@
 .newedo.character .window-content .skill-lists li.item {
   padding: 1px 0 0 0;
 }
-.newedo.sheet.item .sheet-body {
-  display: flex;
-  flex-direction: column;
+.newedo.sheet.item .tab {
+  padding: 10px;
 }
 .newedo.sheet.item .description-tab {
   display: flex;

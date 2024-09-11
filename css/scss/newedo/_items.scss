@@ -1,9 +1,8 @@
 //as this is include inside the .newedo class, it nees to be &.item as it specifies all newedo item sheets, not specific item types
 &.sheet.item {
 
-    .sheet-body {
-        display: flex;
-        flex-direction: column;
+    .tab {
+        padding: 10px;
     }
 
     .description-tab {

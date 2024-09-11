@@ -1,25 +1,23 @@
 <div class="tab-contet">
-    <div>
-        Trait:
-        <select name="system.trait" id="skill-type">
-            <option selected disabled hidden>{{ system.trait }}</option>
-            <option value="pow">{{ localize 'NEWEDO.trait.core.pow' }}</option>
-            <option value="ref">{{ localize 'NEWEDO.trait.core.ref' }}</option>
-            <option value="hrt">{{ localize 'NEWEDO.trait.core.hrt' }}</option>
-            <option value="sav">{{ localize 'NEWEDO.trait.core.sav' }}</option>
-            <option value="per">{{ localize 'NEWEDO.trait.core.per' }}</option>
-            <option value="pre">{{ localize 'NEWEDO.trait.core.pre' }}</option>
-        </select>
+    <div class="form-group">
+        <div>Trait:</div>
+        {{{ selectTrait system.trait 'system.trait' }}}
     </div>
-    <div>
-        Roll trait dice:
-        <input type="checkbox" value="true" id="{{item.name}}" name="system.rollTrait" />
+    <div class="form-group">
+        <div>Ranks:</div>
+        <div>
+            {{#each system.ranks as | rank index |}}
+                <input type="button" data-index="{{index}}" class="skill-dice" value="{{rank}}" />
+            {{/each}}
+        </div>
     </div>
-    <div>
-        Ranks:
-        {{#each system.ranks as | rank index |}}
-            <input type="button" id="{{item.id}}" data-index="{{index}}" class="skill-dice" value="{{rank}}" />
-        {{/each}}
+    <div class="form-group">
+        <div>Use Trait Dice:</div>
+        <input type="checkbox" {{checked system.rollTrait}} name="system.rollTrait" />
+    </div>
+    <div class="form-group">
+        <div>Use as Weapon Skill:</div>
+        <input type="checkbox" {{checked system.weaponSkill}} name="system.weaponSkill" />
     </div>
     <div>
         Features:
