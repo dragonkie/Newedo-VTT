@@ -22,9 +22,13 @@
   @import 'scss/components/effects';
   @import 'scss/components/images';
 
-  @import 'scss/newedo/sheets/actor/character';
+  @import 'scss/newedo/character';
 
-  @import 'scss/newedo/sheets/items';
+  @import 'scss/newedo/items';
 
   @import 'scss/components/bar';
+
+  &#context-menu {
+    width: auto;
+  }
 }

@@ -1,0 +1,13 @@
+<div class="tab-content">
+    <a class="feature-create">Create New Feature</a>
+
+    <div class="flexcol">
+        {{#each system.features as | feature key |}}
+            <div class="feature" style="flex: 1" data-feature-id="{{feature.id}}">
+                <a class="feature-edit">{{feature.label}}</a>
+                <a class="feature-delete">Delete?</a>
+            </div>
+        {{/each}}
+    </div>
+
+</div>

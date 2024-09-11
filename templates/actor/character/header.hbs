@@ -5,11 +5,19 @@
     </h1>
 
     <!-- Derived stats? -->
-    <div class="list-derived">
-        <span>&#x2022 <b>{{localize 'NEWEDO.trait.derived.abbr.def'}}:</b> {{system.traits.derived.def.value}}</span>
-        <span>&#x2022 <b>{{localize 'NEWEDO.trait.derived.abbr.res'}}:</b> {{system.traits.derived.res.value}}</span>
-        <span>&#x2022 <b>{{localize 'NEWEDO.trait.derived.abbr.move'}}:</b> {{system.traits.derived.move.value}}</span>
-        <span>&#x2022 <b>{{localize 'NEWEDO.trait.derived.abbr.init'}}:</b> {{system.traits.derived.init.value}}</span>
-        <span>&#x2022 <b>{{ localize "NEWEDO.attribute.size" }}:</b> {{system.attributes.size.value}}</span>
+    <div>
+        <span>&#x2022 {{localize 'NEWEDO.trait.derived.abbr.def'}}: <b>{{system.traits.derived.def.value}}</b></span>
+        <span>&#x2022 {{localize 'NEWEDO.trait.derived.abbr.res'}}: <b>{{system.traits.derived.res.value}}</b></span>
+        <span>&#x2022 {{localize 'NEWEDO.trait.derived.abbr.move'}}: <b>{{system.traits.derived.move.value}}</b></span>
+        <span>&#x2022 {{localize 'NEWEDO.trait.derived.abbr.init'}}: <b>{{system.traits.derived.init.value}}</b></span>
+        {{#if isPlayMode}}
+            <span>&#x2022 {{ localize "NEWEDO.attribute.size" }}: <b>{{system.attributes.size.value}}</b></span>
+        {{/if}}
+        {{#if isEditMode}}
+            <span>
+                &#x2022 {{ localize "NEWEDO.attribute.size" }}:
+                <input style="width: 3rem; height: 1rem; text-align: center; padding: 0;" name="system.attributes.size.value" type="number" value="{{system.attributes.size.value}}">
+            </span>
+        {{/if}}
     </div>
 </header>

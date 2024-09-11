@@ -1,5 +1,10 @@
 //as this is include inside the .newedo class, it nees to be &.item as it specifies all newedo item sheets, not specific item types
-&.sheet.item form {
+&.sheet.item {
+
+    .sheet-body {
+        display: flex;
+        flex-direction: column;
+    }
 
     .description-tab {
         display: flex;
@@ -42,5 +47,13 @@
         select {
             flex: 2;
         }
-    }  
+    }
+
+    .sheet-header {
+        padding: 0 12px;
+    }
+
+    .sheet-body {
+        
+    }
 }

@@ -41,6 +41,47 @@ export const NewedoSheetMixin = Base => {
             return this._sheetMode === this.constructor.SHEET_MODES.EDIT;
         }
 
+        /* -------------------------------- TAB GROUPINGS -------------------------------- */
+        tabGroups = {};
+
+        static TABS = {};
+
+        async _prepareContext() {
+            const doc = this.document;
+            const rollData = doc.getRollData();
+
+            const context = {
+                document: doc,
+                config: CONFIG.NEWEDO,
+                system: doc.system,
+                name: doc.name,
+                items: doc.items,
+                itemTypes: doc.itemTypes,
+                rollData: rollData,
+                tabs: this._getTabs(),
+                isEditMode: this.isEditMode,
+                isPlayMode: this.isPlayMode,
+                isEditable: this.isEditable
+            }
+
+            return context;
+
+        }
+
+        _getTabs() {
+            return Object.values(this.constructor.TABS).reduce((acc, v) => {
+                const isActive = this.tabGroups[v.group] === v.id;
+                if (isActive) LOGGER.debug(`[${v.id}] is Active!`);
+                acc[v.id] = {
+                    ...v,
+                    active: isActive,
+                    cssClass: isActive ? "item active" : "item",
+                    tabCssClass: isActive ? "tab active" : "tab"
+                };
+                return acc;
+            }, {});
+        }
+
         /* -------------------------------- ACTION EVENTS -------------------------------- */
         static _onEditImage(event, target) {
             if (!this.isEditable) return;
@@ -55,44 +96,7 @@ export const NewedoSheetMixin = Base => {
             fp.browse();
         }
 
-        /* -------------------------------- TAB GROUPINGS -------------------------------- */
-        tabGroups = {};
-
-        static TABS = {};
-
-        _getTabs() {
-            return Object.values(this.constructor.TABS).reduce((acc, v) => {
-                const isActive = this.tabGroups[v.group] === v.id;
-                if (isActive) LOGGER.log(`[${v.id}] is Active!`);
-                acc[v.id] = {
-                    ...v,
-                    active: isActive,
-                    cssClass: isActive ? "item active" : "item",
-                    tabCssClass: isActive ? "tab active" : "tab"
-                };
-                return acc;
-            }, {});
-        }
-
         /* -------------------------------- RENDER FUNCTIONS -------------------------------- */
-        _prepareContext(options) {
-            const doc = this.document;
-
-            const context = {
-                document: doc,
-                config: CONFIG.NEWEDO,
-                system: doc.system,
-                name: doc.name,
-                img: doc.img,
-                tabs: this._getTabs(),
-                isEditMode: this.isEditMode,
-                isPlayMode: this.isPlayMode,
-                isEditable: this.isEditable
-            }
-
-            return context;
-        }
-
         async render(options, _options) {
             return super.render(options, _options);
         }
@@ -104,12 +108,14 @@ export const NewedoSheetMixin = Base => {
 
         _onRender(context, options) {
             super._onRender(context, options);
+            
             if (!this.isEditable) {
-                LOGGER.log(`Disabling sheet inputs`);
+                // Disables sheet inputs for non owners
                 this.element.querySelectorAll("input, select, textarea, multi-select").forEach(n => {
                     n.disabled = true;
                 })
             }
+            
             this._setupDragAndDrop();
         }
 
@@ -275,7 +281,7 @@ export const NewedoSheetMixin = Base => {
         }
 
         _setupContextMenu() {
-            new artichron.applications.ContextMenuArtichron(this.element, "[data-item-uuid]", [], {
+            new newedo.applications.NewedoContextMenu(this.element, "[data-item-uuid]", [], {
                 onOpen: element => {
                     const item = fromUuidSync(element.dataset.itemUuid);
                     if (!item) return;
@@ -283,6 +289,27 @@ export const NewedoSheetMixin = Base => {
                     else if (item.documentName === "Item") ui.context.menuItems = this._getItemContextOptions(item);
                 }
             });
+        }
+
+        _getItemContextOptions(item) {
+            const isOwner = item.isOwner;
+            const isEquipped = item.isEquipped;
+
+            return [{
+                name: "NEWEDO.ContextMenu.item.edit",
+                icon: "<i class='fa-solid fa-edit'></i>",
+                condition: () => isOwner,
+                callback: () => item.sheet.render(true)
+            }, {
+                name: "NEWEDO.ContextMenu.item.delete",
+                icon: "<i class='fa-solid fa-trash'></i>",
+                condition: () => isOwner,
+                callback: () => item.delete()
+            }];
+        }
+
+        _getEffectContextOptions(item) {
+
         }
 
         static _onEditImage(event, target) {

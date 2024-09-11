@@ -3,7 +3,7 @@ import { NEWEDO } from "./config.mjs";
 import LOGGER from "./helpers/logger.mjs";
 import sysUtil from "./helpers/sysUtil.mjs";
 
-import * as applications from "./applications/_module.mjs";
+import applications from "./applications/_module.mjs";
 import * as documents from "./documents/_module.mjs";
 
 import NewedoItemSheet from "./applications/item/item-sheet.mjs";
@@ -49,9 +49,11 @@ Hooks.once('init', async function () {
     CONFIG.Actor.documentClass = actorConstructor;
     CONFIG.Item.documentClass = itemConstructor;
 
-    // Register sheet application classes
+    // Remove the default foundry sheets
     Actors.unregisterSheet("core", ActorSheet);
+    Items.unregisterSheet("core", ItemSheet);
 
+    // Register Actor sheets
     Actors.registerSheet("newedo", applications.CharacterSheet, {
         makeDefault: true,
         label: "NEWEDO.ActorSheet.character",
@@ -73,7 +75,7 @@ Hooks.once('init', async function () {
         types: ['vehicle']
     });
 
-    Items.unregisterSheet("core", ItemSheet);
+    // Register Item sheets
     Items.registerSheet("newedo", applications.NewedoItemSheet, {
         makeDefault: true,
         label: "NEWEDO.ItemSheet.item"
@@ -90,8 +92,8 @@ Hooks.once('init', async function () {
 /*  Handlebars Helpers                          */
 /* -------------------------------------------- */
 Handlebars.registerHelper('concat', function () {
-    var outStr = '';
-    for (var arg in arguments) {
+    let outStr = '';
+    for (let arg in arguments) {
         if (typeof arguments[arg] != 'object') {
             outStr += arguments[arg];
         }

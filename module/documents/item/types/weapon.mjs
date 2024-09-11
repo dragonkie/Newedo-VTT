@@ -29,10 +29,10 @@ export default class NewedoWeapon extends NewedoItem {
             case `Archery`:
             case `Gunnery`:
             case `Small Arms`:
-                system.isRanged = true;
+                system.ranged = true;
                 break;
             default:
-                system.isRanged = false;
+                system.ranged = false;
                 break;
         }
 
@@ -42,12 +42,18 @@ export default class NewedoWeapon extends NewedoItem {
     }
 
     async use(action) {
+        if (action === 'equip') this._onUseEquip();
         if (action === 'attack') this._onUseAttack();
         if (action === 'damage') this._onUseDamage();
     }
 
+    async _onUseEquip() {
+        await this.update({ 'system.equipped': !this.system.equipped });
+        LOGGER.log('Equipped Item:', this.system.equipped);
+    }
+
     async _onUseAttack() {
-        LOGGER.debug('Weapon Attack');
+        LOGGER.debug(' --- Weapon Attack --- ');
 
         // if there isnt an owning actor
         if (!this.actor) return;
@@ -58,34 +64,37 @@ export default class NewedoWeapon extends NewedoItem {
         const trait = skill.trait;
         const rollData = this.getRollData();
 
-        // Create the roll object, all dice need to be added to this object
-        const r = new NewedoRoll;
+        // Create and parse roll options dialog
+        let options = await sysUtil.getRollOptions(rollData, this.constructor.TEMPLATES.attack());
+        if (options.cancled) return;
+        LOGGER.debug("Roll data:", rollData);
+        LOGGER.debug("Roll options:", options);
 
-        // Create roll options dialog
-        let rollOptions = await sysUtil.getRollOptions(rollData, this.constructor.TEMPLATES.attack());
+        let formula = '';// final string parsed formula
+        let mods = 0;// total flat bonuses and penalties
 
-        // Using the add function for this custom roll will group the dice up for improved legibility
-        r.add(skill.dice()); // Skill dice
-
-        // Push to the bonuses
-        r.bonus += actor.system.wound.penalty;
-        if (rollOptions.legend > 0) {
-            var l = sysUtil.spendLegend(actor, rollOptions.legend);
-            if (l === 0) return;// tried to spend legend, but didnt have any to give
-            r.bonus += l;
+        if (options.useTrait) {
+            let dice = trait.rank;
+            if (options.advantage == 'advantage') dice += 1;
+            if (options.advantage == 'disadvantage') dice -= 1;
+            if (dice > 0) formula += dice + 'd10x10';
         }
 
-        // Adds string from the situational bonus field
-        r.addon = rollOptions.bonus;
+        if (options.skill != '') formula += '+' + options.skill
+        if (options.useWound) mods += rollData.wound.value;
+        if (options.legend > 0) {
+            if (sysUtil.spendLegend(actor, options.legend)) {
+                mods += options.legend;
+            }
+        }
 
-        // Apply advantage / disadvantage
-        r.checkAdvantage(rollOptions.advantage);
+        if (mods > 0) formula += '+'+mods;
+        if (mods < 0) formula += mods;
 
-
-        LOGGER.debug("Attack roll object:", rollOptions);
-        // Finishes the roll
+        let r = new Roll(formula);
         await r.evaluate();
         await r.toMessage();
+        return r;
     }
 
     async _onUseDamage() {
@@ -98,7 +107,8 @@ export default class NewedoWeapon extends NewedoItem {
 
         data.formula = {
             atk: this.atkFormula,
-            dmg: this.dmgFormula
+            dmg: this.dmgFormula,
+            skill: this.skill.getFormula(false)
         }
 
         data.skill = this.skill;
@@ -111,7 +121,7 @@ export default class NewedoWeapon extends NewedoItem {
         const system = this.system;
         const skill = this.skill;// Gets the skill item
 
-        var formula = skill.formula;
+        let formula = skill.formula;
         if (system.grit.atk > 0) formula = sysUtil.formulaAdd(formula, system.grit.atk);
         if (system.attack.bonus != 0) formula = sysUtil.formulaAdd(formula, system.attack.bonus);
 
@@ -125,7 +135,7 @@ export default class NewedoWeapon extends NewedoItem {
         const skill = this.skill;// Gets the skill item
         const trait = skill.trait;
 
-        var formula = ``;
+        let formula = ``;
         if (!system.isRanged) formula += `${trait.rank}d10`;
         formula = sysUtil.formulaAdd(formula, system.damage.value);
         if (system.grit.dmg > 0) formula = sysUtil.formulaAdd(formula, system.grit.dmg);
@@ -150,7 +160,15 @@ export default class NewedoWeapon extends NewedoItem {
     }
 
     static TEMPLATES = {
-        attack : () => `systems/${game.system.id}/templates/dialog/weapon-attack.hbs`,
-        damage : () => `systems/${game.system.id}/templates/dialog/weapon-damage.hbs`
+        attack: () => `systems/${game.system.id}/templates/dialog/weapon-attack.hbs`,
+        damage: () => `systems/${game.system.id}/templates/dialog/weapon-damage.hbs`
+    }
+
+    get isRanged() {
+        return this.system.ranged == true;
+    }
+
+    get isEquipped() {
+        return this.system.equipped == true;
     }
 }

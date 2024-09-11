@@ -242,6 +242,14 @@
 .sheet.item .window-content {
   padding: 0;
 }
+.sheet.actor input[type=button],
+.sheet.item input[type=button] {
+  background-color: var(--input-background-color);
+  border: 0;
+  border-radius: 2px;
+  margin-left: 2px;
+  color: var(--input-text-color);
+}
 
 .newedo {
   /* ----------------------------------------- */
@@ -294,7 +302,8 @@
   align-items: center;
   display: flex;
 }
-.newedo .items-list .item-name h3, .newedo .items-list .item-name h4 {
+.newedo .items-list .item-name h3,
+.newedo .items-list .item-name h4 {
   margin: 0;
   white-space: nowrap;
   overflow-x: hidden;
@@ -367,48 +376,12 @@
 .newedo .banner-newedo {
   margin-bottom: 4px;
 }
-.newedo .character {
+.newedo.character .window-content {
   overflow: hidden;
+  display: flex;
   flex-direction: row;
-  padding: 0px;
-  display: flex;
 }
-.newedo .character .character-body {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  padding: 10px;
-}
-.newedo .character .sheet-body {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-}
-.newedo .character .character-nav {
-  text-align: center;
-  align-items: center;
-  border: 0;
-  margin: 0;
-  padding: 0;
-}
-.newedo .character .skill-dice-tray {
-  flex: 0 0 10rem;
-}
-.newedo .character .skill-dice-tray input[type=button] {
-  background-color: var(--input-background-color);
-  border: 0;
-  border-radius: 2px;
-  margin-left: 2px;
-  color: var(--input-text-color);
-}
-.newedo .character .skill-lists {
-  align-items: start;
-  gap: 8px;
-}
-.newedo .character .skill-lists li.item {
-  padding: 2px 0;
-}
-.newedo .character .character-panel {
+.newedo.character .window-content .panel {
   display: flex;
   flex: 0 0 200px;
   flex-direction: column;
@@ -417,103 +390,90 @@
   text-align: center;
   overflow: auto;
 }
-.newedo .character .character-panel > * {
+.newedo.character .window-content .panel > * {
   margin-bottom: 10px;
 }
-.newedo .character .character-panel > *:last-child, .newedo .character .character-panel > *:first-child {
-  border: 0;
-}
-.newedo .character .character-panel .fate-card {
+.newedo.character .window-content .panel .fate-card {
   flex: 0;
   width: 100%;
   font-size: 14px;
 }
-.newedo .character .character-panel .fate-card .fate-list {
+.newedo.character .window-content .panel .fate-card .fate-list {
   width: 100%;
   padding: 0;
   margin: 0;
 }
-.newedo .character .character-panel .fate-card .fate-list .fate-item {
+.newedo.character .window-content .panel .fate-card .fate-list > * {
   border-bottom: 1px solid gray;
 }
-.newedo .character .character-panel .fate-card .fate-list .fate-item :first-child {
+.newedo.character .window-content .panel .fate-card .fate-list > * :first-child {
   text-align: right;
 }
-.newedo .character .character-panel .fate-card .fate-list .fate-item :last-child {
+.newedo.character .window-content .panel .fate-card .fate-list > * :last-child {
   margin-left: 15px;
   text-align: left;
   flex: 2;
 }
-.newedo .character .character-panel .fate-card .fate-list :last-child {
+.newedo.character .window-content .panel .fate-card .fate-list :last-child {
   border: 0;
 }
-.newedo .character .sheet-header {
-  padding: 10px 10px 5px 0px;
+.newedo.character .window-content .body {
+  padding: 10px;
 }
-.newedo .character .sheet-header .character-name {
-  height: 40px;
-  flex: 2;
-  margin: 0px 4px 4px 0px;
-  padding: 4px 8px;
-  border: 0;
-  font-weight: bold;
+.newedo.character .window-content .skill-lists {
+  align-items: start;
+  gap: 8px;
 }
-.newedo .character .sheet-header .portrait {
-  align-items: center;
-  max-width: 150px;
-  margin-right: 10px;
+.newedo.character .window-content .skill-lists li.item {
+  padding: 1px 0 0 0;
 }
-.newedo .character .sheet-header .portrait .profile-img {
-  margin-right: 10px;
-  border-radius: 15px;
-  object-fit: cover;
-  height: 150px;
-  width: 150px;
+.newedo.sheet.item .sheet-body {
+  display: flex;
+  flex-direction: column;
 }
-.newedo .character .sheet-header .list-derived {
-  display: inline;
-  margin-right: 5px;
-}
-.newedo.sheet.item form .description-tab {
+.newedo.sheet.item .description-tab {
   display: flex;
   flex-direction: row;
   flex: 1;
 }
-.newedo.sheet.item form .description-tab .summary {
+.newedo.sheet.item .description-tab .summary {
   display: block;
   flex: 0 0 200px;
   margin-right: 4px;
 }
-.newedo.sheet.item form .description-tab .summary .detail {
+.newedo.sheet.item .description-tab .summary .detail {
   display: flex;
   flex-direction: row;
 }
-.newedo.sheet.item form .description-tab .summary .detail :first-child {
+.newedo.sheet.item .description-tab .summary .detail :first-child {
   flex: 1 0;
 }
-.newedo.sheet.item form .description-tab .summary .detail :last-child {
+.newedo.sheet.item .description-tab .summary .detail :last-child {
   flex: 2;
 }
-.newedo.sheet.item form .description-tab .description-editor {
+.newedo.sheet.item .description-tab .description-editor {
   display: flex;
   flex-direction: column;
   flex: 1;
   padding: 4px;
   border-radius: 6px;
 }
-.newedo.sheet.item form .description-tab .description-editor .editor {
+.newedo.sheet.item .description-tab .description-editor .editor {
   flex: 1;
 }
-.newedo.sheet.item form .settings-tab {
+.newedo.sheet.item .settings-tab {
   display: flex;
   flex: 1;
   flex-direction: column;
 }
-.newedo.sheet.item form .settings-tab input {
+.newedo.sheet.item .settings-tab input {
   flex: 2;
 }
-.newedo.sheet.item form .settings-tab select {
+.newedo.sheet.item .settings-tab select {
   flex: 2;
+}
+.newedo.sheet.item .sheet-header {
+  padding: 0 12px;
 }
 .newedo .bar {
   --padding: 2px;
@@ -553,6 +513,9 @@
   height: var(--height);
   background: transparent;
   border: 0;
+}
+.newedo#context-menu {
+  width: auto;
 }
 
 /*# sourceMappingURL=newedo.css.map */

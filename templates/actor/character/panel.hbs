@@ -1,11 +1,19 @@
-<section class="character-panel">
-
-    <!-- Newedo banner rendered at the top of the screen-->
+<section class="panel">
+    {{!-- Newedo banner rendered at the top of the screen--}}
     <img class="banner-newedo" src="systems/newedo/images/banner-newedo.svg">
+    {{#if isEditMode}}
+        <span class="flexrow">
+            <div class="flexrow">
+                image offset:
+                <input name="system.imageOffset" type="range" min="0" max="100" value="{{system.imageOffset}}" />
+            </div>
+        </span>
+    {{/if}}
     <div class="portrait" style="border: 0;" data-action="editImage">
-        <img class="profile-img" src="{{document.img}}" title="{{actor.name}}" height="150px" width="150px" style="object-fit: cover; border: 0" />
+        <img class="profile-img" src="{{document.img}}" title="{{actor.name}}" height="150px" width="150px" style="object-fit: cover; border: 0; object-position: {{system.imageOffset}}% {{system.imageOffset}}%" />
     </div>
-    <!-- Health container-->
+
+    {{!-- Health container--}}
     {{ localize 'NEWEDO.generic.hp' }}: {{ system.wound.label }}
     <div class="bar">
         <div class="fill" style="width: {{ percent system.hp.value system.hp.max }}%;"></div>
@@ -15,50 +23,55 @@
             <input type="number" value="{{system.hp.max}}" disabled />
         </div>
     </div>
-    <!-- Legend container -->
+    {{!-- Legend container --}}
     {{ localize 'NEWEDO.generic.legend' }}
     <div class="bar">
         <div class="fill blue" style="width: {{ percent system.legend.value system.legend.max }}%;"></div>
         <div class="value flexrow">
             <input type="number" name="system.legend.value" value="{{system.legend.value}}" />
             <div>/</div>
-            <input type="number" name="system.legend.max" value="{{system.legend.max}}" {{disabled isPlayMode}}/>
+            <input type="number" name="system.legend.max" value="{{system.legend.max}}" {{disabled isPlayMode}} />
         </div>
     </div>
-    <!-- Armour values -->
+    {{!-- Armour values --}}
     {{ localize 'NEWEDO.generic.soak' }}
     <div class="flexrow" style="gap: 4px;">
         {{#with system.armour}}
             <div>
-                <div class="name">{{kin.abr}}</div>
-                <input type="number" class="score" name="system.attributes.armour.kin.value" value="{{kin.value}}" placeholder="0" />
+                <div class="name">{{ localize 'NEWEDO.damage.abbr.kin' }}</div>
+                <input type="number" class="score" name="system.armour.kin.value" value="{{kin.value}}" placeholder="0" />
             </div>
             <div>
-                <div class="name">{{ ele.abr }}</div>
-                <input type="number" class="score" name="system.attributes.armour.ele.value" value="{{ele.value}}" placeholder="0" />
+                <div class="name">{{ localize 'NEWEDO.damage.abbr.ele' }}</div>
+                <input type="number" class="score" name="system.armour.ele.value" value="{{ele.value}}" placeholder="0" />
             </div>
             <div>
-                <div class="name">{{ bio.abr }}</div>
-                <input type="number" class="score" name="system.attributes.armour.bio.value" value="{{bio.value}}" placeholder="0" />
+                <div class="name">{{ localize 'NEWEDO.damage.abbr.bio' }}</div>
+                <input type="number" class="score" name="system.armour.bio.value" value="{{bio.value}}" placeholder="0" />
             </div>
             <div>
-                <div class="name">{{ arc.abr }}</div>
-                <input type="number" class="score" name="system.attributes.armour.arc.value" value="{{arc.value}}" placeholder="0" />
+                <div class="name">{{ localize 'NEWEDO.damage.abbr.arc' }}</div>
+                <input type="number" class="score" name="system.armour.arc.value" value="{{arc.value}}" placeholder="0" />
             </div>
         {{/with}}
     </div>
-    <!-- Character XP tracker -->
+    {{!-- Character XP tracker --}}
     <div class="flexrow" style="gap: 4px;">
         <span>{{localize 'NEWEDO.generic.exp'}}:</span>
         <input type="number" name="system.attributes.xp.value" value="{{system.attributes.xp.value}}" />
     </div>
-    <!-- Fate card container -->
+    {{!-- Character money tracker --}}
+    <div class="flexrow" style="gap: 4px;">
+        <span>{{localize 'NEWEDO.generic.money'}}:</span>
+        <input type="number" name="system.attributes.money.value" value="{{system.attributes.money.value}}" />
+    </div>
+    {{!-- Fate card container --}}
     <div class="fate-card flexcol">
-        <a data-action="rollFate"><b class="fate-roll" style="font-size: 14px;">{{localize 'NEWEDO.generic.fate'}}Card</b></a>
+        <a data-action="rollFate"><b>{{localize 'NEWEDO.generic.fate'}}Card</b></a>
         <ol class="fate-list flexcol">
-            <!-- Loops through the characters list of fate card options-->
+            {{!-- Loops through the characters list of fate card options--}}
             {{#each fates as |fate key|}}
-                <li class="fate-item item flexrow" data-item-uuid="{{fate.uuid}}">
+                <li class="item flexrow" data-item-uuid="{{fate.uuid}}">
                     <div>{{fate.system.range.max}} / {{fate.system.range.min}}</div>
                     <a class="item-edit" data-action="editItem" draggable="true">{{fate.name}}</a>
                 </li>

@@ -12,7 +12,7 @@ export default class NewedoContextMenu extends ContextMenu {
         const { clientX, clientY } = event;
         const left = Math.min(clientX, clientWidth - width) + 1;
         this._expandUp = clientY + height > clientHeight;
-        html.classList.add("artichron");
+        html.classList.add("newedo");
         html.classList.toggle("expand-up", this._expandUp);
         html.classList.toggle("expand-down", !this._expandUp);
         html.style.visibility = "";

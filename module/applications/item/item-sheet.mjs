@@ -1,4 +1,5 @@
 import LOGGER from "../../helpers/logger.mjs";
+import sysUtil from "../../helpers/sysUtil.mjs";
 import { NewedoSheetMixin } from "../base-sheet.mjs";
 
 /**
@@ -9,15 +10,15 @@ export default class NewedoItemSheet extends NewedoSheetMixin(foundry.applicatio
     /** @override */
     static DEFAULT_OPTIONS = {
         classes: ['item'],
-        position: {height: 360, width: 520, top: 100, left: 200},
-        actions: {
-
-        }
+        position: { height: 360, width: 520, top: 100, left: 200 },
     }
 
     static PARTS = {
         body: { template: "systems/newedo/templates/item/body.hbs" },
-        header: { template: "systems/newedo/templates/item/header.hbs" }
+        header: { template: "systems/newedo/templates/item/header.hbs" },
+        rules: { template: "systems/newedo/templates/item/rules.hbs" },
+        description: { template: "systems/newedo/templates/item/description.hbs" },
+        settings: { template: "systems/newedo/templates/item/settings.hbs" }
     }
 
     static TABS = {
@@ -27,7 +28,7 @@ export default class NewedoItemSheet extends NewedoSheetMixin(foundry.applicatio
     }
 
     tabGroups = {
-        
+        primary: "description"
     }
 
     async _onDragStart(event) {
@@ -63,6 +64,28 @@ export default class NewedoItemSheet extends NewedoSheetMixin(foundry.applicatio
      * @override 
      * Passes the context data used to render the HTML template
     */
+    async _prepareContext() {
+        const context = await super._prepareContext();
+
+        switch (this.document.type) {
+            case 'weapon':
+                break;
+            default:
+                context.settings = await renderTemplate(`systems/newedo/templates/item/settings/${this.document.type}.hbs`, context);
+                break;
+        }
+
+        const enrichmentOptions = {
+            secrets: this.document.isOwner,
+            async: true,
+            rollData: context.rollData
+        };
+
+        context.richDescription = await TextEditor.enrichHTML(context.system.description, enrichmentOptions);
+
+        return context;
+    }
+
     async getData() {
         const context = await super.getData();
         const item = context.item;
@@ -105,9 +128,7 @@ export default class NewedoItemSheet extends NewedoSheetMixin(foundry.applicatio
         return context;
     }
 
-    /* -------------------------------------------- */
-
-    /** @override */
+    /* 
     activateListeners(html) {
         super.activateListeners(html);
 
@@ -133,4 +154,5 @@ export default class NewedoItemSheet extends NewedoSheetMixin(foundry.applicatio
             li.addEventListener("click", handler);
         });
     }
+        */
 }

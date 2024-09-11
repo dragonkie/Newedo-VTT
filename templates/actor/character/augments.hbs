@@ -1,7 +1,6 @@
 <div class="tab-content">
     <!-- Ammount of trait noise the character has gathered -->
     <div>
-        Trait Noise
         <div class="flexrow" style="text-align: center; align-items: center;">
             {{#each system.traits.core as | trait key |}}
                 <div style="align-items: center; min-width: 70px;">
@@ -20,24 +19,22 @@
             <span>Install</span>
         </li>
         <ol class="items-list">
-            {{#each augments as | augment key |}}
+            {{#each itemTypes.augment as | augment key |}}
 
-                <li class="item flexrow" data-item-uuid="{{augment._id}}">
+                <li class="item flexrow" data-item-uuid="{{augment.uuid}}">
                     <!-- Link to the fate opens up the item sheet -->
-                    <span class="item-name">
-                        <a class="item-edit">{{augment.name}}</a>
-                    </span>
-                    <span class="item-detail" style="text-align: center;">
-                        {{#if augment.system.noise.pow}} {{augment.system.noise.pow}} Pow {{/if}}
-                        {{#if augment.system.noise.ref}} {{augment.system.noise.ref}} Ref {{/if}}
-                        {{#if augment.system.noise.hrt}} {{augment.system.noise.hrt}} Hrt {{/if}}
-                        {{#if augment.system.noise.per}} {{augment.system.noise.per}} Per {{/if}}
-                        {{#if augment.system.noise.pre}} {{augment.system.noise.pre}} Pre {{/if}}
-                        {{#if augment.system.noise.sav}} {{augment.system.noise.sav}} Sav {{/if}}
+                    <span style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start;">
+                        <img src="{{augment.img}}" width="30" height="30">
+                        <a style="margin-left: 4px;" data-action="editItem">{{augment.name}}</a>
                     </span>
                     <span class="item-detail">{{augment.system.biofeedback}}%</span>
-                    <input type="checkbox" class="item-detail aug-install" />
-                    {{#if ../editable}}<span class="item-delete"><img class="icon-trashcan" src="systems/newedo/icons/trash-can.svg"></span>{{/if}}
+                    
+                    <span class="item-controls">
+                        
+                        {{#if (not augment.installed) }} <span data-action="useItem" data-use="install"><i class="fa-solid fa-microchip"></i></span> {{/if}}
+                        {{#if augment.installed}} <span data-action="useItem" data-use="install"><i class="fa-solid fa-microchip"></i></span> {{/if}}
+                        {{#if ../isEditMode}} <span class="item-delete"><i class="fa-solid fa-trash"></i></span> {{/if}}
+                    </span>
                 </li>
 
             {{/each}}

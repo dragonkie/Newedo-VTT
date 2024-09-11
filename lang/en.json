@@ -11,6 +11,7 @@
   "NEWEDO.generic.background": "Background",
   "NEWEDO.generic.item": "Item",
   "NEWEDO.generic.skill": "Skill",
+  "NEWEDO.generic.money": "Money",
   
   "NEWEDO.generic.wound": "Wound",
   "NEWEDO.generic.plrl.wound": "Wounds",
@@ -61,6 +62,10 @@
   "NEWEDO.EffectToggle": "Toggle Effect",
   "NEWEDO.EffectEdit": "Edit Effect",
   "NEWEDO.EffectDelete": "Delete Effect",
+
+  "NEWEDO.ContextMenu.item.edit": "Edit",
+  "NEWEDO.ContextMenu.item.equip": "Equip",
+  "NEWEDO.ContextMenu.item.delete": "Delete",
 
   "NEWEDO.feature.create": "Create new feature",
   "NEWEDO.feature.delete": "Are you sure you would like to delete this feature?",

@@ -20,7 +20,7 @@ export default class NewedoActor extends Actor {
             createData.items = [];
             const coreItems = await sysUtil.getCoreCharDocs();
             coreItems.forEach((item) => {
-                var newItem = item.toObject();
+                let newItem = item.toObject();
                 createData.items.push(newItem);
             });
         }
@@ -106,13 +106,13 @@ export default class NewedoActor extends Actor {
         system.legend.rank = sysUtil.legendRank(system.legend.max);
 
         //checks how much noise the character has from augments
-        var biofeedback = 0;
+        let biofeedback = 0;
         for (let [key, item] of this.items.entries()) {
             if (item.type === `augment`) {
                 if (item.system.installed) {
                     LOGGER.debug("Found installed augment:", item);
-                    var rank = item.system.rank;
-                    var noise = item.system.noise;
+                    let rank = item.system.rank;
+                    let noise = item.system.noise;
                     biofeedback += item.system.biofeedback;
                     // Adds the noise from the item to the counter
                     core.pow.noise += noise.pow * rank;
@@ -181,7 +181,7 @@ export default class NewedoActor extends Actor {
 
     getSkill(name) {
         const skills = this.itemTypes.skill;
-        for (var skill of skills) {
+        for (let skill of skills) {
             if (skill.name === name) return skill;
         }
         return undefined;
@@ -227,7 +227,7 @@ export default class NewedoActor extends Actor {
     }
 
     get woundPenalty() {
-        return this.system.wound.penalty;
+        return this.system.wound.value;
     }
 
     // Item getters, useable with handelbars for itterable arrays of items sorted by type

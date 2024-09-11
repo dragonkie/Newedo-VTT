@@ -6,7 +6,7 @@ export class Dice {
         //regex to convert a dice roll into a number, face count, and modifiers list
         const rx = /(\d+)|(dl\d+)|([^d][a-z]+\d+)/gi;
         const result = term.match(rx);
-        this.count = Number(result[0]);//the number of this kind of dice, lets you hold multiple dice in one object
+        this.count = Number(result[0]);//the number of this kind of dice, let s you hold multiple dice in one object
         this.faces = Number(result[1]);//the number of sides to the die
         this.mod = result[2];//roll modifiers to be added to the end of this dices roll string. if mods are diffrent, 2 dice sets won't be combined
     }
@@ -35,9 +35,9 @@ export class NewedoRoll {
 
     /**Converts the list of dice into a rollable string that is foundry compatible*/
     get formula() {
-        var bonus = this.bonus;
-        var first = true;
-        var formula = ``;
+        let bonus = this.bonus;
+        let first = true;
+        let formula = ``;
         // Adds the dice array to the formula
         for (const d of this.dice) {
             if (!first) formula += `+`;
@@ -61,7 +61,7 @@ export class NewedoRoll {
     /**Standard role used by backgrounds and traits as they dont need any further options */
     async roll() {
         // Gets the final roll evaluation
-        var formula = this.formula;
+        let formula = this.formula;
         if (!formula || formula == ``) {
             sysUtil.warn(`NEWEDO.warn.invalidRoll`);
             return null;
@@ -103,16 +103,16 @@ export class NewedoRoll {
      * @param {Boolean} sort Default false, wether the dice should be sorted after the clean is finished
      */
     clean() {
-        var t = this.dice;
+        let t = this.dice;
         //ensures the array exists
         if (this.isEmpty) return 0;
         const l = t.length;
 
-        for (var a = 0; a < l; a++) {
+        for (let a = 0; a < l; a++) {
             //removes any elements from the tray that arent a Dice object
             if (typeof t[a] !== `object`) t[a] = undefined;
             else {
-                for (var b = 0; b < l; b++) {
+                for (let b = 0; b < l; b++) {
                     if (a === b) continue;
                     if (typeof t[a] !== `object` || typeof t[b] !== `object`) continue;
                     //if the 2 dice sets are of the same kind of dice add them together
@@ -163,8 +163,8 @@ export class NewedoRoll {
      * @returns 
      */
     _onAddArray(dice) {
-        var diceList = foundry.utils.deepClone(dice); // Safely clones the dice list
-        for (var a = 0; a < diceList.length; a++) {
+        let diceList = foundry.utils.deepClone(dice); // Safely clones the dice list
+        for (let a = 0; a < diceList.length; a++) {
             this.add(diceList[a]);
         }
         return 0;
@@ -172,9 +172,9 @@ export class NewedoRoll {
 
     _onAddInt(dice) {
         if (this.isEmpty) {
-            this.dice.push(new Dice(dice, 1));
+            this.dice.push(new Dice(`1d${dice}`));
         } else {
-            for (var a = 0; a < this.dice.length; a++) {
+            for (let a = 0; a < this.dice.length; a++) {
                 //loops through the dice being added
                 if (this.dice[a].faces === dice) {
                     this.dice[a].count += 1;
@@ -192,7 +192,7 @@ export class NewedoRoll {
             // when there are no dice in this pool, just add it in
             this.dice.push(dice);
         } else {
-            for (var a = 0; a < this.dice.length; a++) {
+            for (let a = 0; a < this.dice.length; a++) {
                 //loops through the dice being added
                 if (this.dice[a].faces === dice.faces && this.dice[a].mod === dice.mod) {
                     this.dice[a].count += 1;
@@ -229,7 +229,7 @@ export class NewedoRoll {
     
 
     drop(faces, count = 1, mod = ``) {
-        var d = this.find(faces, mod)
+        let d = this.find(faces, mod)
         if (d) d.count -= count;
         this.clean
         return this.dice;
@@ -242,7 +242,7 @@ export class NewedoRoll {
      */
     find(faces, mod = ``) {
         if (this.isEmpty) return undefined;//if the dicetray doesnt have dice, exit the function
-        for (var a = 0; a < this.dice.length; a++) {
+        for (let a = 0; a < this.dice.length; a++) {
             if (this.dice[a].faces === faces) {
                 if (mod === `` || this.dice[a].mod === mod) {
                     return this.dice[a];
@@ -258,12 +258,12 @@ export class NewedoRoll {
     */
     dropHighest(count = 1) {
         const dice = this.dice;// array of dice
-        var value = 0;//the highest value found of a dice
-        var index = -1;//the currently found index to be dropped
+        let value = 0;//the highest value found of a dice
+        let index = -1;//the currently found index to be dropped
 
-        for (var x = 0; x < count; x++) {
+        for (let x = 0; x < count; x++) {
             if (this.isEmpty) return; //cancels the function once no more dice are available to drop
-            for (var a = 0; a < dice.length; a++) {
+            for (let a = 0; a < dice.length; a++) {
                 if (dice[a].faces > value && dice[a].count > 0) {
                     value = dice[a].faces;
                     index = a;
@@ -281,7 +281,7 @@ export class NewedoRoll {
             return this.add(10);
         }
         if (type === `disadvantage`) {
-            var d10 = this.find(10);
+            let d10 = this.find(10);
             if (d10) d10.count -= 1;
             else this.dropHighest();
             this.clean;

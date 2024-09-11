@@ -1,25 +1,44 @@
 <div class="tab-content">
-
-
     <li class="items-header flexrow collapsible">
         <span>Weapons</span>
         <span>Skill</span>
-        <span>Attack</span>
-        <span>Damage</span>
-        <span>Type</span>
+        <span>Controls</span>
     </li>
     <ol class="items-list">
+
         {{#each itemTypes.weapon as | weapon key |}}
 
-        <li class="item flexrow" style="text-align: center;" data-item-uuid="{{weapon.uuid}}">
-            <!-- Link to the fate opens up the item sheet -->
-            <a data-action="editItem">{{weapon.name}}</a>
-            <div>{{weapon.system.skill}}</div>
-            <a class="item-detail" data-action="useItem" data-use="attack">{{weapon.atkFormula}}</a>
-            <a class="item-detail" data-action="useItem" data-use="damage">{{weapon.dmgFormula}}</a>
-            <span class="item-detail">{{weapon.system.damage.type}}</span>
-            <span data-action="deleteItem"><img class="icon-trashcan" src="systems/newedo/icons/trash-can.svg"></span>
-        </li>
+            <li class="item flexrow" style="text-align: center;" data-item-uuid="{{weapon.uuid}}">
+                <!-- Link to the fate opens up the item sheet -->
+                <span style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start;">
+                    <img src="{{weapon.img}}" width="30" height="30">
+                    <a style="margin-left: 4px;" data-action="editItem">{{weapon.name}}</a>
+                </span>
+                <span style="text-align: left;">
+                    {{weapon.system.skill}}
+                </span>
+
+                <span class="item-controls">
+
+                    <a data-action="useItem" data-use="equip">
+                        {{#if weapon.isEquipped}}<i class="fa-solid fa-hand-rock"></i>{{/if}}
+                        {{#if (not weapon.isEquipped)}}<i class="fa-solid fa-hand"></i>{{/if}}
+                    </a>
+
+                    <a data-action="useItem" data-use="attack">
+                        {{#if weapon.isRanged}}<i class="fa-solid fa-gun"></i>{{/if}}
+                        {{#if (not weapon.isRanged)}}<i class="fa-solid fa-sword"></i>{{/if}}
+                    </a>
+
+                    <a data-action="useItem" data-use="damage">
+                        {{#if weapon.isRanged}}<i class="fa-solid fa-crosshairs"></i>{{/if}}
+                        {{#if (not weapon.isRanged)}}<i class="fa-solid fa-droplet"></i>{{/if}}
+                    </a>
+
+                    {{#if ../isEditMode}}<a data-action="deleteItem"><i class="fa-solid fa-trash"></i></a>{{/if}}
+
+                </span>
+            </li>
 
         {{/each}}
     </ol>

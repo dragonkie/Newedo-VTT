@@ -47,10 +47,15 @@ export default class NewedoSkill extends NewedoItem {
         return this.getFormula(true);
     }
 
+    get ranksFormula() {
+        if (!this.actor) return null;
+        return this.getFormula(false);
+    }
+
     /** Returns a formula string just using the skill ranks */
     getFormula(trait = true) {
-        var formula = '';
-        var dice = this.dice(trait);
+        let formula = '';
+        let dice = this.dice(trait);
 
         for (const d of dice) {
             let f = `${d.count}d${d.faces}`;
@@ -68,17 +73,12 @@ export default class NewedoSkill extends NewedoItem {
      */
     dice(trait = true) {
         const list = [];
-        // adds the trait dice if enabled
-        if (trait) {
-            if (!this.actor) return;
-            list.push({ faces: 10, count: this.trait.rank });
-        }
 
         // grabs dice ranks and pools them
         for (const r of this.system.ranks) {
             if (r <= 0) continue;//skips over dice ranks that dont have real dice
-            var found = false;
-            for (var i = 0; i < list.length; i++) {
+            let found = false;
+            for (let i = 0; i < list.length; i++) {
                 //if a matching dice was found, add it to their pool
                 if (list[i].faces === r) {
                     list[i].count += 1;
@@ -88,6 +88,19 @@ export default class NewedoSkill extends NewedoItem {
             }
             //if the dice doesnt exist yet, add it to the list
             if (!found) list.push({ faces: r, count: 1 });
+        }
+
+        // organize the dice to be nice to look at
+        list.sort((a, b) => {
+            if (a.faces > b.faces) return 1;
+            if (a.faces < b.faces) return -1;
+            return 0;
+        })
+
+        // adds the trait dice if enabled
+        if (trait) {
+            if (!this.actor) return;
+            list.unshift({ faces: 10, count: this.trait.rank });
         }
         return list;
     }
@@ -126,29 +139,36 @@ export default class NewedoSkill extends NewedoItem {
         const options = await sysUtil.getRollOptions(this.getRollData(), this.constructor.TEMPLATES.roll());
         if (options.canceled) return null;// Stops the roll if they decided they didnt want to have fun
 
-        var bonus = 0;
-        var addon = '';
+        let formula = '';// final string parsed formula
+        let mods = 0;// total flat bonuses and penalties
 
-        /* --- Proccess the roll data --- */
-        // Apply wounds
-        if (options.wounded && this.actor.woundPenalty < 0) bonus += this.actor.woundPenalty;
-
-        // Spend legend
-        if (options.legend > 0) {
-            if (!sysUtil.spendLegend(this.actor, options.legend)) return null;
-            bonus += options.legend;
+        if (options.useTrait) {
+            let dice = this.trait.rank;
+            if (options.advantage == 'advantage') dice += 1;
+            if (options.advantage == 'disadvantage') dice -= 1;
+            if (dice > 0) formula += dice + 'd10x10';
         }
 
-        // Add situational bonuses
-        if (options.bonus != ``) addon = `+${options.bonus}`;
+        console.log(options)
 
-        let roll = new Roll(this.formula + `+${bonus}` + addon);
+        if (options.skill != '') formula += '+' + options.skill
+        if (options.useWound) mods += options.wound;
+        if (options.legend > 0) {
+            if (sysUtil.spendLegend(actor, options.legend)) {
+                mods += options.legend;
+            }
+        }
 
-        // Rolls the dice
-        roll.toMessage({
+        if (mods > 0) formula += '+'+mods;
+        if (mods < 0) formula += mods;
+
+        let r = new Roll(formula);
+        await r.evaluate();
+        await r.toMessage({
             speaker: ChatMessage.getSpeaker({ actor: this.actor }),
             flavor: `<p style="font-size: 14px; margin: 4px 0 4px 0;">${this.name}</p>`
         });
+        return r;
     }
 
     static TEMPLATES = {

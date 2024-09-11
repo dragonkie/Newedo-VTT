@@ -1,6 +1,9 @@
-<div autocomplete="off" style="overflow: hidden;">
+<div class="item" autocomplete="off" style="overflow: hidden; display: flex; flex-direction: column; height: 100%;">
     <div data-application-part="header"></div>
-
     {{> "newedo.tabs-nav"}}
-
+    {{!-- Tab Bodies --}}
+    <section class="body scrollable" style="flex: 1; display: flex;">
+        {{!-- Creates a holder for all the different tabs contents --}}
+        {{> "newedo.tabs-content"}}
+    </section>
 </div>

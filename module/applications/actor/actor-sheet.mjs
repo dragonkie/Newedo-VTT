@@ -56,37 +56,8 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
     /* --------------------------------------------- Prepare actor sheet --------------------------------------------- */
 
     /** @override */
-    _prepareContext(options) {
-        const doc = this.document;
-        const rollData = doc.getRollData();
-
-        const context = {
-            document: doc,
-            config: CONFIG.NEWEDO,
-            system: doc.system,
-            name: doc.name,
-            items: doc.items,
-            itemTypes: doc.itemTypes,
-            rollData: rollData,
-            tabs: this._getTabs(),
-            isEditMode: this.isEditMode,
-            isPlayMode: this.isPlayMode,
-            isEditable: this.isEditable
-        }
-
-        this._prepareItems(context);
-        //this._prepareCharacterData(context);
-
-        return context;
-    }
-
-    /** @override */
-    getData() {
-        // Retrieve the data structure from the base sheet. You can inspect or log
-        // the context variable to see the structure, but some key properties for
-        // sheets are the actor object, the data object, whether or not it's
-        // editable, the items array, and the effects array.
-        const context = super.getData();
+    async _prepareContext() {
+        const context = await super._prepareContext();
 
         // Use a safe clone of the actor data for further operations.
         const actorData = this.document.toObject(false);
@@ -95,10 +66,7 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
         context.system = actorData.system;
         context.flags = actorData.flags;
         context.items = actorData.items;
-        context.editable = this.isEditable && (this._mode === this.constructor.MODES.EDIT);
-
-        context.theme = "light";
-        if (game.settings.get(game.system.id, "darkmode")) context.theme = "dark";
+        context.editable = this.isEditable && (this._mode === this.constructor.SHEET_MODES.EDIT);
 
         // Prepare character data and items.
         if (actorData.type == 'character') {
@@ -106,10 +74,14 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
         }
 
         // Add roll data for TinyMCE editors.
-        context.rollData = context.actor.getRollData();
+        context.actor = this.document;
+        context.rollData = this.document.getRollData();
 
         // Prepare active effects
         context.effects = prepareActiveEffectCategories(this.document.effects);
+
+        this._prepareItems(context);
+
         return context;
     }
 
@@ -120,41 +92,81 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
      */
     _prepareItems(context) {
         // Initialize containers.
-        const fates = [];
-        const skills = {
-            pow: [],
-            ref: [],
-            hrt: [],
-            pre: [],
-            sav: [],
-            per: []
-        };
+        let skills = {
+            pow: {
+                label: sysUtil.localize('NEWEDO.trait.core.pow'),
+                list: []
+            },
+            pre: {
+                label: sysUtil.localize('NEWEDO.trait.core.pre'),
+                list: []
+            },
+            per: {
+                label: sysUtil.localize('NEWEDO.trait.core.per'),
+                list: []
+            },
+            sav: {
+                label: sysUtil.localize('NEWEDO.trait.core.sav'),
+                list: []
+            },
+            ref: {
+                label: sysUtil.localize('NEWEDO.trait.core.ref'),
+                list: []
+            },
+            hrt: {
+                label: sysUtil.localize('NEWEDO.trait.core.hrt'),
+                list: []
+            },
+        }
 
+        // Sort the mega list so the displayed lists are alphabetical
+        context.itemTypes.skill.sort((a, b) => ('' + a.name).localeCompare(b.name))
         // Iterate through items, allocating to containers
         for (let i of context.itemTypes.skill) {
             i.img = i.img || DEFAULT_TOKEN;
-            // Append to gear.
 
-            if (i.system.trait === `pow`) skills.pow.push(i);
-            else if (i.system.trait === `ref`) skills.ref.push(i);
-            else if (i.system.trait === `hrt`) skills.hrt.push(i);
-            else if (i.system.trait === `pre`) skills.pre.push(i);
-            else if (i.system.trait === `sav`) skills.sav.push(i);
-            else if (i.system.trait === `per`) skills.per.push(i);
-
+            switch (i.system.trait) {
+                case 'pow':
+                    skills.pow.list.push(i);
+                    break;
+                case 'ref':
+                    skills.ref.list.push(i);
+                    break;
+                case 'hrt':
+                    skills.hrt.list.push(i);
+                    break;
+                case 'pre':
+                    skills.pre.list.push(i);
+                    break;
+                case 'sav':
+                    skills.sav.list.push(i);
+                    break;
+                case 'per':
+                    skills.per.list.push(i);
+                    break;
+            }
         }
-        context.skills = skills;
+
+        context.skills = {
+            l: {
+                pow: skills.pow,
+                hrt: skills.hrt,
+                ref: skills.ref,
+                pre: skills.pre
+            },
+            r: {
+                per: skills.per,
+                sav: skills.sav
+            }
+        }
 
         //organize fates list by their range
         function fateCompare(a, b) {
-            if (a.system.range.max > b.system.range.max) {
-                return -1;
-            }
-            if (a.system.range.max < b.system.range.max) {
-                return 1;
-            }
+            if (a.system.range.max > b.system.range.max) return -1;
+            if (a.system.range.max < b.system.range.max) return 1;
             return 0;
         }
+        let fates = [];
         context.fates = [];
         context.fates = fates.concat(context.itemTypes.fate);
         context.fates.sort(fateCompare);
@@ -206,7 +218,7 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
      */
     static async _onRoll(event, target) {
         LOGGER.debug(`Standard roll action`, target);
-        var formula = target.dataset.roll;
+        let formula = target.dataset.roll;
         const rollData = this.document.getRollData();
         rollData.formula = formula;
 
@@ -215,7 +227,7 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
 
         // Grabs the formula
         formula = options.formula;
-        var bonus = 0;
+        let bonus = 0;
 
         // Apply legend
         if (options.legend > 0) {
@@ -225,7 +237,7 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
         }
 
         // Apply wounds
-        if (options.wounded && rollData.wound.penalty < 0) bonus += rollData.wound.penalty;
+        if (options.useWound && rollData.wound.value < 0) bonus += rollData.wound.value;
 
         if (bonus > 0) formula += `+` + bonus;
         if (bonus < 0) formula += bonus;
@@ -236,13 +248,13 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
 
         // Managed if we have advantage / disadvantage
         if (options.advantage == "advantage") {
-            for (var a of r.dice) {
+            for (let a of r.dice) {
                 if (a.faces == 10) {
                     a.number += 1;
                 }
             }
         } else if (options.advantage == `disadvantage`) {
-            for (var a of r.dice) {
+            for (let a of r.dice) {
                 if (a.faces == 10) {
                     a.number -= 1;
                 }
@@ -251,14 +263,14 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
         // After altering the roll formula we need to update the source for the chat message
         r._formula = r.formula;
 
-        var label = `<div>${target.dataset.label}</div>`
+        let label = `<div>${target.dataset.label}</div>`
         if (options.advantage != `normal`) {
             label += `<div>${options.advantage}</div>`;
         }
 
 
         await r.evaluate();
-        var render = r.render();
+        let render = r.render();
         return r.toMessage({
             speaker: ChatMessage.getSpeaker({ actor: this.document }),
             flavor: label,
@@ -276,14 +288,14 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
     static async _onRollFate(event, target) {
         const roll = new Roll('1d100');
         await roll.evaluate();
-        var render = await roll.render();
+        let render = await roll.render();
 
-        var label = "";
-        var description = "";
+        let label = "";
+        let description = "";
 
-        for (var fate of this.document.itemTypes.fate) {
-            var _bot = fate.system.range.min;
-            var _top = fate.system.range.max;
+        for (let fate of this.document.itemTypes.fate) {
+            let _bot = fate.system.range.min;
+            let _top = fate.system.range.max;
 
             //checks that the roll result is in range, regardless if the start and end of the range are configured properly
             if (roll.total >= Math.min(_bot, _top) && roll.total <= Math.max(_bot, _top)) {

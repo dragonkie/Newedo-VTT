@@ -6,7 +6,7 @@ export default class NewedoFate extends NewedoItem {
     }
 
     prepareDerivedData() {
-        var range = this.system.range;
+        let range = this.system.range;
 
         // Bitwise operator to quickly swap the values of the 2 ranges, dont know how this works
         if (range.min > range.max) {

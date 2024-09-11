@@ -1,0 +1,125 @@
+<div class="tab-content">
+    <div class="flexrow">
+        <div>Skill:</div>
+        <select name="system.skill">
+            <option selected disabled hidden value="{{system.skill}}">{{system.skill}}</option>
+            <optgroup label="Power">
+                <option value="Athletics">Athletics</option>
+                <option value="Heavy Melee">Heavy Melee</option>
+                <option value="Light Melee">Light Melee</option>
+                <option value="Thrown">Thrown</option>
+                <option value="Unarmed">Unarmed</option>
+            </optgroup>
+
+            <optgroup label="Reflex">
+                <option value="Banter">Banter</option>
+                <option value="Dodge">Dodge</option>
+                <option value="Drive">Drive</option>
+                <option value="Sleight of Hand">Sleight of Hand</option>
+                <option value="Stealth">Stealth</option>
+            </optgroup>
+
+            <optgroup label="Heart">
+                <option value="Crafting">Crafting</option>
+                <option value="Meditation">Meditation</option>
+                <option value="Rally">Rally</option>
+                <option value="Survival">Survival</option>
+            </optgroup>
+
+            <optgroup label="Pressence">
+                <option value="Deception">Deception</option>
+                <option value="Eloquence">Eloquence</option>
+                <option value="Intimidation">Intimidation</option>
+                <option value="Performance">Performance</option>
+                <option value="Seduction">Seduction</option>
+            </optgroup>
+
+            <optgroup label="Perception">
+                <option value="Archery">Archery</option>
+                <option value="Commerce">Commerce</option>
+                <option value="Gunnery">Gunnery</option>
+                <option value="Intuition">Intuition</option>
+                <option value="Investigation">Investigation</option>
+                <option value="Small Arms">Small Arms</option>
+            </optgroup>
+
+            <optgroup label="Savvy">
+                <option value="Computers">Computers</option>
+                <option value="Gambling">Gambling</option>
+                <option value="Hardware">Hardware</option>
+                <option value="Medicine">Medicine</option>
+                <option value="Security">Security</option>
+                <option value="Street Wise">Street Wise</option>
+                <option value="Study">Study</option>
+                <option value="Surveillance">Surveillance</option>
+                <option value="Tactics">Tactics</option>
+                <option value="Toxicology">Toxicology</option>
+                <option value="Wetware">Wetware</option>
+            </optgroup>
+
+        </select>
+    </div>
+
+    <div class="flexrow">
+        <div>Legend Cost:</div>
+        <input type="number" placeholder="Cost" name="system.cost" value="{{system.cost}}" />
+    </div>
+
+    <div class="flexrow">
+        <div>Range:</div>
+        <input type="number" placeholder="Range" name="system.range" value="{{system.range}}" />
+    </div>
+
+    <div class="flexrow">
+        <div>Kami:</div>
+    </div>
+
+    <div class="flexrow">
+        <div>Target Number:</div>
+        <input type="number" placeholder="TN" name="system.tn" value="{{system.tn}}" />
+    </div>
+
+    <div class="flexrow">
+        <div>Action cost:</div>
+        <select name="system.action">
+            <option value="Full">Full</option>
+            <option value="Quick">Quick</option>
+        </select>
+    </div>
+
+    <div class="flexrow">
+        <div>Casting Time:</div>
+    </div>
+
+    <div class="flexrow">
+        <div>Duration:</div>
+        <input type="number" placeholder="Duration" name="system.duration" value="{{system.duration}}" />
+    </div>
+
+    <div class="flexrow">
+        <div>Target type:</div>
+        <select name="system.target.type">
+            <option selected disabled hidden value="{{system.target.type}}">{{system.target.type}}</option>
+            <optgroup label="Individuals">
+                <option value="Self">Self</option>
+                <option value="Ally">Ally</option>
+                <option value="Enemy">Enemy</option>
+                <option value="All">All</option>
+            </optgroup>
+            <optgroup label="Areas">
+                <option value="Radius">Radius</option>
+                <option value="Blast">Blast</option>
+                <option value="Cone">Cone</option>
+                <option value="Line">Line</option>
+            </optgroup>
+        </select>
+    </div>
+    <div class="flexrow">
+        <div>Target Count:</div>
+        <input type="number" name="system.target.count" value="{{system.target.count}}" />
+    </div>
+    <div class="flexrow">
+        <div>Area Size:</div>
+        <input type="number" placeholder="Size" name="system.target.size" value="{{system.target.size}}" />
+    </div>
+</div>

@@ -15,12 +15,18 @@ export default class sysUtil {
 
     /**
      * Display notifications (These are sometimes displayed globally, and sometimes not, havent figured that out yet)
-     *
+     * 1 - Notification
+     * 2 - Warning
+     * 3 - Error
      * @param {String} msgType - The type of notification to show
      * @param {String} msg - Text for the notification
      */
     static async notification(msg, msgType = 0) {
         switch (msgType) {
+            case 0:
+                ui.notifications.notify(msg);
+                LOGGER.log(msg);
+                break;
             case 1:
                 ui.notifications.warn(msg);
                 LOGGER.warn(msg);
@@ -28,10 +34,6 @@ export default class sysUtil {
             case 2:
                 ui.notifications.error(msg);
                 LOGGER.error(msg);
-                break;
-            case 0:
-                ui.notifications.notify(msg);
-                LOGGER.log(msg);
                 break;
             default:
         }
@@ -78,8 +80,8 @@ export default class sysUtil {
     }
 
     static woundState(value) {
-        var label = 'NEWEDO.wound.healthy'
-        var penalty = 0;
+        let label = 'NEWEDO.wound.healthy'
+        let penalty = 0;
 
         if (value <= 0.90) {
             label = `NEWEDO.wound.grazed`;
@@ -104,7 +106,7 @@ export default class sysUtil {
 
         return {
             label: this.localize(label),
-            penalty: penalty
+            value: penalty
         }
     }
 
@@ -138,8 +140,8 @@ export default class sysUtil {
 
     /**converts array of dice objects into a string */
     static diceFormula(list) {
-        var formula = '';
-        var first = true;
+        let formula = '';
+        let first = true;
         for (const dice of list) {
             const f = dice.formula;
             if (f === ``) continue;
@@ -184,7 +186,6 @@ export default class sysUtil {
      */
     static getFormData(form, selectors) {
         const matches = form.querySelectorAll(selectors);
-        LOGGER.log(matches)
         const data = {};
         for (const element of matches) {
             // Parse the input data based on type

@@ -1,4 +1,5 @@
 import NewedoActorSheet from "../actor-sheet.mjs";
+import sysUtil from "../../../helpers/sysUtil.mjs";
 
 export default class CharacterSheet extends NewedoActorSheet {
     static DEFAULT_OPTIONS = {
@@ -7,8 +8,8 @@ export default class CharacterSheet extends NewedoActorSheet {
     }
 
     static PARTS = {
-        body: { template: "systems/newedo/templates/actor/character/body.hbs" },
         panel: { template: "systems/newedo/templates/actor/character/panel.hbs" },
+        body: { template: "systems/newedo/templates/actor/character/body.hbs" },
         header: { template: "systems/newedo/templates/actor/character/header.hbs" },
         traits: { template: "systems/newedo/templates/actor/character/traits.hbs" },
         skills: { template: "systems/newedo/templates/actor/character/skills.hbs" },
@@ -19,20 +20,20 @@ export default class CharacterSheet extends NewedoActorSheet {
     }
 
     static TABS = {
-        magic: { id: "magic", group: "primary", label: "NEWEDO.tab.magic" },
         traits: { id: "traits", group: "primary", label: "NEWEDO.tab.traits" },
         skills: { id: "skills", group: "primary", label: "NEWEDO.tab.skills" },
+        equipment: { id: "equipment", group: "primary", label: "NEWEDO.tab.equipment" },
         augments: { id: "augments", group: "primary", label: "NEWEDO.tab.augs" },
-        description: { id: "description", group: "primary", label: "NEWEDO.tab.bio" },
-        equipment: { id: "equipment", group: "primary", label: "NEWEDO.tab.equipment" }
+        magic: { id: "magic", group: "primary", label: "NEWEDO.tab.magic" },
+        description: { id: "description", group: "primary", label: "NEWEDO.tab.bio" }
     }
 
     tabGroups = {
         primary: "traits"
     }
 
-    getData() {
-        let context = super.getData();
+    async _prepareContext() {
+        const context = await super._prepareContext();
 
         //constants to hold references to the diffrent trait links
         const { core, derived } = context.system.traits;

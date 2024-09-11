@@ -8,22 +8,23 @@
 
     </li>
     <ol class="items-list">
-        {{#each rotes as | rote key |}}
+        {{#each itemTypes.rote as | rote key |}}
 
-        <li class="item flexrow" data-item-uuid="{{rote._id}}" style="text-align: center;">
-            <!-- Link to the fate opens up the item sheet -->
-            <div class="item-name flexrow">
-                <a class="item-edit">{{rote.name}}</a>
-            </div>
-            <a class="rollable item-detail" data-roll="{{rote.system.formula}}"
-                data-label="{{rote.name}}">{{rote.system.skill}}</a>
-            <span class="item-detail">{{rote.system.cost}}</span>
-            <span class="item-detail">{{rote.system.tn}}</span>
-            <span class="item-detail">{{rote.system.range}}</span>
+            <li class="item flexrow" data-item-uuid="{{rote.uuid}}" style="text-align: center;">
+                <!-- Link to the fate opens up the item sheet -->
+                <div style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start;">
+                    <img src="{{rote.img}}" width="30" height="30">
+                    <a style="margin-left: 4px;" data-action="editItem">{{rote.name}}</a>
+                </div>
+                <a class="rollable item-detail" data-roll="{{rote.system.formula}}" data-label="{{rote.name}}">{{rote.system.skill}}</a>
+                <span class="item-detail">{{rote.system.cost}}</span>
+                <span class="item-detail">{{rote.system.tn}}</span>
+                <span class="item-detail">{{rote.system.range}}</span>
 
-            {{#if ../editable}}<span class="item-delete"><img class="icon-trashcan"
-                    src="systems/newedo/icons/trash-can.svg"></span>{{/if}}
-        </li>
+                {{#if ../isEditMode}}
+                    <span data-action="deleteItem"><i class="fa-solid fa-trash"></i></span>
+                {{/if}}
+            </li>
 
         {{/each}}
     </ol>

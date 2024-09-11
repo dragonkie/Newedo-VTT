@@ -92,7 +92,8 @@
                     "rwatk": 0,
                     "msatk": 0,
                     "rsatk": 0
-                }
+                },
+                "imageOffset": 0
             }
         },
         "character": {
@@ -107,6 +108,10 @@
             },
             "attributes": {
                 "xp": {
+                    "transactions": [],
+                    "value": 0
+                },
+                "money": {
                     "transactions": [],
                     "value": 0
                 }
@@ -199,16 +204,20 @@
             "physical": {
                 "quantity": 1,
                 "weight": 0
+            },
+            "equipment": {
+                "equipped": false
             }
         },
         "weapon": {
             "templates": [
                 "base",
                 "price",
-                "physical"
+                "physical",
+                "equipment"
             ],
             "type": "melee",
-            "isRanged": false,
+            "ranged": false,
             "skill": "Light Melee",
             "attack": {
                 "bonus": 0,
@@ -253,7 +262,9 @@
         },
         "armour": {
             "templates": [
-                "base"
+                "base",
+                "physical",
+                "equipment"
             ],
             "soaks": {
                 "kin": 0,
@@ -288,7 +299,8 @@
         "upgrade": {
             "templates": [
                 "base"
-            ]
+            ],
+            "installed": false
         },
         "kami": {
             "templates": [

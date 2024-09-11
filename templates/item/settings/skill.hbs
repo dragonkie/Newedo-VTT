@@ -1,0 +1,27 @@
+<div class="tab-contet">
+    <div>
+        Trait:
+        <select name="system.trait" id="skill-type">
+            <option selected disabled hidden>{{ system.trait }}</option>
+            <option value="pow">{{ localize 'NEWEDO.trait.core.pow' }}</option>
+            <option value="ref">{{ localize 'NEWEDO.trait.core.ref' }}</option>
+            <option value="hrt">{{ localize 'NEWEDO.trait.core.hrt' }}</option>
+            <option value="sav">{{ localize 'NEWEDO.trait.core.sav' }}</option>
+            <option value="per">{{ localize 'NEWEDO.trait.core.per' }}</option>
+            <option value="pre">{{ localize 'NEWEDO.trait.core.pre' }}</option>
+        </select>
+    </div>
+    <div>
+        Roll trait dice:
+        <input type="checkbox" value="true" id="{{item.name}}" name="system.rollTrait" />
+    </div>
+    <div>
+        Ranks:
+        {{#each system.ranks as | rank index |}}
+            <input type="button" id="{{item.id}}" data-index="{{index}}" class="skill-dice" value="{{rank}}" />
+        {{/each}}
+    </div>
+    <div>
+        Features:
+    </div>
+</div>
