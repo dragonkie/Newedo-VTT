@@ -1,32 +1,78 @@
 <div class="tab-content">
-    <div>Dice Formula</div>
-    <div style="display: grid; grid-template-columns: 1fr 2fr 1fr; align-items: center; gap: 3px 3px; padding: 0px;">
-        {{{selectSkills}}}
+    <div class="form-group">
+        <label>Skill:</label>
+        {{{ selector.skill }}}
+    </div>
 
-        <input type="text" name="system.damage.value" value="{{system.damage.value}}" />
-        {{{ selectDamage system.damage.type 'system.damage.type' }}}
+    <div class="form-group">
+        <label>Damage:</label>
+        <div class="flexrow">
+            <input type="text" name="system.damage.value" value="{{system.damage.value}}" />
+            {{{ selectDamage system.damage.type 'system.damage.type' }}}
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Quality:</label>
+        <input type="number" name="system.quality.value" value="{{system.quality.value}}">
+    </div>
+
+    <div class="form-group">
+        <label>Grit:</label>
+        <input type="number" name="system.grit.value" value="{{system.grit.value}}">
+    </div>
+
+    <div class="form-group">
+        <label>Grit attack / damage bonus:</label>
+        <div class="flexrow">
+            <input type="number" name="system.grit.atk" value="{{system.grit.atk}}">
+            /
+            <input type="number" name="system.grit.dmg" value="{{system.grit.dmg}}">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Ranged:</label>
+        <input type="checkbox" name="system.ranged" {{checked system.ranged}}>
+    </div>
+
+    <div class="form-group">
+        {{#if system.ranged}}<label>Close / Long range:</label>{{/if}}
+        {{#if (not system.ranged)}}<label>Reach / thrown range:</label>{{/if}}
+        <div class="flexrow">
+            <input type="number" name="system.range.short" value="{{system.range.short}}">
+            /
+            <input type="number" name="system.range.long" value="{{system.range.long}}">
+        </div>
     </div>
 
     {{#if system.ranged}}
-        <div class="flexrow">
-            <span>
-                <span>Magazine</span>
-                <span>
-                    <span><input type="number" name="system.magazine.value" value="{{system.magazine.value}}" /></span>
-                    /
-                    <span><input type="number" name="system.magazine.max" value="{{system.magazine.max}}" /></span>
-                </span>
+        <div class="form-group">
+            <label>Range hit mods:</label>
+            <div class="flexrow">
+                <input type="number" name="system.range.modShort" value="{{system.range.modShort}}">
+                /
+                <input type="number" name="system.range.modLong" value="{{system.range.modLong}}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Magazine</label>
+            <span class="flexrow">
+                <input type="number" name="system.magazine.value" value="{{system.magazine.value}}" />
+                /
+                <input type="number" {{disabled isPlayMode}} name="system.magazine.max" value="{{system.magazine.max}}" />
             </span>
+        </div>
 
-            <div style="text-align: center; align-items: center;">
-                <label for="system.burst.ammo">Burst Ammo</label>
-                <input type="number" name="system.burst.ammo" value="{{system.burst.ammo}}" />
-            </div>
+        <div class="form-group">
+            <label for="system.burst.ammo">Burst Ammo</label>
+            <input type="number" name="system.burst.ammo" value="{{system.burst.ammo}}" />
+        </div>
 
-            <div style="text-align: center; align-items: center;">
-                <label for="system.burst.roll">Burst Roll</label>
-                <input type="number" name="system.burst.roll" value="{{system.burst.roll}}" />
-            </div>
+        <div class="form-group">
+            <label for="system.burst.roll">Burst Roll</label>
+            <input type="number" name="system.burst.roll" value="{{system.burst.roll}}" />
         </div>
     {{/if}}
 

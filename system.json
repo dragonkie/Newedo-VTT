@@ -2,7 +2,7 @@
   "id": "newedo",
   "title": "NewEdo",
   "description": "Official adaptation of the Newedo system for FVTT",
-  "version": "0.2.10",
+  "version": "0.3.02",
   "compatibility": {
     "minimum": 12,
     "verified": 12.334,
@@ -10,27 +10,30 @@
   },
   "authors": [
     {
-    "name": "dragonkie",
-    "url": "https://github.com/dragonkie"
+      "name": "dragonkie",
+      "url": "https://github.com/dragonkie"
     },
     {
       "name": "Salty Games",
       "url": "https://salty-games.com"
     }
   ],
-  "esmodules": ["module/newedo.mjs"],
-  "styles": ["css/newedo.css"],
+  "esmodules": [
+    "module/newedo.mjs"
+  ],
+  "styles": [
+    "css/newedo.css"
+  ],
   "grid": {
     "distance": 1,
     "units": "m"
   },
   "initative": "traits.derived.init",
-  "primaryTokenAttribute": "traits.derived.hp",
+  "primaryTokenAttribute": "hp",
   "secondaryTokenAttribute": "legend",
-
   "url": "https://github.com/dragonkie/Newedo-VTT",
   "manifest": "https://raw.githubusercontent.com/dragonkie/Newedo-VTT/main/system.json",
-  "download": "https://github.com/dragonkie/Newedo-VTT/zipball/master",
+  "download": "github.com/dragonkie/Newedo-VTT/releases/latest.download/newedo.zip",
   "packFolders": [
     {
       "name": "Newedo: Core",
@@ -176,5 +179,59 @@
       "path": "lang/en.json"
     }
   ],
-  "license": "LICENSE.txt"
+  "license": "LICENSE.txt",
+  "documentTypes": {
+    "Actor": {
+      "character": {
+        "htmlFields": [],
+        "filePathFields": {}
+      },
+      "npc": {
+        "htmlFields": [],
+        "filePathFields": {}
+      },
+      "pet": {
+        "htmlFields": [],
+        "filePathFields": {}
+      },
+      "vehicle": {
+        "htmlFields": [],
+        "filePathFields": {}
+      }
+    },
+    "Item": {
+      "skill": {
+        "htmlFields": [],
+        "filePathFields": {}
+      },
+      "rote": {
+        "htmlFields": [],
+        "filePathFields": {}
+      },
+      "weapon": {
+        "htmlFields": [],
+        "filePathFields": {}
+      },
+      "armour": {
+        "htmlFields": [],
+        "filePathFields": {}
+      },
+      "augment": {
+        "htmlFields": [],
+        "filePathFields": {}
+      },
+      "culture": {
+        "htmlFields": [],
+        "filePathFields": {}
+      },
+      "lineage": {
+        "htmlFields": [],
+        "filePathFields": {}
+      },
+      "fate": {
+        "htmlFields": [],
+        "filePathFields": {}
+      }
+    }
+  }
 }

@@ -7,7 +7,9 @@ export default class NpcSheet extends NewedoActorSheet {
     }
 
     static PARTS = {
+        panel: { template: "systems/newedo/templates/actor/npc/panel.hbs" },
         body: { template: "systems/newedo/templates/actor/npc/body.hbs" },
+        header: { template: "systems/newedo/templates/actor/character/header.hbs" },
     }
 
     static TABS = {
@@ -21,4 +23,4 @@ export default class NpcSheet extends NewedoActorSheet {
     tabGroups = {
         primary: "traits"
     }
-}
+}    

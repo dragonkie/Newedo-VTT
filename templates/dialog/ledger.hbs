@@ -8,9 +8,9 @@
             <div class="currency flexrow">
                 <input name="value" style="flex: 3; margin-right: 4px;" type="number" min="0" placeholder="0" />
                 <div class="flexrow" style="flex: 1; align-items: center; gap: 4px;">
-                    <a data-operation="add"><i class="fa-solid fa-plus"></i></a>
-                    <a data-operation="sub"><i class="fa-solid fa-minus"></i></a>
-                    <a data-operation="set"><i class="fa-solid fa-equals"></i></a>
+                    <a data-operation="+"><i class="fa-solid fa-plus"></i></a>
+                    <a data-operation="-"><i class="fa-solid fa-minus"></i></a>
+                    <a data-operation="="><i class="fa-solid fa-equals"></i></a>
                 </div>
             </div>
             <input name="note" type="text" placeholder="balance change note" />
@@ -32,15 +32,7 @@
                 <li data-index="{{record.id}}" class="flexrow" style="gap: 8px; align-items:flex-start">
                     <span style="flex: 1">{{record.id}}</span>
                     <span style="flex: 1" class="flexrow">
-                        {{#if (eq record.operation 'add')}}
-                            + {{record.value}}
-                        {{/if}}
-                        {{#if (eq record.operation 'sub')}}
-                            - {{record.value}}
-                        {{/if}}
-                        {{#if (eq record.operation 'set')}}
-                            = {{record.value}}
-                        {{/if}}
+                        {{record.operation}} {{record.value}}
                     </span>
                     <span style="flex: 1">{{record.date}}</span>
                     <span style="flex: 4">{{record.note}}</span>

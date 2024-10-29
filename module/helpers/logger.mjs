@@ -9,15 +9,15 @@ export default class LOGGER {
      * @param {*} value optional param that can contain and output objects, methods, etc
      */
     static log(msg, ...value) {
-        if (typeof value !== undefined) console.log(`NEWEDO | ${msg}`, ...value);
+        if (typeof value !== undefined) console.log(`NEWEDO LOG | ${msg}`, ...value);
         else console.log(`NEWEDO LOG | ${msg}`);
     }
     static warn(msg, ...value) {
-        if (typeof value !== undefined) console.warn(`NEWEDO | ${msg}`, ...value);
+        if (typeof value !== undefined) console.warn(`NEWEDO WRN | ${msg}`, ...value);
         else console.warn(`NEWEDO WRN | ${msg}`);
     }
     static error(msg, ...value) {
-        if (typeof value !== undefined) console.error(`NEWEDO | ${msg}`, ...value);
+        if (typeof value !== undefined) console.error(`NEWEDO ERR | ${msg}`, ...value);
         else console.error(`NEWEDO ERR | ${msg}`);
     }
     static trace(msg, ...value) {
@@ -32,8 +32,18 @@ export default class LOGGER {
      * @param {*} value optional param that can contain and output objects, methods, etc
      */
     static debug(msg = ``, value = ``, priority = 1) {
-        if (game.settings.get(game.system.id, "debugLogs") >= priority) {
+        if (game.settings.get(game.system.id, "debugLogs")) {
             console.log(`NEWEDO DBG | ${msg}`, value);
         }
+    }
+
+    static groupCollapsed(msg = '', priority = 1) {
+        if (game.settings.get(game.system.id, "debugLogs") >= priority) {
+            console.groupCollapsed('NEWEDO DBG | ' + msg)
+        }
+    }
+
+    static groupEnd() {
+        console.groupEnd()
     }
 }

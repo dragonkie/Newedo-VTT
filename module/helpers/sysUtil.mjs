@@ -132,27 +132,6 @@ export default class sysUtil {
         return base + `+` + string;
     }
 
-    static formulaSub(base, string) {
-        if (base === ``) return `-${string}`;
-        if (string === ``) return base;
-        return base + `-` + string;
-    }
-
-    /**converts array of dice objects into a string */
-    static diceFormula(list) {
-        let formula = '';
-        let first = true;
-        for (const dice of list) {
-            const f = dice.formula;
-            if (f === ``) continue;
-            if (!first) formula += '+';
-            first = false;
-            formula += f;
-        }
-
-        return formula;
-    }
-
     /**
      * 
      * @param {*} actor 
@@ -191,6 +170,7 @@ export default class sysUtil {
             // Parse the input data based on type
             switch (element.type) {
                 case 'number':// Converts a string to a number
+                case 'range':
                     data[element.name] = +element.value;
                     break;
                 case 'checkbox':// Returns boolean based on if the box is checked
@@ -217,8 +197,8 @@ export default class sysUtil {
      */
     static async getRollOptions(data, template = `systems/newedo/templates/dialog/roll-default.hbs`) {
 
-        const render = await renderTemplate(template, data);
         const title = data.title;
+        const render = await renderTemplate(template, data);
 
         /**
          * Small internal function to handel the data form we recieve
@@ -227,14 +207,19 @@ export default class sysUtil {
          * @returns 
          */
         const handler = (html, method) => {
-            const f = this.getFormData(html, "[name], [id]");
-            const d = { advantage: method, ...f };// spreads the form data across this new object
+            const f = this.getFormData(html, "[name]");
+            const d = { advantage: false, disadvantage: false, ...f };// spreads the form data across this new object
+
+            // sets hte advantage / disadvantage of the roll options
+            if (method == 'advantage') d.advantage = true;  
+            if (method == 'disadvantage') d.disadvantage = true;  
 
             // Ensures the number text in the bonus field is valid for the roll
             if (d.bonus && d.bonus != "" && !Roll.validate(d.bonus)) {
                 sysUtil.warn("NEWEDO.warn.invalidBonus");
                 d.canceled = true; // Flags that this roll should be discarded
             }
+
             return d;
         }
 
@@ -265,5 +250,16 @@ export default class sysUtil {
         });
     }
 
-    
+    /*-----------------------------------------------------------------------------*/
+    /*                                                                             */
+    /*                        DICE ARRAY MANAGMENT                                 */
+    /*                                                                             */
+    /*-----------------------------------------------------------------------------*/
+    static RollOptions() {
+        return {
+            advantage: false,
+            disadvantage: false,
+            trait: true,
+        }
+    }
 }

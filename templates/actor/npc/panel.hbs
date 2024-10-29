@@ -1,0 +1,30 @@
+<section class="panel">
+    {{!-- Newedo Banner --}}
+    <img class="banner-newedo" src="systems/newedo/images/banner-newedo.svg">
+    {{!-- Actor image --}}
+    <div class="portrait" style="border: 0;" data-action="editImage">
+        <img class="profile-img" src="{{document.img}}" title="{{actor.name}}" height="150px" width="150px" style="object-fit: cover; border: 0;" />
+    </div>
+    {{!-- Health container--}}
+    {{ localize 'NEWEDO.generic.hp' }}: {{ system.wound.label }}
+    <div class="bar">
+        <div class="fill" style="width: {{ percent system.hp.value system.hp.max }}%;"></div>
+        <div class="value flexrow">
+            <input type="number" name="system.hp.value" value="{{system.hp.value}}" />
+            <div>/</div>
+            <input type="number" value="{{system.hp.max}}" disabled />
+            <a><i class="fa-solid fa-calculator"></i></a>
+        </div>
+    </div>
+    {{!-- Armour values --}}
+    {{ localize 'NEWEDO.generic.soak' }}
+    <div class="flexrow" style="gap: 4px;">
+        {{#each system.armour as | key soak |}}
+            <div>
+                <div class="name">{{ soak.abr }}</div>
+                <input type="number" class="score" name="system.armour.{{key}}.value" value="{{soak.value}}" placeholder="0" {{disabled ../isPlayMode}} />
+            </div>
+        {{/each}}
+    </div>
+    {{!-- Skills list --}}
+</section>

@@ -2,11 +2,15 @@
     <div class="form-group">
         <label>{{localize 'NEWEDO.generic.trait'}}:</label>
         <input type="checkbox" name="useTrait" checked="true" />
-        <input type="text" name="trait" disabled value="{{skill.trait.rank}}d10"/>
+        <input type="text" name="trait" disabled value="{{trait.rank}}d10" />
     </div>
     <div class="form-group">
         <label>{{localize 'NEWEDO.generic.skill'}}:</label>
-        <input type="text" name="skill" disabled value="{{formula.skill}}"/>
+        <input type="text" name="skill" disabled value="{{formula.skill}}" />
+    </div>
+    <div class="form-group">
+        <label>{{localize 'NEWEDO.generic.grit'}}:</label>
+        <input type="number" name="skill" disabled value="{{system.grit.atk}}" />
     </div>
     {{> "newedo.roll-options" }}
 </form>

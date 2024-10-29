@@ -1,15 +1,20 @@
 <div class="tab-content">
-    <div style="display: inline-flex;">
-        <label>Range:</label>
-        <input type="number" name="system.range.max" value="{{system.range.max}}" placeholder="Max" />
-        <div>/</div>
-        <input type="number" name="system.range.min" value="{{system.range.min}}" placeholder="Min" />
+    <div class="form-group">
+        <label>Trigger Chance:</label>
+        <input type="number" name="system.chance" value="{{system.chance}}" placeholder="%" />
     </div>
-    <div style="display: inline-flex;">
+    <div class="form-group">
+        <label>Trigger Range:</label>
+        <div class="flexrow">
+            <input type="number" name="system.start" value="{{system.start}}" />
+            <input type="number" value="{{system.end}}" placeholder="Min" disabled/>
+        </div>
+    </div>
+    <div class="form-group">
         <label>Source:</label>
         <input type="text" name="system.source" value="{{system.source}}" placeholder="Origin of this fate" />
     </div>
-    <div>
+    <div class="form-group">
         <label>Locked:</label>
         <input type="checkbox" value="{{system.locked}}" />
     </div>

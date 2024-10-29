@@ -65,36 +65,9 @@ export default class NewedoItemSheet extends NewedoSheetMixin(foundry.applicatio
      * @override 
      * Passes the context data used to render the HTML template
     */
-    async _prepareContext() {
-        const context = await super._prepareContext();
-
-        // Creates custom skill list from owning actors skills if available, otherwise uses the default list
-        context.skills = [];
-        context.selectSkills = '';
-        if (this.document.actor != null) {
-            // create the list of skills
-            for (const skill of this.document.actor.itemTypes.skill) {
-                context.skills.push({
-                    label: skill.name,
-                    trait: skill.system.trait,
-                    group: 'NEWEDO.trait.core.' + skill.system.trait,
-                    value: skill.system.slug
-                })
-            }
-
-            context.selectSkills = foundry.applications.fields.createSelectInput({
-                options: context.skills,
-                value: this.document.system.skill,
-                valueAttr: "value",
-                labelAttr: "label",
-                localize: true,
-                sort: true,
-                name: 'system.skill'
-            }).outerHTML
-
-        } else {
-            context.selectSkills = newedo.element.select.Skills(this.document.system.skill, 'system.skill')
-        }
+    async _prepareContext(partId, content) {
+        LOGGER.debug('Prpareing item sheet context')
+        const context = await super._prepareContext(partId, content);
 
         context.settings = await renderTemplate(`systems/newedo/templates/item/settings/${this.document.type}.hbs`, context);
         const enrichmentOptions = {

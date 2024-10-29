@@ -1,5 +1,5 @@
-import LOGGER from "../../helpers/logger.mjs";
-import sysUtil from "../../helpers/sysUtil.mjs";
+import LOGGER from "../helpers/logger.mjs";
+import sysUtil from "../helpers/sysUtil.mjs";
 
 /**
  * Extend the basic Item with some very simple modifications.
@@ -17,20 +17,24 @@ export default class NewedoItem extends Item {
         //includes making any calculations on creation, update, or when loading the server
         //Any items owned by a character will run this function when the server loads
         //when migrating system data, its possible to use prepareData to help manage and correct values alongside the actual migrateData function
-
+        LOGGER.groupCollapsed('Item | prepareData | '+this.name);
+        LOGGER.debug('Item:', this);
+        LOGGER.debug('UUID:', this.uuid);
+        LOGGER.debug('Type:', this.type)
         super.prepareData();
+        LOGGER.groupEnd();
     }
 
     prepareBaseData() {
-
+        LOGGER.debug('DOCUMENT | DATA BASE')
     }
 
     prepareDerivedData() {
-
+        LOGGER.debug('DOCUMENT | DATA DERIVED')
     }
 
     async deleteDialog(options={}) {
-        const type = newedo.util.localize(this.constructor.metadata.label);
+        const type = sysUtil.localize(this.constructor.metadata.label);
         let confirm = await foundry.applications.api.DialogV2.confirm({
             title: `${game.i18n.format("DOCUMENT.Delete", { type })}: ${this.name}`,
             content: `<h4>${game.i18n.localize("AreYouSure")}</h4><p>${game.i18n.format("SIDEBAR.DeleteWarning", { type })}</p>`,
@@ -44,20 +48,7 @@ export default class NewedoItem extends Item {
     }
 
     /* ----------------------------------- Actions ---------------------------------------------------- */
-    async use(action) {
-        LOGGER.debug("Item used:", this);
-        this._onUse();
-    }
-
-    async _onUse() {
-        LOGGER.error('Unregistered _onUse() event:', this);
-        return undefined;
-    }
-
-    async _onDeleteItem() {
-        // Custom handeler for when this item is deleted
-    }
-
+    
 
     /* ----------------------------------- Item prep functions ---------------------------------------------- */
 

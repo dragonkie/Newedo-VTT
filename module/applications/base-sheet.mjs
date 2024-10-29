@@ -1,4 +1,5 @@
 import LOGGER from "../helpers/logger.mjs";
+import sysUtil from "../helpers/sysUtil.mjs";
 
 export const NewedoSheetMixin = Base => {
     const mixin = foundry.applications.api.HandlebarsApplicationMixin;
@@ -26,7 +27,11 @@ export const NewedoSheetMixin = Base => {
             }
         };
 
-        /* -------------------------------- SHEET MODE CONTROLS -------------------------------- */
+        /* -------------------------------------------------------------------------------------- */
+        /*                                                                                        */
+        /*                                   MODE CONTROLS                                        */
+        /*                                                                                        */
+        /* -------------------------------------------------------------------------------------- */
         _sheetMode = this.constructor.SHEET_MODES.PLAY;
 
         get sheetMode() {
@@ -41,7 +46,11 @@ export const NewedoSheetMixin = Base => {
             return this._sheetMode === this.constructor.SHEET_MODES.EDIT;
         }
 
-        /* -------------------------------- TAB GROUPINGS -------------------------------- */
+        /* -------------------------------------------------------------------------------------- */
+        /*                                                                                        */
+        /*                                   SHEET TABS                                           */
+        /*                                                                                        */
+        /* -------------------------------------------------------------------------------------- */
         tabGroups = {};
 
         static TABS = {};
@@ -55,6 +64,8 @@ export const NewedoSheetMixin = Base => {
                 config: CONFIG.NEWEDO,
                 system: doc.system,
                 flags: doc.flags,
+                userFlags: game.user.flags,
+                user: game.user,
                 name: doc.name,
                 items: doc.items,
                 itemTypes: doc.itemTypes,
@@ -64,7 +75,7 @@ export const NewedoSheetMixin = Base => {
                 isPlayMode: this.isPlayMode,
                 isEditable: this.isEditable
             }
-
+            LOGGER.debug('SHEET | BASE | PREPARE CONTEXT', context);
             return context;
 
         }
@@ -82,7 +93,15 @@ export const NewedoSheetMixin = Base => {
             }, {});
         }
 
-        /* -------------------------------- ACTION EVENTS -------------------------------- */
+        /* -------------------------------------------------------------------------------------- */
+        /*                                                                                        */
+        /*                                   SHEET ACTIONS                                        */
+        /*                                                                                        */
+        /* -------------------------------------------------------------------------------------- */
+        _onClickAction(event, target) {
+            LOGGER.error(`Sheet missing action handler for uuid ${this.document.uuid}:`, target.dataset.action);
+        }
+
         static _onEditImage(event, target) {
             if (!this.isEditable) return;
             const current = this.document.img;
@@ -96,16 +115,16 @@ export const NewedoSheetMixin = Base => {
             fp.browse();
         }
 
-        /* -------------------------------- RENDER FUNCTIONS -------------------------------- */
+        /* -------------------------------------------------------------------------------------- */
+        /*                                                                                        */
+        /*                                   RENDERING                                            */
+        /*                                                                                        */
+        /* -------------------------------------------------------------------------------------- */
         async render(options, _options) {
-            LOGGER.trace(`BASE SHEET | render(); `, this);
-            LOGGER.log(`BASE SHEET | render(); `, options);
-            LOGGER.log(`BASE SHEET | render(); `, _options);
             return super.render(options, _options);
         }
 
         _onFirstRender(context, options) {
-            LOGGER.debug('_onFirstRender', context)
             let r = super._onFirstRender(context, options);
             this._setupContextMenu();
 
@@ -113,27 +132,24 @@ export const NewedoSheetMixin = Base => {
         }
 
         _onRender(context, options) {
-            LOGGER.debug('_onRender', context);
             let r = super._onRender(context, options);
-            
+
             if (!this.isEditable) {
                 // Disables sheet inputs for non owners
                 this.element.querySelectorAll("input, select, textarea, multi-select").forEach(n => {
                     n.disabled = true;
                 })
             }
-            
+
             this._setupDragAndDrop();
             return r;
         }
 
         async _renderHTML(context, options) {
-            LOGGER.debug('_renderHTML', context)
             return super._renderHTML(context, options);
         }
 
         async _renderFrame(options) {
-            LOGGER.debug("Injecting sheet lock button", this);
             const frame = super._renderFrame(options);
 
             // Insert additional buttons into the window header
@@ -148,7 +164,11 @@ export const NewedoSheetMixin = Base => {
             return frame;
         }
 
-        /* -------------------------------- DRAG AND DROP -------------------------------- */
+        /* -------------------------------------------------------------------------------------- */
+        /*                                                                                        */
+        /*                                   DRAG N DROP                                          */
+        /*                                                                                        */
+        /* -------------------------------------------------------------------------------------- */
         _setupDragAndDrop() {
             const dd = new DragDrop({
                 dragSelector: "[data-item-uuid]",
@@ -233,7 +253,6 @@ export const NewedoSheetMixin = Base => {
                 }
                 default: return;
             }
-            LOGGER.debug(`Default drop handler`, itemData);
             foundry.utils.mergeObject(itemData, modification, { performDeletions: true });
             getDocumentClass(type).create(itemData, { parent: this.document });
         }
@@ -290,7 +309,14 @@ export const NewedoSheetMixin = Base => {
             }
         }
 
+        /* -------------------------------------------------------------------------------------- */
+        /*                                                                                        */
+        /*                                   CONTEXT MENU                                         */
+        /*                                                                                        */
+        /* -------------------------------------------------------------------------------------- */
+
         _setupContextMenu() {
+            LOGGER.debug('SHEET | BASE | CONTEXT MENU');
             new newedo.applications.NewedoContextMenu(this.element, "[data-item-uuid]", [], {
                 onOpen: element => {
                     const item = fromUuidSync(element.dataset.itemUuid);
@@ -329,11 +355,6 @@ export const NewedoSheetMixin = Base => {
             lock.classList.toggle('fa-lock');
             lock.classList.toggle('fa-lock-open');
             this.render(true);
-        }
-
-        async createEmbeddedDocuments(type, list) {
-            LOGGER.log('Creating new items', list);
-            return super.createEmbeddedDocuments(type, list);
         }
     }
 }

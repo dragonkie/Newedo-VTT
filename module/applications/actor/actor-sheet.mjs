@@ -19,7 +19,8 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
             skillDice: this._onSkillDice,
             roll: this._onRoll,
             rollFate: this._onRollFate,
-            editLedger: this._onEditLedger
+            editLedger: this._onEditLedger,
+            fateDisplay: this._onChangeFateDisplay,
         }
     }
 
@@ -53,7 +54,11 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
         return `systems/${game.system.id}/templates/actor/actor-${this.document.type}-sheet.hbs`;
     }
 
-    /* --------------------------------------------- Prepare actor sheet --------------------------------------------- */
+    /* -------------------------------------------------------------------------------------- */1
+    /*                                                                                        */
+    /*                                   DATA PREPERATION                                     */
+    /*                                                                                        */
+    /* -------------------------------------------------------------------------------------- */
 
     /** @override */
     async _prepareContext() {
@@ -61,10 +66,7 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
 
         // Use a safe clone of the actor data for further operations.
         const actorData = this.document.toObject(false);
-
-        // Add the actor's data to context.data for easier access, as well as flags.
-        context.system = actorData.system;
-        context.flags = actorData.flags;
+        // Add the actor's data to cfontext.data for easier access, as well as flags.
         context.items = actorData.items;
         context.editable = this.isEditable && (this._mode === this.constructor.SHEET_MODES.EDIT);
 
@@ -74,7 +76,6 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
         }
 
         // Add roll data for TinyMCE editors.
-        context.actor = this.document;
         context.rollData = this.document.getRollData();
 
         // Prepare active effects
@@ -82,6 +83,7 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
 
         this._prepareItems(context);
 
+        LOGGER.debug('SHEET | ACTOR | PREPARE CONTEXT', context);
         return context;
     }
 
@@ -161,19 +163,15 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
             }
         }
 
-        //organize fates list by their range
-        function fateCompare(a, b) {
-            if (a.system.range.max > b.system.range.max) return -1;
-            if (a.system.range.max < b.system.range.max) return 1;
-            return 0;
-        }
-        let fates = [];
-        context.fates = [];
-        context.fates = fates.concat(context.itemTypes.fate);
-        context.fates.sort(fateCompare);
+        //Proxies the fate list so we don't disorganize it
+        context.fates = [].concat(context.itemTypes.fate);
     }
 
-    /* ------------------------------------------- Action Event Handlers ------------------------------------------- */
+    /* -------------------------------------------------------------------------------------- */
+    /*                                                                                        */
+    /*                                   SHEET ACTIONS                                        */
+    /*                                                                                        */
+    /* -------------------------------------------------------------------------------------- */
     static async _onEditItem(event, target) {
         const uuid = target.closest(".item[data-item-uuid]").dataset.itemUuid;
         const item = await fromUuid(uuid);
@@ -190,28 +188,44 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
         // Grabs an optional argument to pass to the item, useful for when an item has multiple use cases such as weapons attacking / damaging
         const action = target.closest("[data-use]")?.dataset.use;
 
-        return item.use(action);
+        return item.system.use(action);
     };
 
     static async _onEditLedger(event, target) {
-        let key = target.dataset?.path;
-        let label = target.dataset?.label;
+        let path = target.dataset?.target;// the value this ledger is targeting
+        let label = target.dataset?.label;// the display name of this ledger, localizeable
+        let id = target.dataset?.id;// identifier for which ledger is the one we want to pull up
 
-        if (!key) {
-            LOGGER.error('Missing ledger key')
+
+        if (!id) {
+            LOGGER.error('Missing ledger id')
             return null;
         }
 
-        function index(obj, i) {return obj[i]}
-        let ledger = key.split('.').reduce(index, this.document)
-        let transactions = ledger.transactions;
+        let ledgers = this.document.getFlag('newedo', 'ledger');
 
-        if (!transactions) {
-            LOGGER.error('Ledger points to invalid transaction record');
-            return;
+        // creates the ledger flag if it doesnt exist
+        if (!ledgers) {
+            LOGGER.debug('Creating ledger flag...')
+            await this.document.setFlag('newedo', 'ledger', {});
+            ledgers = this.document.getFlag('newedo', 'ledger');
+        }
+        // If the ledger flag doesnt have our id, add it to the list
+        if (!ledgers[id]) {
+            // adds the new ledger to the list
+            let newLedger = {
+                [id]: {
+                    id: id,
+                    label: label,
+                    transactions: [],
+                    target: path
+                }
+            }
+            await this.document.setFlag('newedo', 'ledger', newLedger);
+            ledgers = this.document.getFlag('newedo', 'ledger');
         }
 
-        let app = new newedo.applications.NewedoLedger(this.document, ledger, key, label).render(true);
+        new newedo.applications.NewedoLedger(this.document, ledgers[id]).render(true);
     }
 
     static async _onDeleteItem(event, target) {
@@ -224,6 +238,13 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
             modal: true
         });
         if (confirm) return item.delete();
+    }
+
+    static _onChangeFateDisplay() {
+        let settings = game.user.getFlag('newedo', 'settings');
+        if (!settings) game.user.setFlag('newedo', 'settings', { fateDisplay: 'range' }).then(() => this.render(false));
+        else if (settings.fateDisplay == 'range') game.user.setFlag('newedo', 'settings', { fateDisplay: '%' }).then(() => this.render(false));
+        else game.user.setFlag('newedo', 'settings', { fateDisplay: 'range' }).then(() => this.render(false));
     }
 
     //_________________________________________________________________________________________________Roll Events
@@ -310,8 +331,8 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
         let description = "";
 
         for (let fate of this.document.itemTypes.fate) {
-            let _bot = fate.system.range.min;
-            let _top = fate.system.range.max;
+            let _bot = fate.system.start;
+            let _top = fate.system.end;
 
             //checks that the roll result is in range, regardless if the start and end of the range are configured properly
             if (roll.total >= Math.min(_bot, _top) && roll.total <= Math.max(_bot, _top)) {
@@ -340,10 +361,14 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
     static async _onSkillDice(event, target) {
         event.preventDefault();
         const _id = target.closest('.item[data-item-uuid]').dataset.itemUuid.match(/\w+$/)[0];
-        return this.document.items.get(_id)?._cycleSkillDice(event);
+        return this.document.items.get(_id)?.system._cycleSkillDice(target.dataset.index, event.shiftKey);
     };
 
-    /* -------------------------------------------- Drag Drop -------------------------------------------- */
+    /* -------------------------------------------------------------------------------------- */
+    /*                                                                                        */
+    /*                                  DRAG & DROP                                           */
+    /*                                                                                        */
+    /* -------------------------------------------------------------------------------------- */
     async _onDrop(event) {
         if (!this.document.isOwner) return false;// Disables drops if you dont own this sheet
         super._onDrop(event);

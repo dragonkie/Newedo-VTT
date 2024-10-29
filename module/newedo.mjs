@@ -1,36 +1,30 @@
-//imported objects
+//import configuration
 import { NEWEDO } from "./config.mjs";
+import registerSystemSettings from "./helpers/settings.mjs";
+import registerHooks from "./helpers/hooks/_module.mjs";
+
+// Import helpers
 import LOGGER from "./helpers/logger.mjs";
 import sysUtil from "./helpers/sysUtil.mjs";
-
-import applications from "./applications/_module.mjs";
-import * as documents from "./documents/_module.mjs";
-import dialog from "./dialog/_module.mjs"
-
-import NewedoItemSheet from "./applications/item/item-sheet.mjs";
-
-import { actorConstructor, itemConstructor } from "./documents/proxy-manager.js";
-import { Dice, NewedoRoll } from "./helpers/dice.mjs";
-
-//imported functions
 import preloadHandlebarsTemplates from "./helpers/preload-templates.mjs";
+import { elements } from "./elements/_module.mjs";
 
-//system settings
-import registerSystemSettings from "./helpers/settings.mjs";
-import selectors from "./helpers/selectors.mjs";
+// Import submodules
+
+import { applications } from "./applications/_module.mjs";
+import * as documents from "./documents/_module.mjs";
+import * as dataModels from "./data/_module.mjs"
+import registerHelpers from "./helpers/registerHelpers.mjs";
 
 LOGGER.log('Loading Newedo.mjs...')
 
 globalThis.newedo = {
-    applications: applications,
-    documents: documents.documentClasses,
-    dataModels: documents.dataModels,
+    applications,
+    documents: documents,
+    dataModels: dataModels,
     CONFIG: NEWEDO,
     util: sysUtil,
-    element: {
-        select: selectors
-    },
-    dialog: dialog
+    elements,
 }
 
 /* -------------------------------------------- */
@@ -41,99 +35,64 @@ Hooks.once('init', async function () {
 
     // Add custom constants for configuration.
     CONFIG.NEWEDO = NEWEDO;
-    /**
-     * Set an initiative formula for the system
-     * @type {String}
-     */
-    CONFIG.Combat.initiative = {
-        formula: "@traits.derived.init.value",
-        decimals: 2
-    };
+    CONFIG.Combat.initiative = { formula: "@traits.derived.init.value", decimals: 0 };
 
-    // Define custom Document classes
-    LOGGER.log("Setting document classes");
-    CONFIG.Actor.documentClass = actorConstructor;
-    CONFIG.Item.documentClass = itemConstructor;
+    // Prepare document classes
+    CONFIG.Actor.documentClass = documents.NewedoActor;
+    CONFIG.Item.documentClass = documents.NewedoItem;
+
+    // Link up system data models
+    CONFIG.Actor.dataModels = dataModels.actor.config;
+    CONFIG.Item.dataModels = dataModels.item.config;
+
+    //register the system specific settings
+    registerSystemSettings();
+
+    // Prepare handlebars tempaltes
+    preloadHandlebarsTemplates();
 
     // Remove the default foundry sheets
     Actors.unregisterSheet("core", ActorSheet);
     Items.unregisterSheet("core", ItemSheet);
 
-    // Register Actor sheets
-    Actors.registerSheet("newedo", applications.CharacterSheet, {
-        makeDefault: true,
-        label: "NEWEDO.ActorSheet.character",
-        types: ['character']
-    });
-    Actors.registerSheet("newedo", applications.NpcSheet, {
-        makeDefault: true,
-        label: "NEWEDO.ActorSheet.npc",
-        types: ['npc']
-    });
-    Actors.registerSheet("newedo", applications.CharacterSheet, {
-        makeDefault: true,
-        label: "NEWEDO.ActorSheet.pet",
-        types: ['pet']
-    });
-    Actors.registerSheet("newedo", applications.CharacterSheet, {
-        makeDefault: true,
-        label: "NEWEDO.ActorSheet.vehicle",
-        types: ['vehicle']
-    });
+    for (const sheet of applications.sheets.actor.config) {
+        Actors.registerSheet("newedo", sheet.application, sheet.options);
+    }
 
-    // Register Item sheets
-    Items.registerSheet("newedo", applications.NewedoItemSheet, {
+    // Default sheet, used when a custom sheet isn't available
+    Items.registerSheet("newedo", applications.sheets.item.NewedoItemSheet, {
         makeDefault: true,
         label: "NEWEDO.ItemSheet.item"
     });
 
-    //register the system specific settings
-    registerSystemSettings();
+    Items.registerSheet("newedo", applications.sheets.item.SkillSheet, {
+        makeDefault: true,
+        label: "NEWEDO.ItemSheet.skill",
+        types: ['skill']
+    });
 
-    // Preload Handlebars templates.
-    return LOGGER.log("Loading templates", preloadHandlebarsTemplates());
-});
+    Items.registerSheet("newedo", applications.sheets.item.WeaponSheet, {
+        makeDefault: true,
+        label: "NEWEDO.ItemSheet.weapon",
+        types: ['weapon']
+    });
 
-/* -------------------------------------------- */
-/*  Handlebars Helpers                          */
-/* -------------------------------------------- */
-Handlebars.registerHelper('concat', function () {
-    let outStr = '';
-    for (let arg in arguments) {
-        if (typeof arguments[arg] != 'object') {
-            outStr += arguments[arg];
-        }
-    }
-    return outStr;
+    Items.registerSheet("newedo", applications.sheets.item.RoteSheet, {
+        makeDefault: true,
+        label: "NEWEDO.ItemSheet.rote",
+        types: ['rote']
+    });
 });
-
-Handlebars.registerHelper('toLowerCase', function (str) {
-    return str.toLowerCase();
-});
-
-Handlebars.registerHelper('divide', (a, b) => a / b);
-Handlebars.registerHelper('multiply', (a, b) => a * b);
-Handlebars.registerHelper('addition', (a, b) => a + b);
-Handlebars.registerHelper('subtraction', (a, b) => a - b);
-Handlebars.registerHelper('percent', (a, b) => a / b * 100);
-Handlebars.registerHelper('disabled', (a) => a == true ? 'disabled' : '');
-Handlebars.registerHelper('selectDamage', (v, n) => newedo.element.select.DamageTypes(v, n));
-Handlebars.registerHelper('selectSkill', (v, n) => newedo.element.select.Skills(v, n));
-Handlebars.registerHelper('selectWeaponSkill', (v, n) => newedo.element.select.WeaponSkills(v, n));
-Handlebars.registerHelper('selectTrait', (v, n) => newedo.element.select.Traits(v, n));
-Handlebars.registerHelper('ledger', (path, label) => { 
-    return `<a data-action="editLedger" data-path="${path}" data-label="${label}"><i class="fa-solid fa-memo-pad"></i></a>` 
-});
-Handlebars.registerHelper('isGM', () => game.user.isGM);
 
 /* -------------------------------------------- */
 /*  Ready Hook                                  */
 /* -------------------------------------------- */
+registerHooks();
 
-Hooks.once("ready", async function () {
-    // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
-    Hooks.on("hotbarDrop", (bar, data, slot) => createItemMacro(data, slot));
-});
+/* -------------------------------------------- */
+/*  Handlebars Helpers                          */
+/* -------------------------------------------- */
+registerHelpers();
 
 /* -------------------------------------------- */
 /*  Hotbar Macros                               */

@@ -6,17 +6,33 @@
 
     <!-- Derived stats? -->
     <div>
-        <span>&#x2022 {{localize 'NEWEDO.trait.derived.abbr.def'}}: <b>{{system.traits.derived.def.value}}</b></span>
-        <span>&#x2022 {{localize 'NEWEDO.trait.derived.abbr.res'}}: <b>{{system.traits.derived.res.value}}</b></span>
-        <span>&#x2022 {{localize 'NEWEDO.trait.derived.abbr.move'}}: <b>{{system.traits.derived.move.value}}</b></span>
-        <span>&#x2022 {{localize 'NEWEDO.trait.derived.abbr.init'}}: <b>{{system.traits.derived.init.value}}</b></span>
         {{#if isPlayMode}}
+            <span>&#x2022 {{localize 'NEWEDO.trait.derived.abbr.def'}}: <b>{{system.traits.derived.def.total}}</b></span>
+            <span>&#x2022 {{localize 'NEWEDO.trait.derived.abbr.res'}}: <b>{{system.traits.derived.res.total}}</b></span>
+            <span>&#x2022 {{localize 'NEWEDO.trait.derived.abbr.move'}}: <b>{{system.traits.derived.move.total}}</b></span>
+            <span>&#x2022 {{localize 'NEWEDO.trait.derived.abbr.init'}}: <b>{{system.traits.derived.init.total}}</b></span>
             <span>&#x2022 {{ localize "NEWEDO.attribute.size" }}: <b>{{system.size.value}}</b></span>
         {{/if}}
         {{#if isEditMode}}
             <span>
+                &#x2022 {{localize 'NEWEDO.trait.derived.abbr.def'}}:
+                <input style="width: 2.5rem; height: 1rem; text-align: center; padding: 0;" name="system.traits.derived.def.mod" type="number" value="{{system.traits.derived.def.mod}}">
+            </span>
+            <span>
+                &#x2022 {{localize 'NEWEDO.trait.derived.abbr.res'}}:
+                <input style="width: 2.5rem; height: 1rem; text-align: center; padding: 0;" name="system.traits.derived.res.mod" type="number" value="{{system.traits.derived.res.mod}}">
+            </span>
+            <span>
+                &#x2022 {{localize 'NEWEDO.trait.derived.abbr.move'}}:
+                <input style="width: 2.5rem; height: 1rem; text-align: center; padding: 0;" name="system.traits.derived.move.mod" type="number" value="{{system.traits.derived.move.mod}}">
+            </span>
+            <span>
+                &#x2022 {{localize 'NEWEDO.trait.derived.abbr.init'}}:
+                <input style="width: 2.5rem; height: 1rem; text-align: center; padding: 0;" name="system.traits.derived.init.mod" type="number" value="{{system.traits.derived.init.mod}}">
+            </span>
+            <span>
                 &#x2022 {{ localize "NEWEDO.attribute.size" }}:
-                <input style="width: 3rem; height: 1rem; text-align: center; padding: 0;" name="system.size.value" type="number" value="{{system.size.value}}">
+                <input style="width: 2.5rem; height: 1rem; text-align: center; padding: 0;" name="system.size.value" type="number" value="{{system.size.value}}">
             </span>
         {{/if}}
     </div>

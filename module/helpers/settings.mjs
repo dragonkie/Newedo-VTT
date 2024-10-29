@@ -1,30 +1,46 @@
+import { config } from "../applications/actor/_module.mjs";
 import LOGGER from "./logger.mjs";
 
 export default function registerSystemSettings() {
     LOGGER.log(`Registering system settings`);
-    //toggles the debug log visiblity in the console
+    // Toggles the debug log visiblity in the console
     game.settings.register(game.system.id, "debugLogs", {
-        name: "toggle debug logs",
-        hint: "Numeric value from 0-10, specifies diffrent debug scopes, 0 is off, 1 shows main functions, 2 shows internal function calls, etc",
+        name: "Debug Logs",
+        hint: "Enables debug logs in the console",
         scope: "client",
-        config: true,
-        type: Number,
-        default: false,
+        config: false,
+        type: Boolean,
+        default: 0,
         onChange: (value) => {
-            LOGGER.log(`Changed debugLog to ${value}`);
+            LOGGER.log(`SETTING | debugLog set to ${value}`);
         }
     });
-    //toggles between light and dark mode sheets
-    game.settings.register(game.system.id, "darkmode", {
-        name: "Darkmode",
-        hint: "when toggled, sheets will render out using dark mode styles",
-        scope: "client",
+
+    // Toggles if npcs should be able to use detailed skill ranks
+    game.settings.register(game.system.id, "npcSkillRanks", {
+        name: "NPC skill ranks",
+        hint: "Enables NPC using skill ranks instead of a skill level",
+        scope: "world",
         config: true,
-        requiresReload: true,
         type: Boolean,
         default: false,
         onChange: (value) => {
-            LOGGER.log(`Changed darkmode to ${value}`);
+            LOGGER.log(`SETTING | npcSkillRanks set to ${value}`);
         }
     });
+
+    // NPC critical hits, allowed once per round, reseting
+    game.settings.register(game.system.id, "npcCritical", {
+        name: "NPC critical hits",
+        hint: "Adds a 5% chance for NPC actions to crit while still lacking fate cards",
+        scope: "world",
+        config: true,
+        type: Boolean,
+        default: false,
+        onChange: (value) => {
+            LOGGER.log(`SETTING | npcCritical set to ${value}`);
+        }
+    });
+
+    //
 };

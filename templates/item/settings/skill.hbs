@@ -5,19 +5,21 @@
     </div>
     <div class="form-group">
         <div>Ranks:</div>
-        <div>
+        <div class="flexrow" style="gap: 4px; align-items:flex-start;">
             {{#each system.ranks as | rank index |}}
-                <input type="button" data-index="{{index}}" class="skill-dice" value="{{rank}}" />
+                <span style="background-color: var(--color-cool-4); border-radius: 2px; padding: 4px; text-align: center;" data-action="changeSkillRank" data-index="{{index}}">
+                    {{rank}}
+                </span>
             {{/each}}
         </div>
     </div>
     <div class="form-group">
         <div>Use Trait Dice:</div>
-        <input type="checkbox" {{checked system.rollTrait}} name="system.rollTrait" />
+        <input type="checkbox" {{checked system.useTraitRank}} name="system.useTraitRank" />
     </div>
     <div class="form-group">
         <div>Use as Weapon Skill:</div>
-        <input type="checkbox" {{checked system.weaponSkill}} name="system.weaponSkill" />
+        <input type="checkbox" {{checked system.isWeaponSkill}} name="system.isWeaponSkill" />
     </div>
     <div>
         Features:

@@ -310,7 +310,7 @@
 }
 .newedo .items-list .item-controls {
   display: flex;
-  flex: 0 0 100px;
+  flex: 0 1;
   justify-content: flex-end;
 }
 .newedo .items-list .item-controls a {
@@ -374,14 +374,14 @@
   border: none;
 }
 .newedo .banner-newedo {
-  margin-bottom: 4px;
+  border: 0;
 }
-.newedo.character .window-content {
+.newedo.character .window-content, .newedo.npc .window-content {
   overflow: hidden;
   display: flex;
   flex-direction: row;
 }
-.newedo.character .window-content .panel {
+.newedo.character .window-content .panel, .newedo.npc .window-content .panel {
   display: flex;
   flex: 0 0 200px;
   flex-direction: column;
@@ -390,42 +390,42 @@
   text-align: center;
   overflow: auto;
 }
-.newedo.character .window-content .panel > * {
+.newedo.character .window-content .panel > *, .newedo.npc .window-content .panel > * {
   margin-bottom: 10px;
 }
-.newedo.character .window-content .panel .fate-card {
+.newedo.character .window-content .panel .fate-card, .newedo.npc .window-content .panel .fate-card {
   flex: 0;
   width: 100%;
   font-size: 14px;
 }
-.newedo.character .window-content .panel .fate-card .fate-list {
+.newedo.character .window-content .panel .fate-card .fate-list, .newedo.npc .window-content .panel .fate-card .fate-list {
   width: 100%;
   padding: 0;
   margin: 0;
 }
-.newedo.character .window-content .panel .fate-card .fate-list > * {
+.newedo.character .window-content .panel .fate-card .fate-list > *, .newedo.npc .window-content .panel .fate-card .fate-list > * {
   border-bottom: 1px solid gray;
 }
-.newedo.character .window-content .panel .fate-card .fate-list > * :first-child {
+.newedo.character .window-content .panel .fate-card .fate-list > * :first-child, .newedo.npc .window-content .panel .fate-card .fate-list > * :first-child {
   text-align: right;
 }
-.newedo.character .window-content .panel .fate-card .fate-list > * :last-child {
+.newedo.character .window-content .panel .fate-card .fate-list > * :last-child, .newedo.npc .window-content .panel .fate-card .fate-list > * :last-child {
   margin-left: 15px;
   text-align: left;
   flex: 2;
 }
-.newedo.character .window-content .panel .fate-card .fate-list :last-child {
+.newedo.character .window-content .panel .fate-card .fate-list :last-child, .newedo.npc .window-content .panel .fate-card .fate-list :last-child {
   border: 0;
 }
-.newedo.character .window-content .body {
+.newedo.character .window-content .body, .newedo.npc .window-content .body {
   padding: 10px;
   flex: 1;
 }
-.newedo.character .window-content .skill-lists {
+.newedo.character .window-content .skill-lists, .newedo.npc .window-content .skill-lists {
   align-items: start;
   gap: 8px;
 }
-.newedo.character .window-content .skill-lists li.item {
+.newedo.character .window-content .skill-lists li.item, .newedo.npc .window-content .skill-lists li.item {
   padding: 1px 0 0 0;
 }
 .newedo.sheet.item .tab {
@@ -490,7 +490,7 @@
   grid-row-start: 1;
 }
 .newedo .bar .fill {
-  background-color: rgb(74, 186, 74);
+  background-color: rgb(0, 162, 30);
   width: 50%;
   height: var(--height);
   border-radius: calc(var(--height) / 2 + var(--padding));
@@ -503,11 +503,14 @@
 }
 .newedo .bar .value {
   text-align: center;
+  display: flex;
+  flex-direction: row;
 }
 .newedo .bar .value > * {
   font-weight: bold;
   padding: 0;
   font-size: 1.2em;
+  flex: 1;
 }
 .newedo .bar .value input {
   height: var(--height);

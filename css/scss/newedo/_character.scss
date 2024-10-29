@@ -1,5 +1,5 @@
 //general classes
-&.character .window-content {
+&.character .window-content, &.npc .window-content {
     overflow: hidden;
     display: flex;
     flex-direction: row;

@@ -1,25 +1,18 @@
-import NewedoActorSheet from "./actor/actor-sheet.mjs";
-import NewedoItemSheet from "./item/item-sheet.mjs";
+import { NewedoSheetMixin } from "./base-sheet.mjs";
+import * as ActorSheets from "./actor/_module.mjs";
+import { ItemSheets, NewedoItemSheet } from "./item/_module.mjs";
+
+import { default as NewedoApplication } from "./base-application.mjs";
 import NewedoContextMenu from "./context-menu.mjs";
-
-import CharacterSheet from "./actor/types/character.mjs";
-import NpcSheet from "./actor/types/npc.mjs";
-import PetSheet from "./actor/types/pet.mjs";
-import VehicleSheet from "./actor/types/vehicle.mjs";
-
-import ItemWeaponSheet from "./item/types/weapon.mjs";
-import NewedoApplication from "./base-application.mjs";
 import NewedoLedger from "./ledger.mjs";
 
-export default {
-    NewedoActorSheet,
-    NewedoItemSheet,
-    CharacterSheet,
-    NpcSheet,
-    PetSheet,
-    VehicleSheet,
-    ItemWeaponSheet,
-    NewedoContextMenu,
+export const applications = {
+    sheets: {
+        actor: ActorSheets,
+        item: ItemSheets,
+        mixin: NewedoSheetMixin
+    },
     NewedoApplication,
-    NewedoLedger
+    NewedoContextMenu,
+    NewedoLedger,
 }

@@ -5,7 +5,7 @@ import sysUtils from "../helpers/sysUtil.mjs"
 export default class NewedoLedger extends NewedoApplication {
 
     // The character responsible for this ledger
-    actor = null;
+    document = null;
     ledger = {};
     key = null;
     label = null;
@@ -17,22 +17,22 @@ export default class NewedoLedger extends NewedoApplication {
 
     /**
      * 
-     * @param {NewedoActor} actor the owning actor
+     * @param {*} document the owning document
      * @param {Object} transactions the list with all previous transactions
      * @param {String} key the path pointing to this ledgers location on the document, neccessary to update the server
      * @returns 
      */
-    constructor(actor, ledger, key, label) {
+    constructor(document, ledger) {
         super();
-        if (!actor) {
-            sysUtils.error('Cannot open ledger without a linked actor')
+        if (!document) {
+            sysUtils.error('Cannot open ledger without a linked document')
             return {};
         }
 
-        this.actor = actor;
+        LOGGER.log('creating ledger:', ledger);
+
+        this.document = document;
         this.ledger = ledger;
-        this.key = key;
-        this.label = label;
     }
 
     static DEFAULT_OPTIONS = {
@@ -89,7 +89,7 @@ export default class NewedoLedger extends NewedoApplication {
         let buttons = this.element.querySelectorAll('[data-operation]');
 
         for (const btn of buttons) {
-            btn.addEventListener('click', (event) => {
+            btn.addEventListener('click', async (event) => {
 
                 let newRecord = {
                     user: game.user.name,
@@ -104,12 +104,19 @@ export default class NewedoLedger extends NewedoApplication {
 
                 // Modifies the ledger with the new data
                 this.ledger.transactions.push(newRecord)
-                this.ledger[this.ledger.record] = this.sum;
 
-                // Push the updated ledger to the server
-                if (this.key != null) this.actor.update({ [this.key]: this.ledger })
+                // Push the updated ledger to the right flag
+                LOGGER.log('Updating document flag')
+                await this.document.setFlag('newedo', 'ledger', {
+                    [this.ledger.id]: this.ledger
+                });
+                // update the local and database actors targeted value to the new sum
+                LOGGER.log('Updating parent document');
+                await this.document.update({ [this.ledger.target]: this.sum });
                 // renders the sheet on screen to match new input
                 this.render(true);
+                this.document.render(false);
+
             })
         }
 
@@ -125,9 +132,16 @@ export default class NewedoLedger extends NewedoApplication {
         const index = 1 * target.closest('[data-index]').dataset.index - 1;
         LOGGER.debug('Removing index', index);
         this.ledger.transactions.splice(index, 1);
-        this.ledger[this.ledger.record] = this.sum;
-        if (this.key != null) await this.actor.update({ [this.key]: this.ledger });
-        this.render(true);
+
+        this.document.setFlag('newedo', 'ledger', {
+            [this.ledger.id]: this.ledger
+        });
+
+        LOGGER.log('Updating parent document');
+        this.document.update({ [this.ledger.target]: this.sum }).then(() => {
+            // renders the sheet on screen to match new input
+            this.render(true);
+        });
     }
 
     static async _onSortByValue() {
@@ -146,12 +160,13 @@ export default class NewedoLedger extends NewedoApplication {
     }
 
     async _prepareContext() {
+        LOGGER.log('ledger context', this);
         const context = await super._prepareContext();
         context.app = this;
         context.id = this.id;
-        context.actor = this.actor;
+        context.document = this.document;
         context.ledger = this.ledger;
-        context.label = this.label;
+        context.label = this.ledger.label;
 
         context.transactions = this.ledger.transactions.toReversed();
         if (this.sorting.priority == 'id') {
@@ -189,17 +204,17 @@ export default class NewedoLedger extends NewedoApplication {
             t.id = a;
             a++;
             switch (t.operation) {
-                case 'add':
+                case '+':
                     s += t.value;
                     break;
-                case 'sub':
+                case '-':
                     s -= t.value;
                     break;
-                case 'set':
+                case '=':
                     s = t.value;
                     break;
                 default:
-                    LOGGER.error('Invalid operation found in ledger, Ignoring', t.operation);
+                    LOGGER.error('Invalid operation found in ledger. Omitting from results', t.operation);
                     break;
             }
         }
