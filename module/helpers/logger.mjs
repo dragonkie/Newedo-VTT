@@ -31,19 +31,17 @@ export default class LOGGER {
      * @param {String} message Text to output, will be marked as from the game system in console
      * @param {*} value optional param that can contain and output objects, methods, etc
      */
-    static debug(msg = ``, value = ``, priority = 1) {
+    static debug(msg = ``, value = ``) {
         if (game.settings.get(game.system.id, "debugLogs")) {
             console.log(`NEWEDO DBG | ${msg}`, value);
         }
     }
 
-    static groupCollapsed(msg = '', priority = 1) {
-        if (game.settings.get(game.system.id, "debugLogs") >= priority) {
-            console.groupCollapsed('NEWEDO DBG | ' + msg)
-        }
+    static group(msg = '') {
+        console.groupCollapsed('NEWEDO | ' + msg);
     }
 
     static groupEnd() {
-        console.groupEnd()
+        console.groupEnd();
     }
 }

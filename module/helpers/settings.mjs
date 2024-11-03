@@ -8,9 +8,9 @@ export default function registerSystemSettings() {
         name: "Debug Logs",
         hint: "Enables debug logs in the console",
         scope: "client",
-        config: false,
+        config: true,
         type: Boolean,
-        default: 0,
+        default: true,
         onChange: (value) => {
             LOGGER.log(`SETTING | debugLog set to ${value}`);
         }

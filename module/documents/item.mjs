@@ -17,10 +17,8 @@ export default class NewedoItem extends Item {
         //includes making any calculations on creation, update, or when loading the server
         //Any items owned by a character will run this function when the server loads
         //when migrating system data, its possible to use prepareData to help manage and correct values alongside the actual migrateData function
-        LOGGER.groupCollapsed('Item | prepareData | '+this.name);
+        LOGGER.group('Item | prepareData | '+this.name);
         LOGGER.debug('Item:', this);
-        LOGGER.debug('UUID:', this.uuid);
-        LOGGER.debug('Type:', this.type)
         super.prepareData();
         LOGGER.groupEnd();
     }

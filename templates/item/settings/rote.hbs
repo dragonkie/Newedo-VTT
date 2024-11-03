@@ -1,30 +1,25 @@
 <div class="tab-content">
     <div class="form-group">
-        <div>Skill:</div>
+        <label>Skill:</label>
         {{{selector.skills}}}
     </div>
 
     <div class="form-group">
-        <div>Legend Cost:</div>
+        <label>Legend Cost:</label>
         <input type="number" placeholder="Cost" name="system.cost" value="{{system.cost}}" />
     </div>
 
     <div class="form-group">
-        <div>Range:</div>
-        <input type="number" placeholder="Range" name="system.range" value="{{system.range}}" />
+        <label>Kami:</label>
     </div>
 
     <div class="form-group">
-        <div>Kami:</div>
-    </div>
-
-    <div class="form-group">
-        <div>Target Number:</div>
+        <label>Target Number:</label>
         <input type="number" placeholder="TN" name="system.tn" value="{{system.tn}}" />
     </div>
 
     <div class="form-group">
-        <div>Action cost:</div>
+        <label>Action cost:</label>
         <select name="system.action">
             <option value="Full">Full</option>
             <option value="Quick">Quick</option>
@@ -32,12 +27,29 @@
     </div>
 
     <div class="form-group">
-        <div>Casting Time:</div>
+        <label>Casting Time:</label>
     </div>
 
     <div class="form-group">
-        <div>Duration:</div>
-        <input type="number" placeholder="Duration" name="system.duration" value="{{system.duration}}" />
+        <label>Duration:</label>
+        <div class="group-details">
+            <input type="checkbox" name="system.rules.rollDuration" {{checked system.rules.rollDuration}}>
+            <input type="number" placeholder="Duration" name="system.duration" value="{{system.duration}}" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Duration:</label>
+        <div class="group-details">
+            <input type="checkbox" name="system.rules.rollRange" {{checked system.rules.rollDuration.active}}>
+            <input type="number" placeholder="Duration" name="system.duration" value="{{system.duration}}" />
+            <select>
+                <option>Round</option>
+                <option>Second</option>
+                <option>Minute</option>
+                <option>Hour</option>
+            </select>
+        </div>
     </div>
 
     <!--

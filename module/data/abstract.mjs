@@ -96,13 +96,18 @@ export class ActorDataModel extends SystemDataModel {
         return schema;
     }
 
+    prepareData() {
+        LOGGER.group("ActorDataModel | prepareData");
+        LOGGER.groupEnd();
+    }
+
     prepareBaseData() {
-        LOGGER.groupCollapsed("ActorDataModel | prepareBaseData");
+        LOGGER.group("ActorDataModel | prepareBaseData");
         LOGGER.groupEnd();
     }
 
     prepareDerivedData() {
-        LOGGER.groupCollapsed("ActorDataModel | prepareDerivedData");
+        LOGGER.group("ActorDataModel | prepareDerivedData");
         const { core, derived } = this.traits;
 
         // Loop through core traits and calculate their rank, traits are not included in the "Round everything up" rule

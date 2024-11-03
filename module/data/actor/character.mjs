@@ -44,13 +44,13 @@ export default class CharacterDataModel extends ActorDataModel {
     }
 
     prepareBaseData() {
-        LOGGER.groupCollapsed('CharacterDataModel | prepareBaseData')
+        LOGGER.group('CharacterDataModel | prepareBaseData')
         super.prepareBaseData();
         LOGGER.groupEnd();
     }
 
     prepareDerivedData() {
-        LOGGER.groupCollapsed('CharacterDataModel | prepareDerivedData')
+        LOGGER.group('CharacterDataModel | prepareDerivedData')
         super.prepareDerivedData();
         //calculates ranks for background, idk why it doesnt scale as just 1 rank per 20 points?
         const background = this.background;

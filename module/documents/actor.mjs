@@ -31,14 +31,14 @@ export default class NewedoActor extends Actor {
     }
 
     prepareData() {
-        LOGGER.groupCollapsed(`ACTOR | prepareData | `+this.name);
-        LOGGER.debug('Actor uuid:', this.uuid);
+        LOGGER.group(`ACTOR | prepareData | `+this.name);
+        LOGGER.debug('Actor:', this);
         super.prepareData();
         LOGGER.groupEnd();
     }
 
     prepareEmbeddedDocuments() {
-        LOGGER.groupCollapsed(`prepareEmbeddedDocuments`)
+        LOGGER.group(`prepareEmbeddedDocuments`);
         super.prepareEmbeddedDocuments();
         LOGGER.groupEnd();
     }

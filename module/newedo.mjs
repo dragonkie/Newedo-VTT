@@ -10,7 +10,6 @@ import preloadHandlebarsTemplates from "./helpers/preload-templates.mjs";
 import { elements } from "./elements/_module.mjs";
 
 // Import submodules
-
 import { applications } from "./applications/_module.mjs";
 import * as documents from "./documents/_module.mjs";
 import * as dataModels from "./data/_module.mjs"
@@ -51,7 +50,9 @@ Hooks.once('init', async function () {
     // Prepare handlebars tempaltes
     preloadHandlebarsTemplates();
 
-    // Remove the default foundry sheets
+    /* -------------------------------------------- */
+    /*  Register Document Sheets                    */
+    /* -------------------------------------------- */
     Actors.unregisterSheet("core", ActorSheet);
     Items.unregisterSheet("core", ItemSheet);
 
@@ -59,7 +60,6 @@ Hooks.once('init', async function () {
         Actors.registerSheet("newedo", sheet.application, sheet.options);
     }
 
-    // Default sheet, used when a custom sheet isn't available
     Items.registerSheet("newedo", applications.sheets.item.NewedoItemSheet, {
         makeDefault: true,
         label: "NEWEDO.ItemSheet.item"

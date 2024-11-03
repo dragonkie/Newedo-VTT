@@ -211,8 +211,8 @@ export default class sysUtil {
             const d = { advantage: false, disadvantage: false, ...f };// spreads the form data across this new object
 
             // sets hte advantage / disadvantage of the roll options
-            if (method == 'advantage') d.advantage = true;  
-            if (method == 'disadvantage') d.disadvantage = true;  
+            if (method == 'advantage') d.advantage = true;
+            if (method == 'disadvantage') d.disadvantage = true;
 
             // Ensures the number text in the bonus field is valid for the roll
             if (d.bonus && d.bonus != "" && !Roll.validate(d.bonus)) {
@@ -248,6 +248,15 @@ export default class sysUtil {
             LOGGER.debug('dialog opts', options)
             new foundry.applications.api.DialogV2(options, null).render(true);
         });
+    }
+
+    static rayCollision(a, b) {
+        const A = canvas.tokens.placeables.find(t => t.name === a);
+        const B = canvas.tokens.placeables.find(t => t.name === b);
+
+        const ray = new Ray({ x: A.x, y: A.y }, { x: B.x, y: B.y });
+        const collisions = WallsLayer.getWallCollisionsForRay(ray, canvas.walls.blockVision);
+        return collisions.length > 0;
     }
 
     /*-----------------------------------------------------------------------------*/

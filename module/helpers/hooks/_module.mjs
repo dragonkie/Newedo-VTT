@@ -5,11 +5,9 @@ export default function registerHooks() {
     /* -------------------------------------------- */
     /*  Ready Hook                                  */
     /* -------------------------------------------- */
-
-    
     Hooks.once("ready", async () => {
         // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
-        Hooks.on("hotbarDrop", (bar, data, slot) => createItemMacro(data, slot));
+        //Hooks.on("hotbarDrop", (bar, data, slot) => createItemMacro(data, slot));
     });
 
     Hooks.on('renderChatLog', (log, ele, data) => {

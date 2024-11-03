@@ -127,16 +127,21 @@ export default class WeaponData extends ItemDataModel {
     }
 
     async use(action) {
-        if (action === 'equip') this._onEquip();
-        if (action === 'attack') this._onUseAttack();
-        if (action === 'damage') this._onUseDamage();
+        switch (action) {
+            case 'equip': return this._onEquip();
+            case 'attack': return this._onAttack();
+            case 'damage': return this._onDamage();
+            default:
+                LOGGER.error('Unknown weapon action: ', action);
+                return null;
+        }
     }
 
     async _onEquip() {
         await this.parent.update({ 'system.equipped': !this.equipped });
     }
 
-    async _onUseAttack() {
+    async _onAttack() {
         // if there isnt an owning actor
         const actor = this.actor;
         if (!actor) return;
@@ -145,7 +150,7 @@ export default class WeaponData extends ItemDataModel {
         const rollData = this.getRollData();
 
         // Create and parse roll options dialog
-        let options = await sysUtil.getRollOptions(rollData, this.constructor.TEMPLATES.attack());
+        let options = await sysUtil.getRollOptions(rollData, this.constructor.TEMPLATES.rollAttack);
         if (options.cancled) return;
 
         LOGGER.debug("Roll data:", rollData);
@@ -237,7 +242,7 @@ export default class WeaponData extends ItemDataModel {
         return r;
     }
 
-    async _onUseDamage() {
+    async _onDamage() {
         const rollData = this.getRollData();
 
         let formula = '';
@@ -292,8 +297,8 @@ export default class WeaponData extends ItemDataModel {
     }
 
     static TEMPLATES = {
-        attack: () => `systems/${game.system.id}/templates/dialog/weapon-attack.hbs`,
-        damage: () => `systems/${game.system.id}/templates/dialog/weapon-damage.hbs`
+        rollAttack: `systems/newedo/templates/dialog/weapon-attack.hbs`,
+        rollDamage: `systems/newedo/templates/dialog/weapon-damage.hbs`
     }
 
     get isRanged() {

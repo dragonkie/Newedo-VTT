@@ -362,6 +362,14 @@
   flex: 0 0 200px;
   padding: 0 8px;
 }
+.newedo .group-details {
+  display: flex;
+  flex-direction: row;
+  gap: 2px;
+}
+.newedo .group-details input[type=checkbox] {
+  flex: 0;
+}
 .newedo .effects .item .effect-source,
 .newedo .effects .item .effect-duration,
 .newedo .effects .item .effect-controls {

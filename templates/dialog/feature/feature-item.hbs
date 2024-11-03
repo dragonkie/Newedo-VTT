@@ -4,16 +4,18 @@
     <div class="drop-target">
 
         <ol class="items-list">
-            <li class="items-header flexrow""><h3 class="item-name">NEWEDO.generic.items</h3></li>
-            <ol class="item-list">
-            {{#each items}}
-
-            <li class="item flexrow"" data-item-uuid="{{uuid}}">
-                <!-- The triple {{{moustache}}} tells handelbars to render this is an html element, instead of raw text -->
-                <div class="item-name">{{{link}}}</div>
+            <li class="items-header flexrow">
+                <h3 class="item-name">NEWEDO.generic.items</h3>
             </li>
+            <ol class="item-list">
+                {{#each items}}
 
-            {{/each}}
+                    <li class="item flexrow" data-item-uuid="{{uuid}}">
+                        <!-- The triple {{{moustache}}} tells handelbars to render this is an html element, instead of raw text -->
+                        <div class="item-name">{{{link}}}</div>
+                    </li>
+
+                {{/each}}
             </ol>
         </ol>
 

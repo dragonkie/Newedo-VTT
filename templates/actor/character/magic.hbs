@@ -10,18 +10,18 @@
 
             <li class="item flexrow" data-item-uuid="{{rote.uuid}}" style="text-align: center;">
                 <!-- Link to the fate opens up the item sheet -->
-                <div style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start;">
+                <span style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start;">
                     <img src="{{rote.img}}" width="30" height="30">
                     <a style="margin-left: 4px;" data-action="editItem">{{rote.name}}</a>
-                </div>
+                </span>
+
                 <a class="item-detail" data-action="use" data-label="{{rote.name}}">{{rote.system.skill.label}}</a>
                 <span class="item-detail">{{rote.system.cost}}</span>
                 <span class="item-detail">{{rote.system.tn}}</span>
 
                 <span class="item-controls">
-                    {{#if ../isEditMode}}
-                        <span data-action="deleteItem"><i class="fa-solid fa-trash"></i></span>
-                    {{/if}}
+                    <a data-action="useItem" data-use="cast"><i class="fa-solid fa-book-blank"></i></a>
+                    {{#if ../isEditMode}}<a data-action="deleteItem"><i class="fa-solid fa-trash"></i></a>{{/if}}
                 </span>
 
             </li>

@@ -12,14 +12,19 @@ export default function registerHelpers() {
         return `<a data-action="editLedger" data-target="${target}" data-id="${id}" data-label="${label}"><i class="fa-solid fa-memo-pad"></i></a>`
     });
     Handlebars.registerHelper('toLowerCase', (str) => str.toLowerCase());
-    // Math operations
+    /* -------------------------------------------- */
+    /*  Math helpers                                */
+    /* -------------------------------------------- */
     Handlebars.registerHelper('divide', (a, b) => a / b);
     Handlebars.registerHelper('multiply', (a, b) => a * b);
     Handlebars.registerHelper('addition', (a, b) => a + b);
     Handlebars.registerHelper('subtraction', (a, b) => a - b);
     Handlebars.registerHelper('percent', (a, b) => a / b * 100);
     Handlebars.registerHelper('disabled', (a) => a == true ? 'disabled' : '');
-    // Selector element generators
+
+    /* -------------------------------------------- */
+    /*  Selector elements                           */
+    /* -------------------------------------------- */
     Handlebars.registerHelper('selectDamage', (v, n) => newedo.elements.select.DamageTypes(v, n));
     Handlebars.registerHelper('selectSkill', (v, n) => newedo.elements.select.Skills(v, n));
     Handlebars.registerHelper('selectWeaponSkill', (v, n) => newedo.elements.select.WeaponSkills(v, n));

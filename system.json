@@ -33,7 +33,7 @@
   "secondaryTokenAttribute": "legend",
   "url": "https://github.com/dragonkie/Newedo-VTT",
   "manifest": "https://raw.githubusercontent.com/dragonkie/Newedo-VTT/main/system.json",
-  "download": "github.com/dragonkie/Newedo-VTT/releases/latest.download/newedo.zip",
+  "download": "github.com/dragonkie/Newedo-VTT/releases/latest/download/newedo.zip",
   "packFolders": [
     {
       "name": "Newedo: Core",
