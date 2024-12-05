@@ -1,0 +1,50 @@
+{{!--
+TODO:
+    Make classes to help distinguish between the different types of values on the sheet
+    style the sheet to keep it more compact compared to the bulky box it is now
+--}}
+
+<form class="roll-dialog">
+    {{#each parts as | part | }}
+        <div class="form-group" data-formula="main">
+            {{!-- Get the parts type and label --}}
+            <label>{{localize part.type}}: <b>{{localize part.label}}</b></label>
+            <input type="checkbox" name="active" checked="checked">
+            <input type="text" name="value" value="{{part.value}}" disabled>
+        </div>
+    {{/each}}
+
+    {{!-- If there are any passive modifiers listed, display them and their toggles here --}}
+    {{#each bonuses as | bonus |}}
+        <div class="form-group" data-formula="bonus">
+            <label>{{localize bonus.label}}</label>
+            <input type="checkbox" name="active" checked="checked">
+            <input type="text" name="value" value="{{bonus.value}}" disabled>
+        </div>
+    {{/each}}
+
+    {{!-- Optional roll modifiers, anything that isnt accounted for can be manually done here --}}
+    <div class="form-group" data-formula="extra">
+        <label>{{localize 'NEWEDO.dialog.situationBonus'}}:</label>
+        <input type="text" name="value" />
+    </div>
+
+    {{!-- Place to optionally spend legend, eventually will be a clickable button set instead of a slider --}}
+    {{#if actor}}
+        <div class="form-group" data-formula="legend">
+            <label>{{localize 'NEWEDO.generic.legend'}}:</label>
+            <div class="flexrow" style="justify-content: center;">
+                <button style="flex: 0;" type="button" name="increase"><i class="fa-solid fa-minus"></i></button>
+                <input style="text-align: center;" type="number" name="value" value="0" min="0" max="5" disabled />
+                <button style="flex: 0;" type="button" name="increase"><i class="fa-solid fa-plus"></i></button>
+            </div>
+        </div>
+    {{/if}}
+
+    {{!-- Wound penalty watcher --}}
+    <div class="form-group" data-formula="wound">
+        <label>{{localize "NEWEDO.generic.plrl.wound"}}: {{wound.label}}</label>
+        <input type="checkbox" name="active" checked="checked" />
+        <input type="number" name="value" disabled value="{{wound.value}}" />
+    </div>
+</form>

@@ -25,21 +25,39 @@ export default class NewedoActor extends Actor {
             });
         }
 
-        LOGGER.debug("CreateData:", createData);
         const actor = await super.create(createData, options);
         return actor;
     }
 
+    /* ----------------------------------------------------------------- */
+    /*                    DATA PREPERATION                               */
+    /* ----------------------------------------------------------------- */
+
     prepareData() {
-        LOGGER.group(`ACTOR | prepareData | `+this.name);
+        LOGGER.group(`Document | Actor | prepareData | ` + this.name);
         LOGGER.debug('Actor:', this);
+        console.trace();
+
         super.prepareData();
+
+        LOGGER.groupEnd();
+    }
+
+    prepareBaseData() {
+        LOGGER.group('Document | Actor | prepareBaseData');
+        super.prepareBaseData();
         LOGGER.groupEnd();
     }
 
     prepareEmbeddedDocuments() {
-        LOGGER.group(`prepareEmbeddedDocuments`);
+        LOGGER.group(`Document | Actor | prepareEmbeddedDocuments`);
         super.prepareEmbeddedDocuments();
+        LOGGER.groupEnd();
+    }
+
+    prepareDerivedData() {
+        LOGGER.group('Document | Actor | prepareDerivedData');
+        super.prepareDerivedData();
         LOGGER.groupEnd();
     }
 
@@ -69,22 +87,8 @@ export default class NewedoActor extends Actor {
      * @Override getRollData() that's supplied to rolls.
      */
     getRollData() {
-        // the base actor does not return a safe copy, so we must make it safe
-        const data = foundry.utils.deepClone(super.getRollData());
-
-        // Copy core traits
-        if (data.traits.core) {
-            for (let [k, v] of Object.entries(data.traits.core)) {
-                data[k] = v;
-            }
-        }
-
-        // Copys derived traits
-        if (data.traits.derived) {
-            for (let [k, v] of Object.entries(data.traits.derived)) {
-                data[k] = v;
-            }
-        }
+        LOGGER.debug('Document | Actor | getRollData');
+        const data = this.system.getRollData();
 
         return data;
     }

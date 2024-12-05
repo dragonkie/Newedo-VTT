@@ -29,9 +29,6 @@ export default class WeaponSheet extends NewedoItemSheet {
     }
 
     async _prepareContext(partId, content) {
-        LOGGER.log('partId', partId);
-        LOGGER.log('context', content);
-
         const context = await super._prepareContext(partId, content);
 
         // Boolean values for quick use and readability in templates

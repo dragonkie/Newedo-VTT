@@ -5,33 +5,33 @@
         padding: 10px;
     }
 
-    .description-tab {
+    .description-editor {
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         flex: 1;
-        .summary {
-            display: block;
-            flex: 0 0 200px;
-            margin-right: 4px;
-            .detail {
-                display: flex;
-                flex-direction: row;
-                :first-child {
-                    flex: 1 0;
-                }
-                :last-child {
-                    flex: 2;
-                }
-            }
-        }
-        .description-editor {
-            display: flex;
-            flex-direction: column;
+        padding: 4px;
+        border-radius: 6px;
+
+        .editor {
             flex: 1;
-            padding: 4px;
-            border-radius: 6px;
-            .editor {
-                flex: 1;
+        }
+    }
+
+    .summary {
+        display: block;
+        flex: 0 0 200px;
+        margin-right: 4px;
+
+        .detail {
+            display: flex;
+            flex-direction: row;
+
+            :first-child {
+                flex: 1 0;
+            }
+
+            :last-child {
+                flex: 2;
             }
         }
     }
@@ -40,9 +40,11 @@
         display: flex;
         flex: 1;
         flex-direction: column;
+
         input {
             flex: 2;
         }
+
         select {
             flex: 2;
         }
@@ -50,9 +52,5 @@
 
     .sheet-header {
         padding: 0 12px;
-    }
-
-    .sheet-body {
-        
     }
 }

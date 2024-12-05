@@ -1,8 +1,24 @@
 //general classes
-&.character .window-content, &.npc .window-content {
+&.character .window-content,
+&.npc .window-content {
     overflow: hidden;
     display: flex;
     flex-direction: row;
+
+    .derived-traits {
+        display: block;
+
+        &>* {
+            display: inline-block;
+
+            input {
+                width: 2.5rem;
+                height: 1rem;
+                text-align: center;
+                padding: 0;
+            }
+        }
+    }
 
     .panel {
         display: flex;
@@ -22,6 +38,18 @@
             flex: 0;
             width: 100%;
             font-size: 14px;
+
+            .fate-switch {
+                flex: 1 1;
+                align-items: right;
+                text-align: right;
+                padding-right: 12px;
+            }
+
+            .fate-title {
+                text-align: left;
+                flex: 2;
+            }
 
             .fate-list {
                 width: 100%;

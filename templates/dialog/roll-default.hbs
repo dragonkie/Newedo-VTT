@@ -3,13 +3,5 @@
         <label>Formula:</label>
         <input type="text" name="formula" value="{{formula}}" />
     </div>
-    <div class="form-group">
-        <label>Spend Legend:</label>
-        <input type="number" name="legend" max="5" min="0" placeholder="0 - 5" />
-    </div>
-    <div class="form-group">
-        <label>{{localize "NEWEDO.generic.plrl.wound"}}:</label>
-        <input type="checkbox" name="useWound" checked="true" />
-        <input type="text" name="wound" disabled value="{{wound.value}}" />
-    </div>
+    {{> "newedo.roll-options" }}
 </form>

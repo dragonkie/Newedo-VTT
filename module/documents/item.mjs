@@ -6,9 +6,11 @@ import sysUtil from "../helpers/sysUtil.mjs";
  * @extends {Item}
  */
 export default class NewedoItem extends Item {
-    /**
-     * Augment the basic Item data model with additional dynamic data.
-     */
+
+
+    /* ----------------------------------------------------------------- */
+    /*                    DATA PREPERATION                               */
+    /* ----------------------------------------------------------------- */
     prepareData() {
         // As with the actor class, items are documents that can have their data
         // preparation methods overridden (such as prepareBaseData()).
@@ -17,21 +19,27 @@ export default class NewedoItem extends Item {
         //includes making any calculations on creation, update, or when loading the server
         //Any items owned by a character will run this function when the server loads
         //when migrating system data, its possible to use prepareData to help manage and correct values alongside the actual migrateData function
-        LOGGER.group('Item | prepareData | '+this.name);
+        LOGGER.group('Document | Item | prepareData | ' + this.name);
         LOGGER.debug('Item:', this);
+        if (this.actor) {
+            LOGGER.debug('Owned by:', this.actor)
+        }
+        console.trace();
         super.prepareData();
         LOGGER.groupEnd();
     }
 
     prepareBaseData() {
-        LOGGER.debug('DOCUMENT | DATA BASE')
+        LOGGER.group('prepareBaseData');
+        LOGGER.groupEnd();
     }
 
     prepareDerivedData() {
-        LOGGER.debug('DOCUMENT | DATA DERIVED')
+        LOGGER.group('prepareDerivedData');
+        LOGGER.groupEnd();
     }
 
-    async deleteDialog(options={}) {
+    async deleteDialog(options = {}) {
         const type = sysUtil.localize(this.constructor.metadata.label);
         let confirm = await foundry.applications.api.DialogV2.confirm({
             title: `${game.i18n.format("DOCUMENT.Delete", { type })}: ${this.name}`,
@@ -46,7 +54,7 @@ export default class NewedoItem extends Item {
     }
 
     /* ----------------------------------- Actions ---------------------------------------------------- */
-    
+
 
     /* ----------------------------------- Item prep functions ---------------------------------------------- */
 
@@ -55,15 +63,13 @@ export default class NewedoItem extends Item {
      * @private
      */
     getRollData() {
-        // If present, return the actor's roll data.
-        const rollData = {};
-        if (this.actor) foundry.utils.mergeObject(rollData, this.actor.getRollData());
-        // Grab the item's system data as well.
-        rollData.item = foundry.utils.deepClone(this.system);
-        return rollData;
+        LOGGER.debug('Document | Item | getRollData');
+        const data = this.system.getRollData();
+
+        return data;
     }
 
     _generateSlug() {
-        return this.update({'system.slug': this.name.replace(/\W/g, '').toLowerCase()})
+        return this.update({ 'system.slug': this.name.replace(/\W/g, '').toLowerCase() })
     }
 }

@@ -1,14 +1,6 @@
 <section class="panel">
     {{!-- Newedo banner rendered at the top of the screen--}}
     <img class="banner-newedo" src="systems/newedo/images/banner-newedo.svg">
-    {{#if isEditMode}}
-        <span class="flexrow">
-            <div class="flexrow">
-                image offset:
-                <input name="system.imageOffset" type="range" min="0" max="100" value="{{system.imageOffset}}" />
-            </div>
-        </span>
-    {{/if}}
     <div class="portrait" style="border: 0;" data-action="editImage">
         <img class="profile-img" src="{{document.img}}" title="{{actor.name}}" height="150px" width="150px" style="object-fit: cover; border: 0; object-position: {{system.imageOffset}}% {{system.imageOffset}}%" />
     </div>
@@ -25,22 +17,27 @@
         </div>
     </div>
     {{!-- Legend container --}}
-    {{ localize 'NEWEDO.generic.legend' }}
-    <div class="bar">
-        <div class="fill blue" style="width: {{ percent system.legend.value system.legend.max }}%;"></div>
-        <div class="value">
-            <input type="number" name="system.legend.value" value="{{system.legend.value}}" />
-            <div>/</div>
-            <input type="number" name="system.legend.max" value="{{system.legend.max}}" disabled />
-            <a><i class="fa-solid fa-calculator"></i></a>
+    <div>
+        <div>
+            {{ localize 'NEWEDO.generic.legend' }}
+            {{{ledger 'system.legend.max' 'legend' 'NEWEDO.ledger.legend'}}}
+        </div>
+        <div class="bar">
+            <div class="fill blue" style="width: {{ percent system.legend.value system.legend.max }}%;"></div>
+            <div class="value">
+                <input type="number" name="system.legend.value" value="{{system.legend.value}}" />
+                <div>/</div>
+                <input type="number" name="system.legend.max" value="{{system.legend.max}}" disabled />
+                <a><i class="fa-solid fa-calculator"></i></a>
+            </div>
         </div>
     </div>
-    {{{ledger 'system.legend.max' 'legend' 'NEWEDO.ledger.legend'}}}
+    
 
     {{!-- Armour values --}}
     {{ localize 'NEWEDO.generic.soak' }}
     <div class="flexrow" style="gap: 4px;">
-        {{#each system.armour as | key soak |}}
+        {{#each system.armour as | soak key |}}
             <div>
                 <div class="name">{{ soak.abr }}</div>
                 <input type="number" class="score" name="system.armour.{{key}}.value" value="{{soak.value}}" placeholder="0" {{disabled ../isPlayMode}} />
@@ -61,8 +58,8 @@
     </div>
     {{!-- Fate card container --}}
     <div class="fate-card flexcol">
-        <div>
-            <a data-action="fateDisplay" style="position: absolute; left: 50px;">
+        <div class="flexrow">
+            <a data-action="fateDisplay" class="fate-switch">
                 {{#if (eq userFlags.newedo.settings.fateDisplay '%')}}
                     <i class="fa-solid fa-toggle-on"></i>
                 {{/if}}
@@ -70,7 +67,7 @@
                     <i class="fa-solid fa-toggle-off"></i>
                 {{/unless}}
             </a>
-            <a data-action="rollFate"><b>{{localize 'NEWEDO.generic.fate'}}Card</b></a>
+            <a data-action="rollFate" class="fate-title"><b>{{localize 'NEWEDO.generic.fate'}}Card</b></a>
         </div>
         <ol class="fate-list flexcol">
             {{!-- Loops through the characters list of fate card options--}}

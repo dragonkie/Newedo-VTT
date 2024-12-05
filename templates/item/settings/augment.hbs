@@ -1,22 +1,24 @@
 <div class="tab-content">
-    <div style="display: inline-flex;">
-        <label>Range:</label>
-        <input type="number" name="system.range.max" value="{{system.range.max}}" placeholder="Max" />
-    </div>
-    <div style="display: inline-flex;">
+    <div class="form-group">
         <label>Biofeedback:</label>
         <input type="number" name="system.biofeedback" value="{{system.biofeedback}}" placeholder="Chance" />
     </div>
-    <div style="display: inline-flex;">
+    <div class="form-group">
         <label>Noise:</label>
-        <input type="number" name="system.noise.pow" value="{{system.noise.pow}}" placeholder="Pow" />
-        <input type="number" name="system.noise.ref" value="{{system.noise.ref}}" placeholder="Ref" />
-        <input type="number" name="system.noise.hrt" value="{{system.noise.hrt}}" placeholder="Hrt" />
-        <input type="number" name="system.noise.sav" value="{{system.noise.sav}}" placeholder="Sav" />
-        <input type="number" name="system.noise.per" value="{{system.noise.per}}" placeholder="Per" />
-        <input type="number" name="system.noise.pre" value="{{system.noise.pre}}" placeholder="Pre" />
+        <div class="flexrow">
+            {{#each system.noise as | value key |}}
+                <div class="flexcol" style="padding: 2px;">
+                    <label>{{key}}</label>
+                    <input type="number" name="system.noise.{{key}}" value="{{value}}">
+                </div>
+            {{/each}}
+        </div>
     </div>
-    <div>
+    <div class="form-group">
+        <label>Rank:</label>
+        <input type="number" min="1" max="5" value="{{system.rank.value}}" name="system.rank.value">
+    </div>
+    <div class="form-group">
         <label>Locked:</label>
         <input type="checkbox" value="{{system.locked}}" />
     </div>

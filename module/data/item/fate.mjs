@@ -32,6 +32,5 @@ export default class FateData extends ItemDataModel {
         super.prepareDerivedData();
 
         this.end = Math.max(this.start + this.chance - 1, 0);
-
     }
 }

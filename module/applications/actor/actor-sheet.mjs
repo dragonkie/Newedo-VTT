@@ -11,7 +11,7 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
 
     static DEFAULT_OPTIONS = {
         classes: ["actor"],
-        position: { height: 600, width: 700, top: 100, left: 200 },
+        position: { height: 640, width: 840, top: 100, left: 200 },
         actions: {
             useItem: this._onUseItem,
             editItem: this._onEditItem,
@@ -33,6 +33,7 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
         equipment: { template: "systems/newedo/templates/actor/character/character-equipment.hbs" },
         magic: { template: "systems/newedo/templates/actor/character/character-magic.hbs" },
         augments: { template: "systems/newedo/templates/actor/character/character-augs.hbs" },
+        
         description: { template: "systems/newedo/templates/actor/character/character-bio.hbs" }
     }
 
@@ -42,6 +43,7 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
         equipment: { id: "equipment", group: "primary", label: "NEWEDO.tab.equipment" },
         augments: { id: "augments", group: "primary", label: "NEWEDO.tab.augs" },
         magic: { id: "magic", group: "primary", label: "NEWEDO.tab.magic" },
+        
         description: { id: "description", group: "primary", label: "NEWEDO.tab.bio" }
     }
 
@@ -66,17 +68,13 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
 
         // Use a safe clone of the actor data for further operations.
         const actorData = this.document.toObject(false);
+
         // Add the actor's data to cfontext.data for easier access, as well as flags.
-        context.items = actorData.items;
+        context.items = this.document.items;
+        context.itemTypes = this.document.itemTypes;
         context.editable = this.isEditable && (this._mode === this.constructor.SHEET_MODES.EDIT);
 
-        // Prepare character data and items.
-        if (actorData.type == 'character') {
-            this._prepareItems(context);
-        }
-
-        // Add roll data for TinyMCE editors.
-        context.rollData = this.document.getRollData();
+        console.log(actorData)
 
         // Prepare active effects
         context.effects = prepareActiveEffectCategories(this.document.effects);
@@ -247,7 +245,6 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
         else game.user.setFlag('newedo', 'settings', { fateDisplay: 'range' }).then(() => this.render(false));
     }
 
-    //_________________________________________________________________________________________________Roll Events
     /**
      * Generic roll event, prompts user to spend legend and confirm the roll formula
      * @param {Event} event 
@@ -260,7 +257,7 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
         rollData.formula = formula;
 
         const options = await sysUtil.getRollOptions(rollData);
-        if (options.canceled) return null;// Stops the roll if they decided they didnt want to have fun
+        if (options.cancelled) return null;// Stops the roll if they decided they didnt want to have fun
 
         // Grabs the formula
         formula = options.formula;

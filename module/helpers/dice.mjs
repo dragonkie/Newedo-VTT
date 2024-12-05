@@ -1,21 +1,6 @@
 import LOGGER from "./logger.mjs";
 import sysUtil from "../helpers/sysUtil.mjs";
-
-export class Dice {
-    constructor(term) {
-        //regex to convert a dice roll into a number, face count, and modifiers list
-        const rx = /(\d+)|(dl\d+)|([^d][a-z]+\d+)/gi;
-        const result = term.match(rx);
-        this.count = Number(result[0]);//the number of this kind of dice, let s you hold multiple dice in one object
-        this.faces = Number(result[1]);//the number of sides to the die
-        this.mod = result[2];//roll modifiers to be added to the end of this dices roll string. if mods are diffrent, 2 dice sets won't be combined
-    }
-    /**Converts the dice to a readable string for foundry*/
-    get formula() {
-        if (this.count === 0) return ``;
-        return `${this.count}d${this.faces}${this.mod}`;
-    }
-};
+import { actor } from "../data/_module.mjs";
 
 /**
  * Expanded roll option for use with the vast number of dice used in newedo
@@ -25,266 +10,235 @@ export class Dice {
  * sources
  */
 export class NewedoRoll {
+
+    data = {};
+
+    options = {};
+
+    _ready = false;
+
+    formula = '';
+
     /**Accepts an optional list of dice objects to pre populate the tray */
-    constructor() {
-        this.dice = [];// List of dice objects on the list
-        this.bonus = 0;// Array of numebrs to be added together in the final formula, such as wounds, augs, buffs, and passives
-        this.addon = "";// Additional formula bits to append to the final roll
-        this._roll = null;
+    constructor(data) {
+        this.formula = data.formula ? data.formula : '';
+        this.data = data;
     }
 
-    /**Converts the list of dice into a rollable string that is foundry compatible*/
-    get formula() {
-        let bonus = this.bonus;
-        let first = true;
-        let formula = ``;
-        // Adds the dice array to the formula
-        for (const d of this.dice) {
-            if (!first) formula += `+`;
-            formula += d.formula;
-            first = false;
-        }
+    static template = 'systems/newedo/templates/dialog/roll-v2.hbs';
 
-        // Return the final formula
-        if (bonus > 0) formula += `+` + bonus;
-        if (bonus < 0) formula += bonus;
+    async getRollOptions() {
+        const title = sysUtil.localize("NEWEDO.generic.roll") + ": " + sysUtil.localize(this.data.title);
+        const render = await renderTemplate(this.constructor.template, this.data);
 
-        if (this.addon != ``) {
-            if (this.addon.charAt(0) != `-` && this.addon.charAt(0) != `+`) {
-                formula += `+ ${this.addon}`
-            }
-            else formula += this.addon;
-        }
+        /**
+         * Small internal function to handel the data form we recieve
+         * @param {*} html 
+         * @param {*} method 
+         * @returns 
+         */
+        const handler = (html, method) => {
+            // Gets all the pieces of the formula
+            const formulaParts = html.querySelectorAll("[data-formula]");
+            this.options.pieces = [];
+            // Get the data from the formula pieces
+            for (let element of formulaParts) {
+                let v = element.querySelector('[name=value]');
+                let a = element.querySelector('[name=active]');
 
-        return formula;
-    }
-    /**Standard role used by backgrounds and traits as they dont need any further options */
-    async roll() {
-        // Gets the final roll evaluation
-        let formula = this.formula;
-        if (!formula || formula == ``) {
-            sysUtil.warn(`NEWEDO.warn.invalidRoll`);
-            return null;
-        }
-
-        // Sends the roll formula to foundry to evaluate
-        this._roll = await new Roll(formula).evaluate();
-        return this._roll;
-    }
-
-    /**quick referenance to the roll function to maintain parity with foundry rolls */
-    async evaluate() {
-        return await this.roll();
-    }
-
-    async toMessage(options) {
-        if (this._roll) return await this._roll.toMessage(options);
-        return null;
-    }
-
-    // quick use function so you only need to call one instead of 2 functions
-    async toRollMessage(options) {
-        await this.evaluate();
-        return await this.toMessage(options);
-    }
-
-    async render() {
-        if (this._roll) return await this._roll.render();
-    }
-
-    /**Returns true or false if there are dice in this roll */
-    get isEmpty() {
-        if (!Array.isArray(this.dice) || this.dice.length < 1) return true;
-        return false;
-    }
-
-    /**Cleans the roll of any invalid values
-     * will be called after most functions that add or remove dice
-     * @param {Boolean} sort Default false, wether the dice should be sorted after the clean is finished
-     */
-    clean() {
-        let t = this.dice;
-        //ensures the array exists
-        if (this.isEmpty) return 0;
-        const l = t.length;
-
-        for (let a = 0; a < l; a++) {
-            //removes any elements from the tray that arent a Dice object
-            if (typeof t[a] !== `object`) t[a] = undefined;
-            else {
-                for (let b = 0; b < l; b++) {
-                    if (a === b) continue;
-                    if (typeof t[a] !== `object` || typeof t[b] !== `object`) continue;
-                    //if the 2 dice sets are of the same kind of dice add them together
-                    if (t[a].faces === t[b].faces && t[b].count > 0 && t[a].mod === t[b].mod) {
-                        t[a].count += t[b].count;
-                        t[b].count = 0;
+                // validates the user input to make sure the formula is valid, or aborts
+                if (element.dataset['formula'] == 'extra') {
+                    // Ensures the number text in the bonus field is valid for the roll
+                    if (v.value != "" && !Roll.validate(v.value)) {
+                        sysUtil.warn("NEWEDO.warn.invalidBonus");
+                        this.options.cancelled = true; // Flags that this roll should be discarded
+                        return this.options;
                     }
                 }
-            }
-        }
-        this.dice = t.filter((dice) => dice.count > 0);
-        if (this.isEmpty) return 0;
-        this.sort();
-    }
 
-    /**Sorts the dice list from smallest to highest, but places d10's at the front */
-    sort() {
-        dice.sort((a, b) => {
-            if (a.faces == 10) return -1;//pushes the d10 to the front
-            if (b.faces == 10) return 1;
-            return a.faces - b.faces;
+                // special handling for the legend option since it spends a resource
+                if (element.dataset['formula'] == 'legend' && this.data.actor && v.value != '0') {
+                    if (sysUtil.spendLegend(this.data.actor, sysUtil.parseElementValue(v))) {
+                        // spent legend properly
+                        this.options.pieces.push({
+                            type: element.dataset['formula'],
+                            value: sysUtil.parseElementValue(v),
+                            active: true,
+                        })
+                    } else {
+                        // ran out of legend so abort
+                        sysUtil.warn('NEWEDO.warn.noLegend');
+                        return null;
+                    }
+                } else {
+                    if (v && a && v.value != '' && v.value != '0') this.options.pieces.push({
+                        type: element.dataset['formula'],
+                        value: sysUtil.parseElementValue(v),
+                        active: a ? a.checked : true,
+                    })
+                }
+            }
+
+            this.options.advantage = method == 'adv' ? true : false;
+            this.options.disadvantage = method == 'dis' ? true : false;
+            this._ready = true;
+            return this.options;
+        }
+
+        // the promise constructor provides the resolve and reject functions
+        // You can call the resolve or reject function to return the promise with the value provided to the resolve / reject
+        this.options = await new Promise((resolve, reject) => {
+            const options = {
+                window: { title: title },
+                content: render,
+                buttons: [{
+                    label: "Disadvantage",
+                    action: 'dis',
+                    callback: (event, button, dialog) => resolve(handler(dialog, "dis"))
+                }, {
+                    label: "Normal",
+                    action: 'norm',
+                    callback: (event, button, dialog) => resolve(handler(dialog, "normal"))
+                }, {
+                    label: "Advantage",
+                    action: 'adv',
+                    callback: (event, button, dialog) => resolve(handler(dialog, "adv"))
+                }],
+                close: () => resolve({ cancelled: true }),
+                submit: (result) => resolve(result)
+            }
+            LOGGER.debug('dialog opts', options)
+            new foundry.applications.api.DialogV2(options, null).render(true);
         });
     }
 
-    /**Accepts an integer or an array to be converted into dice 
-     * @param {integer, array} dice accepts integer, or array of them, and dice objects
-    */
-    add(dice) {
-        if (!dice) {
-            LOGGER.warn(`Cant add dice that dont exist to roll`);
-            return null;
-        }
-        
-        const t = typeof dice;
-
-        if (Array.isArray(dice)) {
-            if (dice.length <= 0) return false;
-            return this._onAddArray(dice);
-        }
-        else if (t === 'object' && dice.constructor.name === "Dice") return this._onAddDie(dice);
-        else if (t === 'string') return this._onAddString(dice);
-        else return this._onAddInt(dice);
-    };
+    // Pointer to the evaluate function, maintains parity with foundry rolls
+    async roll() {
+        return this.evaluate();
+    }
 
     /**
-     * Loops through the dice array, calling the add function on all its values
-     * @param {Array} dice list of dice to be added
-     * @returns 
+     * Creates and rolls the values gotten here
      */
-    _onAddArray(dice) {
-        let diceList = foundry.utils.deepClone(dice); // Safely clones the dice list
-        for (let a = 0; a < diceList.length; a++) {
-            this.add(diceList[a]);
+    async evaluate() {
+        if (this.options.cancelled) {
+            return null;
         }
-        return 0;
-    }
 
-    _onAddInt(dice) {
-        if (this.isEmpty) {
-            this.dice.push(new Dice(`1d${dice}`));
-        } else {
-            for (let a = 0; a < this.dice.length; a++) {
-                //loops through the dice being added
-                if (this.dice[a].faces === dice) {
-                    this.dice[a].count += 1;
-                    return true;//returns if the value is found, ending the loop
+        if (!this._ready) {
+            LOGGER.error('NewedoRoll not initalized, roll needs to have options set and be flagged as ready')
+            return null;
+        }
+
+        for (let part of this.options.pieces) {
+            // if the formula has a piece in it already, add osmething to join them
+            if (!part.active) continue;
+            if (this.formula != '') {
+                switch (Array.from(part.value)[0]) {
+                    case '+':
+                    case '/':
+                    case '-':
+                    case '*':
+                        break;
+                    default:
+                        this.formula += '+';
+                        break;
                 }
             }
-            this.dice.push(new Dice(dice, 1));
+
+            this.formula += part.value;
         }
 
-        return true;
-    }
+        // Removes exploding dice and whitespace for simplicity
+        this.formula = this.formula.replaceAll('d10x10', 'd10').replaceAll(' ', '');
 
-    _onAddDie(dice) {
-        if (this.isEmpty) {
-            // when there are no dice in this pool, just add it in
-            this.dice.push(dice);
-        } else {
-            for (let a = 0; a < this.dice.length; a++) {
-                //loops through the dice being added
-                if (this.dice[a].faces === dice.faces && this.dice[a].mod === dice.mod) {
-                    this.dice[a].count += 1;
-                    return true;//returns if the value is found, ending the loop
+        // validate the formula before procceeding
+        if (!Roll.validate(this.formula)) {
+            sysUtil.error('NEWEDO.error.rollValidationFail');
+            return null;
+        }
+
+        // Regex to grab full dice terms from the formula
+        let rx = /[\-\+\*\/]?[0-9]+d[0-9]+([a-zA-Z0-9]?)+/g;
+        let terms = this.formula.match(rx);
+
+        // Convert the terms to dice objects for easier management, ordered first to last
+        const dice = [];
+        for (const t of terms) {
+
+            let c = +t.match(/[0-9]+d/)[0].replace('d', '');
+            let f = +t.match(/d[0-9]+/)[0].replace('d', '');
+            let s = t.replace(/[0-9]+d[0-9]+([a-zA-Z0-9]?)+/, '');
+            let m = t.replace(/^[\-\+\*\/]?[0-9]+d[0-9]+/, '');
+
+            dice.push({
+                count: c,
+                faces: f,
+                sign: s,
+                mods: m
+            })
+        }
+
+        console.log(this.formula);
+        console.log(dice);
+
+        let found = false;
+        if (this.options.advantage && !this.options.disadvantage) {
+            // add 1d10 to an existing stack for roll clarity
+            for (let d of dice) {
+                if (d.faces == 10) {
+                    found = true;
+                    d.count += 1;
+                    break;
                 }
             }
-            this.dice.push(dice);// when no dice are found, push this dice in
-        }
-        return true;
-    }
-
-    _onAddString(term) {
-        /* Regex references to parse formula */
-        const rDie = /(?<!\/)\-?\b\w+\b/gi;// gets all dice instances from the line
-        const rTerm = /(\-?\b\d+)d(\d+)([^\s\-\+]*)\b/gi; //seperates them out into their parts
-
-        const mDice = term.match(rx);
-
-        for (const match of matches) {
-            const d = new Dice(match);
-            this.add(d);
-        }
-
-        return matched;
-    }
-
-    _onAddTerm() {
-
-    }
-
-
-
-
-    
-
-    drop(faces, count = 1, mod = ``) {
-        let d = this.find(faces, mod)
-        if (d) d.count -= count;
-        this.clean
-        return this.dice;
-    };
-
-    /** Searches for a dice based on given specifiers
-     * @param {Number} faces number of sides of the dice to get
-     * @param {String} mod Modifiers applied to this dice
-     * @returns {Dice} undefined if a dice was not found
-     */
-    find(faces, mod = ``) {
-        if (this.isEmpty) return undefined;//if the dicetray doesnt have dice, exit the function
-        for (let a = 0; a < this.dice.length; a++) {
-            if (this.dice[a].faces === faces) {
-                if (mod === `` || this.dice[a].mod === mod) {
-                    return this.dice[a];
+            // if there were no d10s, just add one to the pool
+            if (!found) {
+                dice.push({
+                    count: 1,
+                    faces: 10,
+                    sign: '+',
+                    mods: ''
+                })
+            }
+        } else if (!this.options.advantage && this.options.disadvantage) {
+            // attempt to remove 1d10 from the pool
+            for (let d of dice) {
+                if (d.faces == 10 && d.count > 0) {
+                    d.count -= 1;
+                    found = true;
+                    break;
                 }
             }
-        }
-        return undefined; //no dice matched the given specifiers
-    }
+            // if we dont have d10s, take one away from the largest dice possible
+            if (!found) {
+                let targetFaces = 0;
+                let targetDice = 0;
 
-    /**Drops a number of the largest dice from the pool, will exit if the array is empty
-    * @param {Number} count The number of dice to be dropped
-    * @returns {Boolean} true if a dice is removed, false if it failed
-    */
-    dropHighest(count = 1) {
-        const dice = this.dice;// array of dice
-        let value = 0;//the highest value found of a dice
-        let index = -1;//the currently found index to be dropped
-
-        for (let x = 0; x < count; x++) {
-            if (this.isEmpty) return; //cancels the function once no more dice are available to drop
-            for (let a = 0; a < dice.length; a++) {
-                if (dice[a].faces > value && dice[a].count > 0) {
-                    value = dice[a].faces;
-                    index = a;
+                for (let a = 0; a < dice.length; a++) {
+                    if (dice[a].faces > targetFaces && dice[a].count > 0 && dice[a].sign != '-') {
+                        targetDice = a;
+                        targetFaces = dice[a].faces;
+                    }
                 }
-            }
-            if (index >= 0) {//if a dice was found, drop its value
-                dice[index].count -= 1;
-            } else break;//if no dice we found, break the loop and procceed to cleanup
-        }
-        this.clean(); //cleans up the array when were done with it
-    }
 
-    checkAdvantage(type) {
-        if (type === `advantage`) {
-            return this.add(10);
+                dice[targetDice].count -= 1;
+            }
         }
-        if (type === `disadvantage`) {
-            let d10 = this.find(10);
-            if (d10) d10.count -= 1;
-            else this.dropHighest();
-            this.clean;
+
+        // Reconstruct the roll formula from the new dice terms
+        this.formula = '';
+        for (const d of dice) {
+            if (d.count == 0) continue;
+            this.formula += d.sign + d.count + "d" + d.faces + d.mods;
         }
+
+        // Adds the exploding dice back
+        this.formula = this.formula.replaceAll('d10', 'd10x10');
+
+        let roll = new Roll(this.formula);
+
+        await roll.evaluate();
+        roll.toMessage();
     }
 };

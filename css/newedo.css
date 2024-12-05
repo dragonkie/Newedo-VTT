@@ -389,6 +389,18 @@
   display: flex;
   flex-direction: row;
 }
+.newedo.character .window-content .derived-traits, .newedo.npc .window-content .derived-traits {
+  display: block;
+}
+.newedo.character .window-content .derived-traits > *, .newedo.npc .window-content .derived-traits > * {
+  display: inline-block;
+}
+.newedo.character .window-content .derived-traits > * input, .newedo.npc .window-content .derived-traits > * input {
+  width: 2.5rem;
+  height: 1rem;
+  text-align: center;
+  padding: 0;
+}
 .newedo.character .window-content .panel, .newedo.npc .window-content .panel {
   display: flex;
   flex: 0 0 200px;
@@ -405,6 +417,16 @@
   flex: 0;
   width: 100%;
   font-size: 14px;
+}
+.newedo.character .window-content .panel .fate-card .fate-switch, .newedo.npc .window-content .panel .fate-card .fate-switch {
+  flex: 1 1;
+  align-items: right;
+  text-align: right;
+  padding-right: 12px;
+}
+.newedo.character .window-content .panel .fate-card .fate-title, .newedo.npc .window-content .panel .fate-card .fate-title {
+  text-align: left;
+  flex: 2;
 }
 .newedo.character .window-content .panel .fate-card .fate-list, .newedo.npc .window-content .panel .fate-card .fate-list {
   width: 100%;
@@ -439,35 +461,30 @@
 .newedo.sheet.item .tab {
   padding: 10px;
 }
-.newedo.sheet.item .description-tab {
-  display: flex;
-  flex-direction: row;
-  flex: 1;
-}
-.newedo.sheet.item .description-tab .summary {
-  display: block;
-  flex: 0 0 200px;
-  margin-right: 4px;
-}
-.newedo.sheet.item .description-tab .summary .detail {
-  display: flex;
-  flex-direction: row;
-}
-.newedo.sheet.item .description-tab .summary .detail :first-child {
-  flex: 1 0;
-}
-.newedo.sheet.item .description-tab .summary .detail :last-child {
-  flex: 2;
-}
-.newedo.sheet.item .description-tab .description-editor {
+.newedo.sheet.item .description-editor {
   display: flex;
   flex-direction: column;
   flex: 1;
   padding: 4px;
   border-radius: 6px;
 }
-.newedo.sheet.item .description-tab .description-editor .editor {
+.newedo.sheet.item .description-editor .editor {
   flex: 1;
+}
+.newedo.sheet.item .summary {
+  display: block;
+  flex: 0 0 200px;
+  margin-right: 4px;
+}
+.newedo.sheet.item .summary .detail {
+  display: flex;
+  flex-direction: row;
+}
+.newedo.sheet.item .summary .detail :first-child {
+  flex: 1 0;
+}
+.newedo.sheet.item .summary .detail :last-child {
+  flex: 2;
 }
 .newedo.sheet.item .settings-tab {
   display: flex;

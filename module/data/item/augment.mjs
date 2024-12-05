@@ -1,3 +1,4 @@
+import ResourceField from "../../fields/resource-field.mjs";
 import { ItemDataModel } from "../abstract.mjs";
 
 const {
@@ -10,15 +11,15 @@ export default class AugmentData extends ItemDataModel {
 
         schema.installed = new BooleanField({ initial: false });
         schema.biofeedback = new NumberField({ initial: 0 });
-        schema.rank = this.AddResourceField(1, 5, 1);
+        schema.rank = new ResourceField(1, 1, 5);
         
         schema.noise = new SchemaField({
-            hrt: new NumberField({ initial: 0 }),
-            ref: new NumberField({ initial: 0 }),
-            sav: new NumberField({ initial: 0 }),
-            pow: new NumberField({ initial: 0 }),
-            pre: new NumberField({ initial: 0 }),
-            per: new NumberField({ initial: 0 })
+            hrt: new NumberField({ initial: 0, nullable: false, required: true }),
+            ref: new NumberField({ initial: 0, nullable: false, required: true }),
+            sav: new NumberField({ initial: 0, nullable: false, required: true }),
+            pow: new NumberField({ initial: 0, nullable: false, required: true }),
+            pre: new NumberField({ initial: 0, nullable: false, required: true }),
+            per: new NumberField({ initial: 0, nullable: false, required: true })
         })
 
         return schema;

@@ -1,31 +1,14 @@
+import BonusField from "../fields/bonus-field.mjs";
+import ResourceField from "../fields/resource-field.mjs";
 import LOGGER from "../helpers/logger.mjs";
 import sysUtil from "../helpers/sysUtil.mjs";
+
 
 const {
     ArrayField, BooleanField, IntegerSortField, NumberField, SchemaField, SetField, StringField, HTMLField
 } = foundry.data.fields;
 
 export default class SystemDataModel extends foundry.abstract.TypeDataModel {
-
-    /*****************************************/
-    /*             SCHEMA HELPERS            */
-    /*****************************************/
-
-    /**
-     * Creates a resource field with a value, min, and max keys, min is by default 0
-     * @param {Number} init the initial value this field starts at
-     * @param {Number} max the maximum this field can be
-     * @param {Number} min the minimum this field can be
-     * @returns {SchemaField}
-     */
-    static AddResourceField(init, max, min = 0) {
-        return new SchemaField({
-            min: new NumberField({ initial: min }),
-            value: new NumberField({ initial: init }),
-            max: new NumberField({ initial: max })
-        });
-    }
-
     /**
      * Quick function to create a number value field, but returns full schema field to give space for
      * derived data to extend this particular field context
@@ -39,19 +22,10 @@ export default class SystemDataModel extends foundry.abstract.TypeDataModel {
         })
     }
 
-    static AddDiceField(num, faces) {
-        return new SchemaField({
-            number: new NumberField({ initial: num }),
-            faces: new NumberField({ initial: faces })
-        })
-    }
-
-    /**
-     * Returns the roll data from the owning documents getRollData method
-     * @returns {Object}
-     */
     getRollData() {
-        return this.parent.getRollData();
+        // Get owning documents rolldata
+        let data = {...this};
+        return data;
     }
 }
 
@@ -61,12 +35,12 @@ export class ActorDataModel extends SystemDataModel {
 
         schema.hp = new SchemaField({
             min: new NumberField({ initial: 0 }),
-            value: new NumberField({ initial: 15 }),
+            value: new NumberField({ initial: 15, min: 0 }),
             max: new NumberField({ initial: 15 }),
             mod: new NumberField({ initial: 1.5 }),
         });
 
-        schema.size = this.AddResourceField(5, 6);
+        schema.size = this.AddValueField('value', 5);
 
         schema.traits = new SchemaField({
             core: new SchemaField({
@@ -93,13 +67,72 @@ export class ActorDataModel extends SystemDataModel {
             arc: this.AddValueField('value', 0)
         });
 
+        schema.bonus = new SchemaField({
+            // Bonus to core trait totals
+            PowTotal: new ArrayField(new BonusField(), { initial: [] }),
+            PerTotal: new ArrayField(new BonusField(), { initial: [] }),
+            PreTotal: new ArrayField(new BonusField(), { initial: [] }),
+            HrtTotal: new ArrayField(new BonusField(), { initial: [] }),
+            RefTotal: new ArrayField(new BonusField(), { initial: [] }),
+            SavTotal: new ArrayField(new BonusField(), { initial: [] }),
+            ShiTotal: new ArrayField(new BonusField(), { initial: [] }),
+
+            // Bonus to core trait ranks, very op
+            PowRank: new ArrayField(new BonusField(), { initial: [] }),
+            PerRank: new ArrayField(new BonusField(), { initial: [] }),
+            PreRank: new ArrayField(new BonusField(), { initial: [] }),
+            HrtRank: new ArrayField(new BonusField(), { initial: [] }),
+            RefRank: new ArrayField(new BonusField(), { initial: [] }),
+            SavRank: new ArrayField(new BonusField(), { initial: [] }),
+            ShiRank: new ArrayField(new BonusField(), { initial: [] }),
+
+            // Bonus to derived trait totals
+            DefTotal: new ArrayField(new BonusField(), { initial: [] }),
+            InitTotal: new ArrayField(new BonusField(), { initial: [] }),
+            MoveTotal: new ArrayField(new BonusField(), { initial: [] }),
+            ResTotal: new ArrayField(new BonusField(), { initial: [] }),
+
+            // Bonus to derived trait base values (these bonuses are applied before the modifier is calculated)
+            DefBase: new ArrayField(new BonusField(), { initial: [] }),
+            InitBase: new ArrayField(new BonusField(), { initial: [] }),
+            MoveBase: new ArrayField(new BonusField(), { initial: [] }),
+            ResBase: new ArrayField(new BonusField(), { initial: [] }),
+
+            // Bonus to derived trait mods
+            DefMod: new ArrayField(new BonusField(), { initial: [] }),
+            InitMod: new ArrayField(new BonusField(), { initial: [] }),
+            MoveMod: new ArrayField(new BonusField(), { initial: [] }),
+            ResMod: new ArrayField(new BonusField(), { initial: [] }),
+
+            // Healing rate modifier
+            RestMod: new ArrayField(new BonusField(), { initial: [] }),
+
+            // Bonus to attacks
+            attackMelee: new ArrayField(new BonusField(), { initial: [] }),
+            attackRanged: new ArrayField(new BonusField(), { initial: [] }),
+
+            // Bonus to damage
+            damageMelee: new ArrayField(new BonusField(), { initial: [] }),
+            damageRanged: new ArrayField(new BonusField(), { initial: [] }),
+        })
+
         return schema;
     }
 
-    prepareData() {
-        LOGGER.group("ActorDataModel | prepareData");
-        LOGGER.groupEnd();
-    }
+    /* ---------------------------------------------------- */
+    /* Data preparation                                     */
+    /* ---------------------------------------------------- */
+    /**
+     * Foundry data preperation goes as follows
+     * DataModel prepareBaseData();
+     * Document prepareBaseData();
+     * EmbeddedDocument();
+     * DataModel prepareDerivedData();
+     * Document prepareDerivedData();
+     * 
+     * only prepareData(); and prepareEmbeddedDocuments(); need to call their supers for proper functionality
+     * rest can be overidden and inherited as needed
+     */
 
     prepareBaseData() {
         LOGGER.group("ActorDataModel | prepareBaseData");
@@ -108,26 +141,58 @@ export class ActorDataModel extends SystemDataModel {
 
     prepareDerivedData() {
         LOGGER.group("ActorDataModel | prepareDerivedData");
+
         const { core, derived } = this.traits;
+
+        // Totals up core stats
+        core.hrt.total = core.hrt.value;
+        core.pow.total = core.pow.value;
+        core.per.total = core.per.value;
+        core.pre.total = core.pre.value;
+        core.ref.total = core.ref.value;
+        core.sav.total = core.sav.value;
+        core.shi.total = core.shi.value;
+
+        for (let a of this.bonus.HrtTotal) core.hrt.total += a.value;
+        for (let a of this.bonus.PowTotal) core.pow.total += a.value;
+        for (let a of this.bonus.PerTotal) core.per.total += a.value;
+        for (let a of this.bonus.PreTotal) core.pre.total += a.value;
+        for (let a of this.bonus.RefTotal) core.ref.total += a.value;
+        for (let a of this.bonus.SavTotal) core.sav.total += a.value;
+        for (let a of this.bonus.ShiTotal) core.shi.total += a.value;
 
         // Loop through core traits and calculate their rank, traits are not included in the "Round everything up" rule
         for (let [key, trait] of Object.entries(core)) {
-            trait.rank = Math.max(Math.floor(trait.value / 10), 0);
+            trait.rank = Math.max(Math.floor(trait.total / 10), 0);
         }
 
         // Calculates derived traits for initative, move, defence, resolve, and max health
-        derived.init.total = Math.ceil((core.sav.value + core.ref.value) * derived.init.mod);
-        derived.move.total = Math.ceil(((core.hrt.value + core.ref.value) / this.size.value) * derived.move.mod);
-        derived.def.total = Math.ceil((core.pow.value + core.ref.value) * derived.def.mod);
-        derived.res.total = Math.ceil((core.hrt.value + core.pre.value) * derived.res.mod);
+        derived.init.total = Math.ceil((core.sav.total + core.ref.total) * derived.init.mod);
+        derived.move.total = Math.ceil(((core.hrt.total + core.ref.total) / this.size.value) * derived.move.mod);
+        derived.def.total = Math.ceil((core.pow.total + core.ref.total) * derived.def.mod);
+        derived.res.total = Math.ceil((core.hrt.total + core.pre.total) * derived.res.mod);
 
-        // Sets health range, MIN is included for use with the token resource bars
-        this.hp.max = Math.ceil(core.hrt.value * this.hp.mod);
+        // Sets health range, MIN is included for use with the token resource bars and is always 0
+        this.hp.max = Math.ceil(core.hrt.total * this.hp.mod);
         this.hp.min = 0;
 
         // Gets the characters wound state
         this.wound = sysUtil.woundState(this.hp.value / this.hp.max);
+
         LOGGER.groupEnd();
+    }
+
+    getRollData() {
+        const data = super.getRollData();
+        // Adds trait data directly to the rolldata for easy access
+        // such as @pow.rank or @def.total
+        for (let [group, traits] of Object.entries(this.traits)) {
+            for (let [trait, value] of Object.entries(traits)) {
+                data[trait] = value;
+            }
+        }
+
+        return data;
     }
 }
 
@@ -140,19 +205,25 @@ export class ItemDataModel extends SystemDataModel {
         return schema;
     }
 
-    static AddPriceField(base, min, max, tn) {
-        return new SchemaField({
-            value: new NumberField({ initial: base }),
-            min: new NumberField({ initial: min }),
-            max: new NumberField({ initial: max }),
-            tn: new NumberField({ initial: tn }),
-        })
+    prepareBaseData() {
+        LOGGER.group("ItemDataModel | prepareBaseData");
+        LOGGER.groupEnd();
+    }
+
+    prepareDerivedData() {
+        LOGGER.group("ItemDataModel | prepareDerivedData"); 
+        LOGGER.groupEnd();
     }
 
     getRollData() {
-        // Items can only return rolldata when they have an owning actor
-        if (!this.actor) return null;
-        return super.getRollData();
+        const actorData = this.actor?.getRollData();
+
+        const data = {
+            ...actorData,
+            ...sysUtil.duplicate(this)
+        }
+        
+        return data;
     }
 
     /**

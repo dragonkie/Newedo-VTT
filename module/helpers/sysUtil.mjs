@@ -168,21 +168,23 @@ export default class sysUtil {
         const data = {};
         for (const element of matches) {
             // Parse the input data based on type
-            switch (element.type) {
-                case 'number':// Converts a string to a number
-                case 'range':
-                    data[element.name] = +element.value;
-                    break;
-                case 'checkbox':// Returns boolean based on if the box is checked
-                    data[element.name] = element.checked;
-                    break;
-                default:// Other values are taken in as strings
-                    data[element.name] = element.value;
-                    break;
-            }
+            data[element.name] = this.parseElementValue(element);
         }
 
         return data;
+    }
+
+    static parseElementValue(element) {
+        // Parse the input data based on type
+        switch (element.type) {
+            case 'number':// Converts a string to a number
+            case 'range':
+                return +element.value;
+            case 'checkbox':// Returns boolean based on if the box is checked
+                return element.checked;
+            default:// Other values are taken in as strings
+                return element.value;
+        }
     }
 
     static duplicate(original) {
@@ -196,8 +198,8 @@ export default class sysUtil {
      * @returns 
      */
     static async getRollOptions(data, template = `systems/newedo/templates/dialog/roll-default.hbs`) {
-
-        const title = data.title;
+        LOGGER.log('Got roll options data', data);
+        const title = data.title ? data.title : "NEWEDO.generic.roll";
         const render = await renderTemplate(template, data);
 
         /**
@@ -217,7 +219,7 @@ export default class sysUtil {
             // Ensures the number text in the bonus field is valid for the roll
             if (d.bonus && d.bonus != "" && !Roll.validate(d.bonus)) {
                 sysUtil.warn("NEWEDO.warn.invalidBonus");
-                d.canceled = true; // Flags that this roll should be discarded
+                d.cancelled = true; // Flags that this roll should be discarded
             }
 
             return d;
@@ -242,7 +244,7 @@ export default class sysUtil {
                     action: 'advantage',
                     callback: (event, button, dialog) => resolve(handler(dialog, "advantage"))
                 }],
-                close: () => resolve({ canceled: true }),
+                close: () => resolve({ cancelled: true }),
                 submit: (result) => resolve(result)
             }
             LOGGER.debug('dialog opts', options)
@@ -257,18 +259,5 @@ export default class sysUtil {
         const ray = new Ray({ x: A.x, y: A.y }, { x: B.x, y: B.y });
         const collisions = WallsLayer.getWallCollisionsForRay(ray, canvas.walls.blockVision);
         return collisions.length > 0;
-    }
-
-    /*-----------------------------------------------------------------------------*/
-    /*                                                                             */
-    /*                        DICE ARRAY MANAGMENT                                 */
-    /*                                                                             */
-    /*-----------------------------------------------------------------------------*/
-    static RollOptions() {
-        return {
-            advantage: false,
-            disadvantage: false,
-            trait: true,
-        }
     }
 }

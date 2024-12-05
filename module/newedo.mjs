@@ -14,8 +14,9 @@ import { applications } from "./applications/_module.mjs";
 import * as documents from "./documents/_module.mjs";
 import * as dataModels from "./data/_module.mjs"
 import registerHelpers from "./helpers/registerHelpers.mjs";
+import { NewedoRoll } from "./helpers/dice.mjs";
 
-LOGGER.log('Loading Newedo.mjs...')
+LOGGER.log('Traveling to NewEdo...')
 
 globalThis.newedo = {
     applications,
@@ -24,21 +25,25 @@ globalThis.newedo = {
     CONFIG: NEWEDO,
     util: sysUtil,
     elements,
+    roll: NewedoRoll
 }
 
 /* -------------------------------------------- */
 /*  Init Hook                                   */
 /* -------------------------------------------- */
 Hooks.once('init', async function () {
-    console.log(`----> 🌸 WELCOME TO NEWEDO SAMURAI 🌸<----`);
+    LOGGER.log(`----> 🌸 WELCOME TO NEWEDO SAMURAI 🌸<----`);
 
     // Add custom constants for configuration.
     CONFIG.NEWEDO = NEWEDO;
-    CONFIG.Combat.initiative = { formula: "@traits.derived.init.value", decimals: 0 };
 
     // Prepare document classes
     CONFIG.Actor.documentClass = documents.NewedoActor;
     CONFIG.Item.documentClass = documents.NewedoItem;
+
+    // Add combat documents
+    CONFIG.Combat.documentClass = documents.NewedoCombat;
+    CONFIG.Combatant.documentClass = documents.NewedoCombatant;
 
     // Link up system data models
     CONFIG.Actor.dataModels = dataModels.actor.config;

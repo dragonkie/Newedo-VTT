@@ -1,6 +1,11 @@
 import sysUtil from "../../helpers/sysUtil.mjs";
 import LOGGER from "../../helpers/logger.mjs";
 import { ItemDataModel } from "../abstract.mjs";
+import GritField from "../../fields/grit-field.mjs";
+import PriceField from "../../fields/price-field.mjs";
+import ResourceField from "../../fields/resource-field.mjs";
+
+import { NewedoRoll } from "../../helpers/dice.mjs";
 
 const {
     ArrayField, BooleanField, IntegerSortField, NumberField, SchemaField, SetField, StringField
@@ -10,21 +15,15 @@ export default class WeaponData extends ItemDataModel {
     static defineSchema() {
         const schema = super.defineSchema();
 
-        schema.price = this.AddPriceField(75, 50, 100, 3);
-        schema.quality = this.AddResourceField(1, 10, 1);
+        schema.price = new PriceField();
+        schema.quality = new ResourceField(1, 1, 5, {});
         schema.skill = new SchemaField({
-            slug: new StringField({ initial: 'lightmelee' }),
-            id: new StringField({ initial: '' })
+            slug: new StringField({ initial: '', nullable: false, required: true }),
+            id: new StringField({ initial: '', nullable: false, required: true })
         });
         schema.equipped = new BooleanField({ initial: false });
 
-        // Weapon EXP tracker, populated with a max value during data prep
-        schema.grit = new SchemaField({
-            value: new NumberField({ initial: 0 }),
-            min: new NumberField({ initial: 0 }),
-            atk: new NumberField({ initial: 0 }),// Grit tier attack bonus, combined the bonuses cant exceed grit.value / 2 rouding down
-            dmg: new NumberField({ initial: 0 })// Grit tier damage bonus
-        });
+        schema.grit = new GritField();
 
         let setOptions = {
             required: true,
@@ -54,16 +53,19 @@ export default class WeaponData extends ItemDataModel {
         })
 
         // Weapon magazine tracker, weapons with max of 1 should auto consume from their linked ammo item on attack rather than storing values here
-        schema.ammo = new SchemaField({
-            min: new NumberField({ initial: 0 }),
-            max: new NumberField({ initial: 6 }),
-            min: new NumberField({ initial: 0 }),
-        })
+        schema.ammo = new ResourceField(6, 0, 6);
 
         return schema;
     }
 
+    prepareBaseData() {
+        LOGGER.group('WeaponData | prepareBaseData');
+        super.prepareBaseData();
+        LOGGER.groupEnd();
+    }
+
     prepareDerivedData() {
+        LOGGER.group('WeaponData | prepareDerivedData')
         super.prepareDerivedData();
 
         // Corrects quality values
@@ -82,45 +84,41 @@ export default class WeaponData extends ItemDataModel {
         }
 
         // Prep data relevant to skill
-        if (this.actor) {
+        if (this.actor && this.skill.id != '') {
             this.skill.slug = this.actor.items.get(this.skill.id).system.slug;
-        } else {
-            this.skill.id = '';
+            this.skill.label = this.getSkill().name;
         }
-
-        // Add a localizeable label to the skill slug to make life easier
-        this.skill.label = `NEWEDO.skill.${this.skill.slug}`;
+        
+        LOGGER.groupEnd();
     }
 
     getRollData() {
-        let data = super.getRollData();
-        if (!data) return null;
+        LOGGER.debug('WeaponData | getRollData');
+        const data = super.getRollData();
 
         data.skill = this.getSkill();
-        if (!data.skill) return null;
         data.trait = data.skill.system.getTrait();
-
-        data.formula = {
-            skill: data.skill.system.getFormula({ mode: 'normal', trait: false }),
-            full: data.skill.system.getFormula()
-        };
-
         data.grit = this.grit;
-        data.system = this;
 
         return data;
     }
 
     getSkill() {
         if (this.actor) {
-            for (const item of this.actor.itemTypes.skill) {
-                if (item.id == this.skill.id) return item
-                if (item.system.slug == this.skill.slug) {
-                    this.parent.update({ 'system.skill.id': item.id });
-                    return item;
+            if (this.skill.id != '') {
+                // Gets the linked item
+                return this.actor.items.get(this.skill.id);
+            } else {
+                // If there isn't a linked item, we grab the first weapon skill available
+                for (const item of this.actor.itemTypes.skill) {
+                    if (item.system.isWeaponSkill) {
+                        this.skill.id = item.id;
+                        return item;
+                    }
                 }
             }
             sysUtil.error('NEWEDO.error.MissingSkill');
+            return null;
         }
         sysUtil.error('NEWEDO.error.MissingActor');
         return null;
@@ -148,35 +146,26 @@ export default class WeaponData extends ItemDataModel {
 
         // Gather relevant data
         const rollData = this.getRollData();
-
-        // Create and parse roll options dialog
-        let options = await sysUtil.getRollOptions(rollData, this.constructor.TEMPLATES.rollAttack);
-        if (options.cancled) return;
-
-        LOGGER.debug("Roll data:", rollData);
-        LOGGER.debug("Roll options:", options);
-
-        let formula = rollData.skill.system.getFormula(options);;// final string parsed formula
-        let mods = 0;// total flat bonuses and penalties
-
-        if (options.skill != '') formula += '+' + options.skill
-        if (options.useWound) mods += rollData.wound.value;
-        if (options.legend > 0) {
-            if (sysUtil.spendLegend(actor, options.legend)) {
-                mods += options.legend;
-            }
+        let data = {
+            parts: [{
+                type: "NEWEDO.generic.trait",
+                label: `NEWEDO.trait.core.${this.skill.trait}`,
+                value: `${this.skill.trait.rank}d10`
+            }, {
+                type: "NEWEDO.generic.skill",
+                label: this.skill.name,
+                value: this.skill.getRanks()
+            }],
+            bonuses: [{
+                label: 'NEWEDO.generic.grit',
+                value: this.grit.atk
+            }],
+            wound: rollData.wound,
+            title: 'NEWEDO.generic.attack'
         }
 
-        if (mods > 0) formula += '+' + mods;
-        if (mods < 0) formula += mods;
-
-        if (options.bonus != '') {
-            let v = Roll.validate(options.bonus);
-            if (v) formula += '+' + options.bonus
-        }
-
-        let r = new Roll(formula);
-        await r.evaluate();
+        let roll = new NewedoRoll(data);
+        roll.getRollOptions();
 
         // Gets the list of targets and if they were hit or not, if they were in range, etc
         let userTargets = game.user.targets;
@@ -238,7 +227,6 @@ export default class WeaponData extends ItemDataModel {
 
         let msg = await r.toMessage(messageData);
 
-        console.log(msg);
         return r;
     }
 
@@ -264,7 +252,7 @@ export default class WeaponData extends ItemDataModel {
 
         let r = new Roll(formula, rollData);
         await r.evaluate();
-        console.log(this.parent.name)
+
         r.toMessage({
             flavor: `
             <div>${this.parent.name}</div>

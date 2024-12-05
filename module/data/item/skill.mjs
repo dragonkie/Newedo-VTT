@@ -1,6 +1,7 @@
 import { ItemDataModel } from "../abstract.mjs";
 import sysUtil from "../../helpers/sysUtil.mjs";
 import LOGGER from "../../helpers/logger.mjs";
+import { NewedoRoll } from "../../helpers/dice.mjs";
 
 const {
     ArrayField, BooleanField, IntegerSortField, NumberField, SchemaField, SetField, StringField
@@ -10,9 +11,9 @@ export default class SkillData extends ItemDataModel {
     static defineSchema() {
         const schema = super.defineSchema();
 
-        schema.trait = new StringField({ initial: 'hrt', required: true });
-        schema.isWeaponSkill = new BooleanField({ initial: false, required: true, });
-        schema.useTraitRank = new BooleanField({ initial: true, required: true });
+        schema.trait = new StringField({ initial: 'hrt', required: true, nullable: false });
+        schema.isWeaponSkill = new BooleanField({ initial: false, required: true, nullable: false });
+        schema.useTraitRank = new BooleanField({ initial: true, required: true, nullable: false });
         schema.slug = new StringField({ initial: '' });
         schema.ranks = new ArrayField(
             new NumberField({
@@ -41,10 +42,14 @@ export default class SkillData extends ItemDataModel {
     }
 
     getRollData() {
-        if (!this.actor) return null;
+        LOGGER.debug('SkillData | getRollData');
         const data = super.getRollData();
+        if (!data) return null;
 
         data.trait = data[this.trait];
+        data.formula = {}
+        data.formula.ranks = this.getRanks()
+        data.formula.full = `${data.trait.rank}d10` + (data.formula.ranks != `+${data.formula.ranks}` ? '' : '');
 
         return data;
     }
@@ -54,84 +59,49 @@ export default class SkillData extends ItemDataModel {
         return null;
     }
 
-    /**
-     * Returns this skills rollable formula, with or without the trait, and including advantage / disadvantage
-     * @param {*} mode 
-     * @param {*} trait 
-     */
-    getFormula(options = { advantage: false, disadvantage: false, useTrait: true }) {
-        const rollData = this.getRollData();
-        if (!rollData) return;// if we cant get roll data, method cant be used
-
-        const dice = this.dice(options);
-
-        let formula = '';
-        let first = true;
-        for (const d of dice) {
-            if (!first) formula += '+';
-            formula += d.count + 'd' + d.faces;
-            for (const m of d.modifiers) formula += m;
-            first = false;
-        }
-
-        return formula;
+    getFormula() {
+        if (!this.actor) return ``;
+        let trait = this.getTrait();
+        let ranks = this.getRanks();
+        return `${trait.rank}d10+${ranks}`;
     }
 
-    /**
-     * Creates list of dice objects to use with rolls
-     * @param {*} trait defaults to true, which includes the skills relevant trait dice when referenced
-     * @returns {Array}
-     */
-    dice(options = { advantage: false, disadvantage: false, useTrait: true }) {
-        const rollData = this.getRollData();
-        const list = [];
+    getRanks() {
+        let dice = [];
 
-        // advantage and disadvantage cancel eachother out, shouldnt be able to roll this easily but this is to catch
-        // those slim edge case scewnarios
-        if (options.advantage && options.disadvantage) {
-            LOGGER.debug('Advantage and disadvantage at the same time');
-            options.advantage = options.disadvantage = true;
-        }
-
-        // grabs dice ranks and pools them
+        // check through all the skill ranks
         for (const r of this.ranks) {
-            if (r <= 0) continue;//skips over dice ranks that dont have real dice
-            let found = false;
-            for (let i = 0; i < list.length; i++) {
-                //if a matching dice was found, add it to their pool
-                if (list[i].faces === r) {
-                    list[i].count += 1;
-                    found = true;
-                    break;
+            if (r != 0) { // make sure the rank isnt empty
+                // check existing dice to add to a match if possible
+                let found = false;
+                for (const d of dice) {
+                    if (d.faces == r) {
+                        d.count += 1;
+                        found = true;
+                        break;
+                    }
+                }
+
+                // if there wasnt a matching dice already, add a new one
+                if (!found) {
+                    dice.push({
+                        count: 1,
+                        faces: r
+                    })
                 }
             }
-            //if the dice doesnt exist yet, add it to the list
-            if (!found) list.push({ faces: r, count: 1, modifiers: [] });
         }
 
-        // organize the dice to be nice to look at
-        list.sort((a, b) => {
-            if (a.faces > b.faces) return 1;
-            if (a.faces < b.faces) return -1;
-            return 0;
-        })
+        // sort the dice array to make it look pretty
+        dice.sort((a, b) => a.faces - b.faces);
 
-        // adds the trait dice if enabled, stored at begining of array
-        let d = { faces: 10, count: 0, modifiers: ['x10'] }
-        if (rollData && options.useTrait) {
-            d.count += rollData.trait.rank
+        // convert the grouped dice into the formula
+        let f = '';
+        for (const d of dice) {
+            if (f != '') f += '+';
+            f += `${d.count}d${d.faces}`;
         }
-        // adds advantage bonus d10
-        if (options.advantage) d.count += 1;
-        // removes a d10 for disadvantage, or next highest if there are no d10s
-        if (options.disadvantage) {
-            if (d.count > 0) d.count -= 1;
-            else list[list.length - 1].count -= 1;
-
-        }
-
-        if (d.count > 0) list.unshift(d);
-        return list;
+        return f;
     }
 
     /**
@@ -157,48 +127,28 @@ export default class SkillData extends ItemDataModel {
 
     // Creates and rolls a NewedoRoll using this item, giving it the context that this is a skill roll
     async roll() {
-        if (!this.actor) {
-            sysUtil.warn(`NEWEDO.notify.warn.noActor`);
-            return null;
+        let rollData = this.getRollData();
+        if (!rollData) return;
+
+        let data = {
+            parts: [{
+                type: "NEWEDO.generic.trait",
+                label: "NEWEDO.trait.core." + this.trait,
+                value: `${rollData.trait.rank}d10`
+            }, {
+                type: "NEWEDO.generic.skill",
+                label: this.parent.name,
+                value: this.getRanks()
+            }],
+            bonuses: [],// dont know how im doing these yet so this can stay open ended
+            wound: rollData.wound,
+            title: this.parent.name
         }
 
-        // Creates the popup dialog asking for your roll data
-        const options = await sysUtil.getRollOptions(this.getRollData(), this.constructor.TEMPLATES.roll());
-        if (options.canceled) return null;// Stops the roll if they decided they didnt want to have fun
-
-        let formula = this.getFormula(options);// final string parsed formula
-        let flavorText = `<p style="font-size: 14px; margin: 4px 0 4px 0;">${this.parent.name}</p>`;
-        let mods = 0;// total flat bonuses and penalties
-
-        switch (options.advantage) {
-            case 'advantage':
-                flavorText += '<p style="font-size: 14px; margin: 4px 0 4px 0;">Advantage</p>';
-                break;
-            case 'disadvantage':
-                flavorText += '<p style="font-size: 14px; margin: 4px 0 4px 0;">Disadvantage</p>';
-                break;
-        }
-
-        if (options.useWound) mods += options.wound;
-        if (options.legend > 0) {
-            if (sysUtil.spendLegend(this.actor, options.legend)) {
-                mods += options.legend;
-                flavorText += `<p style="font-size: 14px; margin: 4px 0 4px 0;">Spent ${options.legend} legend</p>`;
-            }
-        }
-
-        if (mods > 0) formula += '+' + mods;
-        if (mods < 0) formula += mods;
-
-        LOGGER.log('options', options);
-
-        let r = new Roll(formula);
-        await r.evaluate();
-        await r.toMessage({
-            speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-            flavor: flavorText
-        });
-        return r;
+        let roll = new NewedoRoll(data);
+        await roll.getRollOptions();
+        await roll.evaluate();
+        return roll;
     }
 
     static TEMPLATES = {

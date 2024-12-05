@@ -1,0 +1,50 @@
+Date : 2024-11-28 00:37:21
+Directory : e:\FoundryVTT\Launcher\Data\systems\newedo
+Total : 8 files,  37 codes, 2 comments, 14 blanks, all 53 lines
+
+Languages
++------------+------------+------------+------------+------------+------------+
+| language   | files      | code       | comment    | blank      | total      |
++------------+------------+------------+------------+------------+------------+
+| JavaScript |          2 |         20 |          2 |          8 |         30 |
+| Handlebars |          5 |         17 |          0 |          4 |         21 |
+| SCSS       |          1 |          0 |          0 |          2 |          2 |
++------------+------------+------------+------------+------------+------------+
+
+Directories
++--------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                 | files      | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                    |          8 |         37 |          2 |         14 |         53 |
+| css                                                                                  |          1 |          0 |          0 |          2 |          2 |
+| css\scss                                                                             |          1 |          0 |          0 |          2 |          2 |
+| css\scss\components                                                                  |          1 |          0 |          0 |          2 |          2 |
+| module                                                                               |          2 |         20 |          2 |          8 |         30 |
+| module\applications                                                                  |          1 |         18 |          4 |          5 |         27 |
+| module\applications\actor                                                            |          1 |         18 |          4 |          5 |         27 |
+| module\applications\actor\types                                                      |          1 |         18 |          4 |          5 |         27 |
+| module\data                                                                          |          1 |          2 |         -2 |          3 |          3 |
+| module\data\item                                                                     |          1 |          2 |         -2 |          3 |          3 |
+| templates                                                                            |          5 |         17 |          0 |          4 |         21 |
+| templates\actor                                                                      |          3 |         15 |          0 |          5 |         20 |
+| templates\actor\character                                                            |          2 |         -2 |          0 |          3 |          1 |
+| templates\actor\npc                                                                  |          1 |         17 |          0 |          2 |         19 |
+| templates\dialog                                                                     |          1 |          2 |          0 |          0 |          2 |
+| templates\dialog\feature                                                             |          1 |          2 |          0 |          0 |          2 |
+| templates\shared                                                                     |          1 |          0 |          0 |         -1 |         -1 |
++--------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++--------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                             | language   | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| e:\FoundryVTT\Launcher\Data\systems\newedo\css\scss\components\_items.scss           | SCSS       |          0 |          0 |          2 |          2 |
+| e:\FoundryVTT\Launcher\Data\systems\newedo\module\applications\actor\types\npc.mjs   | JavaScript |         18 |          4 |          5 |         27 |
+| e:\FoundryVTT\Launcher\Data\systems\newedo\module\data\item\rote.mjs                 | JavaScript |          2 |         -2 |          3 |          3 |
+| e:\FoundryVTT\Launcher\Data\systems\newedo\templates\actor\character\equipment.hbs   | Handlebars |         -1 |          0 |          2 |          1 |
+| e:\FoundryVTT\Launcher\Data\systems\newedo\templates\actor\character\magic.hbs       | Handlebars |         -1 |          0 |          1 |          0 |
+| e:\FoundryVTT\Launcher\Data\systems\newedo\templates\actor\npc\traits.hbs            | Handlebars |         17 |          0 |          2 |         19 |
+| e:\FoundryVTT\Launcher\Data\systems\newedo\templates\dialog\feature\feature-item.hbs | Handlebars |          2 |          0 |          0 |          2 |
+| e:\FoundryVTT\Launcher\Data\systems\newedo\templates\shared\actor-effects.hbs        | Handlebars |          0 |          0 |         -1 |         -1 |
+| Total                                                                                |            |         37 |          2 |         14 |         53 |
++--------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+

@@ -1,3 +1,4 @@
+import LOGGER from "../../helpers/logger.mjs";
 import sysUtil from "../../helpers/sysUtil.mjs";
 import { ItemDataModel } from "../abstract.mjs";
 
@@ -44,7 +45,8 @@ export default class RoteData extends ItemDataModel {
     }
 
     getRollData() {
-        let data = super.getRollData();
+        LOGGER.debug('RoteData | getRollData');
+        const data = super.getRollData();
         if (!data) return null;
 
         data.trait = this.actor.system.traits.core.shi.rank;

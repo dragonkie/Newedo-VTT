@@ -1,3 +1,4 @@
+import PriceField from "../../fields/price-field.mjs";
 import { ItemDataModel } from "../abstract.mjs";
 
 
@@ -10,13 +11,13 @@ export default class ArmourData extends ItemDataModel {
         const schema = super.defineSchema();
 
         schema.quality = new NumberField({ initial: 1 });
-        schema.price = this.AddPriceField(100, 50, 100, 3);
+        schema.price = new PriceField();
 
         schema.soak = new SchemaField({
-            kin: new NumberField({ initial: 0 }),
-            ele: new NumberField({ initial: 0 }),
-            bio: new NumberField({ initial: 0 }),
-            arc: new NumberField({ initial: 0 })
+            kin: new NumberField({ initial: 0, required: true, nullable: false }),
+            ele: new NumberField({ initial: 0, required: true, nullable: false }),
+            bio: new NumberField({ initial: 0, required: true, nullable: false }),
+            arc: new NumberField({ initial: 0, required: true, nullable: false })
         })
 
         schema.conceal = new BooleanField({ initial: false });

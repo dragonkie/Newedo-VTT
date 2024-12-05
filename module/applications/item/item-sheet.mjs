@@ -68,15 +68,19 @@ export default class NewedoItemSheet extends NewedoSheetMixin(foundry.applicatio
     async _prepareContext(partId, content) {
         LOGGER.debug('Prpareing item sheet context')
         const context = await super._prepareContext(partId, content);
+        LOGGER.debug('super prepContext', super._prepareContext)
 
         context.settings = await renderTemplate(`systems/newedo/templates/item/settings/${this.document.type}.hbs`, context);
+        
         const enrichmentOptions = {
-            secrets: this.document.isOwner,
-            async: true,
             rollData: context.rollData
         };
 
-        context.richDescription = await TextEditor.enrichHTML(context.system.description, enrichmentOptions);
+        context.description = {
+            field: this.document.system.schema.getField('description'),
+            value: this.document.system.description,
+            enriched: await TextEditor.enrichHTML(context.system.description, enrichmentOptions),
+        }
 
         return context;
     }

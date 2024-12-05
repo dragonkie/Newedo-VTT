@@ -11,33 +11,32 @@
         </div>
     </div>
     <!-- List of augments the character has -->
-    <div>
+    <ol class="items-list">
         <li class="items-header flexrow collapsible">
             <span>Augment</span>
             <span>Noise</span>
             <span>Biofeedback</span>
             <span>Install</span>
         </li>
-        <ol class="items-list">
-            {{#each itemTypes.augment as | augment key |}}
+        {{#each itemTypes.augment as | augment key |}}
 
-                <li class="item flexrow" data-item-uuid="{{augment.uuid}}">
-                    <!-- Link to the fate opens up the item sheet -->
-                    <span style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start;">
-                        <img src="{{augment.img}}" width="30" height="30">
-                        <a style="margin-left: 4px;" data-action="editItem">{{augment.name}}</a>
-                    </span>
-                    <span class="item-detail">{{augment.system.biofeedback}}%</span>
-                    
-                    <span class="item-controls">
-                        
-                        {{#if (not augment.installed) }} <span data-action="useItem" data-use="install"><i class="fa-solid fa-microchip"></i></span> {{/if}}
-                        {{#if augment.installed}} <span data-action="useItem" data-use="install"><i class="fa-solid fa-microchip"></i></span> {{/if}}
-                        {{#if ../isEditMode}} <span class="item-delete"><i class="fa-solid fa-trash"></i></span> {{/if}}
-                    </span>
-                </li>
+            <li class="item flexrow" data-item-uuid="{{augment.uuid}}">
+                <!-- Link to the fate opens up the item sheet -->
+                <span style="display: flex; flex-direction: row; align-items: center; justify-content: flex-start;">
+                    <img src="{{augment.img}}" width="30" height="30">
+                    <a style="margin-left: 4px;" data-action="editItem">{{augment.name}}</a>
+                </span>
+                <span class="item-detail">{{augment.system.biofeedback}}%</span>
 
-            {{/each}}
-        </ol>
-    </div>
+                <span class="item-controls">
+
+                    {{#if (not augment.installed) }} <span data-action="useItem" data-use="install"><i class="fa-solid fa-microchip"></i></span> {{/if}}
+                    {{#if augment.installed}} <span data-action="useItem" data-use="install"><i class="fa-solid fa-microchip"></i></span> {{/if}}
+                    {{#if ../isEditMode}} <span class="item-delete"><i class="fa-solid fa-trash"></i></span> {{/if}}
+                </span>
+            </li>
+
+        {{/each}}
+    </ol>
+
 </div>

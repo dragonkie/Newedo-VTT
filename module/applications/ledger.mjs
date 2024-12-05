@@ -100,7 +100,9 @@ export default class NewedoLedger extends NewedoApplication {
                     note: this.element.querySelector(`[name=note]`).value,
                 }
 
-                if (newRecord.value <= 0) return;
+                // Stops negative values from being added to this for the sake of keeping things simple and easy
+                // prevents you from subtracting or adding a negative number to the ledger
+                if (newRecord.value < 0) return;
 
                 // Modifies the ledger with the new data
                 this.ledger.transactions.push(newRecord)
@@ -195,7 +197,7 @@ export default class NewedoLedger extends NewedoApplication {
     }
 
     /**
-     * Revaluates the
+     * Revaluates the total value
      */
     get sum() {
         let s = 0;
@@ -214,7 +216,7 @@ export default class NewedoLedger extends NewedoApplication {
                     s = t.value;
                     break;
                 default:
-                    LOGGER.error('Invalid operation found in ledger. Omitting from results', t.operation);
+                    LOGGER.error('Invalid ledger operation - Omitting from results', t.operation);
                     break;
             }
         }

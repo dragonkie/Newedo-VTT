@@ -67,8 +67,6 @@ export const NewedoSheetMixin = Base => {
                 userFlags: game.user.flags,
                 user: game.user,
                 name: doc.name,
-                items: doc.items,
-                itemTypes: doc.itemTypes,
                 rollData: rollData,
                 tabs: this._getTabs(),
                 isEditMode: this.isEditMode,

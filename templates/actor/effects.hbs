@@ -1,0 +1,42 @@
+<div class="tab-content">
+    <ol class="items-list">
+        <li class="items-header flexrow collapsible">
+            <span>{{effects.passive.label}}</span>
+            <span>Controls</span>
+            <a class="controls" type="button" data-action="createEffect" style="flex:0; margin-right: 5px;">
+                <i class="fa-solid fa-plus"></i>
+            </a>
+        </li>
+        {{#each effects.passive.effects}}
+
+        {{/each}}
+    </ol>
+
+    <ol class="items-list">
+        <li class="items-header flexrow collapsible">
+            <span>{{effects.temporary.label}}</span>
+            <span>Controls</span>
+            <a class="controls" type="button" data-action="createEffect" style="flex:0; margin-right: 5px;">
+                <i class="fa-solid fa-plus"></i>
+            </a>
+        </li>
+
+        {{#each effects.passive.effects}}
+
+        {{/each}}
+    </ol>
+
+    <ol class="items-list">
+        <li class="items-header flexrow collapsible">
+            <span>{{effects.inactive.label}}</span>
+            <span>Controls</span>
+            <a class="controls" type="button" data-action="createEffect" style="flex:0; margin-right: 5px;">
+                <i class="fa-solid fa-plus"></i>
+            </a>
+        </li>
+
+        {{#each effects.passive.effects}}
+
+        {{/each}}
+    </ol>
+</div>

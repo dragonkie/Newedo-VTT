@@ -1,16 +1,18 @@
 <div class="tab-content">
-    <div style="display: inline-flex;">
-        <label>Range:</label>
-        <input type="number" name="system.range.max" value="{{system.range.max}}" placeholder="Max" />
-        <div>/</div>
-        <input type="number" name="system.range.min" value="{{system.range.min}}" placeholder="Min" />
+    <div class="form-group">
+        <label>{{localize 'NEWEDO.damage.kin'}}:</label>
+        <input type="number" name="system.soak.kin" value="{{system.soak.kin}}">
     </div>
-    <div style="display: inline-flex;">
-        <label>Source:</label>
-        <input type="text" name="system.source" value="{{system.source}}" placeholder="Origin of this fate" />
+    <div class="form-group">
+        <label>{{localize 'NEWEDO.damage.ele'}}:</label>
+        <input type="number" name="system.soak.ele" value="{{system.soak.ele}}">
     </div>
-    <div>
-        <label>Locked:</label>
-        <input type="checkbox" value="{{system.locked}}" />
+    <div class="form-group">
+        <label>{{localize 'NEWEDO.damage.bio'}}:</label>
+        <input type="number" name="system.soak.bio" value="{{system.soak.bio}}">
+    </div>
+    <div class="form-group">
+        <label>{{localize 'NEWEDO.damage.arc'}}:</label>
+        <input type="number" name="system.soak.arc" value="{{system.soak.arc}}">
     </div>
 </div>

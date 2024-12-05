@@ -5,7 +5,7 @@ import LOGGER from "../../../helpers/logger.mjs";
 export default class CharacterSheet extends NewedoActorSheet {
     static DEFAULT_OPTIONS = {
         classes: ["character"],
-        position: { height: 680, width: 780, top: 60, left: 125 }
+        position: { height: 680, width: 840, top: 60, left: 125 }
     }
 
     static PARTS = {
@@ -17,6 +17,7 @@ export default class CharacterSheet extends NewedoActorSheet {
         equipment: { template: "systems/newedo/templates/actor/character/equipment.hbs" },
         magic: { template: "systems/newedo/templates/actor/character/magic.hbs" },
         augments: { template: "systems/newedo/templates/actor/character/augments.hbs" },
+        effects: { template: "systems/newedo/templates/actor/effects.hbs"},
         description: { template: "systems/newedo/templates/actor/character/biography.hbs" }
     }
 
@@ -26,6 +27,7 @@ export default class CharacterSheet extends NewedoActorSheet {
         equipment: { id: "equipment", group: "primary", label: "NEWEDO.tab.equipment" },
         augments: { id: "augments", group: "primary", label: "NEWEDO.tab.augs" },
         magic: { id: "magic", group: "primary", label: "NEWEDO.tab.magic" },
+        effects: { id: "effects", group: "primary", label: "NEWEDO.tab.effects"},
         description: { id: "description", group: "primary", label: "NEWEDO.tab.bio" }
     }
 

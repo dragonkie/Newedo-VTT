@@ -28,7 +28,7 @@
     "distance": 1,
     "units": "m"
   },
-  "initative": "traits.derived.init",
+  "initiative": "@init.total",
   "primaryTokenAttribute": "hp",
   "secondaryTokenAttribute": "legend",
   "url": "https://github.com/dragonkie/Newedo-VTT",

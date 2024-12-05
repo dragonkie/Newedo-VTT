@@ -15,9 +15,16 @@
   "NEWEDO.generic.money": "Money",
   "NEWEDO.generic.ranged": "Ranged",
   "NEWEDO.generic.melee": "Melee",
-  
+  "NEWEDO.generic.multiplier": "Multiplier",
+  "NEWEDO.generic.lvl": "Level",
+  "NEWEDO.generic.size": "Size",
+  "NEWEDO.generic.abbr.lvl": "lvl",
+  "NEWEDO.generic.abbr.size": "size",
   "NEWEDO.generic.wound": "Wound",
   "NEWEDO.generic.plrl.wound": "Wounds",
+  "NEWEDO.generic.mod": "Mod",
+  "NEWEDO.generic.roll": "Roll",
+  "NEWEDO.generic.grit": "Grit",
 
   "NEWEDO.tab.traits": "Traits",
   "NEWEDO.tab.equipment": "Equipment",
@@ -27,13 +34,8 @@
   "NEWEDO.tab.bio": "Biography",
   "NEWEDO.tab.description": "Description",
   "NEWEDO.tab.settings": "Settings",
+  "NEWEDO.tab.effects": "Effects",
   "NEWEDO.tab.rules": "Rules",
-
-  "NEWEDO.attribute.lvl": "Level",
-  "NEWEDO.attribute.size": "Size",
-
-  "NEWEDO.attribute.abbr.lvl": "lvl",
-  "NEWEDO.attribute.abbr.size": "size",
 
   "NEWEDO.trait.core.pow": "Power",
   "NEWEDO.trait.core.ref": "Reflex",
