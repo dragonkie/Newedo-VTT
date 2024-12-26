@@ -1,6 +1,6 @@
-import NewedoItemSheet from "../item-sheet.mjs";
+import NewedoItemSheet from "../item.mjs";
 
-export default class CultureSheet extends NewedoItemSheet {
+export default class ArmourSheet extends NewedoItemSheet {
     static DEFAULT_OPTIONS = {
         actions: {
             
@@ -13,7 +13,7 @@ export default class CultureSheet extends NewedoItemSheet {
         body: { template: "systems/newedo/templates/item/body.hbs" },
         rules: { template: "systems/newedo/templates/item/rules.hbs" },
         description: { template: "systems/newedo/templates/item/description.hbs" },
-        settings: { template: "systems/newedo/templates/item/settings/culture.hbs" }
+        settings: { template: "systems/newedo/templates/item/settings/armour.hbs" }
     }
 
     static TABS = {

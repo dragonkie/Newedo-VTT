@@ -1,8 +1,6 @@
-import LOGGER from "../../../helpers/logger.mjs";
-import NewedoItemSheet from "../item-sheet.mjs";
-import { elements } from "../../../elements/_module.mjs"
+import NewedoItemSheet from "../item.mjs";
 
-export default class WeaponSheet extends NewedoItemSheet {
+export default class RoteSheet extends NewedoItemSheet {
     static DEFAULT_OPTIONS = {
         actions: {
 
@@ -15,7 +13,7 @@ export default class WeaponSheet extends NewedoItemSheet {
         body: { template: "systems/newedo/templates/item/body.hbs" },
         rules: { template: "systems/newedo/templates/item/rules.hbs" },
         description: { template: "systems/newedo/templates/item/description.hbs" },
-        settings: { template: "systems/newedo/templates/item/settings/weapon.hbs" }
+        settings: { template: "systems/newedo/templates/item/settings/rote.hbs" }
     }
 
     static TABS = {
@@ -28,19 +26,16 @@ export default class WeaponSheet extends NewedoItemSheet {
         primary: "description"
     }
 
-    async _prepareContext(partId, content) {
-        const context = await super._prepareContext(partId, content);
+    async _prepareContext() {
+        const context = await super._prepareContext();
+        const actor = this.actor;
 
-        // Boolean values for quick use and readability in templates
         context.isEquipped = context.system.equipped;
         context.isRanged = context.system.ranged;
 
-        // Selector lists to be rendered dynamically, others can use default handlebars templates
-        const actor = this.document.actor;
         context.selector = {
-            skill: {},
-            damage: [],
-        };
+            skill: {}
+        }
 
         // Prepares the dropdown selector for skills
         if (actor) {
@@ -48,11 +43,7 @@ export default class WeaponSheet extends NewedoItemSheet {
             // this allows custom skills to be added
             // Only skills toggled as weapon skills will appear here to prevent bloat
             let skills = [];
-            for (const skill of actor.itemTypes.skill) {
-                if (skill.system.isWeaponSkill) {
-                    skills.push({ value: skill.id, label: skill.name });
-                }
-            }
+            for (const skill of actor.itemTypes.skill) skills.push({ value: skill.id, label: skill.name });
 
             skills.sort((a, b) => {
                 if (a.label > b.label) return 1;

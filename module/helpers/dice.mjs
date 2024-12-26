@@ -1,6 +1,5 @@
 import LOGGER from "./logger.mjs";
 import sysUtil from "../helpers/sysUtil.mjs";
-import { actor } from "../data/_module.mjs";
 
 /**
  * Expanded roll option for use with the vast number of dice used in newedo
@@ -9,7 +8,7 @@ import { actor } from "../data/_module.mjs";
  * formats despite containg potentially 10+ different dice and multiple modifier
  * sources
  */
-export class NewedoRoll {
+export default class NewedoRoll {
 
     data = {};
 
@@ -18,6 +17,8 @@ export class NewedoRoll {
     _ready = false;
 
     formula = '';
+
+    _roll = null;
 
     /**Accepts an optional list of dice objects to pre populate the tray */
     constructor(data) {
@@ -56,29 +57,31 @@ export class NewedoRoll {
                     }
                 }
 
-                // special handling for the legend option since it spends a resource
                 if (element.dataset['formula'] == 'legend' && this.data.actor && v.value != '0') {
+                    // special handling for the legend option since it spends a resource
                     if (sysUtil.spendLegend(this.data.actor, sysUtil.parseElementValue(v))) {
                         // spent legend properly
                         this.options.pieces.push({
                             type: element.dataset['formula'],
-                            value: sysUtil.parseElementValue(v),
+                            value: v.value,
                             active: true,
                         })
                     } else {
-                        // ran out of legend so abort
-                        sysUtil.warn('NEWEDO.warn.noLegend');
-                        return null;
+                        // ran out of legend so abort, they should be alerted by the spend legend function already
+                        this.options.cancelled = true;
+                        return this.options;
                     }
                 } else {
-                    if (v && a && v.value != '' && v.value != '0') this.options.pieces.push({
-                        type: element.dataset['formula'],
-                        value: sysUtil.parseElementValue(v),
-                        active: a ? a.checked : true,
-                    })
+                    // Parses all common roll values
+                    if (v && a && v.value != '' && v.value != '0') {
+                        this.options.pieces.push({
+                            type: element.dataset['formula'],
+                            value: v.value,
+                            active: a ? a.checked : true,
+                        })
+                    }
                 }
             }
-
             this.options.advantage = method == 'adv' ? true : false;
             this.options.disadvantage = method == 'dis' ? true : false;
             this._ready = true;
@@ -107,9 +110,10 @@ export class NewedoRoll {
                 close: () => resolve({ cancelled: true }),
                 submit: (result) => resolve(result)
             }
-            LOGGER.debug('dialog opts', options)
             new foundry.applications.api.DialogV2(options, null).render(true);
         });
+
+        return this.options;
     }
 
     // Pointer to the evaluate function, maintains parity with foundry rolls
@@ -121,124 +125,90 @@ export class NewedoRoll {
      * Creates and rolls the values gotten here
      */
     async evaluate() {
-        if (this.options.cancelled) {
-            return null;
-        }
+        if (this.options.cancelled) return null;
 
         if (!this._ready) {
             LOGGER.error('NewedoRoll not initalized, roll needs to have options set and be flagged as ready')
             return null;
         }
 
+        // Handle the advantage / disadvantage roll first and foremost
+        let adv = this.options.advantage;
+        let dis = this.options.disadvantage;
+
+        // Adds all the formula parts
         for (let part of this.options.pieces) {
             // if the formula has a piece in it already, add osmething to join them
-            if (!part.active) continue;
-            if (this.formula != '') {
-                switch (Array.from(part.value)[0]) {
-                    case '+':
-                    case '/':
-                    case '-':
-                    case '*':
-                        break;
-                    default:
-                        this.formula += '+';
-                        break;
-                }
+            if (!part.active || part.value == 0 || part.value == '') continue; // Skips parts that were marked as inactive, or that are empty
+            switch (Array.from(part)[0]) {
+                case "/":
+                case "+":
+                case "*":
+                case "*":
+                    break;
+                default:
+                    this.formula += "+";
+                    break;
             }
 
             this.formula += part.value;
         }
 
-        // Removes exploding dice and whitespace for simplicity
+        // Cleans the formula, as well as removes exploding dice, and simplifying things
         this.formula = this.formula.replaceAll('d10x10', 'd10').replaceAll(' ', '');
+        this.formula = this.formula.replace(/^[\+\*\/]/, '');
+        this.formula = this.formula.replaceAll("+-", "-");
 
-        // validate the formula before procceeding
-        if (!Roll.validate(this.formula)) {
-            sysUtil.error('NEWEDO.error.rollValidationFail');
-            return null;
-        }
+        // Adds the advantage / disadvantage bonus
+        if (adv && !dis) {
+            LOGGER.log('Advantage checks');
 
-        // Regex to grab full dice terms from the formula
-        let rx = /[\-\+\*\/]?[0-9]+d[0-9]+([a-zA-Z0-9]?)+/g;
-        let terms = this.formula.match(rx);
+            // Search for a positive d10 to add too
+            let match = this.formula.match(/(?<![\-\*\/])[0-9]+d10/)[0];
+            if (match) {
+                let s = match.split("d");
+                let n = +s[0];
+                this.formula = this.formula.replace(match, `${n + 1}d10`);
+            } else {
+                // Just add the dice if there wern't any d10's already
+                this.formula = "1d10+" + this.formula;
+            }
+        } else if (dis && !adv) {
+            // Search for a positive d10 to lower 
+            let term = this.formula.match(/\+?\d+d10(\w+)?/)[0];
 
-        // Convert the terms to dice objects for easier management, ordered first to last
-        const dice = [];
-        for (const t of terms) {
+            if (term) {
+                let dice = term.match(/\dd10/)[0].split('d');
+                let count = dice[0];
 
-            let c = +t.match(/[0-9]+d/)[0].replace('d', '');
-            let f = +t.match(/d[0-9]+/)[0].replace('d', '');
-            let s = t.replace(/[0-9]+d[0-9]+([a-zA-Z0-9]?)+/, '');
-            let m = t.replace(/^[\-\+\*\/]?[0-9]+d[0-9]+/, '');
-
-            dice.push({
-                count: c,
-                faces: f,
-                sign: s,
-                mods: m
-            })
-        }
-
-        console.log(this.formula);
-        console.log(dice);
-
-        let found = false;
-        if (this.options.advantage && !this.options.disadvantage) {
-            // add 1d10 to an existing stack for roll clarity
-            for (let d of dice) {
-                if (d.faces == 10) {
-                    found = true;
-                    d.count += 1;
-                    break;
+                if (count < 1) {
+                    this.formula = this.formula.replace(term, ``);
+                } else {
+                    // Create modify the term to match what we need to create
+                    let newTerm = term.replace(`${count}d10`, `${count - 1}d10`)
+                    this.formula = this.formula.replace(term, newTerm);
                 }
-            }
-            // if there were no d10s, just add one to the pool
-            if (!found) {
-                dice.push({
-                    count: 1,
-                    faces: 10,
-                    sign: '+',
-                    mods: ''
-                })
-            }
-        } else if (!this.options.advantage && this.options.disadvantage) {
-            // attempt to remove 1d10 from the pool
-            for (let d of dice) {
-                if (d.faces == 10 && d.count > 0) {
-                    d.count -= 1;
-                    found = true;
-                    break;
-                }
-            }
-            // if we dont have d10s, take one away from the largest dice possible
-            if (!found) {
-                let targetFaces = 0;
-                let targetDice = 0;
+            } else {
 
-                for (let a = 0; a < dice.length; a++) {
-                    if (dice[a].faces > targetFaces && dice[a].count > 0 && dice[a].sign != '-') {
-                        targetDice = a;
-                        targetFaces = dice[a].faces;
-                    }
-                }
-
-                dice[targetDice].count -= 1;
             }
         }
 
-        // Reconstruct the roll formula from the new dice terms
-        this.formula = '';
-        for (const d of dice) {
-            if (d.count == 0) continue;
-            this.formula += d.sign + d.count + "d" + d.faces + d.mods;
-        }
-
-        // Adds the exploding dice back
         this.formula = this.formula.replaceAll('d10', 'd10x10');
 
-        let roll = new Roll(this.formula);
+        LOGGER.log('Final Formula: ', this.formula)
+        this._roll = new Roll(this.formula);
 
-        await roll.evaluate();
-        roll.toMessage();
+        return this._roll.evaluate();
+    }
+   
+    async rollToMessage() {
+        await this.evaluate();
+        this._roll.toMessage();
+        return this._roll;
+    }
+
+    async toMessage(data) {
+        if (this._roll) return this._roll.toMessage(data);
+        else return null;
     }
 };

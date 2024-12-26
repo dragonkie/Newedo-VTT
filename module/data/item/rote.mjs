@@ -1,3 +1,4 @@
+import NewedoRoll from "../../helpers/dice.mjs";
 import LOGGER from "../../helpers/logger.mjs";
 import sysUtil from "../../helpers/sysUtil.mjs";
 import { ItemDataModel } from "../abstract.mjs";
@@ -13,7 +14,7 @@ export default class RoteData extends ItemDataModel {
         schema.rank = new NumberField({ initial: 1 });
         schema.range = new NumberField({ initial: 1 });
         schema.cost = new NumberField({ initial: 1 });
-        schema.duration = new NumberField({ initial: 1 });
+        schema.duration = new NumberField({ initial: 1, required: true, nullable: false });
         schema.skill = new SchemaField({
             slug: new StringField({ initial: 'arcana' }),
             id: new StringField({ initial: '' })
@@ -54,6 +55,14 @@ export default class RoteData extends ItemDataModel {
         return data;
     }
 
+    getSkill() {
+        if (this.skill.id && this.actor) {
+            return this.actor.items.get(this.skill.id);
+        }
+
+        return null;
+    }
+
     async use(action) {
         switch (action) {
             default: break;
@@ -67,32 +76,29 @@ export default class RoteData extends ItemDataModel {
         if (!actor) return;
 
         const rollData = this.getRollData();
+        const skill = this.getSkill();
+        console.log('CASTING SPELL DATA: ', rollData);
 
-        let options = await sysUtil.getRollOptions(rollData, this.constructor.TEMPLATES.rollCasting);
-        if (options.cancled) return;
-
-        let formula = this.getFormula(options);
-        let flavorText = `<p style="font-size: 14px; margin: 4px 0 4px 0;">${this.parent.name}</p>`;
-        let mods = 0;
-
-        if (options.useWound) mods += options.wound;
-        if (options.legend > 0) {
-            if (sysUtil.spendLegend(this.actor, options.legend + this.cost)) {
-                mods += options.legend;
-                flavorText += `<p style="font-size: 14px; margin: 4px 0 4px 0;">Spent ${options.legend + this.cost} legend</p>`;
-            }
+        let data = {
+            parts: [{
+                type: "NEWEDO.generic.trait",
+                label: "NEWEDO.trait.core.shi",
+                value: `${actor.system.traits.core.shi.rank}d10`
+            }, {
+                type: "NEWEDO.generic.skill",
+                label: skill.name,
+                value: skill.system.getRanks()
+            }],
+            bonuses: [],
+            wound: rollData.wound,
+            title: this.parent.name
         }
 
-        if (mods > 0) formula += '+' + mods;
-        if (mods < 0) formula += mods;
+        let roll = await new NewedoRoll(data);
+        let options = await roll.getRollOptions();
+        let _r = await roll.evaluate();
+        _r.toMessage();
 
-        let r = new Roll(formula);
-        await r.evaluate();
-        await r.toMessage({
-            speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-            flavor: flavorText
-        });
-        return r;
     }
 
     static TEMPLATES = {

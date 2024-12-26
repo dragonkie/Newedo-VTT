@@ -1,13 +1,12 @@
-import CharacterSheet from "./types/character.mjs";
-import NpcSheet from "./types/npc.mjs";
-import PetSheet from "./types/pet.mjs";
-import VehicleSheet from "./types/vehicle.mjs";
+import CharacterSheet from "./character.mjs";
+import NpcSheet from "./npc.mjs";
+import PetSheet from "./pet.mjs";
+import VehicleSheet from "./vehicle.mjs";
 
-export { default as NewedoActorSheet } from "./actor-sheet.mjs";
-export { default as CharacterSheet } from "./types/character.mjs";
-export { default as NpcSheet } from "./types/npc.mjs";
-export { default as PetSheet } from "./types/pet.mjs";
-export { default as VehicleSheet } from "./types/vehicle.mjs";
+export { default as CharacterSheet } from "./character.mjs";
+export { default as NpcSheet } from "./npc.mjs";
+export { default as PetSheet } from "./pet.mjs";
+export { default as VehicleSheet } from "./vehicle.mjs";
 
 export const config = [
     {

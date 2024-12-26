@@ -1,9 +1,9 @@
-import NewedoItemSheet from "../item-sheet.mjs";
+import NewedoItemSheet from "../item.mjs";
 
-export default class AugmentSheet extends NewedoItemSheet {
+export default class LineageSheet extends NewedoItemSheet {
     static DEFAULT_OPTIONS = {
         actions: {
-
+            
         }
     }
 
@@ -13,7 +13,7 @@ export default class AugmentSheet extends NewedoItemSheet {
         body: { template: "systems/newedo/templates/item/body.hbs" },
         rules: { template: "systems/newedo/templates/item/rules.hbs" },
         description: { template: "systems/newedo/templates/item/description.hbs" },
-        settings: { template: "systems/newedo/templates/item/settings/augment.hbs" }
+        settings: { template: "systems/newedo/templates/item/settings/lineage.hbs" }
     }
 
     static TABS = {

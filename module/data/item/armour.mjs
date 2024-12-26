@@ -13,6 +13,8 @@ export default class ArmourData extends ItemDataModel {
         schema.quality = new NumberField({ initial: 1 });
         schema.price = new PriceField();
 
+        schema.equipped = new BooleanField({ initial: false, required: true });
+
         schema.soak = new SchemaField({
             kin: new NumberField({ initial: 0, required: true, nullable: false }),
             ele: new NumberField({ initial: 0, required: true, nullable: false }),
@@ -30,5 +32,22 @@ export default class ArmourData extends ItemDataModel {
 
     prepareDerivedData() {
         super.prepareDerivedData();
+    }
+
+    get isEquipped() {
+        return this.equipped == true;
+    }
+
+    async use(action) {
+        switch (action) {
+            case 'equip': return this._onEquip();
+            default:
+                LOGGER.error('Unknown weapon action: ', action);
+                return null;
+        }
+    }
+
+    async _onEquip() {
+        await this.parent.update({ 'system.equipped': !this.equipped });
     }
 }

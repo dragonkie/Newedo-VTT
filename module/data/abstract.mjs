@@ -8,7 +8,7 @@ const {
     ArrayField, BooleanField, IntegerSortField, NumberField, SchemaField, SetField, StringField, HTMLField
 } = foundry.data.fields;
 
-export default class SystemDataModel extends foundry.abstract.TypeDataModel {
+export class SystemDataModel extends foundry.abstract.TypeDataModel {
     /**
      * Quick function to create a number value field, but returns full schema field to give space for
      * derived data to extend this particular field context
@@ -24,7 +24,7 @@ export default class SystemDataModel extends foundry.abstract.TypeDataModel {
 
     getRollData() {
         // Get owning documents rolldata
-        let data = {...this};
+        let data = { ...this };
         return data;
     }
 }
@@ -69,51 +69,60 @@ export class ActorDataModel extends SystemDataModel {
 
         schema.bonus = new SchemaField({
             // Bonus to core trait totals
-            PowTotal: new ArrayField(new BonusField(), { initial: [] }),
-            PerTotal: new ArrayField(new BonusField(), { initial: [] }),
-            PreTotal: new ArrayField(new BonusField(), { initial: [] }),
-            HrtTotal: new ArrayField(new BonusField(), { initial: [] }),
-            RefTotal: new ArrayField(new BonusField(), { initial: [] }),
-            SavTotal: new ArrayField(new BonusField(), { initial: [] }),
-            ShiTotal: new ArrayField(new BonusField(), { initial: [] }),
+            PowTotal: new NumberField({ initial: 0 }),
+            PerTotal: new NumberField({ initial: 0 }),
+            PreTotal: new NumberField({ initial: 0 }),
+            HrtTotal: new NumberField({ initial: 0 }),
+            RefTotal: new NumberField({ initial: 0 }),
+            SavTotal: new NumberField({ initial: 0 }),
+            ShiTotal: new NumberField({ initial: 0 }),
 
             // Bonus to core trait ranks, very op
-            PowRank: new ArrayField(new BonusField(), { initial: [] }),
-            PerRank: new ArrayField(new BonusField(), { initial: [] }),
-            PreRank: new ArrayField(new BonusField(), { initial: [] }),
-            HrtRank: new ArrayField(new BonusField(), { initial: [] }),
-            RefRank: new ArrayField(new BonusField(), { initial: [] }),
-            SavRank: new ArrayField(new BonusField(), { initial: [] }),
-            ShiRank: new ArrayField(new BonusField(), { initial: [] }),
+            PowRank: new NumberField({ initial: 0 }),
+            PerRank: new NumberField({ initial: 0 }),
+            PreRank: new NumberField({ initial: 0 }),
+            HrtRank: new NumberField({ initial: 0 }),
+            RefRank: new NumberField({ initial: 0 }),
+            SavRank: new NumberField({ initial: 0 }),
+            ShiRank: new NumberField({ initial: 0 }),
 
             // Bonus to derived trait totals
-            DefTotal: new ArrayField(new BonusField(), { initial: [] }),
-            InitTotal: new ArrayField(new BonusField(), { initial: [] }),
-            MoveTotal: new ArrayField(new BonusField(), { initial: [] }),
-            ResTotal: new ArrayField(new BonusField(), { initial: [] }),
+            DefTotal: new NumberField({ initial: 0 }),
+            InitTotal: new NumberField({ initial: 0 }),
+            MoveTotal: new NumberField({ initial: 0 }),
+            ResTotal: new NumberField({ initial: 0 }),
 
             // Bonus to derived trait base values (these bonuses are applied before the modifier is calculated)
-            DefBase: new ArrayField(new BonusField(), { initial: [] }),
-            InitBase: new ArrayField(new BonusField(), { initial: [] }),
-            MoveBase: new ArrayField(new BonusField(), { initial: [] }),
-            ResBase: new ArrayField(new BonusField(), { initial: [] }),
+            DefBase: new NumberField({ initial: 0 }),
+            ResBase: new NumberField({ initial: 0 }),
+            InitBase: new NumberField({ initial: 0 }),
+            MoveBase: new NumberField({ initial: 0 }),
 
             // Bonus to derived trait mods
-            DefMod: new ArrayField(new BonusField(), { initial: [] }),
-            InitMod: new ArrayField(new BonusField(), { initial: [] }),
-            MoveMod: new ArrayField(new BonusField(), { initial: [] }),
-            ResMod: new ArrayField(new BonusField(), { initial: [] }),
+            DefMod: new NumberField({ initial: 0 }),
+            ResMod: new NumberField({ initial: 0 }),
+            InitMod: new NumberField({ initial: 0 }),
+            MoveMod: new NumberField({ initial: 0 }),
 
-            // Healing rate modifier
-            RestMod: new ArrayField(new BonusField(), { initial: [] }),
+            // Health modifiers
+            HpBase: new NumberField({ initial: 0 }),
+            HpTotal: new NumberField({ initial: 0 }),
+            HpMod: new NumberField({ initial: 0 }),
+            RestMod: new NumberField({ initial: 0 }),
 
             // Bonus to attacks
-            attackMelee: new ArrayField(new BonusField(), { initial: [] }),
-            attackRanged: new ArrayField(new BonusField(), { initial: [] }),
+            attackMelee: new NumberField({ initial: 0 }),
+            attackRanged: new NumberField({ initial: 0 }),
 
             // Bonus to damage
-            damageMelee: new ArrayField(new BonusField(), { initial: [] }),
-            damageRanged: new ArrayField(new BonusField(), { initial: [] }),
+            damageMelee: new NumberField({ initial: 0 }),
+            damageRanged: new NumberField({ initial: 0 }),
+
+            // Bonus to soaks
+            SoakKin: new NumberField({initial: 0}),
+            SoakEle: new NumberField({initial: 0}),
+            SoakBio: new NumberField({initial: 0}),
+            SoakArc: new NumberField({initial: 0}),
         })
 
         return schema;
@@ -143,6 +152,9 @@ export class ActorDataModel extends SystemDataModel {
         LOGGER.group("ActorDataModel | prepareDerivedData");
 
         const { core, derived } = this.traits;
+        const bonus = this.bonus;
+
+
 
         // Totals up core stats
         core.hrt.total = core.hrt.value;
@@ -153,13 +165,35 @@ export class ActorDataModel extends SystemDataModel {
         core.sav.total = core.sav.value;
         core.shi.total = core.shi.value;
 
-        for (let a of this.bonus.HrtTotal) core.hrt.total += a.value;
-        for (let a of this.bonus.PowTotal) core.pow.total += a.value;
-        for (let a of this.bonus.PerTotal) core.per.total += a.value;
-        for (let a of this.bonus.PreTotal) core.pre.total += a.value;
-        for (let a of this.bonus.RefTotal) core.ref.total += a.value;
-        for (let a of this.bonus.SavTotal) core.sav.total += a.value;
-        for (let a of this.bonus.ShiTotal) core.shi.total += a.value;
+        core.hrt.total += bonus.HrtTotal;
+        core.pow.total += bonus.PowTotal;
+        core.per.total += bonus.PerTotal;
+        core.pre.total += bonus.PreTotal;
+        core.ref.total += bonus.RefTotal;
+        core.sav.total += bonus.SavTotal;
+        core.shi.total += bonus.ShiTotal;
+
+        /*
+        for (let a of bonus.HrtTotal) core.hrt.total += a.value;
+        for (let a of bonus.PowTotal) core.pow.total += a.value;
+        for (let a of bonus.PerTotal) core.per.total += a.value;
+        for (let a of bonus.PreTotal) core.pre.total += a.value;
+        for (let a of bonus.RefTotal) core.ref.total += a.value;
+        for (let a of bonus.SavTotal) core.sav.total += a.value;
+        for (let a of bonus.ShiTotal) core.shi.total += a.value;
+        */
+
+        /* ----------------------------------------------------------- */
+        /* Equipped item modifiers                                     */
+        /* ----------------------------------------------------------- */
+        for (const item of this.parent.items.contents) {
+            if (item.type == 'armour' && item.system.isEquipped) {
+                this.bonus.SoakKin += item.system.soak.kin;
+                this.bonus.SoakEle += item.system.soak.ele;
+                this.bonus.SoakBio += item.system.soak.bio;
+                this.bonus.SoakArc += item.system.soak.arc;
+            }
+        }
 
         // Loop through core traits and calculate their rank, traits are not included in the "Round everything up" rule
         for (let [key, trait] of Object.entries(core)) {
@@ -167,17 +201,22 @@ export class ActorDataModel extends SystemDataModel {
         }
 
         // Calculates derived traits for initative, move, defence, resolve, and max health
-        derived.init.total = Math.ceil((core.sav.total + core.ref.total) * derived.init.mod);
-        derived.move.total = Math.ceil(((core.hrt.total + core.ref.total) / this.size.value) * derived.move.mod);
-        derived.def.total = Math.ceil((core.pow.total + core.ref.total) * derived.def.mod);
-        derived.res.total = Math.ceil((core.hrt.total + core.pre.total) * derived.res.mod);
+        derived.init.total = Math.ceil((core.sav.total + core.ref.total + bonus.InitBase) * (derived.init.mod + bonus.InitMod)) + bonus.InitTotal;
+        derived.move.total = Math.ceil((((core.hrt.total + core.ref.total) / this.size.value) + bonus.MoveBase) * (derived.move.mod + bonus.MoveMod)) + bonus.MoveTotal;
+        derived.def.total = Math.ceil((core.pow.total + core.ref.total + bonus.DefBase) * (derived.def.mod + bonus.DefMod)) + bonus.DefTotal;
+        derived.res.total = Math.ceil((core.hrt.total + core.pre.total + bonus.ResBase) * (derived.res.mod + bonus.ResMod)) + bonus.ResTotal;
 
         // Sets health range, MIN is included for use with the token resource bars and is always 0
-        this.hp.max = Math.ceil(core.hrt.total * this.hp.mod);
+        this.hp.max = Math.ceil(core.hrt.total * (this.hp.mod + bonus.HpMod)) + bonus.HpTotal;
         this.hp.min = 0;
 
         // Gets the characters wound state
         this.wound = sysUtil.woundState(this.hp.value / this.hp.max);
+
+        this.armour.kin.total = this.armour.kin.value + bonus.SoakKin;
+        this.armour.ele.total = this.armour.ele.value + bonus.SoakEle;
+        this.armour.bio.total = this.armour.bio.value + bonus.SoakBio;
+        this.armour.arc.total = this.armour.arc.value + bonus.SoakArc;
 
         LOGGER.groupEnd();
     }
@@ -211,7 +250,7 @@ export class ItemDataModel extends SystemDataModel {
     }
 
     prepareDerivedData() {
-        LOGGER.group("ItemDataModel | prepareDerivedData"); 
+        LOGGER.group("ItemDataModel | prepareDerivedData");
         LOGGER.groupEnd();
     }
 
@@ -222,7 +261,7 @@ export class ItemDataModel extends SystemDataModel {
             ...actorData,
             ...sysUtil.duplicate(this)
         }
-        
+
         return data;
     }
 

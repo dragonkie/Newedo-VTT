@@ -12,7 +12,7 @@ Total : 8 files,  37 codes, 2 comments, 14 blanks, all 53 lines
 | filename | language | code | comment | blank | total |
 | :--- | :--- | ---: | ---: | ---: | ---: |
 | [css/scss/components/_items.scss](/css/scss/components/_items.scss) | SCSS | 0 | 0 | 2 | 2 |
-| [module/applications/actor/types/npc.mjs](/module/applications/actor/types/npc.mjs) | JavaScript | 18 | 4 | 5 | 27 |
+| [module/applications/actor/types/npc.mjs](/module/applications/sheet/actor/types/npc.mjs) | JavaScript | 18 | 4 | 5 | 27 |
 | [module/data/item/rote.mjs](/module/data/item/rote.mjs) | JavaScript | 2 | -2 | 3 | 3 |
 | [templates/actor/character/equipment.hbs](/templates/actor/character/equipment.hbs) | Handlebars | -1 | 0 | 2 | 1 |
 | [templates/actor/character/magic.hbs](/templates/actor/character/magic.hbs) | Handlebars | -1 | 0 | 1 | 0 |

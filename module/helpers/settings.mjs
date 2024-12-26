@@ -1,4 +1,3 @@
-import { config } from "../applications/actor/_module.mjs";
 import LOGGER from "./logger.mjs";
 
 export default function registerSystemSettings() {
@@ -42,5 +41,5 @@ export default function registerSystemSettings() {
         }
     });
 
-    //
+    
 };

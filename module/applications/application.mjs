@@ -5,7 +5,7 @@ export default class NewedoApplication extends HandlebarsApplicationMixin(Applic
     static DEFAULT_OPTIONS = {
         id: 'newedo-app-{id}',
         tag: 'form',
-        classes: ['ledger', 'newedo'],
+        classes: ['newedo'],
         window: {
             frame: true,
             positioned: true,

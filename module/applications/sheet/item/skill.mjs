@@ -1,6 +1,4 @@
-import LOGGER from "../../../helpers/logger.mjs";
-import sysUtil from "../../../helpers/sysUtil.mjs";
-import NewedoItemSheet from "../item-sheet.mjs";
+import NewedoItemSheet from "../item.mjs";
 
 export default class SkillSheet extends NewedoItemSheet {
     static DEFAULT_OPTIONS = {

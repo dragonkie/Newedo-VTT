@@ -1,42 +1,26 @@
 <div class="tab-content">
-    <ol class="items-list">
-        <li class="items-header flexrow collapsible">
-            <span>{{effects.passive.label}}</span>
-            <span>Controls</span>
-            <a class="controls" type="button" data-action="createEffect" style="flex:0; margin-right: 5px;">
-                <i class="fa-solid fa-plus"></i>
-            </a>
-        </li>
-        {{#each effects.passive.effects}}
-
-        {{/each}}
-    </ol>
-
-    <ol class="items-list">
-        <li class="items-header flexrow collapsible">
-            <span>{{effects.temporary.label}}</span>
-            <span>Controls</span>
-            <a class="controls" type="button" data-action="createEffect" style="flex:0; margin-right: 5px;">
-                <i class="fa-solid fa-plus"></i>
-            </a>
-        </li>
-
-        {{#each effects.passive.effects}}
-
-        {{/each}}
-    </ol>
-
-    <ol class="items-list">
-        <li class="items-header flexrow collapsible">
-            <span>{{effects.inactive.label}}</span>
-            <span>Controls</span>
-            <a class="controls" type="button" data-action="createEffect" style="flex:0; margin-right: 5px;">
-                <i class="fa-solid fa-plus"></i>
-            </a>
-        </li>
-
-        {{#each effects.passive.effects}}
-
-        {{/each}}
-    </ol>
+    {{#each effects as | list key |}}
+        <ol class="items-list">
+            <li class="items-header flexrow collapsible">
+                <span>{{list.label}}</span>
+                <span>Controls</span>
+                <a class="controls" type="button" data-action="createEffect" style="flex:0; margin-right: 5px;">
+                    <i class="fa-solid fa-plus"></i>
+                </a>
+            </li>
+            {{#each list.effects as | effect |}}
+                <li class="item flexrow" data-item-uuid="{{effect.uuid}}">
+                    <span data-action="editItem">
+                        <img src="{{effect.img}}" width="30" height="30">
+                        <a style="margin-left: 4px;">{{effect.name}}</a>
+                    </span>
+                    <span class="item-controls">
+                        {{#if effect.disabled}}<a data-action="disableEffect"><i class="fa-solid fa-bolt-slash"></i></a>{{/if}}
+                        {{#if (not effect.disabled)}}<a data-action="disableEffect"><i class="fa-solid fa-bolt"></i></a>{{/if}}
+                        {{#if ../../isEditMode}}<a data-action="deleteItem"><i class="fa-solid fa-trash"></i></a>{{/if}}
+                    </span>
+                </li>
+            {{/each}}
+        </ol>
+    {{/each}}
 </div>

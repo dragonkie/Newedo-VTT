@@ -1,4 +1,4 @@
-import LOGGER from "../logger.mjs";
+import LOGGER from "./logger.mjs";
 
 export default function registerHooks() {
 
@@ -7,7 +7,7 @@ export default function registerHooks() {
     /* -------------------------------------------- */
     Hooks.once("ready", async () => {
         // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
-        //Hooks.on("hotbarDrop", (bar, data, slot) => createItemMacro(data, slot));
+        
     });
 
     Hooks.on('renderChatLog', (log, ele, data) => {
@@ -20,7 +20,7 @@ export default function registerHooks() {
         element[0].querySelector('input.damage-button')?.addEventListener('click', async () => {
             const item = await fromUuid(element[0].querySelector('input.damage-button').dataset.uuid);
             if (item.type != 'weapon') return;
-            item.system._onUseDamage();
+            item.system._onDamage();
         })
     });
 }

@@ -142,7 +142,6 @@ export default class sysUtil {
         if (cost > 0) {
             if (actor.system.legend.value >= cost) {
                 // Has enough legend to spend
-                LOGGER.debug(`spent ${cost} legend`);
                 actor.update({ 'system.legend.value': actor.system.legend.value - cost });
                 return true;
             } else {

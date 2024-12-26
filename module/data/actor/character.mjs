@@ -63,16 +63,17 @@ export default class CharacterDataModel extends ActorDataModel {
         /* ----------------------------------------------------------- */
         /* Background Bonuses                                          */
         /* ----------------------------------------------------------- */
-        if (this.background.soul.rank >= 1) this.bonus.HrtTotal.push({ id: 'SoulRank1', source: 'Soul Rank 1', active: true, description: '', value: 3 });
-        if (this.background.soul.rank >= 2) this.bonus.PreTotal.push({ id: 'SoulRank2', source: 'Soul Rank 2', active: true, description: '', value: 3 });
-        if (this.background.soul.rank >= 3) this.bonus.PerTotal.push({ id: 'SoulRank3', source: 'Soul Rank 3', active: true, description: '', value: 3 });
+
+        if (this.background.soul.rank >= 1) this.bonus.HrtTotal += 3;
+        if (this.background.soul.rank >= 2) this.bonus.PreTotal += 3;
+        if (this.background.soul.rank >= 3) this.bonus.PerTotal += 3;
         if (this.background.soul.rank >= 4) {
-            this.bonus.SavTotal.push({ id: 'SoulRank4a', source: 'Soul Rank 4', active: true, description: '', value: 3 });
-            this.bonus.PreTotal.push({ id: 'SoulRank4b', source: 'Soul Rank 4', active: true, description: '', value: 3 });
+            this.bonus.SavTotal += 3;
+            this.bonus.PreTotal += 3;
         }
         if (this.background.soul.rank >= 5) {
-            this.bonus.SavTotal.push({ id: 'SoulRank4a', source: 'Soul Rank 5', active: true, description: '', value: 5 });
-            this.bonus.PowTotal.push({ id: 'SoulRank4b', source: 'Soul Rank 5', active: true, description: '', value: 5 });
+            this.bonus.SavTotal += 5;
+            this.bonus.PowTotal += 5;
         }
 
         /* ----------------------------------------------------------- */

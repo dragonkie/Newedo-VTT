@@ -1,7 +1,7 @@
 import { ItemDataModel } from "../abstract.mjs";
 import sysUtil from "../../helpers/sysUtil.mjs";
 import LOGGER from "../../helpers/logger.mjs";
-import { NewedoRoll } from "../../helpers/dice.mjs";
+import NewedoRoll from "../../helpers/dice.mjs";
 
 const {
     ArrayField, BooleanField, IntegerSortField, NumberField, SchemaField, SetField, StringField
@@ -147,7 +147,8 @@ export default class SkillData extends ItemDataModel {
 
         let roll = new NewedoRoll(data);
         await roll.getRollOptions();
-        await roll.evaluate();
+        let r = await roll.evaluate();
+        r.toMessage();
         return roll;
     }
 

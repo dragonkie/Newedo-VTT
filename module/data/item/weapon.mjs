@@ -5,7 +5,7 @@ import GritField from "../../fields/grit-field.mjs";
 import PriceField from "../../fields/price-field.mjs";
 import ResourceField from "../../fields/resource-field.mjs";
 
-import { NewedoRoll } from "../../helpers/dice.mjs";
+import NewedoRoll from "../../helpers/dice.mjs";
 
 const {
     ArrayField, BooleanField, IntegerSortField, NumberField, SchemaField, SetField, StringField
@@ -21,7 +21,7 @@ export default class WeaponData extends ItemDataModel {
             slug: new StringField({ initial: '', nullable: false, required: true }),
             id: new StringField({ initial: '', nullable: false, required: true })
         });
-        schema.equipped = new BooleanField({ initial: false });
+        schema.equipped = new BooleanField({ initial: false, required: true });
 
         schema.grit = new GritField();
 
@@ -85,10 +85,10 @@ export default class WeaponData extends ItemDataModel {
 
         // Prep data relevant to skill
         if (this.actor && this.skill.id != '') {
-            this.skill.slug = this.actor.items.get(this.skill.id).system.slug;
-            this.skill.label = this.getSkill().name;
+            this.skill.slug = this.actor.items.get(this.skill.id)?.system.slug;
+            this.skill.label = this.getSkill()?.name;
         }
-        
+
         LOGGER.groupEnd();
     }
 
@@ -97,7 +97,7 @@ export default class WeaponData extends ItemDataModel {
         const data = super.getRollData();
 
         data.skill = this.getSkill();
-        data.trait = data.skill.system.getTrait();
+        if (data.skill) data.trait = data.skill.system.getTrait();
         data.grit = this.grit;
 
         return data;
@@ -109,7 +109,7 @@ export default class WeaponData extends ItemDataModel {
                 // Gets the linked item
                 return this.actor.items.get(this.skill.id);
             } else {
-                // If there isn't a linked item, we grab the first weapon skill available
+                // If there isn't a linked item, we grab the first weapon skill available and use it until otherwise assigned
                 for (const item of this.actor.itemTypes.skill) {
                     if (item.system.isWeaponSkill) {
                         this.skill.id = item.id;
@@ -136,6 +136,7 @@ export default class WeaponData extends ItemDataModel {
     }
 
     async _onEquip() {
+        LOGGER.log('Weapon isEquipped changed to: ', !this.isEquipped);
         await this.parent.update({ 'system.equipped': !this.equipped });
     }
 
@@ -146,15 +147,18 @@ export default class WeaponData extends ItemDataModel {
 
         // Gather relevant data
         const rollData = this.getRollData();
+        const skill = rollData.skill;
+        LOGGER.debug('attack data', rollData)
+
         let data = {
             parts: [{
                 type: "NEWEDO.generic.trait",
-                label: `NEWEDO.trait.core.${this.skill.trait}`,
-                value: `${this.skill.trait.rank}d10`
+                label: `${rollData.trait.label}`,
+                value: `${rollData.trait.rank}d10`
             }, {
                 type: "NEWEDO.generic.skill",
-                label: this.skill.name,
-                value: this.skill.getRanks()
+                label: skill.name,
+                value: skill.system.getRanks()
             }],
             bonuses: [{
                 label: 'NEWEDO.generic.grit',
@@ -165,58 +169,76 @@ export default class WeaponData extends ItemDataModel {
         }
 
         let roll = new NewedoRoll(data);
-        roll.getRollOptions();
+        const options = await roll.getRollOptions();
+        let r = await roll.evaluate();
+
+        if (options.cancelled) return;
 
         // Gets the list of targets and if they were hit or not, if they were in range, etc
-        let userTargets = game.user.targets;
+        const userTargets = game.user.targets;
+        const scene = game.scenes.get(game.user.viewedScene);
         let targets = [];
 
-        let scene = game.scenes.get(game.user.viewedScene);
-        let scale = scene.grid.size;
         let attacker = this.actor.token;
-
-        if (!attacker) attacker = scene.tokens.getName(this.actor.name);
-
-        for (const a of game.user.targets.entries()) {
-            let data = {
-                hit: false,
-                name: a[0].actor.name,
-                uuid: a[0].actor.uuid,
-                def: a[0].actor.system.traits.derived.def.total,
-                size: a[0].actor.system.size.value,
-                dist: Math.sqrt(Math.pow(attacker.x - a[0].x, 2) + Math.pow(attacker.y - a[0].y, 2)) / scene.grid.size,
-                tn: 0
+        if (!attacker) {
+            for (let t of scene.tokens.contents) {
+                if (t.actorId == this.actor.id) {
+                    attacker = t;
+                    break;
+                }
             }
+        }
 
-            if (this.ranged) {
-                // ranged attacks are made against enemy size * range mult
-                data.tn = a[0].actor.system.size.value * this.range.modShort;
-                if (data.dist > this.range.short) data.tn = a[0].actor.system.size.value * this.range.modLong;
+        if (attacker && game.user.targets.size > 0) {
+            for (const a of userTargets.entries()) {
+                // prep a data object releveant to how we hit the target
+                let data = {
+                    hit: false,
+                    name: a[0].actor.name,
+                    uuid: a[0].actor.uuid,
+                    def: a[0].actor.system.traits.derived.def.total,
+                    size: a[0].actor.system.size.value,
+                    dist: Math.sqrt(Math.pow(attacker.x - a[0].x, 2) + Math.pow(attacker.y - a[0].y, 2)) / scene.grid.size,
+                    longRange: false,
+                    tn: 0
+                }
+                
+                // If the attack is made with a ranged weapon
+                if (this.ranged) {
+                    // ranged attacks are made against enemy size * range mult
+                    data.tn = a[0].actor.system.size.value * this.range.modShort;
+                    if (data.dist > this.range.short) {
+                        console.log('long range attack')
+                        data.tn = a[0].actor.system.size.value * this.range.modLong;
+                    }
 
-                if (r.total >= data.tn) data.hit = true;
-            } else {
-                // Melee attack made against target defence
-                if (r.total >= data.def) data.hit = true;
-                data.tn = data.def;
+                    if (r.total >= data.tn) data.hit = true;
+                } else {
+                    // Melee attack made against target defence
+                    if (r.total >= data.def) data.hit = true;
+                    data.tn = data.def;
+                }
+
+                // relevant targeting data like if the weapon is out of range, or in the long shot / thrown range
+                if (data.dist > this.range.long) {
+                    data.oor = true;
+                } else if (data.dist > this.range.short) {
+                    data.longRange = true;
+                }
+                targets.push(data);
             }
-
-            if (attacker) {
-                if (data.dist > this.range.short && data.dist > this.range.long) data.oor = true;
-            }
-
-            targets.push(data);
         }
 
         const messageData = {
-            content: `<div>Attack with ${this.parent.name}</div>`
+            content: `<div>@UUID[${this.actor.uuid}] attacks with @UUID[${this.parent.uuid}]</div><br>`
         };
 
         for (const t of targets) {
             messageData.content += `
-            <div>
-                ${t.name}: 
+            <div style="margin-bottom: 5px;">
+                @UUID[${t.uuid}]: 
                 <b style="color: ${t.hit ? "green" : "red"};">${t.hit ? "HIT" : "MISS"}</b> 
-                TN ${t.tn} ${t.oor ? "(Out of range)" : ""}
+                TN ${t.tn} ${t.oor ? "(Out of range)" : (t.longRange ? (this.ranged ? "(Long Range)" : "(Thrown)") : "")}
             </div>
             `;
         }
@@ -225,9 +247,10 @@ export default class WeaponData extends ItemDataModel {
 
         messageData.content += `<input data-uuid="${this.parent.uuid}" class="damage-button" type="button" value="Damage" />`;
 
-        let msg = await r.toMessage(messageData);
+        LOGGER.log('Message Data: ', messageData);
+        let msg = await roll.toMessage(messageData);
 
-        return r;
+        return roll;
     }
 
     async _onDamage() {

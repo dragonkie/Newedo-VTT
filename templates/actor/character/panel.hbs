@@ -40,7 +40,14 @@
         {{#each system.armour as | soak key |}}
             <div>
                 <div class="name">{{ soak.abr }}</div>
-                <input type="number" class="score" name="system.armour.{{key}}.value" value="{{soak.value}}" placeholder="0" {{disabled ../isPlayMode}} />
+                
+                {{#if ../isEditMode}}
+                    <input type="number" class="score" name="system.armour.{{key}}.value" value="{{soak.value}}" >
+                {{/if}}
+
+                {{#if ../isPlayMode}}
+                    <input type="number" class="score" value="{{soak.total}}" disabled>
+                {{/if}}
             </div>
         {{/each}}
     </div>
@@ -69,7 +76,7 @@
             </a>
             <a data-action="rollFate" class="fate-title"><b>{{localize 'NEWEDO.generic.fate'}}Card</b></a>
         </div>
-        <ol class="fate-list flexcol">
+        <ol class="fate-list flexcol scrollable">
             {{!-- Loops through the characters list of fate card options--}}
             {{#each fates as |fate key|}}
                 <li class="item flexrow" data-item-uuid="{{fate.uuid}}">

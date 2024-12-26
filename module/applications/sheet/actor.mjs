@@ -1,7 +1,7 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../../helpers/effects.mjs";
 import LOGGER from "../../helpers/logger.mjs";
 import sysUtil from "../../helpers/sysUtil.mjs";
-import { NewedoSheetMixin } from "../base-sheet.mjs";
+import NewedoSheetMixin from "./mixin.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -21,6 +21,8 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
             rollFate: this._onRollFate,
             editLedger: this._onEditLedger,
             fateDisplay: this._onChangeFateDisplay,
+            createEffect: this._onCreateEffect,
+            disableEffect: this._onDisableEffect
         }
     }
 
@@ -33,7 +35,7 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
         equipment: { template: "systems/newedo/templates/actor/character/character-equipment.hbs" },
         magic: { template: "systems/newedo/templates/actor/character/character-magic.hbs" },
         augments: { template: "systems/newedo/templates/actor/character/character-augs.hbs" },
-        
+
         description: { template: "systems/newedo/templates/actor/character/character-bio.hbs" }
     }
 
@@ -43,7 +45,7 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
         equipment: { id: "equipment", group: "primary", label: "NEWEDO.tab.equipment" },
         augments: { id: "augments", group: "primary", label: "NEWEDO.tab.augs" },
         magic: { id: "magic", group: "primary", label: "NEWEDO.tab.magic" },
-        
+
         description: { id: "description", group: "primary", label: "NEWEDO.tab.bio" }
     }
 
@@ -91,6 +93,9 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
      * @return {undefined}
      */
     _prepareItems(context) {
+        // Get user settings
+        const settings = game.user.getFlag('newedo', 'settings');
+
         // Initialize containers.
         let slugs = [];
         let skills = {
@@ -163,6 +168,18 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
 
         //Proxies the fate list so we don't disorganize it
         context.fates = [].concat(context.itemTypes.fate);
+
+        if (settings) {
+            if (settings.fateDisplay == "range") {
+                context.fates.sort((a, b) => {
+                    return b.system.start - a.system.start;
+                });
+            } else {
+                context.fates.sort((a, b) => {
+                    return b.system.chance - a.system.chance;
+                });
+            }
+        }
     }
 
     /* -------------------------------------------------------------------------------------- */
@@ -223,7 +240,7 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
             ledgers = this.document.getFlag('newedo', 'ledger');
         }
 
-        new newedo.applications.NewedoLedger(this.document, ledgers[id]).render(true);
+        new newedo.application.NewedoLedger(this.document, ledgers[id]).render(true);
     }
 
     static async _onDeleteItem(event, target) {
@@ -360,6 +377,21 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
         const _id = target.closest('.item[data-item-uuid]').dataset.itemUuid.match(/\w+$/)[0];
         return this.document.items.get(_id)?.system._cycleSkillDice(target.dataset.index, event.shiftKey);
     };
+
+    static async _onCreateEffect(event, target) {
+        let effect = await ActiveEffect.create({
+            name: 'New Effect',
+            type: 'base'
+        }, { parent: this.document });
+
+        effect.sheet.render(true);
+    }
+
+    static async _onDisableEffect(event, target) {
+        const _id = target.closest('.item[data-item-uuid]').dataset.itemUuid;
+        const item = await fromUuid(_id);
+        item.update({ disabled: !item.disabled });
+    }
 
     /* -------------------------------------------------------------------------------------- */
     /*                                                                                        */

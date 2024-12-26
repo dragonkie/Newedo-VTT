@@ -1,18 +1,15 @@
-import LOGGER from "../helpers/logger.mjs";
-import sysUtil from "../helpers/sysUtil.mjs";
+import LOGGER from "../../helpers/logger.mjs";
+import sysUtil from "../../helpers/sysUtil.mjs";
 
-export const NewedoSheetMixin = Base => {
+export default function NewedoSheetMixin(Base) {
     const mixin = foundry.applications.api.HandlebarsApplicationMixin;
     return class NewedoDocumentSheet extends mixin(Base) {
 
-        static SHEET_MODES = {
-            PLAY: 1,
-            EDIT: 2,
-        }
+        static SHEET_MODES = { PLAY: 1, EDIT: 2 };
 
         static DEFAULT_OPTIONS = {
             classes: ['newedo', 'sheet'],
-            form: { submitOnChange: true },
+            form: { submitOnChange: false },
             window: { resizable: true },
             actions: {// Default actions must be static functions
                 editImage: this._onEditImage,
@@ -315,7 +312,7 @@ export const NewedoSheetMixin = Base => {
 
         _setupContextMenu() {
             LOGGER.debug('SHEET | BASE | CONTEXT MENU');
-            new newedo.applications.NewedoContextMenu(this.element, "[data-item-uuid]", [], {
+            new newedo.application.NewedoContextMenu(this.element, "[data-item-uuid]", [], {
                 onOpen: element => {
                     const item = fromUuidSync(element.dataset.itemUuid);
                     if (!item) return;
@@ -329,7 +326,7 @@ export const NewedoSheetMixin = Base => {
             const isOwner = item.isOwner;
             const isEquipped = item.isEquipped;
 
-            return [{
+            let options = [{
                 name: "NEWEDO.ContextMenu.item.edit",
                 icon: "<i class='fa-solid fa-edit'></i>",
                 condition: () => isOwner,
@@ -339,11 +336,31 @@ export const NewedoSheetMixin = Base => {
                 icon: "<i class='fa-solid fa-trash'></i>",
                 condition: () => isOwner,
                 callback: () => item.delete()
-            }];
+            }]
+
+            if (item.type != "fate" && item.type != "skill") {
+                options.push({
+                    name: "Gift",
+                    icon: "<i class='fa-solid fa-gift'></i>",
+                    condition: () => isOwner,
+                    callback: () => LOGGER.log('sending away item')
+                })
+            }
+
+            return options;
         }
 
         _getEffectContextOptions(item) {
+            let options = [{
+                name: "NEWEDO.ContextMenu.item.delete",
+                icon: "<i class='fa-solid fa-trash'></i>",
+                condition: () => isOwner,
+                callback: () => item.delete()
+            }]
 
+            // swap the enable / disable effect option
+
+            return options;
         }
 
         static _onToggleMode() {

@@ -1,4 +1,4 @@
-import NewedoApplication from "./base-application.mjs";
+import NewedoApplication from "./application.mjs";
 import LOGGER from "../helpers/logger.mjs"
 import sysUtils from "../helpers/sysUtil.mjs"
 
