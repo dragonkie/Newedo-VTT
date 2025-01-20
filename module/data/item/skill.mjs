@@ -37,6 +37,10 @@ export default class SkillData extends ItemDataModel {
         if (this.slug === '') this.slug = this.parent.name.toLowerCase().replaceAll(' ', '');
     }
 
+    prepareOwnerData(ActorData) {
+
+    } 
+
     async use() {
         this.roll();
     }

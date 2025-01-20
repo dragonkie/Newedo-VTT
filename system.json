@@ -2,7 +2,7 @@
   "id": "newedo",
   "title": "NewEdo",
   "description": "Official adaptation of the Newedo system for FVTT",
-  "version": "0.3.02",
+  "version": "0.4.1",
   "compatibility": {
     "minimum": 12,
     "verified": 12.334,
@@ -35,6 +35,7 @@
   "url": "https://github.com/dragonkie/Newedo-VTT",
   "manifest": "https://raw.githubusercontent.com/dragonkie/Newedo-VTT/main/system.json",
   "download": "https://github.com/dragonkie/Newedo-VTT/releases/latest/download/newedo.zip",
+  "background": "systems/newedo/assets/images/system-background.png",
   "packFolders": [
     {
       "name": "Newedo: Core",

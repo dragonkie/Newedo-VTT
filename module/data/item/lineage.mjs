@@ -10,46 +10,51 @@ export default class LineageData extends ItemDataModel {
 
         schema.traits = new SchemaField({
             core: new SchemaField({
-                pow: this.AddValueField('value', 0),
-                per: this.AddValueField('value', 0),
-                pre: this.AddValueField('value', 0),
-                hrt: this.AddValueField('value', 0),
-                ref: this.AddValueField('value', 0),
-                sav: this.AddValueField('value', 0),
-                shi: this.AddValueField('value', 0),
+                pow: new NumberField({ initial: 0 }),
+                per: new NumberField({ initial: 0 }),
+                pre: new NumberField({ initial: 0 }),
+                hrt: new NumberField({ initial: 0 }),
+                ref: new NumberField({ initial: 0 }),
+                sav: new NumberField({ initial: 0 }),
+                shi: new NumberField({ initial: 0 })
             }),
             derived: new SchemaField({
                 init: new SchemaField({
                     value: new NumberField({ initial: 0 }),
+                    total: new NumberField({ initial: 0 }),
                     mod: new NumberField({ initial: 0 })
                 }),
                 move: new SchemaField({
                     value: new NumberField({ initial: 0 }),
+                    total: new NumberField({ initial: 0 }),
                     mod: new NumberField({ initial: 0 })
                 }),
                 def: new SchemaField({
                     value: new NumberField({ initial: 0 }),
+                    total: new NumberField({ initial: 0 }),
                     mod: new NumberField({ initial: 0 })
                 }),
                 res: new SchemaField({
                     value: new NumberField({ initial: 0 }),
+                    total: new NumberField({ initial: 0 }),
                     mod: new NumberField({ initial: 0 })
                 }),
                 hp: new SchemaField({
                     value: new NumberField({ initial: 0 }),
+                    total: new NumberField({ initial: 0 }),
                     mod: new NumberField({ initial: 0 })
                 })
             })
         });
 
         schema.lift = new SchemaField({
-            value: new NumberField({ initial: 0}),
-            mod: new NumberField({ initial: 0})
+            value: new NumberField({ initial: 0 }),
+            mod: new NumberField({ initial: 0 })
         });
 
         schema.rest = new SchemaField({
-            value: new NumberField({ initial: 0}),
-            mod: new NumberField({ initial: 0})
+            value: new NumberField({ initial: 0 }),
+            mod: new NumberField({ initial: 0 })
         });
 
         schema.armour = new SchemaField({
@@ -65,6 +70,6 @@ export default class LineageData extends ItemDataModel {
     prepareDerivedData() {
         super.prepareDerivedData();
 
-        
+
     }
 }

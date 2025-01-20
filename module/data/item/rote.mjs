@@ -41,7 +41,9 @@ export default class RoteData extends ItemDataModel {
         super.prepareDerivedData();
 
         if (this.actor) {
-
+            if (this.skill.id != '') {
+                this.skill.label = this.actor.items.get(this.skill.id).name;
+            }
         }
     }
 
@@ -56,18 +58,20 @@ export default class RoteData extends ItemDataModel {
     }
 
     getSkill() {
-        if (this.skill.id && this.actor) {
-            return this.actor.items.get(this.skill.id);
+        if (this.actor) {
+            if (this.skill.id != '') {
+                // Gets the linked item
+                return this.actor.items.get(this.skill.id);
+            } else {
+                // If there isn't a linked item, we grab the first available skill and use it until otherwise assigned
+                this.skill.id = this.actor.itemTypes.skill[0].id;
+                return this.actor.itemTypes.skill[0];
+            }
         }
-
         return null;
     }
 
     async use(action) {
-        switch (action) {
-            default: break;
-        }
-
         return this._onCast();
     }
 
@@ -77,7 +81,10 @@ export default class RoteData extends ItemDataModel {
 
         const rollData = this.getRollData();
         const skill = this.getSkill();
+
+        if (!skill) return;
         console.log('CASTING SPELL DATA: ', rollData);
+        console.log('CASTING SPELL DATA: ', skill);
 
         let data = {
             parts: [{
@@ -94,10 +101,16 @@ export default class RoteData extends ItemDataModel {
             title: this.parent.name
         }
 
+        
+
         let roll = await new NewedoRoll(data);
         let options = await roll.getRollOptions();
         let _r = await roll.evaluate();
-        _r.toMessage();
+
+        let messageData = {content: `<div>${this.parent.name}</div>`};
+        messageData.content += `<div>${this.description}</div>`
+        messageData.content += await _r.render();
+        _r.toMessage(messageData);
 
     }
 

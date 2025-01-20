@@ -31,11 +31,19 @@ export default class NewedoItem extends Item {
 
     prepareBaseData() {
         LOGGER.group('prepareBaseData');
+        super.prepareBaseData();
         LOGGER.groupEnd();
     }
 
     prepareDerivedData() {
         LOGGER.group('prepareDerivedData');
+        super.prepareDerivedData();
+        LOGGER.groupEnd();
+    }
+
+    prepareOwnerData(data) {
+        LOGGER.group('Document | prepareDerivedData');
+        this.system.prepareOwnerData(data);
         LOGGER.groupEnd();
     }
 

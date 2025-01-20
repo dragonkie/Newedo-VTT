@@ -117,10 +117,8 @@ export default class WeaponData extends ItemDataModel {
                     }
                 }
             }
-            sysUtil.error('NEWEDO.error.MissingSkill');
             return null;
         }
-        sysUtil.error('NEWEDO.error.MissingActor');
         return null;
     }
 
@@ -199,10 +197,10 @@ export default class WeaponData extends ItemDataModel {
                     def: a[0].actor.system.traits.derived.def.total,
                     size: a[0].actor.system.size.value,
                     dist: Math.sqrt(Math.pow(attacker.x - a[0].x, 2) + Math.pow(attacker.y - a[0].y, 2)) / scene.grid.size,
-                    longRange: false,
+                    range: "short",
                     tn: 0
                 }
-                
+
                 // If the attack is made with a ranged weapon
                 if (this.ranged) {
                     // ranged attacks are made against enemy size * range mult
@@ -221,9 +219,9 @@ export default class WeaponData extends ItemDataModel {
 
                 // relevant targeting data like if the weapon is out of range, or in the long shot / thrown range
                 if (data.dist > this.range.long) {
-                    data.oor = true;
+                    data.range = "oor";
                 } else if (data.dist > this.range.short) {
-                    data.longRange = true;
+                    data.range = "long";
                 }
                 targets.push(data);
             }
@@ -238,22 +236,25 @@ export default class WeaponData extends ItemDataModel {
             <div style="margin-bottom: 5px;">
                 @UUID[${t.uuid}]: 
                 <b style="color: ${t.hit ? "green" : "red"};">${t.hit ? "HIT" : "MISS"}</b> 
-                TN ${t.tn} ${t.oor ? "(Out of range)" : (t.longRange ? (this.ranged ? "(Long Range)" : "(Thrown)") : "")}
+                TN ${t.tn} ${t.range == "oor" ? "(Out of range)" : (t.range == "long" ? (this.ranged ? "(Long Range)" : "(Thrown)") : "")}
             </div>
             `;
         }
 
         messageData.content += await r.render();
 
-        messageData.content += `<input data-uuid="${this.parent.uuid}" class="damage-button" type="button" value="Damage" />`;
+        messageData.content += `<input data-uuid="${this.parent.uuid}" class="damage-button" type="button" value="Damage">`;
 
         LOGGER.log('Message Data: ', messageData);
         let msg = await roll.toMessage(messageData);
 
+        if (targets.length > 0) msg.setFlag('newedo', 'targetData', targets);
+
         return roll;
     }
 
-    async _onDamage() {
+    async _onDamage(data = null) {
+
         const rollData = this.getRollData();
 
         let formula = '';
@@ -276,13 +277,44 @@ export default class WeaponData extends ItemDataModel {
         let r = new Roll(formula, rollData);
         await r.evaluate();
 
-        r.toMessage({
-            flavor: `
-            <div>${this.parent.name}</div>
-            <div>${sysUtil.localize('NEWEDO.damage.' + this.damage.type)} damage</div>
-            `,
-            speaker: { actor: this.parent.id }
-        });
+        let messageData = {
+            content: `
+                <div>${this.parent.name}</div>
+                <div>${sysUtil.localize('NEWEDO.damage.' + this.damage.type)} damage</div>`,
+        };
+
+        messageData.content += await r.render();
+
+        // If we have data passed into the argument, that means this was called with targeting data
+        if (Array.isArray(data) && data.length > 0) {
+            let targets = [];
+
+            messageData.content += `<div class="damage-data" data-attacker="${this.actor?.uuid}" data-damage-total="${r.total}" data-damage-type="${this.damage.type}">`;
+            
+            for (const t of data) {
+                targets.push(await fromUuid(t.uuid));
+
+                messageData.content += `
+                <div style="margin: 0 0 5px 0;">
+                    @UUID[${t.uuid}]{${t.name}}
+                    <a class="apply-damage" title="apply damage" data-target="${t.uuid}">
+                        <i class="fa-solid fa-bolt"></i>
+                    </a>
+                </div>`;
+            }
+
+            messageData.content += `
+            <div>
+                <input class="apply-damage-all" type="button" value="${sysUtil.localize('NEWEDO.chat.applyAllDamage')}">
+                <input class="undo-damage-all" type="button" value="${sysUtil.localize('NEWEDO.chat.undoAllDamage')}">
+            </div>
+            `;
+
+            messageData.content += `</div>`;
+        }
+
+        
+        let msg = r.toMessage(messageData);
     }
 
     get atkFormula() {

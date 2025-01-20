@@ -33,4 +33,8 @@ export default class FateData extends ItemDataModel {
 
         this.end = Math.max(this.start + this.chance - 1, 0);
     }
+
+    prepareOwnerData(ActorData) {
+        
+    }
 }

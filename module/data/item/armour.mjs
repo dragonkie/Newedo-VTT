@@ -34,6 +34,15 @@ export default class ArmourData extends ItemDataModel {
         super.prepareDerivedData();
     }
 
+    prepareOwnerData(ActorData) {
+        if (!this.isEquipped) return;
+        
+        ActorData.bonus.SoakKin += this.soak.kin;
+        ActorData.bonus.SoakEle += this.soak.ele;
+        ActorData.bonus.SoakBio += this.soak.bio;
+        ActorData.bonus.SoakArc += this.soak.arc;
+    }
+
     get isEquipped() {
         return this.equipped == true;
     }

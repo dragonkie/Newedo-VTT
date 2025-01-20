@@ -167,6 +167,9 @@
   "NEWEDO.ledger.sub": "Decreased",
   "NEWEDO.ledger.set": "Set to",
 
+  "NEWEDO.chat.undoAllDamage": "Undo All",
+  "NEWEDO.chat.applyAllDamage": "Apply All",
+
   "NEWEDO.dialog.situationBonus": "Situational Bonus",
 
   "NEWEDO.confirm.deleteItem": "Are you sure you would like to delete",

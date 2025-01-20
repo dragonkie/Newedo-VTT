@@ -19,7 +19,7 @@
     {{!-- Armour values --}}
     {{ localize 'NEWEDO.generic.soak' }}
     <div class="flexrow" style="gap: 4px;">
-        {{#each system.armour as | key soak |}}
+        {{#each system.armour as | soak key |}}
             <div>
                 <div class="name">{{ soak.abr }}</div>
                 <input type="number" class="score" name="system.armour.{{key}}.value" value="{{soak.value}}" placeholder="0" {{disabled ../isPlayMode}} />

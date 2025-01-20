@@ -9,7 +9,7 @@ export default function NewedoSheetMixin(Base) {
 
         static DEFAULT_OPTIONS = {
             classes: ['newedo', 'sheet'],
-            form: { submitOnChange: false },
+            form: { submitOnChange: true },
             window: { resizable: true },
             actions: {// Default actions must be static functions
                 editImage: this._onEditImage,

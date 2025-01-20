@@ -119,10 +119,10 @@ export class ActorDataModel extends SystemDataModel {
             damageRanged: new NumberField({ initial: 0 }),
 
             // Bonus to soaks
-            SoakKin: new NumberField({initial: 0}),
-            SoakEle: new NumberField({initial: 0}),
-            SoakBio: new NumberField({initial: 0}),
-            SoakArc: new NumberField({initial: 0}),
+            SoakKin: new NumberField({ initial: 0 }),
+            SoakEle: new NumberField({ initial: 0 }),
+            SoakBio: new NumberField({ initial: 0 }),
+            SoakArc: new NumberField({ initial: 0 }),
         })
 
         return schema;
@@ -154,46 +154,21 @@ export class ActorDataModel extends SystemDataModel {
         const { core, derived } = this.traits;
         const bonus = this.bonus;
 
-
-
-        // Totals up core stats
-        core.hrt.total = core.hrt.value;
-        core.pow.total = core.pow.value;
-        core.per.total = core.per.value;
-        core.pre.total = core.pre.value;
-        core.ref.total = core.ref.value;
-        core.sav.total = core.sav.value;
-        core.shi.total = core.shi.value;
-
-        core.hrt.total += bonus.HrtTotal;
-        core.pow.total += bonus.PowTotal;
-        core.per.total += bonus.PerTotal;
-        core.pre.total += bonus.PreTotal;
-        core.ref.total += bonus.RefTotal;
-        core.sav.total += bonus.SavTotal;
-        core.shi.total += bonus.ShiTotal;
-
-        /*
-        for (let a of bonus.HrtTotal) core.hrt.total += a.value;
-        for (let a of bonus.PowTotal) core.pow.total += a.value;
-        for (let a of bonus.PerTotal) core.per.total += a.value;
-        for (let a of bonus.PreTotal) core.pre.total += a.value;
-        for (let a of bonus.RefTotal) core.ref.total += a.value;
-        for (let a of bonus.SavTotal) core.sav.total += a.value;
-        for (let a of bonus.ShiTotal) core.shi.total += a.value;
-        */
-
         /* ----------------------------------------------------------- */
         /* Equipped item modifiers                                     */
         /* ----------------------------------------------------------- */
         for (const item of this.parent.items.contents) {
-            if (item.type == 'armour' && item.system.isEquipped) {
-                this.bonus.SoakKin += item.system.soak.kin;
-                this.bonus.SoakEle += item.system.soak.ele;
-                this.bonus.SoakBio += item.system.soak.bio;
-                this.bonus.SoakArc += item.system.soak.arc;
-            }
+            item.prepareOwnerData(this);
         }
+
+        // Totals up core stats
+        core.hrt.total = core.hrt.value + bonus.HrtTotal;
+        core.pow.total = core.pow.value + bonus.PowTotal;
+        core.per.total = core.per.value + bonus.PerTotal;
+        core.pre.total = core.pre.value + bonus.PreTotal;
+        core.ref.total = core.ref.value + bonus.RefTotal;
+        core.sav.total = core.sav.value + bonus.SavTotal;
+        core.shi.total = core.shi.value + bonus.ShiTotal;
 
         // Loop through core traits and calculate their rank, traits are not included in the "Round everything up" rule
         for (let [key, trait] of Object.entries(core)) {
@@ -213,6 +188,7 @@ export class ActorDataModel extends SystemDataModel {
         // Gets the characters wound state
         this.wound = sysUtil.woundState(this.hp.value / this.hp.max);
 
+        // Totals up the armour soak values
         this.armour.kin.total = this.armour.kin.value + bonus.SoakKin;
         this.armour.ele.total = this.armour.ele.value + bonus.SoakEle;
         this.armour.bio.total = this.armour.bio.value + bonus.SoakBio;
@@ -254,6 +230,14 @@ export class ItemDataModel extends SystemDataModel {
         LOGGER.groupEnd();
     }
 
+    /**
+     * Called by an owning actor to augment itself with data provided by this item
+     * @param {ActorDataModel} ActorData The owning NewedoActorDocument
+     */
+    prepareOwnerData(ActorData) {
+        LOGGER.warn(`Unhandled prepareOwnerData ${this.parent.uuid}: `, ActorData);
+    }
+
     getRollData() {
         const actorData = this.actor?.getRollData();
 
@@ -265,9 +249,7 @@ export class ItemDataModel extends SystemDataModel {
         return data;
     }
 
-    /**
-     * Quick reference to the actor getter of the parent document
-     */
+    /**Quick reference to the actor getter of the parent document*/
     get actor() {
         return this.parent.actor;
     }

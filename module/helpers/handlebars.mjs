@@ -32,6 +32,7 @@ export function registerHelpers() {
     });
     Handlebars.registerHelper('toLowerCase', (str) => str.toLowerCase());
     Handlebars.registerHelper('isGM', () => game.user.isGM);
+    
     /* -------------------------------------------- */
     /*  Math helpers                                */
     /* -------------------------------------------- */
@@ -43,7 +44,21 @@ export function registerHelpers() {
     Handlebars.registerHelper('disabled', (a) => a == true ? 'disabled' : '');
 
     /* -------------------------------------------- */
-    /*  Selector elements                           */
+    /*  Iterators                                   */
+    /* -------------------------------------------- */
+    Handlebars.registerHelper('repeat', (context, options) => {
+        let ret = '';
+
+        for (var i = 0; i < context; i++) {
+            ret = ret + options.fn(context[i]);
+            console.log("current stirng: ", ret);
+        }
+
+        return ret;
+    });
+
+    /* -------------------------------------------- */
+    /*  element creators                            */
     /* -------------------------------------------- */
     Handlebars.registerHelper('selectDamage', (v, n) => newedo.elements.select.DamageTypes(v, n));
     Handlebars.registerHelper('selectSkill', (v, n) => newedo.elements.select.Skills(v, n));
