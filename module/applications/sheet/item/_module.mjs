@@ -5,6 +5,7 @@ import SkillSheet from "./skill.mjs";
 import LineageSheet from "./lineage.mjs";
 import AugmentSheet from "./augment.mjs";
 import ArmourSheet from "./armour.mjs";
+import FateSheet from "./fate.mjs";
 
 export { default as ArmourSheet } from "./armour.mjs";
 export { default as AugmentSheet } from "./augment.mjs";
@@ -31,6 +32,12 @@ export const config = [{
     options: {
         label: "NEWEDO.ItemSheet.culture",
         types: ['culture']
+    }
+}, {
+    application: FateSheet,
+    options: {
+        label: "NEWEDO.ItemSheet.fate",
+        types: ['fate']
     }
 }, {
     application: LineageSheet,
