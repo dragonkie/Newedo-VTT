@@ -7,7 +7,7 @@
     "compile": "gulp css",
     "watch": "gulp",
     "gulp": "gulp",
-    "sass": "sass --watch css/newedo.scss css/newedo.css"
+    "sass": "sass --watch css/scss/newedo.scss css/newedo.css"
   },
   "browserslist": [
     "last 3 versions"

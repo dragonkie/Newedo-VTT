@@ -76,8 +76,6 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
         context.itemTypes = this.document.itemTypes;
         context.editable = this.isEditable && (this._mode === this.constructor.SHEET_MODES.EDIT);
 
-        console.log(actorData)
-
         // Prepare active effects
         context.effects = prepareActiveEffectCategories(this.document.effects);
 

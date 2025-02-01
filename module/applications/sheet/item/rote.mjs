@@ -1,4 +1,5 @@
 import NewedoItemSheet from "../item.mjs";
+import { elements } from "../../../elements/_module.mjs"
 
 export default class RoteSheet extends NewedoItemSheet {
     static DEFAULT_OPTIONS = {
@@ -61,7 +62,7 @@ export default class RoteSheet extends NewedoItemSheet {
                 name: 'system.skill.id'
             }).outerHTML;
         } else {
-            context.selector.skill = elements.select.WeaponSkills(this.document.system.skill.slug, 'system.skill.slug');
+            context.selector.skill = elements.select.Skills(this.document.system.skill.slug, 'system.skill.slug');
         }
 
         return context;

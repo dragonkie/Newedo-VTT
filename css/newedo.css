@@ -251,18 +251,15 @@
   color: var(--input-text-color);
 }
 
-.newedo {
-  /* ----------------------------------------- */
-  /*  Items Lists                              */
-  /* ----------------------------------------- */
-}
-.newedo .item-form {
+.item-form {
   font-family: "Roboto", sans-serif;
 }
-.newedo .resource-label {
+
+.resource-label {
   font-weight: bold;
 }
-.newedo .items-header {
+
+.items-header {
   height: 28px;
   margin: 2px 0;
   padding: 0;
@@ -271,29 +268,33 @@
   border: 2px groove #eeede0;
   font-weight: bold;
 }
-.newedo .items-header > * {
+.items-header > * {
   font-size: 14px;
   text-align: center;
 }
-.newedo .items-header .item-name {
+.items-header .item-name {
   font-weight: bold;
   padding-left: 5px;
   text-align: left;
   display: flex;
 }
-.newedo .items-list {
+
+/* ----------------------------------------- */
+/*  Items Lists                              */
+/* ----------------------------------------- */
+.items-list {
   list-style: none;
   margin: 0;
   padding: 0;
   overflow-y: auto;
   scrollbar-width: thin;
 }
-.newedo .items-list .item-list {
+.items-list .item-list {
   list-style: none;
   margin: 0;
   padding: 0;
 }
-.newedo .items-list .item-name {
+.items-list .item-name {
   flex: 1;
   margin: 0;
   overflow: hidden;
@@ -302,44 +303,44 @@
   align-items: center;
   display: flex;
 }
-.newedo .items-list .item-name h3,
-.newedo .items-list .item-name h4 {
+.items-list .item-name h3,
+.items-list .item-name h4 {
   margin: 0;
   white-space: nowrap;
   overflow-x: hidden;
 }
-.newedo .items-list .item-controls {
+.items-list .item-controls {
   display: flex;
   flex: 0 1;
   justify-content: flex-end;
 }
-.newedo .items-list .item-controls a {
+.items-list .item-controls a {
   font-size: 12px;
   text-align: center;
   margin: 0 6px;
 }
-.newedo .items-list .item {
+.items-list .item {
   align-items: center;
   padding: 0 2px;
   border-bottom: 1px solid #c9c7b8;
 }
-.newedo .items-list .item:last-child {
+.items-list .item:last-child {
   border-bottom: none;
 }
-.newedo .items-list .item .item-name .item-image {
+.items-list .item .item-name .item-image {
   flex: 0 0 30px;
   height: 30px;
   background-size: 30px;
   border: none;
   margin-right: 5px;
 }
-.newedo .items-list .item-prop {
+.items-list .item-prop {
   text-align: center;
   border-left: 1px solid #c9c7b8;
   border-right: 1px solid #c9c7b8;
   font-size: 12px;
 }
-.newedo .items-list .items-header {
+.items-list .items-header {
   height: 28px;
   margin: 2px 0;
   padding: 0;
@@ -347,61 +348,71 @@
   border: 2px groove #eeede0;
   font-weight: bold;
 }
-.newedo .items-list .items-header > * {
+.items-list .items-header > * {
   font-size: 12px;
   text-align: center;
 }
-.newedo .items-list .items-header .item-name {
+.items-list .items-header .item-name {
   padding-left: 5px;
   text-align: left;
 }
-.newedo .items-list .item-delete {
+.items-list .item-delete {
   flex: 0 0 24px;
 }
-.newedo .item-formula {
+
+.item-formula {
   flex: 0 0 200px;
   padding: 0 8px;
 }
-.newedo .group-details {
+
+.group-details {
   display: flex;
   flex-direction: row;
   gap: 2px;
 }
-.newedo .group-details input[type=checkbox] {
+.group-details input[type=checkbox] {
   flex: 0;
 }
-.newedo .effects .item .effect-source,
-.newedo .effects .item .effect-duration,
-.newedo .effects .item .effect-controls {
+
+.effects .item .effect-source,
+.effects .item .effect-duration,
+.effects .item .effect-controls {
   text-align: center;
   border-left: 1px solid #c9c7b8;
   border-right: 1px solid #c9c7b8;
   font-size: 12px;
 }
-.newedo .effects .item .effect-controls {
+.effects .item .effect-controls {
   border: none;
 }
-.newedo .banner-newedo {
+
+.banner-newedo {
   border: 0;
 }
-.newedo.character .window-content, .newedo.npc .window-content {
+
+.character .window-content,
+.npc .window-content {
   overflow: hidden;
   display: flex;
   flex-direction: row;
 }
-.newedo.character .window-content .derived-traits, .newedo.npc .window-content .derived-traits {
+.character .window-content .derived-traits,
+.npc .window-content .derived-traits {
   display: block;
 }
-.newedo.character .window-content .derived-traits > *, .newedo.npc .window-content .derived-traits > * {
+.character .window-content .derived-traits > *,
+.npc .window-content .derived-traits > * {
   display: inline-block;
 }
-.newedo.character .window-content .derived-traits > * input, .newedo.npc .window-content .derived-traits > * input {
+.character .window-content .derived-traits > * input,
+.npc .window-content .derived-traits > * input {
   width: 2.5rem;
   height: 1rem;
   text-align: center;
   padding: 0;
 }
-.newedo.character .window-content .panel, .newedo.npc .window-content .panel {
+.character .window-content .panel,
+.npc .window-content .panel {
   display: flex;
   flex: 0 0 200px;
   flex-direction: column;
@@ -410,97 +421,111 @@
   text-align: center;
   overflow: auto;
 }
-.newedo.character .window-content .panel > *, .newedo.npc .window-content .panel > * {
+.character .window-content .panel > *,
+.npc .window-content .panel > * {
   margin-bottom: 10px;
 }
-.newedo.character .window-content .panel .fate-card, .newedo.npc .window-content .panel .fate-card {
+.character .window-content .panel .fate-card,
+.npc .window-content .panel .fate-card {
   flex: 0;
   width: 100%;
   font-size: 14px;
 }
-.newedo.character .window-content .panel .fate-card .fate-switch, .newedo.npc .window-content .panel .fate-card .fate-switch {
+.character .window-content .panel .fate-card .fate-switch,
+.npc .window-content .panel .fate-card .fate-switch {
   flex: 1 1;
   align-items: right;
   text-align: right;
   padding-right: 12px;
 }
-.newedo.character .window-content .panel .fate-card .fate-title, .newedo.npc .window-content .panel .fate-card .fate-title {
+.character .window-content .panel .fate-card .fate-title,
+.npc .window-content .panel .fate-card .fate-title {
   text-align: left;
   flex: 2;
 }
-.newedo.character .window-content .panel .fate-card .fate-list, .newedo.npc .window-content .panel .fate-card .fate-list {
+.character .window-content .panel .fate-card .fate-list,
+.npc .window-content .panel .fate-card .fate-list {
   width: 100%;
   padding: 0;
   margin: 0;
 }
-.newedo.character .window-content .panel .fate-card .fate-list > *, .newedo.npc .window-content .panel .fate-card .fate-list > * {
+.character .window-content .panel .fate-card .fate-list > *,
+.npc .window-content .panel .fate-card .fate-list > * {
   border-bottom: 1px solid gray;
 }
-.newedo.character .window-content .panel .fate-card .fate-list > * :first-child, .newedo.npc .window-content .panel .fate-card .fate-list > * :first-child {
+.character .window-content .panel .fate-card .fate-list > * :first-child,
+.npc .window-content .panel .fate-card .fate-list > * :first-child {
   text-align: right;
 }
-.newedo.character .window-content .panel .fate-card .fate-list > * :last-child, .newedo.npc .window-content .panel .fate-card .fate-list > * :last-child {
+.character .window-content .panel .fate-card .fate-list > * :last-child,
+.npc .window-content .panel .fate-card .fate-list > * :last-child {
   margin-left: 15px;
   text-align: left;
   flex: 2;
 }
-.newedo.character .window-content .panel .fate-card .fate-list :last-child, .newedo.npc .window-content .panel .fate-card .fate-list :last-child {
+.character .window-content .panel .fate-card .fate-list :last-child,
+.npc .window-content .panel .fate-card .fate-list :last-child {
   border: 0;
 }
-.newedo.character .window-content .body, .newedo.npc .window-content .body {
+.character .window-content .body,
+.npc .window-content .body {
   padding: 10px;
   flex: 1;
 }
-.newedo.character .window-content .skill-lists, .newedo.npc .window-content .skill-lists {
+.character .window-content .skill-lists,
+.npc .window-content .skill-lists {
   align-items: start;
   gap: 8px;
 }
-.newedo.character .window-content .skill-lists li.item, .newedo.npc .window-content .skill-lists li.item {
+.character .window-content .skill-lists li.item,
+.npc .window-content .skill-lists li.item {
   padding: 1px 0 0 0;
 }
-.newedo.sheet.item .tab {
+
+.sheet.item .tab {
   padding: 10px;
 }
-.newedo.sheet.item .description-editor {
+.sheet.item .description-editor {
   display: flex;
   flex-direction: column;
   flex: 1;
   padding: 4px;
   border-radius: 6px;
 }
-.newedo.sheet.item .description-editor .editor {
+.sheet.item .description-editor .editor {
   flex: 1;
 }
-.newedo.sheet.item .summary {
+.sheet.item .summary {
   display: block;
   flex: 0 0 200px;
   margin-right: 4px;
 }
-.newedo.sheet.item .summary .detail {
+.sheet.item .summary .detail {
   display: flex;
   flex-direction: row;
 }
-.newedo.sheet.item .summary .detail :first-child {
+.sheet.item .summary .detail :first-child {
   flex: 1 0;
 }
-.newedo.sheet.item .summary .detail :last-child {
+.sheet.item .summary .detail :last-child {
   flex: 2;
 }
-.newedo.sheet.item .settings-tab {
+.sheet.item .settings-tab {
   display: flex;
   flex: 1;
   flex-direction: column;
 }
-.newedo.sheet.item .settings-tab input {
+.sheet.item .settings-tab input {
   flex: 2;
 }
-.newedo.sheet.item .settings-tab select {
+.sheet.item .settings-tab select {
   flex: 2;
 }
-.newedo.sheet.item .sheet-header {
+.sheet.item .sheet-header {
   padding: 0 12px;
 }
-.newedo .bar {
+
+.bar {
   --padding: 2px;
   --height: 24px;
   width: 100%;
@@ -510,11 +535,11 @@
   border-radius: calc(var(--height) / 2 + var(--padding));
   padding: var(--padding);
 }
-.newedo .bar > * {
+.bar > * {
   grid-column-start: 1;
   grid-row-start: 1;
 }
-.newedo .bar .fill {
+.bar .fill {
   background-color: rgb(0, 162, 30);
   width: 50%;
   height: var(--height);
@@ -523,25 +548,26 @@
   max-width: 100%;
   min-width: 0%;
 }
-.newedo .bar .fill.blue {
+.bar .fill.blue {
   background-color: rgb(24, 136, 255);
 }
-.newedo .bar .value {
+.bar .value {
   text-align: center;
   display: flex;
   flex-direction: row;
 }
-.newedo .bar .value > * {
+.bar .value > * {
   font-weight: bold;
   padding: 0;
   font-size: 1.2em;
   flex: 1;
 }
-.newedo .bar .value input {
+.bar .value input {
   height: var(--height);
   background: transparent;
   border: 0;
 }
+
 .newedo#context-menu {
   width: auto;
 }

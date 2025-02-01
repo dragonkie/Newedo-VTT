@@ -66,9 +66,8 @@ export default class NewedoItemSheet extends NewedoSheetMixin(foundry.applicatio
      * Passes the context data used to render the HTML template
     */
     async _prepareContext(partId, content) {
-        LOGGER.debug('Prpareing item sheet context')
+        LOGGER.debug('preparing item sheet context')
         const context = await super._prepareContext(partId, content);
-        LOGGER.debug('super prepContext', super._prepareContext)
 
         context.settings = await renderTemplate(`systems/newedo/templates/item/settings/${this.document.type}.hbs`, context);
         

@@ -1,3 +1,5 @@
+@use '../helper' as *;
+
 // For now, these styles only apply to actor and item sheets
 .sheet.actor,
 .sheet.item {

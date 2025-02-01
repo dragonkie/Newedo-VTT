@@ -11,14 +11,11 @@ export default function registerHooks() {
     });
 
     Hooks.on('renderChatLog', (log, ele, data) => {
-        console.log('RENDER CHAT LOG HOOK')
         let list = ele[0].querySelector('#chat-log');
     });
 
     // Adds functionality to chat message buttons for combat
     Hooks.on('renderChatMessage', (msg, element, data) => {
-        console.log('renderChatMessage Hooked');
-
         // Link damage roll button
         element[0].querySelector('input.damage-button')?.addEventListener('click', async () => {
             const item = await fromUuid(element[0].querySelector('input.damage-button').dataset.uuid);

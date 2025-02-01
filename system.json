@@ -1,7 +1,7 @@
 {
   "id": "newedo",
   "title": "NewEdo",
-  "description": "Official adaptation of the Newedo system for FVTT",
+  "description": "Official adaptation of the Newedo system for FoundryVTT",
   "version": "0.4.2",
   "compatibility": {
     "minimum": 12,
@@ -28,7 +28,7 @@
     "distance": 1,
     "units": "m"
   },
-  "initiative": "@init.total",
+  "initiative": "init.total",
   "socket": true,
   "primaryTokenAttribute": "hp",
   "secondaryTokenAttribute": "legend",

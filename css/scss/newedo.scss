@@ -1,0 +1,23 @@
+@use 'helper' as *;
+
+/* Global styles */
+@use 'global/window' as *;
+@use 'global/grid' as *;
+@use 'global/flex' as *;
+@use 'global/sheet' as *;
+
+//anything imported into this group will require its PARENT have the newedo class, if it needs to share the newedo class it should start with &
+@use 'components/forms' as form;
+@use 'components/resource' as resource;
+@use 'components/items' as item;
+@use 'components/effects' as effects;
+@use 'components/images' as images;
+@use 'newedo/actor' as actor;
+@use 'newedo/items' as items;
+@use 'components/bar' as bar;
+
+.newedo {
+  &#context-menu {
+    width: auto;
+  }
+}

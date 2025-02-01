@@ -32,7 +32,7 @@ export function registerHelpers() {
     });
     Handlebars.registerHelper('toLowerCase', (str) => str.toLowerCase());
     Handlebars.registerHelper('isGM', () => game.user.isGM);
-    
+
     /* -------------------------------------------- */
     /*  Math helpers                                */
     /* -------------------------------------------- */
@@ -47,13 +47,7 @@ export function registerHelpers() {
     /*  Iterators                                   */
     /* -------------------------------------------- */
     Handlebars.registerHelper('repeat', (context, options) => {
-        let ret = '';
-
-        for (var i = 0; i < context; i++) {
-            ret = ret + options.fn(context[i]);
-            console.log("current stirng: ", ret);
-        }
-
+        for (var i = 0, ret = ''; i < context; i++) ret = ret + options.fn(context[i]);
         return ret;
     });
 

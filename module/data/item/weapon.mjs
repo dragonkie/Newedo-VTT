@@ -205,11 +205,7 @@ export default class WeaponData extends ItemDataModel {
                 if (this.ranged) {
                     // ranged attacks are made against enemy size * range mult
                     data.tn = a[0].actor.system.size.value * this.range.modShort;
-                    if (data.dist > this.range.short) {
-                        console.log('long range attack')
-                        data.tn = a[0].actor.system.size.value * this.range.modLong;
-                    }
-
+                    if (data.dist > this.range.short) data.tn = a[0].actor.system.size.value * this.range.modLong;
                     if (r.total >= data.tn) data.hit = true;
                 } else {
                     // Melee attack made against target defence
@@ -218,11 +214,9 @@ export default class WeaponData extends ItemDataModel {
                 }
 
                 // relevant targeting data like if the weapon is out of range, or in the long shot / thrown range
-                if (data.dist > this.range.long) {
-                    data.range = "oor";
-                } else if (data.dist > this.range.short) {
-                    data.range = "long";
-                }
+                if (data.dist > this.range.short) data.range = "long";
+                else if (data.dist > this.range.long) data.range = "oor";
+                
                 targets.push(data);
             }
         }
@@ -258,7 +252,7 @@ export default class WeaponData extends ItemDataModel {
         const rollData = this.getRollData();
 
         let formula = '';
-        if (!rollData) return;
+        if (!rollData) return; 
         if (this.ranged) {
             formula = this.damage.value + '[' + this.damage.type + ']';
         } else {

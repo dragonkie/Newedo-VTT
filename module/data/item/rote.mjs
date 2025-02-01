@@ -20,7 +20,7 @@ export default class RoteData extends ItemDataModel {
             id: new StringField({ initial: '' })
         });
         schema.tn = new NumberField({ initial: 1 });
-        schema.action = new StringField({ initial: 1 });
+        schema.action = new StringField({ initial: 'full' });
 
         schema.rules = new SchemaField({
             rollRange: new SchemaField({
@@ -50,9 +50,9 @@ export default class RoteData extends ItemDataModel {
     getRollData() {
         LOGGER.debug('RoteData | getRollData');
         const data = super.getRollData();
-        if (!data) return null;
+        if (!data || !this.actor) return null;
 
-        data.trait = this.actor.system.traits.core.shi.rank;
+        data.trait = this.actor.system.traits.core.shi;
 
         return data;
     }
@@ -83,8 +83,8 @@ export default class RoteData extends ItemDataModel {
         const skill = this.getSkill();
 
         if (!skill) return;
-        console.log('CASTING SPELL DATA: ', rollData);
-        console.log('CASTING SPELL DATA: ', skill);
+        LOGGER.log('CASTING SPELL DATA: ', rollData);
+        LOGGER.log('CASTING SPELL DATA: ', skill);
 
         let data = {
             parts: [{

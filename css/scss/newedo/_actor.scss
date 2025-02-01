@@ -1,6 +1,8 @@
+@use '../helper' as *;
+
 //general classes
-&.character .window-content,
-&.npc .window-content {
+.character .window-content,
+.npc .window-content {
     overflow: hidden;
     display: flex;
     flex-direction: row;
