@@ -17,3 +17,17 @@ $skill-grid: 30px;
 $shadow-pink: 0 0 10px $c-pink;
 $sheet-bg-image: url(../ui/parchment.jpg);
 $bg-image: url(/ui/parchment.jpg);
+
+.theme-light {
+    --colour-nav: var(--color-dark-3);
+    --colour-nav-active: var(--color-dark-1);
+    --colour-bar-bg: var(--color-cool-5-75);
+    --colour-bar-input: var(--color-light-2);
+}
+
+.theme-dark {
+    --colour-nav: var(--color-light-3);
+    --colour-nav-active: var(--color-light-1);
+    --colour-bar-bg: var(--color-dark-1);
+    --colour-bar-input: var(--color-light-3);
+}

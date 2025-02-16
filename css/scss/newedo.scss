@@ -16,8 +16,11 @@
 @use 'newedo/items' as items;
 @use 'components/bar' as bar;
 
+@use 'newedo/dialog' as dialog;
+
 .newedo {
   &#context-menu {
     width: auto;
   }
 }
+

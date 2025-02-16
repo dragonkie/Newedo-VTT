@@ -2,7 +2,7 @@
   "id": "newedo",
   "title": "NewEdo",
   "description": "Official adaptation of the Newedo system for FoundryVTT",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "compatibility": {
     "minimum": 12,
     "verified": 12.334,
@@ -28,7 +28,7 @@
     "distance": 1,
     "units": "m"
   },
-  "initiative": "init.total",
+  "initiative": "@init.total",
   "socket": true,
   "primaryTokenAttribute": "hp",
   "secondaryTokenAttribute": "legend",
@@ -231,6 +231,14 @@
         "filePathFields": {}
       },
       "fate": {
+        "htmlFields": [],
+        "filePathFields": {}
+      },
+      "path": {
+        "htmlFields": [],
+        "filePathFields": {}
+      },
+      "kami": {
         "htmlFields": [],
         "filePathFields": {}
       }

@@ -65,6 +65,7 @@ export default class CharacterSheet extends NewedoActorSheet {
 
         context.lineage = this.document.itemTypes.lineage[0];
         context.culture = this.document.itemTypes.culture[0];
+        context.path = this.document.itemTypes.path[0];
 
         LOGGER.debug('SHEET | CHARACTER | PREPARE CONTEXT', context);
         return context;

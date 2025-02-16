@@ -1,4 +1,18 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+.theme-light {
+  --colour-nav: var(--color-dark-3);
+  --colour-nav-active: var(--color-dark-1);
+  --colour-bar-bg: var(--color-cool-5-75);
+  --colour-bar-input: var(--color-light-2);
+}
+
+.theme-dark {
+  --colour-nav: var(--color-light-3);
+  --colour-nav-active: var(--color-light-1);
+  --colour-bar-bg: var(--color-dark-1);
+  --colour-bar-input: var(--color-light-3);
+}
+
 /* Global styles */
 .window-app {
   font-family: "Roboto", sans-serif;
@@ -255,6 +269,13 @@
   font-family: "Roboto", sans-serif;
 }
 
+.application nav.tabs .item {
+  color: var(--colour-nav);
+}
+.application nav.tabs .item.active {
+  color: var(--colour-nav-active);
+}
+
 .resource-label {
   font-weight: bold;
 }
@@ -282,19 +303,19 @@
 /* ----------------------------------------- */
 /*  Items Lists                              */
 /* ----------------------------------------- */
-.items-list {
+ol.items-list {
   list-style: none;
   margin: 0;
   padding: 0;
   overflow-y: auto;
   scrollbar-width: thin;
 }
-.items-list .item-list {
+ol.items-list .item-list {
   list-style: none;
   margin: 0;
   padding: 0;
 }
-.items-list .item-name {
+ol.items-list .item-name {
   flex: 1;
   margin: 0;
   overflow: hidden;
@@ -303,44 +324,44 @@
   align-items: center;
   display: flex;
 }
-.items-list .item-name h3,
-.items-list .item-name h4 {
+ol.items-list .item-name h3,
+ol.items-list .item-name h4 {
   margin: 0;
   white-space: nowrap;
   overflow-x: hidden;
 }
-.items-list .item-controls {
+ol.items-list .item-controls {
   display: flex;
-  flex: 0 1;
+  flex: 1;
   justify-content: flex-end;
 }
-.items-list .item-controls a {
+ol.items-list .item-controls a {
   font-size: 12px;
   text-align: center;
   margin: 0 6px;
 }
-.items-list .item {
+ol.items-list .item {
   align-items: center;
   padding: 0 2px;
   border-bottom: 1px solid #c9c7b8;
 }
-.items-list .item:last-child {
+ol.items-list .item:last-child {
   border-bottom: none;
 }
-.items-list .item .item-name .item-image {
+ol.items-list .item .item-name .item-image {
   flex: 0 0 30px;
   height: 30px;
   background-size: 30px;
   border: none;
   margin-right: 5px;
 }
-.items-list .item-prop {
+ol.items-list .item-prop {
   text-align: center;
   border-left: 1px solid #c9c7b8;
   border-right: 1px solid #c9c7b8;
   font-size: 12px;
 }
-.items-list .items-header {
+ol.items-list .items-header {
   height: 28px;
   margin: 2px 0;
   padding: 0;
@@ -348,15 +369,15 @@
   border: 2px groove #eeede0;
   font-weight: bold;
 }
-.items-list .items-header > * {
+ol.items-list .items-header > * {
   font-size: 12px;
   text-align: center;
 }
-.items-list .items-header .item-name {
+ol.items-list .items-header .item-name {
   padding-left: 5px;
   text-align: left;
 }
-.items-list .item-delete {
+ol.items-list .item-delete {
   flex: 0 0 24px;
 }
 
@@ -390,29 +411,42 @@
   border: 0;
 }
 
-.character .window-content,
-.npc .window-content {
+.sheet.character .window-content,
+.sheet.npc .window-content {
   overflow: hidden;
   display: flex;
   flex-direction: row;
 }
-.character .window-content .derived-traits,
-.npc .window-content .derived-traits {
-  display: block;
+.sheet.character .window-content header > *,
+.sheet.npc .window-content header > * {
+  margin-bottom: 5px;
 }
-.character .window-content .derived-traits > *,
-.npc .window-content .derived-traits > * {
+.sheet.character .window-content .origins,
+.sheet.npc .window-content .origins {
+  display: block;
+  font-size: 1.2em;
+}
+.sheet.character .window-content .origins > *,
+.sheet.npc .window-content .origins > * {
   display: inline-block;
 }
-.character .window-content .derived-traits > * input,
-.npc .window-content .derived-traits > * input {
+.sheet.character .window-content .derived-traits,
+.sheet.npc .window-content .derived-traits {
+  display: block;
+}
+.sheet.character .window-content .derived-traits > *,
+.sheet.npc .window-content .derived-traits > * {
+  display: inline-block;
+}
+.sheet.character .window-content .derived-traits > * input,
+.sheet.npc .window-content .derived-traits > * input {
   width: 2.5rem;
   height: 1rem;
   text-align: center;
   padding: 0;
 }
-.character .window-content .panel,
-.npc .window-content .panel {
+.sheet.character .window-content .panel,
+.sheet.npc .window-content .panel {
   display: flex;
   flex: 0 0 200px;
   flex-direction: column;
@@ -421,64 +455,65 @@
   text-align: center;
   overflow: auto;
 }
-.character .window-content .panel > *,
-.npc .window-content .panel > * {
-  margin-bottom: 10px;
+.sheet.character .window-content .panel > *,
+.sheet.npc .window-content .panel > * {
+  margin-bottom: 5px;
 }
-.character .window-content .panel .fate-card,
-.npc .window-content .panel .fate-card {
+.sheet.character .window-content .panel .fate-card,
+.sheet.npc .window-content .panel .fate-card {
   flex: 0;
   width: 100%;
   font-size: 14px;
 }
-.character .window-content .panel .fate-card .fate-switch,
-.npc .window-content .panel .fate-card .fate-switch {
+.sheet.character .window-content .panel .fate-card .fate-switch,
+.sheet.npc .window-content .panel .fate-card .fate-switch {
   flex: 1 1;
   align-items: right;
   text-align: right;
   padding-right: 12px;
 }
-.character .window-content .panel .fate-card .fate-title,
-.npc .window-content .panel .fate-card .fate-title {
+.sheet.character .window-content .panel .fate-card .fate-title,
+.sheet.npc .window-content .panel .fate-card .fate-title {
   text-align: left;
   flex: 2;
 }
-.character .window-content .panel .fate-card .fate-list,
-.npc .window-content .panel .fate-card .fate-list {
+.sheet.character .window-content .panel .fate-card .fate-list,
+.sheet.npc .window-content .panel .fate-card .fate-list {
   width: 100%;
   padding: 0;
   margin: 0;
 }
-.character .window-content .panel .fate-card .fate-list > *,
-.npc .window-content .panel .fate-card .fate-list > * {
+.sheet.character .window-content .panel .fate-card .fate-list > *,
+.sheet.npc .window-content .panel .fate-card .fate-list > * {
   border-bottom: 1px solid gray;
+  gap: 5px;
 }
-.character .window-content .panel .fate-card .fate-list > * :first-child,
-.npc .window-content .panel .fate-card .fate-list > * :first-child {
+.sheet.character .window-content .panel .fate-card .fate-list > * :first-child,
+.sheet.npc .window-content .panel .fate-card .fate-list > * :first-child {
   text-align: right;
+  flex: 1;
 }
-.character .window-content .panel .fate-card .fate-list > * :last-child,
-.npc .window-content .panel .fate-card .fate-list > * :last-child {
-  margin-left: 15px;
+.sheet.character .window-content .panel .fate-card .fate-list > * :last-child,
+.sheet.npc .window-content .panel .fate-card .fate-list > * :last-child {
   text-align: left;
   flex: 2;
 }
-.character .window-content .panel .fate-card .fate-list :last-child,
-.npc .window-content .panel .fate-card .fate-list :last-child {
+.sheet.character .window-content .panel .fate-card .fate-list :last-child,
+.sheet.npc .window-content .panel .fate-card .fate-list :last-child {
   border: 0;
 }
-.character .window-content .body,
-.npc .window-content .body {
+.sheet.character .window-content .body,
+.sheet.npc .window-content .body {
   padding: 10px;
   flex: 1;
 }
-.character .window-content .skill-lists,
-.npc .window-content .skill-lists {
+.sheet.character .window-content .skill-lists,
+.sheet.npc .window-content .skill-lists {
   align-items: start;
   gap: 8px;
 }
-.character .window-content .skill-lists li.item,
-.npc .window-content .skill-lists li.item {
+.sheet.character .window-content .skill-lists li.item,
+.sheet.npc .window-content .skill-lists li.item {
   padding: 1px 0 0 0;
 }
 
@@ -510,16 +545,8 @@
 .sheet.item .summary .detail :last-child {
   flex: 2;
 }
-.sheet.item .settings-tab {
-  display: flex;
+.sheet.item [data-tab=settings] .form-group :not(label) {
   flex: 1;
-  flex-direction: column;
-}
-.sheet.item .settings-tab input {
-  flex: 2;
-}
-.sheet.item .settings-tab select {
-  flex: 2;
 }
 .sheet.item .sheet-header {
   padding: 0 12px;
@@ -531,7 +558,8 @@
   width: 100%;
   display: grid;
   flex: 0;
-  background-color: var(--color-dark-1);
+  background-color: var(--colour-bar-bg);
+  color: var(--colour-bar-input);
   border-radius: calc(var(--height) / 2 + var(--padding));
   padding: var(--padding);
 }
@@ -564,8 +592,28 @@
 }
 .bar .value input {
   height: var(--height);
+  color: var(--colour-bar-input);
   background: transparent;
   border: 0;
+}
+
+.feature-list {
+  padding: 0 10px !important;
+  list-style-type: none;
+}
+.feature-list .feature .details {
+  transition: height 0.4s ease-in-out;
+  transition-delay: 0ms;
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+.feature-list .feature.expanded .inner {
+  height: 40px;
+}
+.feature-list .feature .inner {
+  padding: 0 10px;
+  transition: height 0.4s ease-in-out;
+  height: 0px;
 }
 
 .newedo#context-menu {

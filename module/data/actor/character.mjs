@@ -76,13 +76,13 @@ export default class CharacterDataModel extends ActorDataModel {
             this.bonus.PowTotal += 5;
         }
 
+        //calculates characters legend rank
+        this.legend.rank = sysUtil.legendRank(this.legend.max);
+
         /* ----------------------------------------------------------- */
         /* Generic Actor Super                                         */
         /* ----------------------------------------------------------- */
         super.prepareDerivedData();
-
-        //calculates characters legend rank
-        this.legend.rank = sysUtil.legendRank(this.legend.max);
 
         LOGGER.groupEnd();
     }

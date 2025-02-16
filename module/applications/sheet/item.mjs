@@ -10,16 +10,18 @@ export default class NewedoItemSheet extends NewedoSheetMixin(foundry.applicatio
     /** @override */
     static DEFAULT_OPTIONS = {
         classes: ['item'],
-        position: { height: 360, width: 520, top: 100, left: 200 },
+        position: { height: 360, width: 550, top: 100, left: 200 },
     }
 
-    static PARTS = {
-        header: { template: "systems/newedo/templates/item/header.hbs" },
-        tabs: { template: "systems/newedo/templates/shared/tabs-nav.hbs" },
-        body: { template: "systems/newedo/templates/item/body.hbs" },
-        rules: { template: "systems/newedo/templates/item/rules.hbs" },
-        description: { template: "systems/newedo/templates/item/description.hbs" },
-        settings: { template: "systems/newedo/templates/item/settings.hbs" }
+    static get PARTS() {
+        return {
+            header: { template: "systems/newedo/templates/item/header.hbs" },
+            tabs: { template: "systems/newedo/templates/shared/tabs-nav.hbs" },
+            body: { template: "systems/newedo/templates/item/body.hbs" },
+            rules: { template: "systems/newedo/templates/item/rules.hbs" },
+            description: { template: "systems/newedo/templates/item/description.hbs" },
+            settings: { template: "systems/newedo/templates/item/settings.hbs" }
+        }
     }
 
     static TABS = {
@@ -70,7 +72,7 @@ export default class NewedoItemSheet extends NewedoSheetMixin(foundry.applicatio
         const context = await super._prepareContext(partId, content);
 
         context.settings = await renderTemplate(`systems/newedo/templates/item/settings/${this.document.type}.hbs`, context);
-        
+
         const enrichmentOptions = {
             rollData: context.rollData
         };

@@ -58,6 +58,7 @@ export default function NewedoSheetMixin(Base) {
 
             const context = {
                 document: doc,
+                actor: doc.actor,
                 config: CONFIG.NEWEDO,
                 system: doc.system,
                 flags: doc.flags,
@@ -93,8 +94,12 @@ export default function NewedoSheetMixin(Base) {
         /*                                   SHEET ACTIONS                                        */
         /*                                                                                        */
         /* -------------------------------------------------------------------------------------- */
+        getRollData() {
+            return this.document.getRollData();
+        }
+
         _onClickAction(event, target) {
-            LOGGER.error(`Sheet missing action handler for uuid ${this.document.uuid}:`, target.dataset.action);
+            
         }
 
         static _onEditImage(event, target) {
@@ -119,6 +124,11 @@ export default function NewedoSheetMixin(Base) {
             return super.render(options, _options);
         }
 
+        _configureRenderOptions(options) {
+            super._configureRenderOptions(options);
+            return
+        }
+
         _onFirstRender(context, options) {
             let r = super._onFirstRender(context, options);
             this._setupContextMenu();
@@ -129,8 +139,8 @@ export default function NewedoSheetMixin(Base) {
         _onRender(context, options) {
             let r = super._onRender(context, options);
 
+            // Disables sheet inputs for non owners
             if (!this.isEditable) {
-                // Disables sheet inputs for non owners
                 this.element.querySelectorAll("input, select, textarea, multi-select").forEach(n => {
                     n.disabled = true;
                 })
@@ -139,7 +149,7 @@ export default function NewedoSheetMixin(Base) {
             this._setupDragAndDrop();
             return r;
         }
-
+        // Enables drag and drop features
         async _renderHTML(context, options) {
             return super._renderHTML(context, options);
         }
@@ -181,7 +191,7 @@ export default function NewedoSheetMixin(Base) {
         }
 
         _canDragStart(selector) {
-            return true;
+            return this.isEditable;
         }
 
         _canDragDrop(selector) {
@@ -280,8 +290,12 @@ export default function NewedoSheetMixin(Base) {
             this.document.updateEmbeddedDocuments("Item", updates);
         }
 
-        _syncPartState(partId, newElement, priorElement, state) {
+        // useful for things like highlighting when your on a drop target
+        _onDragOver(event) {
 
+        }
+
+        _syncPartState(partId, newElement, priorElement, state) {
             super._syncPartState(partId, newElement, priorElement, state);
 
             // Refocus on a delta.
@@ -343,7 +357,7 @@ export default function NewedoSheetMixin(Base) {
                     name: "Gift",
                     icon: "<i class='fa-solid fa-gift'></i>",
                     condition: () => isOwner,
-                    callback: () => LOGGER.log('sending away item')
+                    callback: () => LOGGER.debug('sending away item')
                 })
             }
 

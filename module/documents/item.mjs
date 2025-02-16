@@ -24,7 +24,6 @@ export default class NewedoItem extends Item {
         if (this.actor) {
             LOGGER.debug('Owned by:', this.actor)
         }
-        console.trace();
         super.prepareData();
         LOGGER.groupEnd();
     }
@@ -42,9 +41,7 @@ export default class NewedoItem extends Item {
     }
 
     prepareOwnerData(data) {
-        LOGGER.group('Document | prepareDerivedData');
         this.system.prepareOwnerData(data);
-        LOGGER.groupEnd();
     }
 
     async deleteDialog(options = {}) {

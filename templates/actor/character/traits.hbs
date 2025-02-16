@@ -1,27 +1,15 @@
 <div class="tab-content">
-
-    <div class="flexcol" style="gap: 2px;">
-        <div class="flexrow" style="gap: 2px;">
-            <a class="item" data-item-uuid="{{lineage.uuid}}"><b data-action="editItem">{{lineage.name}}</b></a>
-            <a class="item" data-item-uuid="{{culture.uuid}}"><b data-action="editItem">{{culture.name}}</b></a>
-        </div>
-        <div class="flexrow" style="gap: 2px;">
-            <input name="system.biography.faction" type="text" value="{{system.biography.faction}}" placeholder="faction" />
-            <input name="system.biography.path" type="text" value="{{system.biography.path}}" placeholder="path" />
-        </div>
-    </div>
-
     <!-- Core Stats -->
     <div class="flexrow" style="text-align: center; align-items: center; gap: 2px; margin-bottom: 10px;">
         {{#each system.traits.core as | trait key |}}
 
-            <div style="align-items: center; min-width: 30px;" data-trait="{{key}}">
-                <label class="resource-label flexlarge align-left" data-action="roll" data-roll="{{trait.rank}}d10x10" data-label="{{trait.label}}">{{trait.abr}}</label>
+            <div style="align-items: center; min-width: 30px;" data-roll-type="NEWEDO.generic.trait" data-roll-label="NEWEDO.trait.core.{{key}}" data-roll="{{trait.rank}}d10">
+                <label class="resource-label flexlarge align-left" data-action="roll">{{trait.abr}}</label>
                 <input style="height: 3rem; font-size: 22px; font-weight: bold;" value="{{trait.total}}" disabled type="number" />
                 {{#if ../isEditMode}}
                     <input style="width: 75%; height: 1.5rem; border-radius: 0px 0px 5px 5px;" name="system.traits.core.{{key}}.value" value="{{trait.value}}" type="number" />
                 {{/if}}
-                <div class="trait-rank" data-action="roll" data-roll="{{trait.rank}}d10x10" data-label="{{trait.label}}">Rank {{trait.rank}}</div>
+                <div class="trait-rank" data-action="roll">Rank {{trait.rank}}</div>
             </div>
         {{/each}}
     </div>
@@ -30,7 +18,7 @@
     <div class="flexrow" style="text-align: center; align-items: center; gap: 2px;">
         {{#each system.background as | background key |}}
             <div style="align-items: center; min-width: 30px;" data-background="{{key}}">
-                <label class="resource-label flexlarge align-left" data-action="roll" data-roll="{{background.rank}}d10x10" data-label="{{background.label}}">{{background.label}}</label>
+                <label class="resource-label flexlarge align-left" data-action="roll" data-roll="{{background.rank}}d10" data-label="{{background.label}}">{{background.label}}</label>
                 <input name="system.background.{{key}}.value" value="{{background.value}}" type="number" {{disabled ../isPlayMode}} />
                 <div class="trait-rank" data-action="roll" data-roll="{{background.rank}}d10x10" data-label="{{background.label}}">Rank {{ background.rank }}</div>
             </div>

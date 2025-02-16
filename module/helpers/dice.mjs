@@ -9,28 +9,60 @@ import sysUtil from "../helpers/sysUtil.mjs";
  * sources
  */
 export default class NewedoRoll {
-
-    data = {};
-
-    options = {};
-
     _ready = false;
-
-    formula = '';
-
     _roll = null;
+    actor = undefined;// an owning actor if needed
+    cancelled = false;
+    data = {};// Roll data to use
+    legend = true; // can you spend legend on this (Requires actor)
+    options = {
+        advantage: false,
+        disadvantage: false,
+        pieces: [],
+        raise: 0,
+    };// filled out when gathering roll data from the user
+    parts = [];// pieces of the roll formula
+    prompt = true;// if you should prompt the user or skip that step and just roll
+    raise = false;// can you call raises
+    title = 'NEWEDO.generic.roll';// popup window title
+
+    static getPartSchema() {
+        return {
+            type: 'type',
+            label: 'label',
+            value: 0,
+            active: true,
+        }
+    }
+
+    AddPart(parts) { // Function for assigning data parts, means I dont have to worry about fucking up templates again
+        if (!Array.isArray(parts)) parts = [parts];
+        for (const i of parts) {
+            if (typeof i.value !== 'string') i.value = `${i.value}`;
+            i.value = i.value.replaceAll(/\s/gm, '');
+            i.value = i.value.replaceAll(/[\+\-\*\/]?0+d[\d]+/gm, '');
+            if (i.value == '' || i.value == '0') continue;
+            this.parts.push(Object.assign(this.constructor.getPartSchema(), i))
+        }
+    }
 
     /**Accepts an optional list of dice objects to pre populate the tray */
     constructor(data) {
-        this.formula = data.formula ? data.formula : '';
-        this.data = data;
+        for (const [k, v] of Object.entries(this)) {
+            if (data[k]) this[k] = data[k];
+        }
     }
 
     static template = 'systems/newedo/templates/dialog/roll-v2.hbs';
 
     async getRollOptions() {
-        const title = sysUtil.localize("NEWEDO.generic.roll") + ": " + sysUtil.localize(this.data.title);
-        const render = await renderTemplate(this.constructor.template, this.data);
+        if (this.parts.length == 0) {
+            sysUtil.warn("NEWEDO.warn.NoDiceToRoll");
+            this.cancelled = true;
+            return { cancelled: true };
+        }
+        const title = sysUtil.localize("NEWEDO.generic.roll") + ": " + sysUtil.localize(this.title);
+        const render = await renderTemplate(this.constructor.template, this);
 
         /**
          * Small internal function to handel the data form we recieve
@@ -42,6 +74,7 @@ export default class NewedoRoll {
             // Gets all the pieces of the formula
             const formulaParts = html.querySelectorAll("[data-formula]");
             this.options.pieces = [];
+            this.options.raise = 0;
             // Get the data from the formula pieces
             for (let element of formulaParts) {
                 let v = element.querySelector('[name=value]');
@@ -54,12 +87,22 @@ export default class NewedoRoll {
                         sysUtil.warn("NEWEDO.warn.invalidBonus");
                         this.options.cancelled = true; // Flags that this roll should be discarded
                         return this.options;
+                    } else {
+                        this.options.pieces.push({
+                            type: element.dataset['formula'],
+                            value: v.value,
+                            active: true,
+                        });
+                        continue;
                     }
                 }
 
-                if (element.dataset['formula'] == 'legend' && this.data.actor && v.value != '0') {
+                // adds raise value if we used any
+                if (element.dataset['formula'] == 'raise' && v.value > 0) this.options.raise = v.value;
+
+                if (element.dataset['formula'] == 'legend' && this.actor && v.value != '0') {
                     // special handling for the legend option since it spends a resource
-                    if (sysUtil.spendLegend(this.data.actor, sysUtil.parseElementValue(v))) {
+                    if (sysUtil.spendLegend(this.actor, sysUtil.parseElementValue(v))) {
                         // spent legend properly
                         this.options.pieces.push({
                             type: element.dataset['formula'],
@@ -110,7 +153,21 @@ export default class NewedoRoll {
                 close: () => resolve({ cancelled: true }),
                 submit: (result) => resolve(result)
             }
-            new foundry.applications.api.DialogV2(options, null).render(true);
+
+            // Link up buttons if any and set up sheet
+            const app = new foundry.applications.api.DialogV2(options, null);
+            app.render(true).then(() => {
+                let el = app.element;
+                let clickers = el.querySelectorAll('[name=clicker]');
+                for (const c of clickers) {
+                    let btn_i = c.querySelector('[name=increase]');
+                    let btn_d = c.querySelector('[name=decrease]');
+                    let val = c.querySelector('input[name=value]');
+
+                    btn_i.addEventListener('click', () => val.value = +val.value + 1);
+                    btn_d.addEventListener('click', () => val.value = +val.value - 1);
+                }
+            });
         });
 
         return this.options;
@@ -125,16 +182,13 @@ export default class NewedoRoll {
      * Creates and rolls the values gotten here
      */
     async evaluate() {
+        if (!this._ready && this.prompt) await this.getRollOptions();
         if (this.options.cancelled) return null;
-
-        if (!this._ready) {
-            LOGGER.error('NewedoRoll not initalized, roll needs to have options set and be flagged as ready')
-            return null;
-        }
 
         // Handle the advantage / disadvantage roll first and foremost
         let adv = this.options.advantage;
         let dis = this.options.disadvantage;
+        let formula = '';
 
         // Adds all the formula parts
         for (let part of this.options.pieces) {
@@ -147,68 +201,86 @@ export default class NewedoRoll {
                 case "*":
                     break;
                 default:
-                    this.formula += "+";
+                    formula += "+";
                     break;
             }
 
-            this.formula += part.value;
+            formula += part.value;
         }
 
         // Cleans the formula, as well as removes exploding dice, and simplifying things
-        this.formula = this.formula.replaceAll('d10x10', 'd10').replaceAll(' ', '');
-        this.formula = this.formula.replace(/^[\+\*\/]/, '');
-        this.formula = this.formula.replaceAll("+-", "-");
+        formula = formula.replaceAll('d10x10', 'd10').replaceAll(' ', '');
+        formula = formula.replace(/^[\+\*\/]/, '');
+        formula = formula.replaceAll("+-", "-");
 
         // Adds the advantage / disadvantage bonus
         if (adv && !dis) {
-            LOGGER.log('Advantage checks');
+            LOGGER.debug('Advantage checks');
 
             // Search for a positive d10 to add too
-            let match = this.formula.match(/(?<![\-\*\/])[0-9]+d10/)[0];
+            let match = formula.match(/(?<![\-\*\/])[0-9]+d10/)[0];
             if (match) {
                 let s = match.split("d");
                 let n = +s[0];
-                this.formula = this.formula.replace(match, `${n + 1}d10`);
+                formula = formula.replace(match, `${n + 1}d10`);
             } else {
                 // Just add the dice if there wern't any d10's already
-                this.formula = "1d10+" + this.formula;
+                formula = "1d10+" + formula;
             }
         } else if (dis && !adv) {
             // Search for a positive d10 to lower 
-            let term = this.formula.match(/\+?\d+d10(\w+)?/)[0];
+            let term = formula.match(/\+?\d+d10(\w+)?/)[0];
 
             if (term) {
                 let dice = term.match(/\dd10/)[0].split('d');
                 let count = dice[0];
 
                 if (count < 1) {
-                    this.formula = this.formula.replace(term, ``);
+                    formula = formula.replace(term, ``);
                 } else {
                     // Create modify the term to match what we need to create
                     let newTerm = term.replace(`${count}d10`, `${count - 1}d10`)
-                    this.formula = this.formula.replace(term, newTerm);
+                    formula = formula.replace(term, newTerm);
                 }
             } else {
-
+                // if there were no d10's to drop, fucking oops we gotta drop the next highest dice and that sucks
             }
         }
 
-        this.formula = this.formula.replaceAll('d10', 'd10x10');
+        formula = formula.replaceAll('d10', 'd10x10');
+        if (formula == "") return;
 
-        LOGGER.log('Final Formula: ', this.formula)
-        this._roll = new Roll(this.formula);
-
+        this._roll = new Roll(formula, this.data);
         return this._roll.evaluate();
     }
-   
+
     async rollToMessage() {
         await this.evaluate();
-        this._roll.toMessage();
-        return this._roll;
+        return await this._roll.toMessage();;
     }
 
     async toMessage(data) {
         if (this._roll) return this._roll.toMessage(data);
-        else return null;
+        return null;
+    }
+
+    async render() {
+        if (this._roll) return this._roll.render();
+        return null;
+    }
+
+    get total() {
+        if (this._roll) return this._roll.total;
+        return null;
+    }
+
+    get result() {
+        if (this._roll) return this._roll.result;
+        return null;
+    }
+
+    get formula() {
+        if (this._roll) return this._roll.formula;
+        return null;
     }
 };

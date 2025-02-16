@@ -8,43 +8,41 @@ TODO:
     {{#each parts as | part | }}
         <div class="form-group" data-formula="main">
             {{!-- Get the parts type and label --}}
-            <label>{{localize part.type}}: <b>{{localize part.label}}</b></label>
-            <input type="checkbox" name="active" checked="checked">
-            <input type="text" name="value" value="{{part.value}}" disabled>
+            <label>{{#if part.type}}{{localize part.type}}: {{/if}}<b>{{localize part.label}}</b></label>
+            <div class="flexrow" style="gap: 0.5rem;">
+                <input type="checkbox" name="active" {{checked part.active}} style="flex: 0;">
+                <input type="text" name="value" value="{{part.value}}" disabled>
+            </div>
         </div>
     {{/each}}
 
-    {{!-- If there are any passive modifiers listed, display them and their toggles here --}}
-    {{#each bonuses as | bonus |}}
-        <div class="form-group" data-formula="bonus">
-            <label>{{localize bonus.label}}</label>
-            <input type="checkbox" name="active" checked="checked">
-            <input type="text" name="value" value="{{bonus.value}}" disabled>
+    {{!-- if raises are enabled for this roll --}}
+    {{#if (gt raise 0)}}
+        <div class="form-group" data-formula="raise">
+            <label>{{localize 'NEWEDO.generic.raise'}}:</label>
+            <div class="flexrow" name="clicker" style="justify-content: center; gap: 0.5rem;">
+                <button type="button" name="decrease" style="flex: 0;"><i class="fa-solid fa-minus"></i></button>
+                <input type="number" name="value" value="0" disabled style="text-align: center;" />
+                <button type="button" name="increase" style="flex: 0;"><i class="fa-solid fa-plus"></i></button>
+            </div>
         </div>
-    {{/each}}
-
-    {{!-- Optional roll modifiers, anything that isnt accounted for can be manually done here --}}
-    <div class="form-group" data-formula="extra">
-        <label>{{localize 'NEWEDO.dialog.situationBonus'}}:</label>
-        <input type="text" name="value" />
-    </div>
+    {{/if}}
 
     {{!-- Place to optionally spend legend, eventually will be a clickable button set instead of a slider --}}
-    {{#if actor}}
+    {{#if (and actor legend)}}
         <div class="form-group" data-formula="legend">
             <label>{{localize 'NEWEDO.generic.legend'}}:</label>
-            <div class="flexrow" style="justify-content: center;">
-                <button style="flex: 0;" type="button" name="increase"><i class="fa-solid fa-minus"></i></button>
+            <div class="flexrow" name="clicker" style="justify-content: center; gap: 0.5rem;">
+                <button style="flex: 0;" type="button" name="decrease"><i class="fa-solid fa-minus"></i></button>
                 <input style="text-align: center;" type="number" name="value" value="0" min="0" max="5" disabled />
                 <button style="flex: 0;" type="button" name="increase"><i class="fa-solid fa-plus"></i></button>
             </div>
         </div>
     {{/if}}
 
-    {{!-- Wound penalty watcher --}}
-    <div class="form-group" data-formula="wound">
-        <label>{{localize "NEWEDO.generic.plrl.wound"}}: {{wound.label}}</label>
-        <input type="checkbox" name="active" checked="checked" />
-        <input type="number" name="value" disabled value="{{wound.value}}" />
+    {{!-- Optional roll modifiers, anything that isnt accounted for can be manually done here --}}
+    <div class="form-group" data-formula="extra">
+        <label>{{localize 'NEWEDO.dialog.situationBonus'}}:</label>
+        <input type="text" name="value" />
     </div>
 </form>

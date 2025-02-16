@@ -5,7 +5,7 @@
             {{#each system.traits.core as | trait key | }}
                 <div class="flexcol" style="align-items: center; min-width: 70px;">
                     <label class="resource-label flexlarge align-left">{{key}}</label>
-                    <input name="system.traits.core.{{key}}.value" value="{{trait.value}}" type="number" style="padding: 0;" />
+                    <input name="system.traits.core.{{key}}" value="{{trait}}" type="number" style="padding: 0;" />
                 </div>
             {{/each}}
         </div>

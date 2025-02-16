@@ -1,1 +1,26 @@
 @use '../helper' as *;
+
+.feature-list {
+    padding: 0 10px !important;
+    list-style-type: none;
+    .feature {
+        .details {
+            transition: height 0.4s ease-in-out;
+            transition-delay: 0ms;
+            overflow: hidden;
+            background-color: rgba(0, 0, 0, 0.2);
+        }
+
+        &.expanded {
+            .inner {
+                height: 40px;
+            }
+        }
+
+        .inner {
+            padding: 0 10px;
+            transition: height 0.4s ease-in-out;
+            height: 0px;
+        }
+    }
+}

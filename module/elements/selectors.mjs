@@ -66,8 +66,8 @@ export function Skills(value, name) {
 export function WeaponSkills(value, name) {
     return foundry.applications.fields.createSelectInput({
         options: [
-            { value: "lightmelee", group: 'NEWEDO.generic.melee', label: "NEWEDO.skill.meleeLight" },
-            { value: "heavymelee", group: 'NEWEDO.generic.melee', label: "NEWEDO.skill.meleeHeavy" },
+            { value: "lightmelee", group: 'NEWEDO.generic.melee', label: "NEWEDO.skill.lightmelee" },
+            { value: "heavymelee", group: 'NEWEDO.generic.melee', label: "NEWEDO.skill.heavymelee" },
             { value: "unarmed", group: 'NEWEDO.generic.melee', label: "NEWEDO.skill.unarmed" },
             { value: "thrown", group: 'NEWEDO.generic.melee', label: "NEWEDO.skill.thrown" },
             { value: "archery", group: 'NEWEDO.generic.ranged', label: "NEWEDO.skill.archery" },

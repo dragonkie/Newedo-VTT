@@ -1,0 +1,27 @@
+<div>
+    <header style="margin-bottom: 5px;">
+        <input style="margin-bottom: 5px;" type="text" name="label" value="{{feature.label}}">
+        <label style="margin-bottom: 5px;">
+            <b>Unlock Level:</b>
+            <input type="number" min="1" max="5" style="width: auto;" name="unlock" value="{{feature.unlock}}">
+        </label>
+    </header>
+
+    {{#each feature.data.groups as | group label |}}
+        <div style="padding: 10px; background-color: rgb(0, 0, 0, 0.1); border-radius: 10px; margin-bottom: 5px;">
+            <div style="font-size: 1.2em;">
+                <b>{{localize group.label}}</b>
+            </div>
+            <div class="flexrow" style="text-align: center;">
+                {{#each ../feature.data.traits as | trait key |}}
+                    {{#if (eq trait.group ../name)}}
+                        <div>
+                            <div><b>{{localize trait.label}}</b></div>
+                            <input type="number" data-array-name='traits' data-array-index="{{key}}" value="{{trait.value}}" style="width: 40px; height: 40px;">
+                        </div>
+                    {{/if}}
+                {{/each}}
+            </div>
+        </div>
+    {{/each}}
+</div>

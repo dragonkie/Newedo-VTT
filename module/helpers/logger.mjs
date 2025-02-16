@@ -23,7 +23,6 @@ export default class LOGGER {
     static trace(msg, ...value) {
         console.groupCollapsed(`NEWEDO TRC | ${msg}`);
         if (typeof value !== undefined) console.log(...value);
-        console.trace();
         console.groupEnd();
     }
     /**
@@ -32,16 +31,17 @@ export default class LOGGER {
      * @param {*} value optional param that can contain and output objects, methods, etc
      */
     static debug(msg = ``, value = ``) {
-        if (game.settings.get(game.system.id, "debugLogs")) {
-            console.log(`NEWEDO DBG | ${msg}`, value);
-        }
+        if (!game.settings.get(game.system.id, "debugLogs")) return;
+        console.log(`NEWEDO DBG | ${msg}`, value);
     }
 
     static group(msg = '') {
+        if (!game.settings.get(game.system.id, "debugLogs")) return;
         console.groupCollapsed('NEWEDO | ' + msg);
     }
 
     static groupEnd() {
+        if (!game.settings.get(game.system.id, "debugLogs")) return;
         console.groupEnd();
     }
 }

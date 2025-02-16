@@ -10,9 +10,6 @@ export function registerTemplates() {
         `${path}/shared/tabs-nav.hbs`,
         `${path}/shared/tabs-content.hbs`,
 
-        // Feature config
-        `${path}/dialog/feature/feature-title.hbs`,
-
         // Dialog popups
         `${path}/dialog/parts/roll-options.hbs`,
     ];

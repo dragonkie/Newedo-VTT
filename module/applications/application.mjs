@@ -8,8 +8,7 @@ export default class NewedoApplication extends HandlebarsApplicationMixin(Applic
         classes: ['newedo'],
         window: {
             frame: true,
-            positioned: true,
-            title: "Ledger: {actor}'s {currency}",
+            title: "New Window",
             icon: "fa-solid fa-note-sticky",
             minimizable: false,
             resizeable: true
@@ -17,13 +16,10 @@ export default class NewedoApplication extends HandlebarsApplicationMixin(Applic
         form: {
             submitOnChange: false,
             closeOnSubmit: false,
-        },
-        position: {
-            top: 300,
-            left: 300,
-            width: 650,
-            height: 500,
-            scale: 1.0
         }
+    }
+
+    static get PARTS() {
+        return {};
     }
 }

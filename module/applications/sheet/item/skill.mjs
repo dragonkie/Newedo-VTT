@@ -33,11 +33,11 @@ export default class SkillSheet extends NewedoItemSheet {
         return context;
     }
 
-    /*--------------------------------------------*/
-    /*                                            */
-    /*                ACTIONS                     */
-    /*                                            */
-    /*--------------------------------------------*/
+    /*---------------------------------------------------------------------------*/
+    /*                                                                           */
+    /*                              ACTIONS                                      */
+    /*                                                                           */
+    /*---------------------------------------------------------------------------*/
     static _onChangeSkillRank(event, target) {
         if (event.shiftKey) this.document.system._cycleSkillDice(target.dataset.index, true);
         else this.document.system._cycleSkillDice(target.dataset.index);

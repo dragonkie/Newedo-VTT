@@ -30,7 +30,7 @@
 /*  Items Lists                              */
 /* ----------------------------------------- */
 
-.items-list {
+ol.items-list {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -65,7 +65,7 @@
     // Control Buttons
     .item-controls {
         display: flex;
-        flex: 0 1;
+        flex: 1;
         justify-content: flex-end;
 
         a {

@@ -38,17 +38,11 @@
         }
     }
 
-    .settings-tab {
-        display: flex;
-        flex: 1;
-        flex-direction: column;
-
-        input {
-            flex: 2;
-        }
-
-        select {
-            flex: 2;
+    [data-tab=settings] {
+        .form-group {
+            :not(label) {
+                flex: 1;
+            }
         }
     }
 

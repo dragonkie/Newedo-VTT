@@ -66,10 +66,4 @@ export default class LineageData extends ItemDataModel {
 
         return schema;
     }
-
-    prepareDerivedData() {
-        super.prepareDerivedData();
-
-
-    }
 }

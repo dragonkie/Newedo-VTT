@@ -4,6 +4,31 @@ import sysUtils from "../helpers/sysUtil.mjs"
 
 export default class NewedoLedger extends NewedoApplication {
 
+    static DEFAULT_OPTIONS = {
+        id: 'newedo-app-{id}',
+        tag: 'form',
+        classes: ['newedo'],
+        window: {
+            frame: true,
+            positioned: true,
+            title: "Ledger: {actor}'s {currency}",
+            icon: "fa-solid fa-note-sticky",
+            minimizable: false,
+            resizeable: true
+        },
+        form: {
+            submitOnChange: false,
+            closeOnSubmit: false,
+        },
+        position: {
+            top: 300,
+            left: 300,
+            width: 650,
+            height: 500,
+            scale: 1.0
+        }
+    }
+
     // The character responsible for this ledger
     document = null;
     ledger = {};
@@ -29,7 +54,7 @@ export default class NewedoLedger extends NewedoApplication {
             return {};
         }
 
-        LOGGER.log('creating ledger:', ledger);
+        LOGGER.debug('creating ledger:', ledger);
 
         this.document = document;
         this.ledger = ledger;
@@ -55,7 +80,7 @@ export default class NewedoLedger extends NewedoApplication {
             top: 300,
             left: 300,
             width: 650,
-            height: 500,
+            height: 400,
             scale: 1.0
         },
         actions: {
@@ -108,12 +133,12 @@ export default class NewedoLedger extends NewedoApplication {
                 this.ledger.transactions.push(newRecord)
 
                 // Push the updated ledger to the right flag
-                LOGGER.log('Updating document flag')
+                LOGGER.debug('Updating document flag')
                 await this.document.setFlag('newedo', 'ledger', {
                     [this.ledger.id]: this.ledger
                 });
                 // update the local and database actors targeted value to the new sum
-                LOGGER.log('Updating parent document');
+                LOGGER.debug('Updating parent document');
                 await this.document.update({ [this.ledger.target]: this.sum });
                 // renders the sheet on screen to match new input
                 this.render(true);
@@ -139,7 +164,7 @@ export default class NewedoLedger extends NewedoApplication {
             [this.ledger.id]: this.ledger
         });
 
-        LOGGER.log('Updating parent document');
+        LOGGER.debug('Updating parent document');
         this.document.update({ [this.ledger.target]: this.sum }).then(() => {
             // renders the sheet on screen to match new input
             this.render(true);
@@ -162,7 +187,7 @@ export default class NewedoLedger extends NewedoApplication {
     }
 
     async _prepareContext() {
-        LOGGER.log('ledger context', this);
+        LOGGER.debug('ledger context', this);
         const context = await super._prepareContext();
         context.app = this;
         context.id = this.id;

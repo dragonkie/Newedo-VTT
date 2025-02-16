@@ -39,7 +39,7 @@ export default class SkillData extends ItemDataModel {
 
     prepareOwnerData(ActorData) {
 
-    } 
+    }
 
     async use() {
         this.roll();
@@ -134,25 +134,31 @@ export default class SkillData extends ItemDataModel {
         let rollData = this.getRollData();
         if (!rollData) return;
 
-        let data = {
-            parts: [{
-                type: "NEWEDO.generic.trait",
-                label: "NEWEDO.trait.core." + this.trait,
-                value: `${rollData.trait.rank}d10`
-            }, {
-                type: "NEWEDO.generic.skill",
-                label: this.parent.name,
-                value: this.getRanks()
-            }],
-            bonuses: [],// dont know how im doing these yet so this can stay open ended
-            wound: rollData.wound,
-            title: this.parent.name
-        }
+        let roll = new NewedoRoll({
+            legend: true,
+            actor: this.actor,
+            title: this.parent.name,
+            data: this.roll
+        });
 
-        let roll = new NewedoRoll(data);
-        await roll.getRollOptions();
-        let r = await roll.evaluate();
-        r.toMessage();
+        roll.AddPart([{
+            type: "NEWEDO.generic.trait",
+            label: "NEWEDO.trait.core." + this.trait,
+            value: `${rollData.trait.rank}d10`,
+            active: this.useTraitRank
+        }, {
+            type: "NEWEDO.generic.skill",
+            label: this.parent.name,
+            value: this.getRanks()
+        }, {
+            type: "NEWEDO.generic.wound",
+            label: rollData.wound.label,
+            value: rollData.wound.value
+        }]);
+
+        await roll.evaluate();
+        await roll.toMessage();
+        
         return roll;
     }
 

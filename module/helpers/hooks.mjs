@@ -21,14 +21,14 @@ export default function registerHooks() {
             const item = await fromUuid(element[0].querySelector('input.damage-button').dataset.uuid);
             if (item.type != 'weapon') return;
 
-            let targetData = msg.getFlag('newedo', 'targetData');
-            item.system._onDamage(targetData);
+            let attackData = msg.getFlag('newedo', 'attackData');
+            item.system._onDamage(attackData);
         });
 
         // Link damage application buttons
         for (const e of element[0].querySelectorAll('a.apply-damage')) {
             e.addEventListener('click', async () => {
-
+                if (!game.user.isGM) return;
                 let target = await fromUuid(e.dataset?.target);
                 if (!target) return;
 
@@ -38,9 +38,9 @@ export default function registerHooks() {
                 damage.total = +damageData.dataset.damageTotal;
                 damage.type = damageData.dataset.damageType;
 
-                LOGGER.log('target', target);
-                LOGGER.log('damage', damage);
-                LOGGER.log('attacker', attacker);
+                LOGGER.debug('target', target);
+                LOGGER.debug('damage', damage);
+                LOGGER.debug('attacker', attacker);
 
                 let damageCalc = document.createElement("div");
                 damageCalc.style.display = "inline";
@@ -50,8 +50,6 @@ export default function registerHooks() {
                 target.update({'system.hp.value': target.system.hp.value - finalDamage});
 
                 e.replaceWith(damageCalc);
-
-                let messageData
             });
         };
 

@@ -7,7 +7,8 @@
     width: 100%;
     display: grid;
     flex: 0;
-    background-color: var(--color-dark-1);
+    background-color: var(--colour-bar-bg);
+    color: var(--colour-bar-input);
     border-radius: calc(var(--height) / 2 + var(--padding));
     padding: var(--padding);
     >* {
@@ -42,6 +43,7 @@
         }
         input {
             height: var(--height);
+            color: var(--colour-bar-input);
             background: transparent;
             border: 0;
         }

@@ -2,6 +2,7 @@ import { onManageActiveEffect, prepareActiveEffectCategories } from "../../helpe
 import LOGGER from "../../helpers/logger.mjs";
 import sysUtil from "../../helpers/sysUtil.mjs";
 import NewedoSheetMixin from "./mixin.mjs";
+import NewedoRoll from "../../helpers/dice.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -267,66 +268,30 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
      */
     static async _onRoll(event, target) {
         LOGGER.debug(`Standard roll action`, target);
-        let formula = target.dataset.roll;
-        const rollData = this.document.getRollData();
-        rollData.formula = formula;
 
-        const options = await sysUtil.getRollOptions(rollData);
-        if (options.cancelled) return null;// Stops the roll if they decided they didnt want to have fun
+        // adds the roll from the html element
+        let ele = target.closest('[data-roll]');
+        if (!ele) return;
 
-        // Grabs the formula
-        formula = options.formula;
-        let bonus = 0;
-
-        // Apply legend
-        if (options.legend > 0) {
-            if (!sysUtil.spendLegend(this.document, options.legend)) {
-                return null;
-            } else bonus += options.legend;
-        }
-
-        // Apply wounds
-        if (options.useWound && rollData.wound.value < 0) bonus += rollData.wound.value;
-
-        if (bonus > 0) formula += `+` + bonus;
-        if (bonus < 0) formula += bonus;
-
-        // Make the roll object
-        let r = new Roll(formula, rollData);
-        LOGGER.debug("Dice terms:", r.dice);
-
-        // Managed if we have advantage / disadvantage
-        if (options.advantage == "advantage") {
-            for (let a of r.dice) {
-                if (a.faces == 10) {
-                    a.number += 1;
-                }
-            }
-        } else if (options.advantage == `disadvantage`) {
-            for (let a of r.dice) {
-                if (a.faces == 10) {
-                    a.number -= 1;
-                }
-            }
-        }
-        // After altering the roll formula we need to update the source for the chat message
-        r._formula = r.formula;
-
-        let label = `<div>${target.dataset.label}</div>`
-        if (options.advantage != `normal`) {
-            label += `<div>${options.advantage}</div>`;
-        }
-
-
-        await r.evaluate();
-        let render = r.render();
-        return r.toMessage({
-            speaker: ChatMessage.getSpeaker({ actor: this.document }),
-            flavor: label,
-            content: render,
-            create: true,
-            rollMode: game.settings.get('core', 'rollMode')
+        const roll = new NewedoRoll({
+            legend: true,
+            title: 'NEWEDO.generic.trait',
+            actor: this.actor,
+            data: this.document.getRollData()
         });
+
+        roll.AddPart({
+            type: ele.dataset?.rollType,
+            label: ele.dataset?.rollLabel,
+            value: ele.dataset.roll
+        });
+
+        const options = await roll.getRollOptions();
+        if (options.cancelled) return;
+        let r = await roll.evaluate();
+        if (!r) return;
+
+        let msg = r.toMessage();
     }
 
     /**Handle fate roll table calls
@@ -402,7 +367,6 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
     }
 
     async _onDropItem(event, item) {
-
         return 'default'; // Tells sheet to use default item drop handler
     }
 }

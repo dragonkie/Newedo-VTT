@@ -2,7 +2,7 @@
     {{!-- Newedo banner rendered at the top of the screen--}}
     <img class="banner-newedo" src="systems/newedo/assets/images/banner-newedo.svg">
     <div class="portrait" style="border: 0;" data-action="editImage">
-        <img class="profile-img" src="{{document.img}}" title="{{actor.name}}" height="150px" width="150px" style="object-fit: cover; border: 0; object-position: {{system.imageOffset}}% {{system.imageOffset}}%" />
+        <img class="profile-img" src="{{document.img}}" title="{{actor.name}}" height="175px" width="175px" style="object-fit: cover; border: 0; object-position: 50% 0%" />
     </div>
 
     {{!-- Health container--}}
@@ -13,7 +13,6 @@
             <input type="number" name="system.hp.value" value="{{system.hp.value}}" />
             <div>/</div>
             <input type="number" value="{{system.hp.max}}" disabled />
-            <a><i class="fa-solid fa-calculator"></i></a>
         </div>
     </div>
     {{!-- Legend container --}}
@@ -28,21 +27,18 @@
                 <input type="number" name="system.legend.value" value="{{system.legend.value}}" />
                 <div>/</div>
                 <input type="number" name="system.legend.max" value="{{system.legend.max}}" disabled />
-                <a><i class="fa-solid fa-calculator"></i></a>
             </div>
         </div>
     </div>
-    
-
     {{!-- Armour values --}}
     {{ localize 'NEWEDO.generic.soak' }}
     <div class="flexrow" style="gap: 4px;">
         {{#each system.armour as | soak key |}}
             <div>
                 <div class="name">{{ soak.abr }}</div>
-                
+
                 {{#if ../isEditMode}}
-                    <input type="number" class="score" name="system.armour.{{key}}.value" value="{{soak.value}}" >
+                    <input type="number" class="score" name="system.armour.{{key}}.value" value="{{soak.value}}">
                 {{/if}}
 
                 {{#if ../isPlayMode}}
@@ -80,15 +76,15 @@
             {{!-- Loops through the characters list of fate card options--}}
             {{#each fates as |fate key|}}
                 <li class="item flexrow" data-item-uuid="{{fate.uuid}}">
-                    <div>
-                        {{#if (eq ../userFlags.newedo.settings.fateDisplay '%')}}
-                            {{fate.system.chance}}%
-                        {{/if}}
-                        {{#if (eq ../userFlags.newedo.settings.fateDisplay 'range')}}
-                            {{fate.system.start}} / {{fate.system.end}}
-                        {{/if}}
-                    </div>
-                    <a class="item-edit" data-action="editItem" draggable="true">{{fate.name}}</a>
+
+                    {{#if (eq ../userFlags.newedo.settings.fateDisplay '%')}}
+                        <div>{{fate.system.chance}}%</div>
+                    {{/if}}
+                    {{#if (eq ../userFlags.newedo.settings.fateDisplay 'range')}}
+                        <div>{{fate.system.end}}/{{fate.system.start}}</div>
+                    {{/if}}
+
+                    <a class="item-edit" data-action="editItem" draggable="true"><b>{{fate.name}}</b></a>
                 </li>
             {{/each}}
         </ol>

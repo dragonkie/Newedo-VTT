@@ -3,3 +3,10 @@
 .item-form {
   font-family: $font-primary;
 }
+
+.application nav.tabs .item {
+  color: var(--colour-nav);
+  &.active {
+    color: var(--colour-nav-active);
+  }
+}

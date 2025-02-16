@@ -41,6 +41,8 @@ export class ActorDataModel extends SystemDataModel {
         });
 
         schema.size = this.AddValueField('value', 5);
+        schema.lift = this.AddValueField('mod', 3.0);// mod * pow kg
+        schema.rest = this.AddValueField('mod', 2.0);// 5 * rest hp healed on nap
 
         schema.traits = new SchemaField({
             core: new SchemaField({
@@ -53,8 +55,8 @@ export class ActorDataModel extends SystemDataModel {
                 shi: this.AddValueField('value', 0),
             }),
             derived: new SchemaField({
-                init: this.AddValueField('mod', 1),
-                move: this.AddValueField('mod', 1),
+                init: this.AddValueField('mod', 1.0),
+                move: this.AddValueField('mod', 1.0),
                 def: this.AddValueField('mod', 0.4),
                 res: this.AddValueField('mod', 0.4)
             })
@@ -109,6 +111,7 @@ export class ActorDataModel extends SystemDataModel {
             HpTotal: new NumberField({ initial: 0 }),
             HpMod: new NumberField({ initial: 0 }),
             RestMod: new NumberField({ initial: 0 }),
+            LiftMod: new NumberField({ initial: 0 }),
 
             // Bonus to attacks
             attackMelee: new NumberField({ initial: 0 }),
@@ -158,6 +161,7 @@ export class ActorDataModel extends SystemDataModel {
         /* Equipped item modifiers                                     */
         /* ----------------------------------------------------------- */
         for (const item of this.parent.items.contents) {
+            console.log('activating items');
             item.prepareOwnerData(this);
         }
 
@@ -240,6 +244,7 @@ export class ItemDataModel extends SystemDataModel {
 
     getRollData() {
         const actorData = this.actor?.getRollData();
+        if (!this.actor) return null;
 
         const data = {
             ...actorData,

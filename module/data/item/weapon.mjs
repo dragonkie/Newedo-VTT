@@ -134,7 +134,7 @@ export default class WeaponData extends ItemDataModel {
     }
 
     async _onEquip() {
-        LOGGER.log('Weapon isEquipped changed to: ', !this.isEquipped);
+        LOGGER.debug('Weapon isEquipped changed to: ', !this.isEquipped);
         await this.parent.update({ 'system.equipped': !this.equipped });
     }
 
@@ -148,29 +148,31 @@ export default class WeaponData extends ItemDataModel {
         const skill = rollData.skill;
         LOGGER.debug('attack data', rollData)
 
-        let data = {
-            parts: [{
-                type: "NEWEDO.generic.trait",
-                label: `${rollData.trait.label}`,
-                value: `${rollData.trait.rank}d10`
-            }, {
-                type: "NEWEDO.generic.skill",
-                label: skill.name,
-                value: skill.system.getRanks()
-            }],
-            bonuses: [{
-                label: 'NEWEDO.generic.grit',
-                value: this.grit.atk
-            }],
-            wound: rollData.wound,
-            title: 'NEWEDO.generic.attack'
-        }
+        const roll = new NewedoRoll({
+            title: 'NEWEDO.generic.attack',
+            actor: this.actor,
+            raise: true,
+            data: rollData
+        });
 
-        let roll = new NewedoRoll(data);
-        const options = await roll.getRollOptions();
-        let r = await roll.evaluate();
+        roll.AddPart([{
+            type: "NEWEDO.generic.trait",
+            label: `${rollData.trait.label}`,
+            value: `${rollData.trait.rank}d10`
+        }, {
+            type: "NEWEDO.generic.skill",
+            label: skill.name,
+            value: skill.system.getRanks()
+        }, {
+            type: "NEWEDO.generic.grit",
+            label: 'NEWEDO.generic.attack',
+            value: this.grit.atk
+        }])
 
-        if (options.cancelled) return;
+        await roll.evaluate();
+
+        LOGGER.debug('Roll options: ', roll);
+        if (roll.cancelled) return;
 
         // Gets the list of targets and if they were hit or not, if they were in range, etc
         const userTargets = game.user.targets;
@@ -198,25 +200,22 @@ export default class WeaponData extends ItemDataModel {
                     size: a[0].actor.system.size.value,
                     dist: Math.sqrt(Math.pow(attacker.x - a[0].x, 2) + Math.pow(attacker.y - a[0].y, 2)) / scene.grid.size,
                     range: "short",
-                    tn: 0
+                    tn: 0,
+                    raise: roll.options.raise * 5
                 }
 
-                // If the attack is made with a ranged weapon
+                // Checks if the attack hits
                 if (this.ranged) {
-                    // ranged attacks are made against enemy size * range mult
                     data.tn = a[0].actor.system.size.value * this.range.modShort;
                     if (data.dist > this.range.short) data.tn = a[0].actor.system.size.value * this.range.modLong;
-                    if (r.total >= data.tn) data.hit = true;
-                } else {
-                    // Melee attack made against target defence
-                    if (r.total >= data.def) data.hit = true;
-                    data.tn = data.def;
-                }
+                } else data.tn = data.def;
+
+                if (roll.total >= data.tn + data.raise) data.hit = true;
 
                 // relevant targeting data like if the weapon is out of range, or in the long shot / thrown range
                 if (data.dist > this.range.short) data.range = "long";
                 else if (data.dist > this.range.long) data.range = "oor";
-                
+
                 targets.push(data);
             }
         }
@@ -225,73 +224,99 @@ export default class WeaponData extends ItemDataModel {
             content: `<div>@UUID[${this.actor.uuid}] attacks with @UUID[${this.parent.uuid}]</div><br>`
         };
 
+        if (roll.options.raise > 0) {
+            messageData.content += `<div>Raised <b>${roll.options.raise}</b> times, TN raised by <b>${roll.options.raise * 5}</b></div><br>`;
+        }
+
         for (const t of targets) {
             messageData.content += `
             <div style="margin-bottom: 5px;">
                 @UUID[${t.uuid}]: 
                 <b style="color: ${t.hit ? "green" : "red"};">${t.hit ? "HIT" : "MISS"}</b> 
-                TN ${t.tn} ${t.range == "oor" ? "(Out of range)" : (t.range == "long" ? (this.ranged ? "(Long Range)" : "(Thrown)") : "")}
+                TN ${t.tn + roll.options.raise * 5} ${t.range == "oor" ? "(Out of range)" : (t.range == "long" ? (this.ranged ? "(Long Range)" : "(Thrown)") : "")}
             </div>
             `;
         }
 
-        messageData.content += await r.render();
+        messageData.content += await roll.render();
 
         messageData.content += `<input data-uuid="${this.parent.uuid}" class="damage-button" type="button" value="Damage">`;
 
-        LOGGER.log('Message Data: ', messageData);
+        LOGGER.debug('Message Data: ', messageData);
         let msg = await roll.toMessage(messageData);
 
-        if (targets.length > 0) msg.setFlag('newedo', 'targetData', targets);
+        msg.setFlag('newedo', 'attackData', {
+            targets: targets,
+            raises: roll.options.raise,
+        })
 
         return roll;
     }
 
-    async _onDamage(data = null) {
+    // newer version of the attack roll
+    async _onDamage(attack = {}) {
+        // if there isnt an owning actor
+        const actor = this.actor;
+        if (!actor) return;
 
+        // Gather relevant data
         const rollData = this.getRollData();
 
-        let formula = '';
-        if (!rollData) return; 
-        if (this.ranged) {
-            formula = this.damage.value + '[' + this.damage.type + ']';
+        let roll = new NewedoRoll({
+            legend: false,
+            title: 'NEWEDO.generic.damage',
+            actor: this.actor,
+            data: rollData
+        });
+
+        roll.AddPart([{
+            type: "NEWEDO.generic.trait",
+            label: `${rollData.trait.label}`,
+            value: `${rollData.trait.rank}d10`
+        }, {
+            type: "TYPES.Item.weapon",
+            label: `${this.parent.name}`,
+            value: `${this.damage.value}`
+        }, {
+            type: "NEWEDO.generic.grit",
+            label: `NEWEDO.generic.damage`,
+            value: this.grit.dmg
+        }])
+
+        // adds raise dice if a raise was called
+        if (attack?.raises > 0) {
+            roll.AddPart({
+                type: "NEWEDO.generic.raise",
+                label: "NEWEDO.generic.damage",
+                value: `${attack.raises}d10`
+            })
         } else {
-            formula = `(${rollData.pow.rank}d10x10+${this.damage.value})[${this.damage.type}]`;
+            roll.raise = true;
         }
 
-        // Clean the formula that was put in of exploding dice to ensure no doubles
-        formula = formula.replaceAll('d10x10', 'd10');
-        // Add exploding d10s back in to catch any missed by players
-        formula = formula.replaceAll('d10', 'd10x10');
+        await roll.evaluate();
+        if (roll.cancelled) return;
 
-        if (this.grit.dmg > 0) {
-            formula += `+ ${this.grit.dmg}`;
-        }
-
-        let r = new Roll(formula, rollData);
-        await r.evaluate();
-
-        let messageData = {
+        // COVNERT ROLL INTO CHAT CARD
+        const messageData = {
             content: `
                 <div>${this.parent.name}</div>
                 <div>${sysUtil.localize('NEWEDO.damage.' + this.damage.type)} damage</div>`,
         };
 
-        messageData.content += await r.render();
-
         // If we have data passed into the argument, that means this was called with targeting data
-        if (Array.isArray(data) && data.length > 0) {
-            let targets = [];
+        if (attack.targets && Array.isArray(attack.targets) && attack.targets.length > 0) {
+            const targets = [];
+            messageData.content += `<div class="damage-data" data-attacker="${this.actor?.uuid}" data-damage-total="${roll.total}" data-damage-type="${this.damage.type}">`;
 
-            messageData.content += `<div class="damage-data" data-attacker="${this.actor?.uuid}" data-damage-total="${r.total}" data-damage-type="${this.damage.type}">`;
-            
-            for (const t of data) {
+            for (const t of attack.targets) {
                 targets.push(await fromUuid(t.uuid));
 
                 messageData.content += `
-                <div style="margin: 0 0 5px 0;">
+                <div style="margin: 5px 0;">
                     @UUID[${t.uuid}]{${t.name}}
                     <a class="apply-damage" title="apply damage" data-target="${t.uuid}">
+                        <b style="color: ${t.hit ? "green" : "red"};">${t.hit ? "HIT" : "MISS"}</b>
                         <i class="fa-solid fa-bolt"></i>
                     </a>
                 </div>`;
@@ -306,31 +331,9 @@ export default class WeaponData extends ItemDataModel {
 
             messageData.content += `</div>`;
         }
+        messageData.content += await roll.render();
 
-        
-        let msg = r.toMessage(messageData);
-    }
-
-    get atkFormula() {
-        const skill = this.skill;// Gets the skill item
-        if (!skill) return null;
-
-        let formula = skill.formula;
-        if (this.grit.atk > 0) formula = sysUtil.formulaAdd(formula, this.grit.atk);
-        if (this.attack.bonus != 0) formula = sysUtil.formulaAdd(formula, this.attack.bonus);
-        return formula;
-    }
-
-    get dmgFormula() {
-        const skill = this.skill;// Gets the skill item
-        if (!skill) return null;
-
-        const trait = skill.trait;
-        let formula = ``;
-        if (!this.ranged) formula += `${trait.rank}d10`;
-        formula = sysUtil.formulaAdd(formula, this.damage.value);
-        if (this.grit.dmg > 0) formula = sysUtil.formulaAdd(formula, this.grit.dmg);
-        return formula;
+        return await roll.toMessage(messageData);
     }
 
     static TEMPLATES = {

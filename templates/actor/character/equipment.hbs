@@ -12,9 +12,7 @@
                     <img src="{{item.img}}" width="30" height="30">
                     <a style="margin-left: 4px;" data-action="editItem">{{item.name}}</a>
                 </span>
-                <span style="text-align: left;">
-                    {{localize item.system.skill.label}}
-                </span>
+                <span>{{localize item.system.skill.label}}</span>
                 <span class="item-controls">
                     <a data-action="useItem" data-use="attack" title="Attack">
                         {{#if item.system.isRanged}}<i class="fa-solid fa-gun"></i>{{/if}}

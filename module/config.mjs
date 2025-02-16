@@ -90,8 +90,8 @@ NEWEDO.skill = {
     },
     pow: {
         athletics: "NEWEDO.skill.athletics",
-        meleeheavy: "NEWEDO.skill.meleeHeavy",
-        meleelight: "NEWEDO.skill.meleeLight",
+        heavymelee: "NEWEDO.skill.heavymelee",
+        lightmelee: "NEWEDO.skill.lightmelee",
         thrown: "NEWEDO.skill.thrown",
         unarmed: "NEWEDO.skill.unarmed",
     },
@@ -135,10 +135,10 @@ NEWEDO.skill = {
 
 NEWEDO.WeaponSkill = {
     melee: {
-        meleeLight: 'NEWEDO.skill.meleeLight',
-        meleeHeavy: 'NEWEDO.skill.meleeHeavy',
-        unarmed: 'NEWEDO.skill.meleeHeavy',
-        thrown: 'NEWEDO.skill.meleeHeavy'
+        lightmelee: 'NEWEDO.skill.lightmelee',
+        heavymelee: 'NEWEDO.skill.heavymelee',
+        unarmed: 'NEWEDO.skill.unarmed',
+        thrown: 'NEWEDO.skill.thrown'
     },
     ranged: {
         archery: 'NEWEDO.skill.archery',

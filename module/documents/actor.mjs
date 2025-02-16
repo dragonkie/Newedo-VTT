@@ -36,7 +36,6 @@ export default class NewedoActor extends Actor {
     prepareData() {
         LOGGER.group(`Document | Actor | prepareData | ` + this.name);
         LOGGER.debug('Actor:', this);
-        console.trace();
 
         super.prepareData();
 

@@ -247,7 +247,7 @@ export default class sysUtil {
                 submit: (result) => resolve(result)
             }
             LOGGER.debug('dialog opts', options)
-            new foundry.applications.api.DialogV2(options, null).render(true);
+            new foundry.applications.api.DialogV2(options).render(true);
         });
     }
 
