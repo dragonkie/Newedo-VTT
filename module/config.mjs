@@ -1,40 +1,41 @@
 // Exported object
 export const NEWEDO = {};
 
-NEWEDO.trait = {
-    core: {
-        pow: "NEWEDO.trait.core.pow",
-        ref: "NEWEDO.trait.core.ref",
-        hrt: "NEWEDO.trait.core.hrt",
-        sav: "NEWEDO.trait.core.sav",
-        shi: "NEWEDO.trait.core.shi",
-        per: "NEWEDO.trait.core.per",
-        pre: "NEWEDO.trait.core.pre",
-        abbr: {
-            pow: "NEWEDO.trait.core.abbr.pow",
-            ref: "NEWEDO.trait.core.abbr.ref",
-            hrt: "NEWEDO.trait.core.abbr.hrt",
-            sav: "NEWEDO.trait.core.abbr.sav",
-            shi: "NEWEDO.trait.core.abbr.shi",
-            per: "NEWEDO.trait.core.abbr.per",
-            pre: "NEWEDO.trait.core.abbr.pre",
-        },
-    },
-    derived: {
-        init: "NEWEDO.trait.derived.init",
-        move: "NEWEDO.trait.derived.move",
-        def: "NEWEDO.trait.derived.def",
-        res: "NEWEDO.trait.derived.res",
-        hp: "NEWEDO.trait.derived.hp",
-        abbr: {
-            init: "NEWEDO.trait.derived.abbr.init",
-            move: "NEWEDO.trait.derived.abbr.move",
-            def: "NEWEDO.trait.derived.abbr.def",
-            res: "NEWEDO.trait.derived.abbr.res",
-            hp: "NEWEDO.trait.derived.abbr.hp",
-        }
-    }
-};
+NEWEDO.traitsCore = {
+    pow: "NEWEDO.Trait.Core.Pow.long",
+    ref: "NEWEDO.Trait.Core.Ref.long",
+    hrt: "NEWEDO.Trait.Core.Hrt.long",
+    sav: "NEWEDO.Trait.Core.Sav.long",
+    shi: "NEWEDO.Trait.Core.Shi.long",
+    per: "NEWEDO.Trait.Core.Per.long",
+    pre: "NEWEDO.Trait.Core.Pre.long",
+}
+
+NEWEDO.traitsCoreAbbreviations = {
+    pow: "NEWEDO.Trait.Core.Pow.abbr",
+    ref: "NEWEDO.Trait.Core.Ref.abbr",
+    hrt: "NEWEDO.Trait.Core.Hrt.abbr",
+    sav: "NEWEDO.Trait.Core.Sav.abbr",
+    shi: "NEWEDO.Trait.Core.Shi.abbr",
+    per: "NEWEDO.Trait.Core.Per.abbr",
+    pre: "NEWEDO.Trait.Core.Pre.abbr",
+}
+
+NEWEDO.traitsDerived = {
+    init: "NEWEDO.Trait.Derived.Init",
+    move: "NEWEDO.Trait.Derived.Move",
+    def: "NEWEDO.Trait.Derived.Def",
+    res: "NEWEDO.Trait.Derived.Res",
+    hp: "NEWEDO.Trait.Derived.Hp",
+}
+
+NEWEDO.traitsDerivedAbbreviations = {
+    init: "NEWEDO.Trait.Derived.Init.abbr",
+    move: "NEWEDO.Trait.Derived.Move.abbr",
+    def: "NEWEDO.Trait.Derived.Def.abbr",
+    res: "NEWEDO.Trait.Derived.Res.abbr",
+    hp: "NEWEDO.Trait.Derived.Hp.abbr",
+}
 
 NEWEDO.generic = {
     legend: "NEWEDO.generic.legend",
@@ -63,16 +64,17 @@ NEWEDO.wound = {
 }
 
 NEWEDO.damage = {
-    kin: "NEWEDO.damage.kin",
-    ele: "NEWEDO.damage.ele",
-    bio: "NEWEDO.damage.bio",
-    arc: "NEWEDO.damage.arc",
-    abbr: {
-        kin: "NEWEDO.damage.abbr.kin",
-        ele: "NEWEDO.damage.abbr.ele",
-        bio: "NEWEDO.damage.abbr.bio",
-        arc: "NEWEDO.damage.abbr.arc",
-    }
+    kin: "NEWEDO.Damage.Kin.long",
+    ele: "NEWEDO.Damage.Ele.long",
+    bio: "NEWEDO.Damage.Bio.long",
+    arc: "NEWEDO.Damage.Arc.long",
+}
+
+NEWEDO.damageAbbreviations = {
+    kin: "NEWEDO.Damage.Kin.abbr",
+    ele: "NEWEDO.Damage.Ele.abbr",
+    bio: "NEWEDO.Damage.Bio.abbr",
+    arc: "NEWEDO.Damage.Arc.abbr",
 }
 
 NEWEDO.attribute = {
@@ -81,71 +83,6 @@ NEWEDO.attribute = {
     size: "NEWEDO.attribute.size",
 };
 //Sorted A-Z, grouped by trait
-NEWEDO.skill = {
-    hrt: {
-        crafting: "NEWEDO.skill.crafting",
-        meditation: "NEWEDO.skill.meditation",
-        rally: "NEWEDO.skill.rally",
-        survival: "NEWEDO.skill.survival",
-    },
-    pow: {
-        athletics: "NEWEDO.skill.athletics",
-        heavymelee: "NEWEDO.skill.heavymelee",
-        lightmelee: "NEWEDO.skill.lightmelee",
-        thrown: "NEWEDO.skill.thrown",
-        unarmed: "NEWEDO.skill.unarmed",
-    },
-    ref: {
-        banter: "NEWEDO.skill.banter",
-        dodge: "NEWEDO.skill.dodge",
-        drive: "NEWEDO.skill.drive",
-        sleightofhand: "NEWEDO.skill.sleightOfHand",
-        stealth: "NEWEDO.skill.stealth",
-    },
-    pre: {
-        deception: "NEWEDO.skill.deception",
-        eloquence: "NEWEDO.skill.eloquence",
-        intimidation: "NEWEDO.skill.intimidation",
-        performance: "NEWEDO.skill.performance",
-        seduction: "NEWEDO.skill.seduction",
-    },
-    per: {
-        archery: "NEWEDO.skill.archery",
-        commerce: "NEWEDO.skill.commerce",
-        gunnery: "NEWEDO.skill.gunnery",
-        inuition: "NEWEDO.skill.intuition",
-        investigation: "NEWEDO.skill.investigation",
-        smallarms: "NEWEDO.skill.smallarms",
-    },
-    sav: {
-        arcana: "NEWEDO.skill.arcana",
-        computers: "NEWEDO.skill.computers",
-        gambling: "NEWEDO.skill.gambling",
-        hardware: "NEWEDO.skill.hardware",
-        medicine: "NEWEDO.skill.medicine",
-        security: "NEWEDO.skill.security",
-        streetwise: "NEWEDO.skill.streetwise",
-        study: "NEWEDO.skill.study",
-        surveillance: "NEWEDO.skill.surveillance",
-        tactics: "NEWEDO.skill.tactics",
-        toxicology: "NEWEDO.skill.toxicology",
-        wetware: "NEWEDO.skill.wetware",
-    }
-};
-
-NEWEDO.WeaponSkill = {
-    melee: {
-        lightmelee: 'NEWEDO.skill.lightmelee',
-        heavymelee: 'NEWEDO.skill.heavymelee',
-        unarmed: 'NEWEDO.skill.unarmed',
-        thrown: 'NEWEDO.skill.thrown'
-    },
-    ranged: {
-        archery: 'NEWEDO.skill.archery',
-        smallarms: 'NEWEDO.skill.smallarms',
-        gunnery: 'NEWEDO.skill.gunnery',
-    }
-}
 
 NEWEDO.sheet = {
     tab: {// Navigation tabs

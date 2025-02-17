@@ -1,4 +1,81 @@
 {
+  "NEWEDO": {
+    "Trait": {
+      "Core": {
+        "Hrt": { "abbr": "hrt", "long": "Heart" },
+        "Per": { "abbr": "per", "long": "Perception" },
+        "Pow": { "abbr": "pow", "long": "Power" },
+        "Pre": { "abbr": "pre", "long": "Pressence" },
+        "Ref": { "abbr": "ref", "long": "Reflex" },
+        "Sav": { "abbr": "sav", "long": "Savvy" },
+        "Shi": { "abbr": "shi", "long": "Shinpi" }
+      },
+      "Derived": {
+        "Def": { "abbr": "def", "long": "Defence" },
+        "Init": { "abbr": "init", "long": "Initative" },
+        "Move": { "abbr": "move", "long": "Move" },
+        "Res": { "abbr": "res", "long": "Resistance" }
+      }
+    },
+    "Effect": {
+      "Create": "Create Effect",
+      "Delete": "Delete Effect",
+      "Edit": "Edit Effect",
+      "Source": "Source",
+      "Toggle": "Toggle Effect"
+    },
+    "Damage": {
+      "Arc": { "abbr": "arc", "long": "Arcane" },
+      "Bio": { "abbr": "bio", "long": "Biological" },
+      "Ele": { "abbr": "ele", "long": "Element" },
+      "Kin": { "abbr": "kin", "long": "Kinetic" }
+    },
+    "Wound": {
+      "Status": {
+        "Healthy": "Healthy",
+        "Grazed": "Grazed",
+        "Wounded": "Wounded",
+        "Bloody": "Banged up",
+        "Beaten": "Hurt Bad",
+        "Burning": "Burning Legend"
+      }
+    },
+    "Background": {
+      "Contacts": "Contacts",
+      "Followers": "Followers",
+      "Soul": "Soul",
+      "Status": "Status",
+      "Wealth": "Wealth"
+    },
+    "ContextMenu": {
+      "Item": {
+        "Edit": "Edit",
+        "Equip": "Equip",
+        "Delete": "Delete"
+      },
+      "Feature": {},
+      "Actor": {}
+    }
+  },
+  "TYPES": {
+    "Actor": {
+      "character": "Character",
+      "npc": "Non-Player Character",
+      "pet": "Pet",
+      "vehicle": "Vehicle"
+    },
+    "Item": {
+      "armour": "Armour",
+      "augment": "Augment",
+      "culture": "Culture",
+      "kami": "Kami",
+      "lineage": "Lineage",
+      "path": "Path",
+      "rote": "Rote",
+      "skill": "Skill",
+      "weapon": "Weapon"
+    }
+  },
   "NEWEDO.generic.abbr.lvl": "lvl",
   "NEWEDO.generic.abbr.size": "sz",
   "NEWEDO.generic.armour": "Armour",
@@ -41,118 +118,8 @@
   "NEWEDO.tab.skills": "Skills",
   "NEWEDO.tab.traits": "Traits",
 
-  "NEWEDO.trait.core.abbr.hrt": "Hrt",
-  "NEWEDO.trait.core.abbr.per": "Per",
-  "NEWEDO.trait.core.abbr.pow": "Pow",
-  "NEWEDO.trait.core.abbr.pre": "Pre",
-  "NEWEDO.trait.core.abbr.ref": "Ref",
-  "NEWEDO.trait.core.abbr.sav": "Sav",
-  "NEWEDO.trait.core.abbr.shi": "Shi",
-  "NEWEDO.trait.core.hrt": "Heart",
-  "NEWEDO.trait.core.per": "Perception",
-  "NEWEDO.trait.core.pow": "Power",
-  "NEWEDO.trait.core.pre": "Presence",
-  "NEWEDO.trait.core.ref": "Reflex",
-  "NEWEDO.trait.core.sav": "Savvy",
-  "NEWEDO.trait.core.shi": "Shinpi",
-
-  "NEWEDO.trait.derived.abbr.def": "Def",
-  "NEWEDO.trait.derived.abbr.hp": "Hp",
-  "NEWEDO.trait.derived.abbr.init": "Init",
-  "NEWEDO.trait.derived.abbr.move": "Move",
-  "NEWEDO.trait.derived.abbr.res": "Res",
-  "NEWEDO.trait.derived.def" : "Defence",
-  "NEWEDO.trait.derived.hp" : "Health",
-  "NEWEDO.trait.derived.init": "Inititative",
-  "NEWEDO.trait.derived.move": "Move",
-  "NEWEDO.trait.derived.res" : "Resolve",
-
-  "NEWEDO.EffectCreate": "Create Effect",
-  "NEWEDO.EffectToggle": "Toggle Effect",
-  "NEWEDO.EffectEdit": "Edit Effect",
-  "NEWEDO.EffectDelete": "Delete Effect",
-
-  "NEWEDO.ContextMenu.item.edit": "Edit",
-  "NEWEDO.ContextMenu.item.equip": "Equip",
-  "NEWEDO.ContextMenu.item.delete": "Delete",
-
   "NEWEDO.feature.create": "Create new feature",
   "NEWEDO.feature.delete": "Are you sure you would like to delete this feature?",
-
-  "NEWEDO.damage.abbr.arc": "Arc",
-  "NEWEDO.damage.abbr.bio": "Bio",
-  "NEWEDO.damage.abbr.ele": "Ele",
-  "NEWEDO.damage.abbr.kin": "Kin",
-  "NEWEDO.damage.arc": "Arcane",
-  "NEWEDO.damage.bio": "Biological",
-  "NEWEDO.damage.ele": "Elemental",
-  "NEWEDO.damage.kin": "Kinetic",
-
-  "NEWEDO.wound.healthy": "Healthy",
-  "NEWEDO.wound.grazed": "Grazed",
-  "NEWEDO.wound.wounded": "Wounded",
-  "NEWEDO.wound.bloody": "Banged up",
-  "NEWEDO.wound.beaten": "Hurt Bad",
-  "NEWEDO.wound.burning": "Burning Legend",
-
-  "NEWEDO.skill.arcana": "Arcana",
-  "NEWEDO.skill.archery": "Archery",
-  "NEWEDO.skill.athletics": "Athletics",
-  "NEWEDO.skill.banter": "Banter",
-  "NEWEDO.skill.commerce": "Commerce",
-  "NEWEDO.skill.computers": "Computers",
-  "NEWEDO.skill.crafting": "Crafting",
-  "NEWEDO.skill.deception": "Deception",
-  "NEWEDO.skill.dodge": "Dodge",
-  "NEWEDO.skill.drive": "Drive",
-  "NEWEDO.skill.eloquence": "Eloquence",
-  "NEWEDO.skill.gambling": "Gambling",
-  "NEWEDO.skill.gunnery": "Gunnery",
-  "NEWEDO.skill.hardware": "Hardware",
-  "NEWEDO.skill.heavymelee": "Heavy Melee",
-  "NEWEDO.skill.intimidation": "Intimidation",
-  "NEWEDO.skill.intuition": "Intuition",
-  "NEWEDO.skill.investigation": "Investigation",
-  "NEWEDO.skill.lightmelee": "Light Melee",
-  "NEWEDO.skill.medicine": "Medicine",
-  "NEWEDO.skill.meditation": "Meditation",
-  "NEWEDO.skill.performance": "Performance",
-  "NEWEDO.skill.rally": "Rally",
-  "NEWEDO.skill.security": "Security",
-  "NEWEDO.skill.seduction": "Seduction",
-  "NEWEDO.skill.sleightofhand": "Sleight of Hand",
-  "NEWEDO.skill.smallarms": "Small Arms",
-  "NEWEDO.skill.stealth": "Stealth",
-  "NEWEDO.skill.streetwise": "Streetwise",
-  "NEWEDO.skill.study": "Study",
-  "NEWEDO.skill.surveillance": "Surveillance",
-  "NEWEDO.skill.survival": "Survival",
-  "NEWEDO.skill.tactics": "Tactics",
-  "NEWEDO.skill.thrown": "Thrown",
-  "NEWEDO.skill.toxicology": "Toxicology",
-  "NEWEDO.skill.unarmed": "Unarmed",
-  "NEWEDO.skill.wetware": "Wetware",
-
-  "NEWEDO.background.contacts": "Contacts",
-  "NEWEDO.background.followers": "Followers",
-  "NEWEDO.background.soul": "Soul",
-  "NEWEDO.background.status": "Status",
-  "NEWEDO.background.wealth": "Wealth",
-
-  "TYPES.Actor.character": "Character",
-  "TYPES.Actor.npc": "Non-Player Character",
-  "TYPES.Actor.pet": "Pet",
-  "TYPES.Actor.vehicle": "Vehicle",
-
-  "TYPES.Item.armour": "Armour",
-  "TYPES.Item.augment": "Augment",
-  "TYPES.Item.culture": "Culture",
-  "TYPES.Item.kami": "Kami",
-  "TYPES.Item.lineage": "Lineage",
-  "TYPES.Item.path": "Path",
-  "TYPES.Item.rote": "Rote",
-  "TYPES.Item.skill": "Skill",
-  "TYPES.Item.weapon": "Weapon",
 
   "SHEET.Item.armour": "Armour",
   "SHEET.Item.augment": "Augment",
@@ -184,6 +151,7 @@
 
   "NEWEDO.chat.applyAllDamage": "Apply All",
   "NEWEDO.chat.undoAllDamage": "Undo All",
+  
   "NEWEDO.confirm.deleteItem": "Are you sure you would like to delete",
   "NEWEDO.dialog.situationBonus": "Situational Bonus",
   "NEWEDO.warn.notEnoughLegend": "Not enough legend"
