@@ -1,5 +1,5 @@
 <header>
-    <!-- Character name field-->
+    {{!-- Character name field--}}
     <h1 style="border: 0; margin-bottom: 0px">
         <input style="background-color: transparent; font-size: 1em; height: 100%;" name="name" type="text" value="{{name}}" placeholder="Name" />
     </h1>
@@ -27,46 +27,24 @@
         </div>
     </div>
 
-    <!-- Derived stats? -->
+    {{!-- Derived stats? --}}
     <div class="derived-traits">
-        <div>
-            &#x2022 {{localize 'NEWEDO.trait.derived.abbr.def'}}:
-            <b>{{system.traits.derived.def.total}}</b>
-            {{#if isEditMode}}
-                <input name="system.traits.derived.def.mod" type="number" value="{{system.traits.derived.def.mod}}" title="{{localize 'NEWEDO.generic.multiplier'}}">
-            {{/if}}
-        </div>
-        <div>
-            &#x2022 {{localize 'NEWEDO.trait.derived.abbr.res'}}:
-            <b>{{system.traits.derived.res.total}}</b>
-            {{#if isEditMode}}
-                <input name="system.traits.derived.res.mod" type="number" value="{{system.traits.derived.res.mod}}" title="{{localize 'NEWEDO.generic.multiplier'}}">
-            {{/if}}
-        </div>
-        <div>
-            &#x2022 {{localize 'NEWEDO.trait.derived.abbr.move'}}:
-            <b>{{system.traits.derived.move.total}}</b>
-            {{#if isEditMode}}
-                <input name="system.traits.derived.move.mod" type="number" value="{{system.traits.derived.move.mod}}" title="{{localize 'NEWEDO.generic.multiplier'}}">
-            {{/if}}
-        </div>
-        <div>
-            &#x2022 {{localize 'NEWEDO.trait.derived.abbr.init'}}:
-            <b>{{system.traits.derived.init.total}}</b>
-            {{#if isEditMode}}
-                <input name="system.traits.derived.init.mod" type="number" value="{{system.traits.derived.init.mod}}" title="{{localize 'NEWEDO.generic.multiplier'}}">
-            {{/if}}
-        </div>
+        {{#each system.traits.derived as |value key| }}
+            <div>
+                &#x2022 {{value.abbr}}:
+                <b>{{value.total}}</b>
+                {{#if ../isEditMode}}
+                    <input name="system.traits.derived.{{key}}.mod" type="number" value="{{value.mod}}" title="{{localize 'NEWEDO.generic.multiplier'}}">
+                {{/if}}
+            </div>
+        {{/each}}
+
         <div>
             &#x2022 {{ localize "NEWEDO.generic.size" }}:
             {{#if isPlayMode}}<b>{{system.size.value}}</b>{{/if}}
             {{#if isEditMode}}
                 <input name="system.size.value" type="number" value="{{system.size.value}}" title="{{localize 'NEWEDO.generic.size'}}">
             {{/if}}
-        </div>
-        <div>
-            &#x2022 {{localize 'NEWEDO.trait.derived.abbr.hp'}} {{localize 'NEWEDO.generic.mod'}}:
-            <input name="system.hp.mod" type="number" value="{{system.hp.mod}}" {{disabled isPlayMode}}>
         </div>
     </div>
 </header>

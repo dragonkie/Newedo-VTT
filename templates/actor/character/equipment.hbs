@@ -14,19 +14,13 @@
                 </span>
                 <span>{{localize item.system.skill.label}}</span>
                 <span class="item-controls">
-                    <a data-action="useItem" data-use="attack" title="Attack">
-                        {{#if item.system.isRanged}}<i class="fa-solid fa-gun"></i>{{/if}}
-                        {{#if (not item.system.isRanged)}}<i class="fa-solid fa-sword"></i>{{/if}}
-                    </a>
-                    <a data-action="useItem" data-use="damage" title="Damage">
-                        {{#if item.system.isRanged}}<i class="fa-solid fa-crosshairs"></i>{{/if}}
-                        {{#if (not item.system.isRanged)}}<i class="fa-solid fa-droplet"></i>{{/if}}
-                    </a>
+                    <a data-action="useItem" data-use="attack" title="Attack"><i class="fa-solid fa-sword"></i></a>
+                    <a data-action="useItem" data-use="damage" title="Damage"><i class="fa-solid fa-droplet"></i></a>
                     <a data-action="useItem" data-use="equip">
                         {{#if item.system.isEquipped}}<i class="fa-solid fa-hand-rock" title="Unequip"></i>{{/if}}
                         {{#if (not item.system.isEquipped)}}<i class="fa-solid fa-hand" title="Equip"></i>{{/if}}
                     </a>
-                    {{#if ../isEditMode}}<a data-action="deleteItem"><i class="fa-solid fa-trash"></i></a>{{/if}}
+                    {{#if ../isEditMode}}<a data-action="deleteItem" title="Delete"><i class="fa-solid fa-trash"></i></a>{{/if}}
                 </span>
             </li>
         {{/each}}
@@ -42,12 +36,10 @@
                     <img src="{{item.img}}" width="30" height="30">
                     <a style="margin-left: 4px;" data-action="editItem">{{item.name}}</a>
                 </span>
-                <span style="text-align: left;">
+                <span class="flexrow" style="text-align: center;">
                     {{#each item.system.soak as | soak key | }}
                         {{#if (gt soak 0)}}
-                            <div style="margin: 0 2px;">
-                                {{key}}: {{soak}}
-                            </div>
+                            <span>{{toTitleCase key}}: {{soak}}</span>
                         {{/if}}
                     {{/each}}
                 </span>

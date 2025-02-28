@@ -1,6 +1,6 @@
 import NewedoRoll from "../../helpers/dice.mjs";
 import LOGGER from "../../helpers/logger.mjs";
-import sysUtil from "../../helpers/sysUtil.mjs";
+
 import { ItemDataModel } from "../abstract.mjs";
 
 const {
@@ -95,7 +95,7 @@ export default class RoteData extends ItemDataModel {
 
         roll.AddPart([{
             type: "NEWEDO.generic.trait",
-            label: "NEWEDO.trait.core.shi",
+            label: CONFIG.NEWEDO.traitsCore.shi,
             value: `${actor.system.traits.core.shi.rank}d10`
         }, {
             type: "NEWEDO.generic.skill",

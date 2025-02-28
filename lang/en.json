@@ -1,5 +1,13 @@
 {
   "NEWEDO": {
+    "Generic": {
+      "Lock": "Lock",
+      "LockToggle": "Toggle Lock",
+      "Unlock": "Unlock",
+      "Rest": "Rest",
+      "Lift": "Lift",
+      "Mod": "Mod"
+    },
     "Trait": {
       "Core": {
         "Hrt": { "abbr": "hrt", "long": "Heart" },
@@ -14,7 +22,8 @@
         "Def": { "abbr": "def", "long": "Defence" },
         "Init": { "abbr": "init", "long": "Initative" },
         "Move": { "abbr": "move", "long": "Move" },
-        "Res": { "abbr": "res", "long": "Resistance" }
+        "Res": { "abbr": "res", "long": "Resistance" },
+        "Hp": { "abbr": "hp", "long": "Health" }
       }
     },
     "Effect": {
@@ -55,6 +64,45 @@
       },
       "Feature": {},
       "Actor": {}
+    },
+    "Skill": {
+      "Arcana": {"abbr": "", "long": "Arcana"},
+      "Archery": {"abbr": "", "long": "Archery"},
+      "Athletics": {"abbr": "", "long": "Athletics"},
+      "Banter": {"abbr": "", "long": "Banter"},
+      "Commerce": {"abbr": "", "long": "Commerce"},
+      "Computers": {"abbr": "", "long": "Computers"},
+      "Crafting": {"abbr": "", "long": "Crafting"},
+      "Deception": {"abbr": "", "long": "Deception"},
+      "Dodge": {"abbr": "", "long": "Dodge"},
+      "Drive": {"abbr": "", "long": "Drive"},
+      "Eloquence": {"abbr": "", "long": "Eloquence"},
+      "Gambling": {"abbr": "", "long": "Gambling"},
+      "Gunnery": {"abbr": "", "long": "Gunnery"},
+      "Hardware": {"abbr": "", "long": "Hardware"},
+      "HeavyMelee": {"abbr": "", "long": "Heavy Melee"},
+      "Intimidation": {"abbr": "", "long": "Intimidation"},
+      "Intuition": {"abbr": "", "long": "Intuition"},
+      "Investigation": {"abbr": "", "long": "Investigation"},
+      "LightMelee": {"abbr": "", "long": "Light Melee"},
+      "Medicine": {"abbr": "", "long": "Medicine"},
+      "Meditation": {"abbr": "", "long": "Meditation"},
+      "Performance": {"abbr": "", "long": "Performance"},
+      "Rally": {"abbr": "", "long": "Rally"},
+      "Security": {"abbr": "", "long": "Security"},
+      "Seduction": {"abbr": "", "long": "Seduction"},
+      "SleightOfHand": {"abbr": "", "long": "Sleight of Hand"},
+      "SmallArms": {"abbr": "", "long": "Small Arms"},
+      "Stealth": {"abbr": "", "long": "Stealth"},
+      "Streetwise": {"abbr": "", "long": "Streetwise"},
+      "Study": {"abbr": "", "long": "Study"},
+      "Surveillance": {"abbr": "", "long": "Surveillance"},
+      "Survival": {"abbr": "", "long": "Survival"},
+      "Tactics": {"abbr": "", "long": "Tactics"},
+      "Thrown": {"abbr": "", "long": "Thrown"},
+      "Toxicology": {"abbr": "", "long": "Toxicology"},
+      "Unarmed": {"abbr": "", "long": "Unarmed"},
+      "Wetware": {"abbr": "", "long": "Wetware"}
     }
   },
   "TYPES": {

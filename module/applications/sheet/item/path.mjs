@@ -1,8 +1,7 @@
 import { NEWEDO } from "../../../config.mjs";
-import sysUtil from "../../../helpers/sysUtil.mjs";
-import NewedoApplication from "../../application.mjs";
+
 import NewedoDialog from "../../dialog.mjs";
-import { FeatureApp } from "../../feature.mjs";
+import { FeatureApplication } from "../../feature.mjs";
 import NewedoItemSheet from "../item.mjs";
 
 export default class PathSheet extends NewedoItemSheet {
@@ -32,10 +31,11 @@ export default class PathSheet extends NewedoItemSheet {
 
     static async _onCreateFeature() {
         // Create the feature selection dialog
-        const feature = await FeatureApp.create();
-        const list = sysUtil.duplicate(this.document.system.features);
+        const feature = await FeatureApplication.create();
+        const list = newedo.utils.duplicate(this.document.system.features);
         list.push(feature);
         await this.document.update({ 'system.features': list });
+        const app = await new FeatureApplication(this.document, feature).render(true);
     }
 
     /**
@@ -46,10 +46,7 @@ export default class PathSheet extends NewedoItemSheet {
     static async _onEditFeature(event, target) {
         const id = +target.closest('.feature').dataset.featureId;
         const list = this.document.system.features;
-        const feature = await FeatureApp.edit(list[id]);
-
-        list[id] = feature;
-        this.document.update({ 'system.features': list });
+        const app = await new FeatureApplication(this.document, list[id]).render(true);
     }
 
     static async _onCollapse(event, target) {

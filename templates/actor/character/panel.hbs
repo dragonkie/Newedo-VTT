@@ -35,7 +35,7 @@
     <div class="flexrow" style="gap: 4px;">
         {{#each system.armour as | soak key |}}
             <div>
-                <div class="name">{{ soak.abr }}</div>
+                <div class="name">{{ soak.abbr }}</div>
 
                 {{#if ../isEditMode}}
                     <input type="number" class="score" name="system.armour.{{key}}.value" value="{{soak.value}}">

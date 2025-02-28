@@ -12,15 +12,8 @@
         </div>
     </div>
 
-    <div class="form-group">
-        <label>Quality:</label>
-        <input type="number" name="system.quality.value" value="{{system.quality.value}}">
-    </div>
-
-    <div class="form-group">
-        <label>Grit:</label>
-        <input type="number" name="system.grit.value" value="{{system.grit.value}}">
-    </div>
+    {{formGroup (getField system.schema 'quality.value') value=system.quality.value label='Quality'}}
+    {{formGroup (getField system.schema 'grit.value') value=system.grit.value label='Grit'}}
 
     <div class="form-group">
         <label>Grit attack / damage bonus:</label>
@@ -31,10 +24,7 @@
         </div>
     </div>
 
-    <div class="form-group">
-        <label>Ranged:</label>
-        <input type="checkbox" name="system.ranged" {{checked system.ranged}}>
-    </div>
+    {{formGroup (getField system.schema 'ranged') value=system.ranged label='Ranged'}}
 
     <div class="form-group">
         {{#if system.ranged}}<label>Close / Long range:</label>{{/if}}

@@ -1,0 +1,14 @@
+<div>
+    <header style="margin-bottom: 5px;">
+        <input style="margin-bottom: 5px;" type="text" name="label" value="{{feature.label}}">
+        <label style="margin-bottom: 5px;">
+            <b>Unlock Level:</b>
+            <input type="number" min="1" max="5" style="width: auto;" name="unlock" value="{{feature.unlock}}">
+        </label>
+    </header>
+    <div style="min-height: 200px;">
+        {{#each feature.data.items as |item key|}}
+            {{item.name}}
+        {{/each}}
+    </div>
+</div>

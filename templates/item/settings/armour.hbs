@@ -1,18 +1,6 @@
 <div class="tab-content">
-    <div class="form-group">
-        <label>{{localize 'NEWEDO.damage.kin'}}:</label>
-        <input type="number" name="system.soak.kin" value="{{system.soak.kin}}">
-    </div>
-    <div class="form-group">
-        <label>{{localize 'NEWEDO.damage.ele'}}:</label>
-        <input type="number" name="system.soak.ele" value="{{system.soak.ele}}">
-    </div>
-    <div class="form-group">
-        <label>{{localize 'NEWEDO.damage.bio'}}:</label>
-        <input type="number" name="system.soak.bio" value="{{system.soak.bio}}">
-    </div>
-    <div class="form-group">
-        <label>{{localize 'NEWEDO.damage.arc'}}:</label>
-        <input type="number" name="system.soak.arc" value="{{system.soak.arc}}">
-    </div>
+    {{formGroup (getField system.schema 'soak.kin') label=(localize config.damage.kin) value=system.soak.kin}}
+    {{formGroup (getField system.schema 'soak.ele') label=(localize config.damage.ele) value=system.soak.ele}}
+    {{formGroup (getField system.schema 'soak.bio') label=(localize config.damage.bio) value=system.soak.bio}}
+    {{formGroup (getField system.schema 'soak.arc') label=(localize config.damage.arc) value=system.soak.arc}}
 </div>

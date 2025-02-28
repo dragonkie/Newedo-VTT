@@ -1,5 +1,5 @@
 import NewedoActorSheet from "../actor.mjs";
-import sysUtil from "../../../helpers/sysUtil.mjs";
+
 import LOGGER from "../../../helpers/logger.mjs";
 
 export default class NpcSheet extends NewedoActorSheet {
@@ -31,27 +31,7 @@ export default class NpcSheet extends NewedoActorSheet {
 
     async _prepareContext() {
         const context = await super._prepareContext();
-        //constants to hold references to the diffrent trait links
-        const { core, derived } = context.system.traits;
-
-        // Localize core traits
-        for (let [k, v] of Object.entries(core)) {
-            v.label = sysUtil.localize(CONFIG.NEWEDO.trait.core[k]);
-            v.abr = sysUtil.localize(CONFIG.NEWEDO.trait.core.abbr[k]);
-        }
-
-        // Localize Derived traits.
-        for (let [k, v] of Object.entries(derived)) {
-            v.label = sysUtil.localize(CONFIG.NEWEDO.trait.derived[k]);
-            v.abr = sysUtil.localize(CONFIG.NEWEDO.trait.derived.abbr[k]);
-        }
-
-        // Localize armour labels
-        for (let [k, v] of Object.entries(context.system.armour)) {
-            v.label = sysUtil.localize(CONFIG.NEWEDO.damage[k]);
-            v.abr = sysUtil.localize(CONFIG.NEWEDO.damage.abbr[k]);
-        }
-
+        
         return context;
     }
 }    

@@ -48,16 +48,8 @@ export default class WeaponSheet extends NewedoItemSheet {
             // Only skills toggled as weapon skills will appear here to prevent bloat
             let skills = [];
             for (const skill of actor.itemTypes.skill) {
-                if (skill.system.isWeaponSkill) {
-                    skills.push({ value: skill.id, label: skill.name });
-                }
+                if (skill.system.isWeaponSkill) skills.push({ value: skill.id, label: skill.name });
             }
-
-            skills.sort((a, b) => {
-                if (a.label > b.label) return 1;
-                if (b.label > a.label) return -1;
-                return 0;
-            })
 
             context.selector.skill = foundry.applications.fields.createSelectInput({
                 options: skills,
@@ -65,7 +57,7 @@ export default class WeaponSheet extends NewedoItemSheet {
                 valueAttr: "value",
                 labelAttr: "label",
                 localize: true,
-                sort: false,
+                sort: true,
                 name: 'system.skill.id'
             }).outerHTML;
         } else {

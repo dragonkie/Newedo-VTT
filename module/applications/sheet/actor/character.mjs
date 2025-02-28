@@ -1,5 +1,5 @@
 import NewedoActorSheet from "../actor.mjs";
-import sysUtil from "../../../helpers/sysUtil.mjs";
+
 import LOGGER from "../../../helpers/logger.mjs";
 
 export default class CharacterSheet extends NewedoActorSheet {
@@ -17,7 +17,7 @@ export default class CharacterSheet extends NewedoActorSheet {
         equipment: { template: "systems/newedo/templates/actor/character/equipment.hbs" },
         magic: { template: "systems/newedo/templates/actor/character/magic.hbs" },
         augments: { template: "systems/newedo/templates/actor/character/augments.hbs" },
-        effects: { template: "systems/newedo/templates/actor/effects.hbs"},
+        effects: { template: "systems/newedo/templates/actor/effects.hbs" },
         description: { template: "systems/newedo/templates/actor/character/biography.hbs" }
     }
 
@@ -27,7 +27,7 @@ export default class CharacterSheet extends NewedoActorSheet {
         equipment: { id: "equipment", group: "primary", label: "NEWEDO.tab.equipment" },
         augments: { id: "augments", group: "primary", label: "NEWEDO.tab.augs" },
         magic: { id: "magic", group: "primary", label: "NEWEDO.tab.magic" },
-        effects: { id: "effects", group: "primary", label: "NEWEDO.tab.effects"},
+        effects: { id: "effects", group: "primary", label: "NEWEDO.tab.effects" },
         description: { id: "description", group: "primary", label: "NEWEDO.tab.bio" }
     }
 
@@ -37,35 +37,15 @@ export default class CharacterSheet extends NewedoActorSheet {
 
     async _prepareContext() {
         const context = await super._prepareContext();
-        //constants to hold references to the diffrent trait links
-        const { core, derived } = context.system.traits;
-
-        // Localize core traits
-        for (let [k, v] of Object.entries(core)) {
-            v.label = sysUtil.localize(CONFIG.NEWEDO.trait.core[k]);
-            v.abr = sysUtil.localize(CONFIG.NEWEDO.trait.core.abbr[k]);
-        }
-
-        // Localize Derived traits.
-        for (let [k, v] of Object.entries(derived)) {
-            v.label = sysUtil.localize(CONFIG.NEWEDO.trait.derived[k]);
-            v.abr = sysUtil.localize(CONFIG.NEWEDO.trait.derived.abbr[k]);
-        }
-
-        // Localize armour labels
-        for (let [k, v] of Object.entries(context.system.armour)) {
-            v.label = sysUtil.localize(CONFIG.NEWEDO.damage[k]);
-            v.abr = sysUtil.localize(CONFIG.NEWEDO.damage.abbr[k]);
-        }
-
-        // Localize Backgrounds
-        for (let [k, v] of Object.entries(context.system.background)) {
-            v.label = sysUtil.localize(CONFIG.NEWEDO.background[k]);
-        }
 
         context.lineage = this.document.itemTypes.lineage[0];
         context.culture = this.document.itemTypes.culture[0];
         context.path = this.document.itemTypes.path[0];
+
+        // Localize backgrounds
+        for (let [k, v] of Object.entries(context.system.background)) {
+            v.label = newedo.utils.localize(CONFIG.NEWEDO.background[k]);
+        }
 
         LOGGER.debug('SHEET | CHARACTER | PREPARE CONTEXT', context);
         return context;

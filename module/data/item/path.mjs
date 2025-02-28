@@ -4,20 +4,6 @@ const {
     ArrayField, BooleanField, IntegerSortField, NumberField, SchemaField, SetField, StringField, ObjectField
 } = foundry.data.fields;
 
-const ItemFeature = () => {
-
-}
-
-const EffectFeature = () => {
-    return new ObjectField({
-
-    })
-}
-
-const TraitFeature = () => {
-
-}
-
 const FeatureField = () => {
     const opts = {
         required: true,
@@ -26,7 +12,8 @@ const FeatureField = () => {
     return new SchemaField({
         type: new StringField({ ...opts, initial: "item" }),
         label: new StringField({ ...opts, initial: "New Feature" }),
-        unlock: new NumberField({ ...opts, initial: 0 }), // 0 or 1 all unlocked by default, else match path rank
+        unlock: new NumberField({ ...opts, initial: 1, min: 1, max: 5 }),
+        id: new StringField({...opts, initial: foundry.utils.randomID()}),
         data: new ObjectField({
             initial: {},
             ...opts
@@ -51,7 +38,6 @@ export default class PathData extends ItemDataModel {
                             ActorData.bonus[k] += v;
                         }
                     }
-
                 } else if (feature.type == 'item') {
 
                 } else if (feature.type == 'effect') {

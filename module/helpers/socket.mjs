@@ -1,5 +1,5 @@
 import LOGGER from "./logger.mjs";
-import sysUtil from "./sysUtil.mjs"
+
 
 export default class NewedoSocketManager {
 
@@ -20,17 +20,17 @@ export default class NewedoSocketManager {
                 /*                                USER NOTIFICATIONS                          */
                 /*----------------------------------------------------------------------------*/
                 case 'NOTIFY':
-                    sysUtil.notify(data.message);
+                    newedo.utils.notify(data.message);
                     this.emit('RESOLVE', { resolved: true, id: id }, user);
                     break;
 
                 case 'WARN':
-                    sysUtil.warn(data.message);
+                    newedo.utils.warn(data.message);
                     this.emit('RESOLVE', { resolved: true, id: id }, user);
                     break;
 
                 case 'ERROR':
-                    sysUtil.error(data.message);
+                    newedo.utils.error(data.message);
                     this.emit('RESOLVE', { resolved: true, id: id }, user);
                     break;
 
@@ -55,7 +55,7 @@ export default class NewedoSocketManager {
                             let actor = game.user.character;
                             if (!actor) {
                                 // no controlled actor, can't do it so we cancel the transaction
-                                sysUtil.error('NEWEDO.error.noControlledActor');
+                                newedo.utils.error('NEWEDO.error.noControlledActor');
                                 response = false;
                             } else {
                                 // we confirmed we want the item and have a controlled actor, so create the item and respond 

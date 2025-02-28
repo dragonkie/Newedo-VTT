@@ -7,32 +7,34 @@ import registerSystemSettings from "./helpers/settings.mjs";
 import * as helpers from "./helpers/_module.mjs";
 import { elements } from "./elements/_module.mjs";
 import LOGGER from "./helpers/logger.mjs";
+import sysUtil from "./helpers/sysUtil.mjs";
 
 // Import submodules
 import * as applications from "./applications/_module.mjs";
 import * as documents from "./documents/_module.mjs";
 import * as dataModels from "./data/_module.mjs"
 
-LOGGER.log('Traveling to NewEdo...')
-
-globalThis.newedo = {
-    application: applications,
-    document: documents,
-    data: dataModels,
-    CONFIG: NEWEDO,
-    helper: helpers,
-    elements,
-}
+LOGGER.log('⛩️ Traveling to NewEdo ⛩️');
 
 /* -------------------------------------------- */
 /*  Init Hook                                   */
 /* -------------------------------------------- */
 Hooks.once('init', async function () {
-    LOGGER.log(`----> 🌸 WELCOME TO NEWEDO SAMURAI 🌸<----`);
+    LOGGER.log(`---->🌸🌸🌸 WELCOME TO NEWEDO SAMURAI 🌸🌸🌸<----`);
 
     // Add custom constants for configuration.
     CONFIG.NEWEDO = NEWEDO;
-    newedo.id = game.system.id;
+    globalThis.newedo = {
+        utils: Object.assign(sysUtil, foundry.utils),
+        application: applications,
+        CONFIG: NEWEDO,
+        data: dataModels,
+        document: documents,
+        elements: elements,
+        helper: helpers,
+        get id() { return game.system.id },
+    };
+
 
     // Add combat documents
     CONFIG.Combat.documentClass = documents.NewedoCombat;
@@ -41,7 +43,7 @@ Hooks.once('init', async function () {
     // Prepare document classes
     CONFIG.Actor.documentClass = documents.NewedoActor;
     CONFIG.Item.documentClass = documents.NewedoItem;
-    
+
     // Link up system data models
     CONFIG.Actor.dataModels = dataModels.actor.config;
     CONFIG.Item.dataModels = dataModels.item.config;

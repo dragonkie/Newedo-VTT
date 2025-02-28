@@ -1,8 +1,8 @@
 import { onManageActiveEffect, prepareActiveEffectCategories } from "../../helpers/effects.mjs";
 import LOGGER from "../../helpers/logger.mjs";
-import sysUtil from "../../helpers/sysUtil.mjs";
 import NewedoSheetMixin from "./mixin.mjs";
 import NewedoRoll from "../../helpers/dice.mjs";
+
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -36,7 +36,6 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
         equipment: { template: "systems/newedo/templates/actor/character/character-equipment.hbs" },
         magic: { template: "systems/newedo/templates/actor/character/character-magic.hbs" },
         augments: { template: "systems/newedo/templates/actor/character/character-augs.hbs" },
-
         description: { template: "systems/newedo/templates/actor/character/character-bio.hbs" }
     }
 
@@ -46,7 +45,6 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
         equipment: { id: "equipment", group: "primary", label: "NEWEDO.tab.equipment" },
         augments: { id: "augments", group: "primary", label: "NEWEDO.tab.augs" },
         magic: { id: "magic", group: "primary", label: "NEWEDO.tab.magic" },
-
         description: { id: "description", group: "primary", label: "NEWEDO.tab.bio" }
     }
 
@@ -59,7 +57,7 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
         return `systems/${game.system.id}/templates/actor/actor-${this.document.type}-sheet.hbs`;
     }
 
-    /* -------------------------------------------------------------------------------------- */1
+    /* -------------------------------------------------------------------------------------- */
     /*                                                                                        */
     /*                                   DATA PREPERATION                                     */
     /*                                                                                        */
@@ -69,9 +67,6 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
     async _prepareContext() {
         const context = await super._prepareContext();
 
-        // Use a safe clone of the actor data for further operations.
-        const actorData = this.document.toObject(false);
-
         // Add the actor's data to cfontext.data for easier access, as well as flags.
         context.items = this.document.items;
         context.itemTypes = this.document.itemTypes;
@@ -80,48 +75,36 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
         // Prepare active effects
         context.effects = prepareActiveEffectCategories(this.document.effects);
 
-        this._prepareItems(context);
+        const { core, derived } = context.system.traits;
 
-        LOGGER.debug('SHEET | ACTOR | PREPARE CONTEXT', context);
-        return context;
-    }
+        // Localize core traits
+        for (let [k, v] of Object.entries(core)) {
+            v.label = newedo.utils.localize(CONFIG.NEWEDO.traitsCore[k]);
+            v.abbr = newedo.utils.localize(CONFIG.NEWEDO.traitsCoreAbbr[k]);
+        }
 
-    /**
-     * Organize and classify Items for Character sheets
-     * @param {Object} actorData The actor to prepare.
-     * @return {undefined}
-     */
-    _prepareItems(context) {
-        // Get user settings
+        // Localize Derived traits.
+        for (let [k, v] of Object.entries(derived)) {
+            v.label = newedo.utils.localize(CONFIG.NEWEDO.traitsDerived[k]);
+            v.abbr = newedo.utils.localize(CONFIG.NEWEDO.traitsDerivedAbbr[k]);
+        }
+
+        // Localize armour labels
+        for (let [k, v] of Object.entries(context.system.armour)) {
+            v.label = newedo.utils.localize(CONFIG.NEWEDO.damage[k]);
+            v.abbr = newedo.utils.localize(CONFIG.NEWEDO.damageAbbr[k]);
+        }
+
+        // Prepare item contexts
         const settings = game.user.getFlag('newedo', 'settings');
 
         // Initialize containers.
-        let slugs = [];
-        let skills = {
-            pow: {
-                label: sysUtil.localize('NEWEDO.trait.core.pow'),
+        const skills = {};
+        for (const [key, value] of Object.entries(CONFIG.NEWEDO.traitsCore)) {
+            skills[key] = {
+                label: newedo.utils.localize(value),
                 list: []
-            },
-            pre: {
-                label: sysUtil.localize('NEWEDO.trait.core.pre'),
-                list: []
-            },
-            per: {
-                label: sysUtil.localize('NEWEDO.trait.core.per'),
-                list: []
-            },
-            sav: {
-                label: sysUtil.localize('NEWEDO.trait.core.sav'),
-                list: []
-            },
-            ref: {
-                label: sysUtil.localize('NEWEDO.trait.core.ref'),
-                list: []
-            },
-            hrt: {
-                label: sysUtil.localize('NEWEDO.trait.core.hrt'),
-                list: []
-            },
+            }
         }
 
         // Sort the mega list so the displayed lists are alphabetical
@@ -129,27 +112,7 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
         // Iterate through items, allocating to containers
         for (let i of context.itemTypes.skill) {
             i.img = i.img || DEFAULT_TOKEN;
-
-            switch (i.system.trait) {
-                case 'pow':
-                    skills.pow.list.push(i);
-                    break;
-                case 'ref':
-                    skills.ref.list.push(i);
-                    break;
-                case 'hrt':
-                    skills.hrt.list.push(i);
-                    break;
-                case 'pre':
-                    skills.pre.list.push(i);
-                    break;
-                case 'sav':
-                    skills.sav.list.push(i);
-                    break;
-                case 'per':
-                    skills.per.list.push(i);
-                    break;
-            }
+            skills[i.system.trait].list.push(i);
         }
 
         context.skills = {
@@ -179,6 +142,9 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
                 });
             }
         }
+
+        LOGGER.debug('SHEET | ACTOR | PREPARE CONTEXT', context);
+        return context;
     }
 
     /* -------------------------------------------------------------------------------------- */
@@ -209,7 +175,6 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
         let path = target.dataset?.target;// the value this ledger is targeting
         let label = target.dataset?.label;// the display name of this ledger, localizeable
         let id = target.dataset?.id;// identifier for which ledger is the one we want to pull up
-
 
         if (!id) {
             LOGGER.error('Missing ledger id')
@@ -247,7 +212,7 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
         const item = await fromUuid(uuid);
         const content = TextEditor
         const confirm = await foundry.applications.api.DialogV2.confirm({
-            content: `${sysUtil.localize('NEWEDO.confirm.deleteItem')}: ${item.name}`,
+            content: `${newedo.utils.localize('NEWEDO.confirm.deleteItem')}: ${item.name}`,
             rejectClose: false,
             modal: true
         });
@@ -324,7 +289,7 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
         //The description is enrichedHTML and can have inlineroles and UUID links
         return roll.toMessage({
             speaker: ChatMessage.getSpeaker({ actor: this.document }),
-            flavor: `<div style="font-size: 20px; text-align: center;">${sysUtil.localize('NEWEDO.generic.fate')}` + [label] + `</div>`,
+            flavor: `<div style="font-size: 20px; text-align: center;">${newedo.utils.localize('NEWEDO.generic.fate')}` + [label] + `</div>`,
             content: [render] + "<div>" + [description] + "</div>",
             create: true,
             rollMode: game.settings.get('core', 'rollMode')

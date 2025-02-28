@@ -1,34 +1,7 @@
 import NewedoApplication from "./application.mjs";
 import LOGGER from "../helpers/logger.mjs"
-import sysUtils from "../helpers/sysUtil.mjs"
 
 export default class NewedoLedger extends NewedoApplication {
-
-    static DEFAULT_OPTIONS = {
-        id: 'newedo-app-{id}',
-        tag: 'form',
-        classes: ['newedo'],
-        window: {
-            frame: true,
-            positioned: true,
-            title: "Ledger: {actor}'s {currency}",
-            icon: "fa-solid fa-note-sticky",
-            minimizable: false,
-            resizeable: true
-        },
-        form: {
-            submitOnChange: false,
-            closeOnSubmit: false,
-        },
-        position: {
-            top: 300,
-            left: 300,
-            width: 650,
-            height: 500,
-            scale: 1.0
-        }
-    }
-
     // The character responsible for this ledger
     document = null;
     ledger = {};
@@ -50,11 +23,9 @@ export default class NewedoLedger extends NewedoApplication {
     constructor(document, ledger) {
         super();
         if (!document) {
-            sysUtils.error('Cannot open ledger without a linked document')
+            newedo.utils.error('Cannot open ledger without a linked document')
             return {};
         }
-
-        LOGGER.debug('creating ledger:', ledger);
 
         this.document = document;
         this.ledger = ledger;
@@ -67,10 +38,10 @@ export default class NewedoLedger extends NewedoApplication {
         window: {
             frame: true,
             positioned: true,
-            title: "Ledger: {actor}'s {currency}",
+            title: "Ledger",
             icon: "fa-solid fa-coin",
             minimizable: false,
-            resizeable: true
+            resizable: true
         },
         form: {
             submitOnChange: false,
@@ -79,7 +50,7 @@ export default class NewedoLedger extends NewedoApplication {
         position: {
             top: 300,
             left: 300,
-            width: 650,
+            width: 400,
             height: 400,
             scale: 1.0
         },
@@ -189,6 +160,7 @@ export default class NewedoLedger extends NewedoApplication {
     async _prepareContext() {
         LOGGER.debug('ledger context', this);
         const context = await super._prepareContext();
+
         context.app = this;
         context.id = this.id;
         context.document = this.document;

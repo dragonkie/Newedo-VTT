@@ -1,9 +1,7 @@
-import sysUtil from "../../helpers/sysUtil.mjs";
+
 import LOGGER from "../../helpers/logger.mjs";
 import { ItemDataModel } from "../abstract.mjs";
-import GritField from "../../fields/grit-field.mjs";
-import PriceField from "../../fields/price-field.mjs";
-import ResourceField from "../../fields/resource-field.mjs";
+import { ResourceField, PriceField, GritField } from "../fields.mjs";
 
 import NewedoRoll from "../../helpers/dice.mjs";
 
@@ -59,13 +57,10 @@ export default class WeaponData extends ItemDataModel {
     }
 
     prepareBaseData() {
-        LOGGER.group('WeaponData | prepareBaseData');
         super.prepareBaseData();
-        LOGGER.groupEnd();
     }
 
     prepareDerivedData() {
-        LOGGER.group('WeaponData | prepareDerivedData')
         super.prepareDerivedData();
 
         // Corrects quality values
@@ -88,18 +83,18 @@ export default class WeaponData extends ItemDataModel {
             this.skill.slug = this.actor.items.get(this.skill.id)?.system.slug;
             this.skill.label = this.getSkill()?.name;
         }
-
-        LOGGER.groupEnd();
     }
 
     getRollData() {
-        LOGGER.debug('WeaponData | getRollData');
+        
         const data = super.getRollData();
+        if (!data) return null;
 
         data.skill = this.getSkill();
         if (data.skill) data.trait = data.skill.system.getTrait();
         data.grit = this.grit;
 
+        LOGGER.debug('WeaponData | getRollData', data);
         return data;
     }
 
@@ -301,7 +296,7 @@ export default class WeaponData extends ItemDataModel {
         const messageData = {
             content: `
                 <div>${this.parent.name}</div>
-                <div>${sysUtil.localize('NEWEDO.damage.' + this.damage.type)} damage</div>`,
+                <div>${newedo.utils.localize('NEWEDO.damage.' + this.damage.type)} damage</div>`,
         };
 
         // If we have data passed into the argument, that means this was called with targeting data
@@ -324,8 +319,8 @@ export default class WeaponData extends ItemDataModel {
 
             messageData.content += `
             <div>
-                <input class="apply-damage-all" type="button" value="${sysUtil.localize('NEWEDO.chat.applyAllDamage')}">
-                <input class="undo-damage-all" type="button" value="${sysUtil.localize('NEWEDO.chat.undoAllDamage')}">
+                <input class="apply-damage-all" type="button" value="${newedo.utils.localize('NEWEDO.chat.applyAllDamage')}">
+                <input class="undo-damage-all" type="button" value="${newedo.utils.localize('NEWEDO.chat.undoAllDamage')}">
             </div>
             `;
 

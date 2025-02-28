@@ -416,6 +416,11 @@ ol.items-list .item-delete {
   overflow: hidden;
   display: flex;
   flex-direction: row;
+  /* ------------------------------------------------------------------- */
+  /*                                                                     */
+  /*                         TAB SPECIFIC STYLES                         */
+  /*                                                                     */
+  /* ------------------------------------------------------------------- */
 }
 .sheet.character .window-content header > *,
 .sheet.npc .window-content header > * {
@@ -515,6 +520,17 @@ ol.items-list .item-delete {
 .sheet.character .window-content .skill-lists li.item,
 .sheet.npc .window-content .skill-lists li.item {
   padding: 1px 0 0 0;
+}
+.sheet.character .window-content .tab-content.traits .group-row,
+.sheet.npc .window-content .tab-content.traits .group-row {
+  text-align: center;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.sheet.character .window-content .tab-content.traits .trait-box,
+.sheet.npc .window-content .tab-content.traits .trait-box {
+  align-items: center;
 }
 
 .sheet.item .tab {

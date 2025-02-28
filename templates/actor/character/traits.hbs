@@ -1,10 +1,10 @@
-<div class="tab-content">
-    <!-- Core Stats -->
-    <div class="flexrow" style="text-align: center; align-items: center; gap: 2px; margin-bottom: 10px;">
+<div class="tab-content traits">
+    {{!-- Core Stats --}}
+    <div class="flexrow group-row">
         {{#each system.traits.core as | trait key |}}
 
-            <div style="align-items: center; min-width: 30px;" data-roll-type="NEWEDO.generic.trait" data-roll-label="NEWEDO.trait.core.{{key}}" data-roll="{{trait.rank}}d10">
-                <label class="resource-label flexlarge align-left" data-action="roll">{{trait.abr}}</label>
+            <div class="trait-box" data-roll-type="NEWEDO.generic.trait" data-roll-label="{{trait.label}}" data-roll="{{trait.rank}}d10">
+                <label class="resource-label flexlarge align-left" data-action="roll">{{trait.label}}</label>
                 <input style="height: 3rem; font-size: 22px; font-weight: bold;" value="{{trait.total}}" disabled type="number" />
                 {{#if ../isEditMode}}
                     <input style="width: 75%; height: 1.5rem; border-radius: 0px 0px 5px 5px;" name="system.traits.core.{{key}}.value" value="{{trait.value}}" type="number" />
@@ -14,14 +14,33 @@
         {{/each}}
     </div>
 
-    <!-- Background rolls -->
-    <div class="flexrow" style="text-align: center; align-items: center; gap: 2px;">
+    {{!-- Background rolls --}}
+    <div class="flexrow group-row">
         {{#each system.background as | background key |}}
-            <div style="align-items: center; min-width: 30px;" data-background="{{key}}">
+            <div class="trait-box" data-background="{{key}}">
                 <label class="resource-label flexlarge align-left" data-action="roll" data-roll="{{background.rank}}d10" data-label="{{background.label}}">{{background.label}}</label>
                 <input name="system.background.{{key}}.value" value="{{background.value}}" type="number" {{disabled ../isPlayMode}} />
-                <div class="trait-rank" data-action="roll" data-roll="{{background.rank}}d10x10" data-label="{{background.label}}">Rank {{ background.rank }}</div>
+                <div class="trait-rank" data-action="roll" data-roll="{{background.rank}}d10" data-label="{{background.label}}">Rank {{ background.rank }}</div>
             </div>
         {{/each}}
     </div>
+    {{!-- Additional modifiers --}}
+    <div class="flexrow group-row">
+        <div class="trait-box" data-background="{{key}}">
+            <label class="resource-label flexlarge align-left">{{localize config.generic.rest}} {{localize "NEWEDO.Generic.Mod"}}</label>
+            <input name="system.rest.mod" value="{{system.rest.mod}}" type="number" {{disabled isPlayMode}}>
+            <div>Heal {{multiply system.rest.mod 5}}</div>
+        </div>
+        <div class="trait-box" data-background="{{key}}">
+            <label class="resource-label flexlarge align-left">{{localize config.generic.lift}} {{localize "NEWEDO.Generic.Mod"}}</label>
+            <input name="system.lift.mod" value="{{system.lift.mod}}" type="number" {{disabled isPlayMode}}>
+            <div>Carry {{multiply system.traits.core.pow.total system.lift.mod}}kg</div>
+        </div>
+        <div class="trait-box" data-background="{{key}}">
+            <label class="resource-label flexlarge align-left">{{localize "NEWEDO.Trait.Derived.Hp.long"}} {{localize "NEWEDO.Generic.Mod"}}</label>
+            <input name="system.hp.mod" value="{{system.hp.mod}}" type="number" {{disabled isPlayMode}}>
+            <div>{{ceil (subtraction (multiply system.traits.core.hrt.total system.hp.mod) system.traits.core.hrt.total)}} Hp</div>
+        </div>
+    </div>
+
 </div>

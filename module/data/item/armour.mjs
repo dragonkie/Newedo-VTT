@@ -1,4 +1,4 @@
-import PriceField from "../../fields/price-field.mjs";
+import { PriceField } from "../fields.mjs";
 import { ItemDataModel } from "../abstract.mjs";
 
 

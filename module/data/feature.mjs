@@ -1,22 +1,30 @@
-
-export class NewedoFeature {
-    type = 'item';
-    label = 'New Item Feature';
-    unlock = 0;
-    id = foundry.utils.randomID();
+export class FeatureData {
+    constructor() {
+        this.id = foundry.utils.randomID();
+        this.type = 'item';
+        this.label = 'New Feature';
+        this.unlock = 0;
+        this.data = {};
+    }
 }
 
-export class FeatureItem extends NewedoFeature {
+export class FeatureItemData extends FeatureData {
+    constructor() {
+        super();
+        this.label = 'New Item Feature'
+        this.data = {
+            items: []
+        }
+    }
+}
+
+export class FeatureEffectData extends FeatureData {
 
 }
 
-export class FeatureEffect extends NewedoFeature {
-
-}
-
-export class FeatureTrait extends NewedoFeature {
+export class FeatureTraitData extends FeatureData {
     type = 'trait';
-    static CreateValue(_group='', _key='', _label='') {
+    CreateValue(_group = '', _key = '', _label = '') {
         return {
             group: _group,
             key: _key,
@@ -27,6 +35,7 @@ export class FeatureTrait extends NewedoFeature {
 
     constructor() {
         super();
+        this.label = 'New Trait Feature';
         this.data = {
             groups: [
                 { name: 'core', label: 'NEWEDO.generic.core' },
@@ -35,35 +44,30 @@ export class FeatureTrait extends NewedoFeature {
                 { name: 'background', label: 'NEWEDO.generic.background' },
             ],
             traits: [
-                // Core traits
-                this.constructor.CreateValue('core', 'HrtTotal', 'NEWEDO.trait.core.abbr.hrt'),
-                this.constructor.CreateValue('core', 'PerTotal', 'NEWEDO.trait.core.abbr.per'),
-                this.constructor.CreateValue('core', 'PowTotal', 'NEWEDO.trait.core.abbr.pow'),
-                this.constructor.CreateValue('core', 'PreTotal', 'NEWEDO.trait.core.abbr.pre'),
-                this.constructor.CreateValue('core', 'RefTotal', 'NEWEDO.trait.core.abbr.ref'),
-                this.constructor.CreateValue('core', 'SavTotal', 'NEWEDO.trait.core.abbr.sav'),
-                this.constructor.CreateValue('core', 'ShiTotal', 'NEWEDO.trait.core.abbr.shi'),
-                // Derived traits
-                this.constructor.CreateValue('derived', 'DefTotal', 'NEWEDO.trait.derived.abbr.def'),
-                this.constructor.CreateValue('derived', 'HpTotal', 'NEWEDO.trait.derived.abbr.hp'),
-                this.constructor.CreateValue('derived', 'InitTotal', 'NEWEDO.trait.derived.abbr.init'),
-                this.constructor.CreateValue('derived', 'MoveTotal', 'NEWEDO.trait.derived.abbr.move'),
-                this.constructor.CreateValue('derived', 'ResTotal', 'NEWEDO.trait.derived.abbr.res'),
                 // Derived Modifiers
-                this.constructor.CreateValue('mod', 'DefMod', 'Def'),
-                this.constructor.CreateValue('mod', 'HpMod', 'Hp'),
-                this.constructor.CreateValue('mod', 'InitMod', 'Init'),
-                this.constructor.CreateValue('mod', 'LiftMod', 'Lift'),
-                this.constructor.CreateValue('mod', 'MoveMod', 'Move'),
-                this.constructor.CreateValue('mod', 'ResMod', 'Res'),
-                this.constructor.CreateValue('mod', 'RestMod', 'Rest'),
-                // Backgrounds
-                this.constructor.CreateValue('background', 'contact', 'Contacts'),
-                this.constructor.CreateValue('background', 'follower', 'Followers'),
-                this.constructor.CreateValue('background', 'soul', 'Soul'),
-                this.constructor.CreateValue('background', 'status', 'Status'),
-                this.constructor.CreateValue('background', 'wealth', 'Wealth'),
+                this.CreateValue('mod', 'DefMod', 'Def'),
+                this.CreateValue('mod', 'HpMod', 'Hp'),
+                this.CreateValue('mod', 'InitMod', 'Init'),
+                this.CreateValue('mod', 'LiftMod', 'Lift'),
+                this.CreateValue('mod', 'MoveMod', 'Move'),
+                this.CreateValue('mod', 'ResMod', 'Res'),
+                this.CreateValue('mod', 'RestMod', 'Rest'),
             ],
+        }
+
+        // Add core traits
+        for (const [key, value] of Object.entries(CONFIG.NEWEDO.traitsCore)) {
+            this.data.traits.push(this.CreateValue('core', key, value))
+        }
+
+        // Add Derived traits
+        for (const [key, value] of Object.entries(CONFIG.NEWEDO.traitsDerived)) {
+            this.data.traits.push(this.CreateValue('derived', key, value))
+        }
+
+        // Add Derived traits
+        for (const [key, value] of Object.entries(CONFIG.NEWEDO.background)) {
+            this.data.traits.push(this.CreateValue('background', key, value))
         }
     }
 }

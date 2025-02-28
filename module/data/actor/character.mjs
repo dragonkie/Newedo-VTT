@@ -1,7 +1,7 @@
-import sysUtil from "../../helpers/sysUtil.mjs";
+
 import LOGGER from "../../helpers/logger.mjs";
 import { ActorDataModel } from "../abstract.mjs";
-import ResourceField from "../../fields/resource-field.mjs";
+import { ResourceField } from "../fields.mjs";
 
 const {
     ArrayField, BooleanField, IntegerSortField, NumberField, SchemaField, SetField, StringField
@@ -32,7 +32,7 @@ export default class CharacterDataModel extends ActorDataModel {
             status: this.AddValueField('value', 1),
             wealth: this.AddValueField('value', 1),
         });
-
+        
         return schema;
     }
 
@@ -56,8 +56,8 @@ export default class CharacterDataModel extends ActorDataModel {
         /* Background Ranks                                            */
         /* ----------------------------------------------------------- */
         for (let [key, bg] of Object.entries(this.background)) {
-            bg.value = sysUtil.clamp(bg.value, 0, 100);// Clamps the value to its range
-            bg.rank = sysUtil.backgroundRank(bg.value);// Calculates the rank of the background
+            bg.value = newedo.utils.clamp(bg.value, 0, 100);// Clamps the value to its range
+            bg.rank = newedo.utils.backgroundRank(bg.value);// Calculates the rank of the background
         }
 
         /* ----------------------------------------------------------- */
@@ -77,7 +77,7 @@ export default class CharacterDataModel extends ActorDataModel {
         }
 
         //calculates characters legend rank
-        this.legend.rank = sysUtil.legendRank(this.legend.max);
+        this.legend.rank = newedo.utils.legendRank(this.legend.max);
 
         /* ----------------------------------------------------------- */
         /* Generic Actor Super                                         */

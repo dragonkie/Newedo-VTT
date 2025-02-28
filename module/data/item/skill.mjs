@@ -1,5 +1,5 @@
 import { ItemDataModel } from "../abstract.mjs";
-import sysUtil from "../../helpers/sysUtil.mjs";
+
 import LOGGER from "../../helpers/logger.mjs";
 import NewedoRoll from "../../helpers/dice.mjs";
 
@@ -143,7 +143,7 @@ export default class SkillData extends ItemDataModel {
 
         roll.AddPart([{
             type: "NEWEDO.generic.trait",
-            label: "NEWEDO.trait.core." + this.trait,
+            label: CONFIG.NEWEDO.traitsCore[this.trait],
             value: `${rollData.trait.rank}d10`,
             active: this.useTraitRank
         }, {

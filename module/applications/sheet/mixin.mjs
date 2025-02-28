@@ -1,5 +1,5 @@
 import LOGGER from "../../helpers/logger.mjs";
-import sysUtil from "../../helpers/sysUtil.mjs";
+
 
 export default function NewedoSheetMixin(Base) {
     const mixin = foundry.applications.api.HandlebarsApplicationMixin;
@@ -21,6 +21,7 @@ export default function NewedoSheetMixin(Base) {
                 deleteEffect: this._onDeleteEffect,
                 createEffect: this._onCreateEffect,
                 toggleDescription: this._onToggleDescription,
+                copyToClipboard: this._onCopyToClipboard,
             }
         };
 
@@ -71,7 +72,7 @@ export default function NewedoSheetMixin(Base) {
                 isPlayMode: this.isPlayMode,
                 isEditable: this.isEditable
             }
-            LOGGER.debug('SHEET | BASE | PREPARE CONTEXT', context);
+            LOGGER.debug('SHEET | MIXIN | PREPARE CONTEXT', context);
             return context;
 
         }
@@ -99,7 +100,7 @@ export default function NewedoSheetMixin(Base) {
         }
 
         _onClickAction(event, target) {
-            
+
         }
 
         static _onEditImage(event, target) {
@@ -115,24 +116,45 @@ export default function NewedoSheetMixin(Base) {
             fp.browse();
         }
 
+        static _onCopyToClipboard(event, target) {
+            console.log('Copying to clipboard')
+            const ele = target.closest('[data-copy]');
+
+            if (!ele) {
+                newedo.utils.error('NEWEDO.Notification.Error.NoCopyElement');
+                return;
+            }
+            if (ele.dataset.copy) {
+                navigator.clipboard.writeText(ele.dataset.copy);
+                newedo.utils.notify('NEWEDO.Notification.Notify.CopiedToClipboard');
+            } else if (ele.value) {
+                navigator.clipboard.writeText(ele.value);
+                newedo.utils.notify('NEWEDO.Notification.Notify.CopiedToClipboard');
+            } else {
+                newedo.utils.error('NEWEDO.Notfication.Error.FailedToCopy');
+            }
+        }
+
         /* -------------------------------------------------------------------------------------- */
         /*                                                                                        */
         /*                                   RENDERING                                            */
         /*                                                                                        */
         /* -------------------------------------------------------------------------------------- */
+
+        /*
         async render(options, _options) {
             return super.render(options, _options);
         }
+        */
 
         _configureRenderOptions(options) {
             super._configureRenderOptions(options);
-            return
+            return;
         }
 
         _onFirstRender(context, options) {
             let r = super._onFirstRender(context, options);
             this._setupContextMenu();
-
             return r;
         }
 
@@ -140,11 +162,7 @@ export default function NewedoSheetMixin(Base) {
             let r = super._onRender(context, options);
 
             // Disables sheet inputs for non owners
-            if (!this.isEditable) {
-                this.element.querySelectorAll("input, select, textarea, multi-select").forEach(n => {
-                    n.disabled = true;
-                })
-            }
+            if (!this.isEditable) this.element.querySelectorAll("input, select, textarea, multi-select").forEach(n => {n.disabled = true;});
 
             this._setupDragAndDrop();
             return r;
@@ -160,8 +178,8 @@ export default function NewedoSheetMixin(Base) {
             // Insert additional buttons into the window header
             // In this scenario we want to add a lock button
             if (this.isEditable && !this.document.getFlag("core", "sheetLock")) {
-                const label = game.i18n.localize("SHEETS.toggleLock");
-                let icon = this.isEditMode ? 'fa-lock-open' : 'fa-lock';
+                const label = game.i18n.localize("NEWEDO.Generic.LockToggle");
+                const icon = this.isEditMode ? 'fa-lock-open' : 'fa-lock';
                 const sheetConfig = `<button type="button" class="header-control fa-solid ${icon}" data-action="toggleMode" data-tooltip="${label}" aria-label="${label}"></button>`;
                 this.window.close.insertAdjacentHTML("beforebegin", sheetConfig);
             }

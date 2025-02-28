@@ -1,11 +1,8 @@
-import { FeatureTrait } from "../data/feature.mjs";
+import { FeatureEffectData, FeatureItemData, FeatureTraitData } from "../data/feature.mjs";
+import NewedoApplication from "./application.mjs";
 import NewedoDialog from "./dialog.mjs";
-import sysUtil from "../helpers/sysUtil.mjs";
 
-/*
-CONTOLS ALL FEATURE DIALOG BOXS AND THEIR HANDLING
-*/
-export class FeatureApp extends NewedoDialog {
+export class FeatureApplication extends NewedoApplication {
     static TEMPLATES = {
         CREATE: `systems/newedo/templates/dialog/feature/creator.hbs`,
         TRAIT: `systems/newedo/templates/dialog/feature/trait.hbs`,
@@ -19,6 +16,34 @@ export class FeatureApp extends NewedoDialog {
         'effect',
     ]
 
+    static DEFAULT_OPTIONS = {
+        classes: ['newedo', 'feature-app'],
+        window: { title: "Feature Editor", },
+        form: {
+            submitOnChange: false,
+            closeOnSubmit: false,
+        },
+        actions: {
+            confirm: this._onConfirmChange,
+            cancel: this._onCancelChange,
+        }
+    }
+
+    static get PARTS() {
+        return { form: { template: `systems/newedo/templates/dialog/feature.hbs` } }
+    }
+
+    constructor(document, feature) {
+        super();
+        if (!document || !feature) {
+            newedo.utils.error('Cannot edit an unowned feature!');
+            return {};
+        }
+
+        this.document = document;
+        this.feature = feature;
+    }
+
     /**
      * Creates a new feature of selected type from user input
      * @returns 
@@ -28,16 +53,15 @@ export class FeatureApp extends NewedoDialog {
         // Wrapper to wait for the dialog box to be resolved for us
         const selection = await new Promise(async (resolve, reject) => {
             // creates the dialog input
-            const app = await new FeatureApp({
+            const app = await new NewedoDialog({
                 window: { title: 'Create New Feature' },
                 content: await renderTemplate(this.TEMPLATES.CREATE),
                 buttons: [{
                     label: 'Cancel',
                     action: 'cancel',
-                    callback: () => { reject('user cancled') }
+                    callback: () => { reject('User Canceled') }
                 }],
-                close: () => { reject('user cancled') },
-                submit: () => { },
+                close: () => { reject('User Canceled') },
                 actions: {
                     featureTrait: () => {
                         resolve('trait');
@@ -58,76 +82,57 @@ export class FeatureApp extends NewedoDialog {
         // based of selection, augment the featyures data property
         switch (selection) {
             case 'trait':
-                return new FeatureTrait();
+                return new FeatureTraitData();
             case 'item':
-
-                break;
+                return new FeatureItemData()
             case 'effect':
+                return new FeatureEffectData();
+        }
+    }
 
+    async _prepareContext() {
+        const context = {
+            feature: this.feature,
+            doc: this.document,
+            user: game.user
+        }
+
+        if (this.feature.type == "item") {
+            context.itemLinks = [];
+            for (const i of this.feature.data.items) {
+                context.itemLinks.push(await TextEditor.enrichHTML(`@UUID[${i.uuid}]{${i.name}}`));
+            }
+        }
+        return context;
+    }
+
+    async _onDropItem(event, item) {
+        console.log("Item drop gotten");
+        if (this.feature.type == 'item') {
+            console.log("item added", item);
+            this.feature.data.items.push({ uuid: item.uuid, name: item.name });
+        }
+        this.render(true);
+    }
+
+    static async _onConfirmChange(event, target) {
+        const form = target.closest('form');
+
+        const formData = form.querySelectorAll('name');
+
+        const list = this.document.system.features;
+        for (var i = 0; i < list.length; i++) {
+            if (list[i].id == this.feature.id) {
+                list[i] = this.feature;
                 break;
+            }
         }
+        await this.document.update({ "system.features": list });
+        console.log(this.document);
     }
 
-    static async open(feature) {
-        return this.open(feature);
-    }
-
-    static async edit(feature) {
-        switch (feature.type) {
-            case 'trait':
-                return this._onEditTrait(feature);
-            case 'item':
-                return this._onEditItem(feature);
-            case 'effect':
-                return this._onEditEffect(feature);
-        }
-        return null;
-    }
-
-    static async _onEditTrait(feature) {
-        // protect the base feature from being modified accidently
-        feature = sysUtil.duplicate(feature);
-
-        // prepare render data for the template
-        const renderData = {
-            feature: feature
-        }
-        // Create the dialog box to open the feature from
-        const app = await new Promise(async (resolve, reject) => {
-            const dialog = await new FeatureApp({
-                window: { title: 'Edit Feature' },
-                content: await renderTemplate(this.TEMPLATES.TRAIT, renderData),
-                buttons: [{
-                    label: 'Cancel',
-                    action: 'cancel',
-                    callback: () => { 'cancel' }
-                }, {
-                    label: 'Confirm',
-                    action: 'confirm',
-                    callback: () => { 'submit' }
-                }],
-                close: () => { resolve({ status: 'cancel' }); },
-                submit: (value) => {
-                    // if user cancled, dont submit
-                    if (value == 'cancel') resolve({ status: 'cancel' });
-                    // Get the standard feature options and assign them
-                    let options = dialog.element.querySelectorAll('[name]');
-                    for (const o of options) {
-                        feature[o.name] = o.value;
-                        if (o.type == 'number') feature[o.name] = +o.value;
-                    }
-                    // Get the traits array
-                    let dataArrays = dialog.element.querySelectorAll('[data-array-name]');
-                    for (const a of dataArrays) {
-                        feature.data.traits[a.dataset.arrayIndex].value = +a.value;
-                    }
-                    // Send back the edited feature
-                    resolve(feature);
-                },
-            }).render(true);
-        });
-        // if user cancled, return empty handed
-        if (app.status == 'cancel') return null;
-        return feature;
+    static async _onCancelChange(event, target) {
+        console.log('cancel');
+        this.close();
     }
 }

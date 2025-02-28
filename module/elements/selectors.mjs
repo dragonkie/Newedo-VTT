@@ -1,13 +1,12 @@
-import { NEWEDO } from "../config.mjs";
 
-export function DamageTypes(value, name) {
+
+export function DamageTypes(value = '', name = '') {
+    const opts = [];
+    for (const [k, v] of Object.entries(CONFIG.NEWEDO.damage)) {
+        opts.push({ value: k, label: v });
+    }
     return foundry.applications.fields.createSelectInput({
-        options: [
-            { value: "kin", label: "NEWEDO.damage.kin" },
-            { value: "ele", label: "NEWEDO.damage.ele" },
-            { value: "bio", label: "NEWEDO.damage.bio" },
-            { value: "arc", label: "NEWEDO.damage.arc" }
-        ],
+        options: opts,
         value: value,
         valueAttr: "value",
         labelAttr: "label",
@@ -17,43 +16,32 @@ export function DamageTypes(value, name) {
     }).outerHTML;
 }
 
-export function Traits(value, name) {
+export function Traits(value = '', name = '') {
+    const opts = [];
+    for (const [k, v] of Object.entries(CONFIG.NEWEDO.traitsCore)) opts.push({ value: k, label: v });
+    
     return foundry.applications.fields.createSelectInput({
-        options: [
-            { value: "hrt", label: "NEWEDO.trait.core.hrt" },
-            { value: "pow", label: "NEWEDO.trait.core.pow" },
-            { value: "ref", label: "NEWEDO.trait.core.ref" },
-            { value: "sav", label: "NEWEDO.trait.core.sav" },
-            { value: "pre", label: "NEWEDO.trait.core.pre" },
-            { value: "per", label: "NEWEDO.trait.core.per" },
-            { value: "shi", label: "NEWEDO.trait.core.shi" },
-        ],
+        options: opts,
         value: value,
         valueAttr: "value",
         labelAttr: "label",
         localize: true,
+        name: name,
     }).outerHTML;
 }
 
 export function Skills(value, name) {
-    let options = [];
-    for (const [trait, skills] of Object.entries(NEWEDO.skill)) {
-        for (const [key, skill] of Object.entries(skills)) {
-            options.push({
-                label: skill,
-                value: key,
-            })
-        }
-    }
+    let opts = [];
+    for (const [key, skill] of Object.entries(CONFIG.NEWEDO.skills)) opts.push({ label: skill, value: key });
 
-    options.sort((a, b) => {
+    opts.sort((a, b) => {
         if (a.value > b.value) return 1;
         if (a.value < b.value) return -1;
         return 0;
     });
 
     return foundry.applications.fields.createSelectInput({
-        options: options,
+        options: opts,
         value: value,
         valueAttr: "value",
         labelAttr: "label",
@@ -64,16 +52,10 @@ export function Skills(value, name) {
 }
 
 export function WeaponSkills(value, name) {
+    const opts = [];
+    for (const [k, v] of Object.entries(CONFIG.NEWEDO.weaponSkills)) opts.push({ value: k, label: v });
     return foundry.applications.fields.createSelectInput({
-        options: [
-            { value: "lightmelee", group: 'NEWEDO.generic.melee', label: "NEWEDO.skill.lightmelee" },
-            { value: "heavymelee", group: 'NEWEDO.generic.melee', label: "NEWEDO.skill.heavymelee" },
-            { value: "unarmed", group: 'NEWEDO.generic.melee', label: "NEWEDO.skill.unarmed" },
-            { value: "thrown", group: 'NEWEDO.generic.melee', label: "NEWEDO.skill.thrown" },
-            { value: "archery", group: 'NEWEDO.generic.ranged', label: "NEWEDO.skill.archery" },
-            { value: "gunnery", group: 'NEWEDO.generic.ranged', label: "NEWEDO.skill.gunnery" },
-            { value: "smallarms", group: 'NEWEDO.generic.ranged', label: "NEWEDO.skill.smallarms" },
-        ],
+        options: opts,
         value: value,
         valueAttr: "value",
         labelAttr: "label",

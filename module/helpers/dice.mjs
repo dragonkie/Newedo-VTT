@@ -1,5 +1,5 @@
 import LOGGER from "./logger.mjs";
-import sysUtil from "../helpers/sysUtil.mjs";
+
 
 /**
  * Expanded roll option for use with the vast number of dice used in newedo
@@ -57,11 +57,11 @@ export default class NewedoRoll {
 
     async getRollOptions() {
         if (this.parts.length == 0) {
-            sysUtil.warn("NEWEDO.warn.NoDiceToRoll");
+            newedo.utils.warn("NEWEDO.warn.NoDiceToRoll");
             this.cancelled = true;
             return { cancelled: true };
         }
-        const title = sysUtil.localize("NEWEDO.generic.roll") + ": " + sysUtil.localize(this.title);
+        const title = newedo.utils.localize("NEWEDO.generic.roll") + ": " + newedo.utils.localize(this.title);
         const render = await renderTemplate(this.constructor.template, this);
 
         /**
@@ -84,7 +84,7 @@ export default class NewedoRoll {
                 if (element.dataset['formula'] == 'extra') {
                     // Ensures the number text in the bonus field is valid for the roll
                     if (v.value != "" && !Roll.validate(v.value)) {
-                        sysUtil.warn("NEWEDO.warn.invalidBonus");
+                        newedo.utils.warn("NEWEDO.warn.invalidBonus");
                         this.options.cancelled = true; // Flags that this roll should be discarded
                         return this.options;
                     } else {
@@ -102,7 +102,7 @@ export default class NewedoRoll {
 
                 if (element.dataset['formula'] == 'legend' && this.actor && v.value != '0') {
                     // special handling for the legend option since it spends a resource
-                    if (sysUtil.spendLegend(this.actor, sysUtil.parseElementValue(v))) {
+                    if (newedo.utils.spendLegend(this.actor, newedo.utils.parseElementValue(v))) {
                         // spent legend properly
                         this.options.pieces.push({
                             type: element.dataset['formula'],

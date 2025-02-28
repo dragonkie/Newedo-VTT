@@ -28,17 +28,23 @@ export function registerHelpers() {
         return `<a data-action="editLedger" data-target="${target}" data-id="${id}" data-label="${label}"><i class="fa-solid fa-memo-pad"></i></a>`
     });
     Handlebars.registerHelper('toLowerCase', (str) => str.toLowerCase());
+    Handlebars.registerHelper('toTitleCase', (str) => str.replace(/\w\S*/g, text => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()))
     Handlebars.registerHelper('isGM', () => game.user.isGM);
-
+    Handlebars.registerHelper('getField', (schema, path) => schema.getField(path));
+    Handlebars.registerHelper('objectIsEmpty', (obj) => Object.keys(obj).length <= 0)
     /* -------------------------------------------- */
     /*  Math helpers                                */
     /* -------------------------------------------- */
-    Handlebars.registerHelper('divide', (a, b) => a / b);
-    Handlebars.registerHelper('multiply', (a, b) => a * b);
     Handlebars.registerHelper('addition', (a, b) => a + b);
-    Handlebars.registerHelper('subtraction', (a, b) => a - b);
+    Handlebars.registerHelper('ceil', (a) => Math.ceil(a));
+    Handlebars.registerHelper('divide', (a, b) => a / b);
+    Handlebars.registerHelper('floor', (a) => Math.floor(a));
+    Handlebars.registerHelper('max', (...num) => Math.max(...num));
+    Handlebars.registerHelper('min', (...num) => Math.min(...num));
+    Handlebars.registerHelper('multiply', (a, b) => a * b);
     Handlebars.registerHelper('percent', (a, b) => a / b * 100);
-    Handlebars.registerHelper('disabled', (a) => a == true ? 'disabled' : '');
+    Handlebars.registerHelper('round', (a) => Math.ceil(a));
+    Handlebars.registerHelper('subtraction', (a, b) => a - b);
 
     /* -------------------------------------------- */
     /*  Iterators                                   */

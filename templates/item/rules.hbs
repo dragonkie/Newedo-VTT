@@ -1,14 +1,26 @@
 <div class="tab-content" style="display: flex; flex-direction: column;">
-    <div class="form-group">
+    <div class="form-group" data-action="copyToClipboard" data-copy="{{document.uuid}}">
         <label style="flex: 1;">UUID:</label>
-        <input style="flex: 3;" type="text" disabled value="{{document.uuid}}" />
+        <input data-action="copyToClipboard" style="flex: 3;" type="text" disabled value="{{document.uuid}}">
     </div>
-    <div class="form-group">
+    <div class="form-group" data-action="copyToClipboard" data-copy="{{system.slug}}">
         <label style="flex: 1;">Slug:</label>
-        <input style="flex: 3;" type="text" name="system.slug" disabled value="{{system.slug}}" />
+        <input style="flex: 3;" type="text" name="system.slug" disabled value="{{system.slug}}">
     </div>
-    <div class="form-group">
+    <div class="form-group" data-action="copyToClipboard" data-copy="{{actor.uuid}}">
         <label style="flex: 1;">Owner:</label>
-        <input style="flex: 3;" type="text" disabled value="{{actor.uuid}}" />
+        <input style="flex: 3;" type="text" disabled value="{{actor.uuid}}">
     </div>
+    {{#unless (objectIsEmpty flags)}}
+        <b>Document Flags:</b>
+        {{#each flags as |source key|}}
+            <div><b>{{key}}</b></div>
+            {{#each source as |flag key|}}
+                <div class="form-group" data-action="copyToClipboard" data-copy="{{flag}}">
+                    <label><b>{{key}}</b></label>
+                    <input type="text" disabled value="{{flag}}"/>
+                </div>
+            {{/each}}
+        {{/each}}
+    {{/unless}}
 </div>

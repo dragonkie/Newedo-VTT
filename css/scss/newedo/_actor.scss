@@ -106,4 +106,24 @@
             padding: 1px 0 0 0;
         }
     }
+
+    /* ------------------------------------------------------------------- */
+    /*                                                                     */
+    /*                         TAB SPECIFIC STYLES                         */
+    /*                                                                     */
+    /* ------------------------------------------------------------------- */
+    .tab-content {
+        &.traits {
+            .group-row {
+                text-align: center;
+                align-items: center;
+                gap: 8px;
+                margin-bottom: 12px;
+            }
+
+            .trait-box {
+                align-items: center;
+            }
+        }
+    }
 }

@@ -1,7 +1,6 @@
-import BonusField from "../fields/bonus-field.mjs";
-import ResourceField from "../fields/resource-field.mjs";
+
+import { BonusField, ResourceField } from "./fields.mjs"
 import LOGGER from "../helpers/logger.mjs";
-import sysUtil from "../helpers/sysUtil.mjs";
 
 
 const {
@@ -17,9 +16,10 @@ export class SystemDataModel extends foundry.abstract.TypeDataModel {
      * @returns {SchemaField}
      */
     static AddValueField(key, value) {
-        return new SchemaField({
+        const field = new SchemaField({
             [key]: new NumberField({ initial: value })
-        })
+        });
+        return field
     }
 
     getRollData() {
@@ -148,22 +148,21 @@ export class ActorDataModel extends SystemDataModel {
 
     prepareBaseData() {
         LOGGER.group("ActorDataModel | prepareBaseData");
+        super.prepareBaseData();
         LOGGER.groupEnd();
     }
 
     prepareDerivedData() {
         LOGGER.group("ActorDataModel | prepareDerivedData");
-
+        super.prepareDerivedData();
         const { core, derived } = this.traits;
         const bonus = this.bonus;
 
         /* ----------------------------------------------------------- */
         /* Equipped item modifiers                                     */
         /* ----------------------------------------------------------- */
-        for (const item of this.parent.items.contents) {
-            console.log('activating items');
-            item.prepareOwnerData(this);
-        }
+        for (const item of this.parent.items.contents) item.prepareOwnerData(this);
+        
 
         // Totals up core stats
         core.hrt.total = core.hrt.value + bonus.HrtTotal;
@@ -190,7 +189,7 @@ export class ActorDataModel extends SystemDataModel {
         this.hp.min = 0;
 
         // Gets the characters wound state
-        this.wound = sysUtil.woundState(this.hp.value / this.hp.max);
+        this.wound = newedo.utils.woundState(this.hp.value / this.hp.max);
 
         // Totals up the armour soak values
         this.armour.kin.total = this.armour.kin.value + bonus.SoakKin;
@@ -225,13 +224,11 @@ export class ItemDataModel extends SystemDataModel {
     }
 
     prepareBaseData() {
-        LOGGER.group("ItemDataModel | prepareBaseData");
-        LOGGER.groupEnd();
+
     }
 
     prepareDerivedData() {
-        LOGGER.group("ItemDataModel | prepareDerivedData");
-        LOGGER.groupEnd();
+
     }
 
     /**
@@ -248,7 +245,7 @@ export class ItemDataModel extends SystemDataModel {
 
         const data = {
             ...actorData,
-            ...sysUtil.duplicate(this)
+            ...newedo.utils.duplicate(this)
         }
 
         return data;

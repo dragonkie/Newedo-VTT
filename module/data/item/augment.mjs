@@ -1,4 +1,4 @@
-import ResourceField from "../../fields/resource-field.mjs";
+import { ResourceField } from "../fields.mjs";
 import { ItemDataModel } from "../abstract.mjs";
 
 const {
