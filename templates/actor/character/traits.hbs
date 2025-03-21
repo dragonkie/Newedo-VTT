@@ -29,7 +29,7 @@
         <div class="trait-box" data-background="{{key}}">
             <label class="resource-label flexlarge align-left">{{localize config.generic.rest}} {{localize "NEWEDO.Generic.Mod"}}</label>
             <input name="system.rest.mod" value="{{system.rest.mod}}" type="number" {{disabled isPlayMode}}>
-            <div>Heal {{multiply system.rest.mod 5}}</div>
+            <a data-action="rest">Heal {{system.rest.total}}</a>
         </div>
         <div class="trait-box" data-background="{{key}}">
             <label class="resource-label flexlarge align-left">{{localize config.generic.lift}} {{localize "NEWEDO.Generic.Mod"}}</label>
@@ -39,7 +39,7 @@
         <div class="trait-box" data-background="{{key}}">
             <label class="resource-label flexlarge align-left">{{localize "NEWEDO.Trait.Derived.Hp.long"}} {{localize "NEWEDO.Generic.Mod"}}</label>
             <input name="system.hp.mod" value="{{system.hp.mod}}" type="number" {{disabled isPlayMode}}>
-            <div>{{ceil (subtraction (multiply system.traits.core.hrt.total system.hp.mod) system.traits.core.hrt.total)}} Hp</div>
+            <div>+{{ceil (subtraction (multiply system.traits.core.hrt.total system.hp.mod) system.traits.core.hrt.total)}} Hp</div>
         </div>
     </div>
 

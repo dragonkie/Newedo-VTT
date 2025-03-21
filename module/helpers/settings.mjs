@@ -4,7 +4,7 @@ export default function registerSystemSettings() {
     LOGGER.log(`Registering system settings`);
     // Toggles the debug log visiblity in the console
     game.settings.register(game.system.id, "debugLogs", {
-        name: "Debug Logs",
+        name: "Debug Logs", // displayed name of the setting
         hint: "Enables debug logs in the console",
         scope: "client",
         config: true,

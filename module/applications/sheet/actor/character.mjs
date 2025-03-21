@@ -1,11 +1,15 @@
 import NewedoActorSheet from "../actor.mjs";
 
 import LOGGER from "../../../helpers/logger.mjs";
+import NewedoDialog from "../../dialog.mjs";
 
 export default class CharacterSheet extends NewedoActorSheet {
     static DEFAULT_OPTIONS = {
         classes: ["character"],
-        position: { height: 680, width: 840, top: 60, left: 125 }
+        position: { height: 680, width: 840, top: 60, left: 125 },
+        actions: {
+            rest: this._onRest
+        }
     }
 
     static PARTS = {
@@ -49,5 +53,22 @@ export default class CharacterSheet extends NewedoActorSheet {
 
         LOGGER.debug('SHEET | CHARACTER | PREPARE CONTEXT', context);
         return context;
+    }
+
+    static async _onRest(event, target) {
+        let heal = this.document.system.rest.total;
+        let msg = await NewedoDialog.confirm({
+            content: `
+            <p>Are you sure you would like to rest?</p>
+            <p>This will restore ${heal} health and all temp legend.</p>
+            `
+        });
+
+        if (msg) {
+            this.document.update({
+                'system.hp.value': this.document.system.hp.value + heal,
+                'system.legend.value': this.document.system.legend.max
+            })
+        }
     }
 }

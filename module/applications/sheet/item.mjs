@@ -34,25 +34,11 @@ export default class NewedoItemSheet extends NewedoSheetMixin(foundry.applicatio
         primary: "description"
     }
 
-    async _onDragStart(event) {
-        await super._onDragStart(event);
-        const data = {
-            event: event,
-            files: event.dataTransfer.files,
-            items: event.dataTransfer.items,
-            types: event.dataTransfer.types,
-            data: JSON.parse(event.dataTransfer.getData(`text/plain`)),
-        };
-        LOGGER.debug(`ITEM | DRAG | START`, data);
-    }
-
     async _onDrop(event) {
         await super._onDrop(event);
         const data = JSON.parse(event.dataTransfer.getData(`text/plain`));
         const item = this.item;
-
         if (typeof item._onDrop === `function`) item._onDrop(data);
-        else LOGGER.warn(`No drop function defined for item type ${item.type}`);
     }
 
     /** @override */

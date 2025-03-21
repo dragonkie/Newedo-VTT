@@ -188,6 +188,9 @@ export class ActorDataModel extends SystemDataModel {
         this.hp.max = Math.ceil(core.hrt.total * (this.hp.mod + bonus.HpMod)) + bonus.HpTotal;
         this.hp.min = 0;
 
+        // calculates the ammount of health healed by resting
+        this.rest.total = Math.ceil(this.rest.mod * 5);
+
         // Gets the characters wound state
         this.wound = newedo.utils.woundState(this.hp.value / this.hp.max);
 
