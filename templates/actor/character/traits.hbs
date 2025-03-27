@@ -3,7 +3,7 @@
     <div class="flexrow group-row">
         {{#each system.traits.core as | trait key |}}
 
-            <div class="trait-box" data-roll-type="NEWEDO.generic.trait" data-roll-label="{{trait.label}}" data-roll="{{trait.rank}}d10">
+            <div class="trait-box" data-roll-type="NEWEDO.Generic.Trait.long" data-roll-label="{{trait.label}}" data-roll="{{trait.rank}}d10">
                 <label class="resource-label flexlarge align-left" data-action="roll">{{trait.label}}</label>
                 <input style="height: 3rem; font-size: 22px; font-weight: bold;" value="{{trait.total}}" disabled type="number" />
                 {{#if ../isEditMode}}
@@ -24,20 +24,32 @@
             </div>
         {{/each}}
     </div>
+    {{!-- Derived trait modifiers --}}
+    <div class="flexrow group-row">
+        {{#each system.traits.derived as | trait key |}}
+            <div class="trait-box">
+                <label class="resource-label flexlarge align-left">{{trait.label}}</label>
+                <input name="system.traits.derived{{key}}.mod" type="number" value="{{trait.total}}" disabled>
+                {{#if ../isEditMode}}
+                    <input style="width: 75%; height: 1.5rem; border-radius: 0px 0px 5px 5px;" name="system.traits.derived.{{key}}.mod" value="{{trait.mod}}" type="number" />
+                {{/if}}
+            </div>
+        {{/each}}
+    </div>
     {{!-- Additional modifiers --}}
     <div class="flexrow group-row">
-        <div class="trait-box" data-background="{{key}}">
-            <label class="resource-label flexlarge align-left">{{localize config.generic.rest}} {{localize "NEWEDO.Generic.Mod"}}</label>
+        <div class="trait-box">
+            <label class="resource-label flexlarge align-left">{{localize config.generic.rest}} {{localize "NEWEDO.Generic.Mod.abbr"}}</label>
             <input name="system.rest.mod" value="{{system.rest.mod}}" type="number" {{disabled isPlayMode}}>
             <a data-action="rest">Heal {{system.rest.total}}</a>
         </div>
-        <div class="trait-box" data-background="{{key}}">
-            <label class="resource-label flexlarge align-left">{{localize config.generic.lift}} {{localize "NEWEDO.Generic.Mod"}}</label>
+        <div class="trait-box">
+            <label class="resource-label flexlarge align-left">{{localize config.generic.lift}} {{localize "NEWEDO.Generic.Mod.abbr"}}</label>
             <input name="system.lift.mod" value="{{system.lift.mod}}" type="number" {{disabled isPlayMode}}>
             <div>Carry {{multiply system.traits.core.pow.total system.lift.mod}}kg</div>
         </div>
-        <div class="trait-box" data-background="{{key}}">
-            <label class="resource-label flexlarge align-left">{{localize "NEWEDO.Trait.Derived.Hp.long"}} {{localize "NEWEDO.Generic.Mod"}}</label>
+        <div class="trait-box">
+            <label class="resource-label flexlarge align-left">{{localize "NEWEDO.Trait.Derived.Hp.long"}} {{localize "NEWEDO.Generic.Mod.abbr"}}</label>
             <input name="system.hp.mod" value="{{system.hp.mod}}" type="number" {{disabled isPlayMode}}>
             <div>+{{ceil (subtraction (multiply system.traits.core.hrt.total system.hp.mod) system.traits.core.hrt.total)}} Hp</div>
         </div>

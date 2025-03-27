@@ -23,7 +23,7 @@ export default class NewedoLedger extends NewedoApplication {
     constructor(document, ledger) {
         super();
         if (!document) {
-            newedo.utils.error('Cannot open ledger without a linked document')
+            newedo.utils.error(newedo.config.error.noDocument);
             return {};
         }
 

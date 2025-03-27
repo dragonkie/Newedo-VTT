@@ -23,22 +23,22 @@ export default class WeaponData extends ItemDataModel {
 
         schema.grit = new GritField();
 
-        let setOptions = {
-            required: true,
-            nullable: false,
-            label: "Field Label",
-            hint: "Field Hint",
-            initial: [{}]
-        }
-
-        schema.damage = new SchemaField({
-            value: new StringField({ initial: "1d6" }),
-            type: new StringField({ initial: "kin" }),
-            parts: new SetField(new SchemaField({
-                formula: new StringField({ initial: "1d8" }),
-                type: new StringField({ initial: "kin" }),
-            }), setOptions)
-        });
+        schema.damageParts = new ArrayField(new SchemaField({
+            value: new StringField({ required: true, nullable: false, initial: '1d6' }),
+            type: new StringField({
+                required: true, nullable: false, initial: 'kin',
+                choices: () => {
+                    let data = { ...newedo.config.damageTypes };
+                    for (const a in data) data[a] = newedo.utils.localize(data[a]);
+                    return data;
+                }
+            })
+        }), {
+            nullable: false, required: true, initial: [{
+                value: '1d6',
+                type: 'kin'
+            }]
+        })
 
         schema.ranged = new BooleanField({ initial: false });
 
@@ -52,6 +52,11 @@ export default class WeaponData extends ItemDataModel {
 
         // Weapon magazine tracker, weapons with max of 1 should auto consume from their linked ammo item on attack rather than storing values here
         schema.ammo = new ResourceField(6, 0, 6);
+        schema.burst = new SchemaField({
+            active: new BooleanField({ initial: false, required: true, nullable: false }),
+            roll: new NumberField({ initial: 2, required: true, nullable: false, min: 2 }),
+            ammo: new NumberField({ initial: 0, required: true, nullable: false }),
+        })
 
         return schema;
     }
@@ -86,7 +91,7 @@ export default class WeaponData extends ItemDataModel {
     }
 
     getRollData() {
-        
+
         const data = super.getRollData();
         if (!data) return null;
 
@@ -122,6 +127,7 @@ export default class WeaponData extends ItemDataModel {
             case 'equip': return this._onEquip();
             case 'attack': return this._onAttack();
             case 'damage': return this._onDamage();
+            case 'reload': return;
             default:
                 LOGGER.error('Unknown weapon action: ', action);
                 return null;
@@ -138,31 +144,41 @@ export default class WeaponData extends ItemDataModel {
         const actor = this.actor;
         if (!actor) return;
 
+        // Spend ammo if this is ranged, or cancel the attack, only happens if enforcing ammo tracking
+        const track_ammo = game.settings.get(game.system.id, 'trackAmmo');
+        if (track_ammo && this.isRanged && this.ammo.max > 0) { // weapons with ammo max set to 0 or less dont require ammo, like bows
+            const flag = this.parent.getFlag('newedo', 'burst_fire');
+            const ammoUsed = flag ? this.burst.ammo : 1; // get the ammount of ammo to use
+            // if we spend the ammo and go under 0, we cant make the attack, reaching 0 means we used last ammo and is fine
+            if (this.ammo.value - ammoUsed < 0) return void newedo.utils.warn('NEWEDO.Warn.NoAmmo'); // if we dont have ammo, cancel by default
+            this.parent.update({ 'system.ammo.value': this.ammo.value - ammoUsed })
+        }
+
         // Gather relevant data
         const rollData = this.getRollData();
         const skill = rollData.skill;
         LOGGER.debug('attack data', rollData)
 
         const roll = new NewedoRoll({
-            title: 'NEWEDO.generic.attack',
-            actor: this.actor,
+            title: newedo.config.generic.attack,
+            document: this.parent,
             raise: true,
-            data: rollData
+            rollData: rollData
         });
 
         roll.AddPart([{
-            type: "NEWEDO.generic.trait",
+            type: '',
             label: `${rollData.trait.label}`,
             value: `${rollData.trait.rank}d10`
         }, {
-            type: "NEWEDO.generic.skill",
+            type: '',
             label: skill.name,
             value: skill.system.getRanks()
         }, {
-            type: "NEWEDO.generic.grit",
-            label: 'NEWEDO.generic.attack',
+            type: '',
+            label: newedo.config.generic.attack,
             value: this.grit.atk
-        }])
+        }]);
 
         await roll.evaluate();
 
@@ -240,12 +256,41 @@ export default class WeaponData extends ItemDataModel {
         LOGGER.debug('Message Data: ', messageData);
         let msg = await roll.toMessage(messageData);
 
+        const parts = [];
+
         msg.setFlag('newedo', 'attackData', {
             targets: targets,
+            roll_parts: [],
             raises: roll.options.raise,
         })
 
         return roll;
+    }
+
+    _damageParts() {
+        const rollData = this.getRollData();
+        if (!rollData) return null;
+
+        const parts = [];
+
+        for (const p of this.damageParts) {
+            parts.push({
+                group: 'NEWEDO.Generic.WeaponDamage',
+                type: newedo.config.damageTypes[p.type],
+                label: this.parent.name,
+                value: p.value
+            })
+        }
+
+        // Add trait dice for non ranged attacks 
+        if (!this.isRanged) parts.push({
+            type: '',
+            label: rollData.trait.label,
+            value: `${rollData.trait.rank}d10`
+        })
+
+
+        return parts;
     }
 
     // newer version of the attack roll
@@ -257,32 +302,40 @@ export default class WeaponData extends ItemDataModel {
         // Gather relevant data
         const rollData = this.getRollData();
 
-        let roll = new NewedoRoll({
+        const roll = new NewedoRoll({
             legend: false,
-            title: 'NEWEDO.generic.damage',
-            actor: this.actor,
-            data: rollData
+            title: newedo.config.generic.damage,
+            document: this.parent,
+            rollData: rollData
         });
 
-        roll.AddPart([{
-            type: "NEWEDO.generic.trait",
-            label: `${rollData.trait.label}`,
-            value: `${rollData.trait.rank}d10`
-        }, {
-            type: "TYPES.Item.weapon",
-            label: `${this.parent.name}`,
-            value: `${this.damage.value}`
-        }, {
-            type: "NEWEDO.generic.grit",
-            label: `NEWEDO.generic.damage`,
+        for (const part of this.damageParts) {
+            roll.AddPart({
+                type: '',
+                label: this.parent.name + ':' + newedo.config.damageTypes[part.type],
+                value: part.value
+            })
+        }
+
+        if (!this.isRanged) {
+            roll.AddPart({
+                type: '',
+                label: rollData.trait.label,
+                value: `${rollData.trait.rank}d10`
+            })
+        }
+
+        roll.AddPart({
+            type: '',
+            label: newedo.config.generic.grit,
             value: this.grit.dmg
-        }])
+        })
 
         // adds raise dice if a raise was called
         if (attack?.raises > 0) {
             roll.AddPart({
-                type: "NEWEDO.generic.raise",
-                label: "NEWEDO.generic.damage",
+                type: '',
+                label: newedo.config.generic.raise,
                 value: `${attack.raises}d10`
             })
         } else {
@@ -294,9 +347,7 @@ export default class WeaponData extends ItemDataModel {
 
         // COVNERT ROLL INTO CHAT CARD
         const messageData = {
-            content: `
-                <div>${this.parent.name}</div>
-                <div>${newedo.utils.localize('NEWEDO.damage.' + this.damage.type)} damage</div>`,
+            content: `<div>${this.actor.name} attacks with their ${this.parent.name}!</div>`
         };
 
         // If we have data passed into the argument, that means this was called with targeting data

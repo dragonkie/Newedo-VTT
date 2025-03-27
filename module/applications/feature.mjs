@@ -36,7 +36,7 @@ export class FeatureApplication extends NewedoApplication {
     constructor(document, feature) {
         super();
         if (!document || !feature) {
-            newedo.utils.error('Cannot edit an unowned feature!');
+            newedo.utils.error(newedo.config.error.noDocument);
             return {};
         }
 

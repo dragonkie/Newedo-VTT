@@ -9,12 +9,15 @@ import LOGGER from "./logger.mjs";
  * sources
  */
 export default class NewedoRoll {
+
     _ready = false;
     _roll = null;
-    actor = undefined;// an owning actor if needed
+    document = null;// an owning actor if needed
+    actor = null;
     cancelled = false;
-    data = {};// Roll data to use
+    rollData = null;// Roll data to use
     legend = true; // can you spend legend on this (Requires actor)
+    wounds = true;
     options = {
         advantage: false,
         disadvantage: false,
@@ -24,17 +27,57 @@ export default class NewedoRoll {
     parts = [];// pieces of the roll formula
     prompt = true;// if you should prompt the user or skip that step and just roll
     raise = false;// can you call raises
-    title = 'NEWEDO.generic.roll';// popup window title
+    title = 'NEWEDO.Generic.Roll';// popup window title
 
+    /**Accepts an optional list of dice objects to pre populate the tray */
+    constructor(_data) {
+        for (const [k, v] of Object.entries(_data)) {
+            console.log('this', this[k])
+            console.log('data', _data[k])
+            if (Object.hasOwn(this, k)) this[k] = v;
+            console.log('final', this[k])
+        }
+        console.log('Roll constructor data', _data)
+        console.log('Roll object format', JSON.parse(JSON.stringify(this)));
+
+        // prepare implied data
+        if (this.document?.documentName === `Actor`) this.actor = this.document;
+    }
+
+    /**
+     * @typedef {Object} RollPart
+     * @property {String|Array<String>} label - localizeable string or array of them to appear on the roll popup
+     * @property {String} group - The roll grouping to place this part in
+     * @property {String|Number} value - Inputs value field and must be valid roll format
+     * @property {String|Array<String>} type - Additional tags to identify what this roll does for effects
+     * @property {Boolean} active - Whether this will actually be used in the roll
+     */
+
+    /**
+     * 
+     * @returns {RollPart}
+     */
     static getPartSchema() {
         return {
-            type: 'type',
-            label: 'label',
+            group: '',
+            type: '',
+            label: 'MISSING_LABEL',
             value: 0,
             active: true,
         }
     }
 
+    /** 
+     * @param {RollPart|Array<RollPart>} parts 
+     * @example
+     * AddPart([{
+     *  label:"Strength", 
+     *  value:"1d20+5"
+     * }, {
+     *  label:"Enchantment", 
+     *  value:"+1"
+     * }])
+     */
     AddPart(parts) { // Function for assigning data parts, means I dont have to worry about fucking up templates again
         if (!Array.isArray(parts)) parts = [parts];
         for (const i of parts) {
@@ -46,22 +89,32 @@ export default class NewedoRoll {
         }
     }
 
-    /**Accepts an optional list of dice objects to pre populate the tray */
-    constructor(data) {
-        for (const [k, v] of Object.entries(this)) {
-            if (data[k]) this[k] = data[k];
-        }
-    }
-
     static template = 'systems/newedo/templates/dialog/roll-v2.hbs';
 
     async getRollOptions() {
+
+        // prepare contexual parts
         if (this.parts.length == 0) {
             newedo.utils.warn("NEWEDO.warn.NoDiceToRoll");
             this.cancelled = true;
             return { cancelled: true };
         }
-        const title = newedo.utils.localize("NEWEDO.generic.roll") + ": " + newedo.utils.localize(this.title);
+
+        if (this.document != null) {
+            if (!this.rollData) this.rollData = this.document.getRollData();
+        }
+
+        console.log('rolldata', this.rollData)
+
+        if (this.wounds && this.rollData?.wound) {
+            this.AddPart({
+                label: newedo.config.generic.wound + ':' + this.rollData.wound.label,
+                value: this.rollData.wound.value,
+                type: ''
+            })
+        }
+
+        const title = newedo.utils.localize(newedo.config.generic.roll) + ": " + newedo.utils.localize(this.title);
         const render = await renderTemplate(this.constructor.template, this);
 
         /**

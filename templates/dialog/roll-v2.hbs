@@ -8,7 +8,7 @@ TODO:
     {{#each parts as | part | }}
         <div class="form-group" data-formula="main">
             {{!-- Get the parts type and label --}}
-            <label>{{#if part.type}}{{localize part.type}}: {{/if}}<b>{{localize part.label}}</b></label>
+            <label><b>{{localize part.label}}</b></label>
             <div class="flexrow" style="gap: 0.5rem;">
                 <input type="checkbox" name="active" {{checked part.active}} style="flex: 0;">
                 <input type="text" name="value" value="{{part.value}}" disabled>
@@ -19,7 +19,7 @@ TODO:
     {{!-- if raises are enabled for this roll --}}
     {{#if (gt raise 0)}}
         <div class="form-group" data-formula="raise">
-            <label>{{localize 'NEWEDO.generic.raise'}}:</label>
+            <label>{{localize 'NEWEDO.Generic.Raise.long'}}:</label>
             <div class="flexrow" name="clicker" style="justify-content: center; gap: 0.5rem;">
                 <button type="button" name="decrease" style="flex: 0;"><i class="fa-solid fa-minus"></i></button>
                 <input type="number" name="value" value="0" disabled style="text-align: center;" />
@@ -31,7 +31,7 @@ TODO:
     {{!-- Place to optionally spend legend, eventually will be a clickable button set instead of a slider --}}
     {{#if (and actor legend)}}
         <div class="form-group" data-formula="legend">
-            <label>{{localize 'NEWEDO.generic.legend'}}:</label>
+            <label>{{localize 'NEWEDO.Generic.Legend.long'}}:</label>
             <div class="flexrow" name="clicker" style="justify-content: center; gap: 0.5rem;">
                 <button style="flex: 0;" type="button" name="decrease"><i class="fa-solid fa-minus"></i></button>
                 <input style="text-align: center;" type="number" name="value" value="0" min="0" max="5" disabled />
@@ -42,7 +42,7 @@ TODO:
 
     {{!-- Optional roll modifiers, anything that isnt accounted for can be manually done here --}}
     <div class="form-group" data-formula="extra">
-        <label>{{localize 'NEWEDO.dialog.situationBonus'}}:</label>
+        <label>{{localize 'NEWEDO.Generic.Situational.long'}} {{localize 'NEWEDO.Generic.Bonus.plural'}}:</label>
         <input type="text" name="value" />
     </div>
 </form>

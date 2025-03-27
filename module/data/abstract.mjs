@@ -4,7 +4,7 @@ import LOGGER from "../helpers/logger.mjs";
 
 
 const {
-    ArrayField, BooleanField, IntegerSortField, NumberField, SchemaField, SetField, StringField, HTMLField
+    ArrayField, BooleanField, IntegerSortField, NumberField, SchemaField, SetField, StringField, ObjectField, HTMLField
 } = foundry.data.fields;
 
 export class SystemDataModel extends foundry.abstract.TypeDataModel {
@@ -20,6 +20,23 @@ export class SystemDataModel extends foundry.abstract.TypeDataModel {
             [key]: new NumberField({ initial: value })
         });
         return field
+    }
+
+    static FeatureField() {
+        const opts = {
+            required: true,
+            nullable: false,
+        }
+        return new SchemaField({
+            type: new StringField({ ...opts, initial: "item" }),
+            label: new StringField({ ...opts, initial: "New Feature" }),
+            unlock: new NumberField({ ...opts, initial: 1, min: 1, max: 5 }),
+            id: new StringField({ ...opts, initial: foundry.utils.randomID() }),
+            data: new ObjectField({
+                initial: {},
+                ...opts
+            })
+        })
     }
 
     getRollData() {
@@ -162,7 +179,7 @@ export class ActorDataModel extends SystemDataModel {
         /* Equipped item modifiers                                     */
         /* ----------------------------------------------------------- */
         for (const item of this.parent.items.contents) item.prepareOwnerData(this);
-        
+
 
         // Totals up core stats
         core.hrt.total = core.hrt.value + bonus.HrtTotal;

@@ -6,7 +6,7 @@
     </div>
 
     {{!-- Health container--}}
-    {{ localize 'NEWEDO.generic.hp' }}: {{ system.wound.label }}
+    {{ localize 'NEWEDO.Trait.Derived.Hp.long' }}: {{ system.wound.label }}
     <div class="bar">
         <div class="fill" style="width: {{ percent system.hp.value system.hp.max }}%;"></div>
         <div class="value flexrow">
@@ -18,7 +18,7 @@
     {{!-- Legend container --}}
     <div>
         <div>
-            {{ localize 'NEWEDO.generic.legend' }}
+            {{ localize 'NEWEDO.Generic.Legend.long' }}
             {{{ledger 'system.legend.max' 'legend' 'NEWEDO.ledger.legend'}}}
         </div>
         <div class="bar">
@@ -31,7 +31,7 @@
         </div>
     </div>
     {{!-- Armour values --}}
-    {{ localize 'NEWEDO.generic.soak' }}
+    {{ localize 'NEWEDO.Generic.Soak.long' }}
     <div class="flexrow" style="gap: 4px;">
         {{#each system.armour as | soak key |}}
             <div>
@@ -49,13 +49,13 @@
     </div>
     {{!-- Character XP tracker --}}
     <div class="flexrow" style="gap: 4px;">
-        <span>{{localize 'NEWEDO.generic.exp'}}:</span>
+        <span>{{localize 'NEWEDO.Generic.Experience.abbr'}}:</span>
         <input type="number" value="{{system.xp.value}}" disabled />
         {{{ledger 'system.xp.value' 'xp' 'NEWEDO.ledger.exp'}}}
     </div>
     {{!-- Character money tracker --}}
     <div class="flexrow" style="gap: 4px;">
-        <span>{{localize 'NEWEDO.generic.money'}}:</span>
+        <span>{{localize 'NEWEDO.Generic.Money.long'}}:</span>
         <input type="number" value="{{system.money.value}}" disabled />
         {{{ledger 'system.money.value' 'money' 'NEWEDO.ledger.money'}}}
     </div>
@@ -70,7 +70,7 @@
                     <i class="fa-solid fa-toggle-off"></i>
                 {{/unless}}
             </a>
-            <a data-action="rollFate" class="fate-title"><b>{{localize 'NEWEDO.generic.fate'}}Card</b></a>
+            <a data-action="rollFate" class="fate-title"><b>{{localize 'NEWEDO.Generic.Fate.long'}} Card</b></a>
         </div>
         <ol class="fate-list flexcol scrollable">
             {{!-- Loops through the characters list of fate card options--}}

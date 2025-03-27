@@ -134,26 +134,21 @@ export default class SkillData extends ItemDataModel {
         let rollData = this.getRollData();
         if (!rollData) return;
 
-        let roll = new NewedoRoll({
-            legend: true,
-            actor: this.actor,
+        const roll = new NewedoRoll({
+            document: this.parent,
             title: this.parent.name,
-            data: this.roll
+            rollData: rollData
         });
 
         roll.AddPart([{
-            type: "NEWEDO.generic.trait",
-            label: CONFIG.NEWEDO.traitsCore[this.trait],
+            type: '',
+            label: newedo.config.traitsCore[this.trait],
             value: `${rollData.trait.rank}d10`,
             active: this.useTraitRank
         }, {
-            type: "NEWEDO.generic.skill",
+            type: '',
             label: this.parent.name,
             value: this.getRanks()
-        }, {
-            type: "NEWEDO.generic.wound",
-            label: rollData.wound.label,
-            value: rollData.wound.value
         }]);
 
         await roll.evaluate();

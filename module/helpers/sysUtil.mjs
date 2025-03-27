@@ -13,32 +13,6 @@ export default {
         return game.i18n.localize(str) ?? str;
     },
 
-    /**
-     * Display notifications (These are sometimes displayed globally, and sometimes not, havent figured that out yet)
-     * 1 - Notification
-     * 2 - Warning
-     * 3 - Error
-     * @param {String} msgType - The type of notification to show
-     * @param {String} msg - Text for the notification
-     */
-    notification: async function (msg, msgType = 0) {
-        switch (msgType) {
-            case 0:
-                ui.notifications.notify(msg);
-                LOGGER.log(msg);
-                break;
-            case 1:
-                ui.notifications.warn(msg);
-                LOGGER.warn(msg);
-                break;
-            case 2:
-                ui.notifications.error(msg);
-                LOGGER.error(msg);
-                break;
-            default:
-        }
-    },
-
     getCompendium: async function (name) {
         return await game.packs.get(name);
     },
@@ -80,23 +54,23 @@ export default {
     },
 
     woundState: function (value) {
-        let label = CONFIG.NEWEDO.woundStatus.healthy;
+        let label = newedo.config.woundStatus.healthy;
         let penalty = 0;
-        
+
         if (value <= 0.0) {
-            label = CONFIG.NEWEDO.woundStatus.burning;
+            label = newedo.config.woundStatus.burning;
             penalty = -10;
         } else if (value <= 0.10) {
-            label = CONFIG.NEWEDO.woundStatus.beaten;
+            label = newedo.config.woundStatus.beaten;
             penalty = -7;
         } else if (value <= 0.25) {
-            label = CONFIG.NEWEDO.woundStatus.bloody;
+            label = newedo.config.woundStatus.bloody;
             penalty = -5;
         } else if (value <= 0.75) {
-            label = CONFIG.NEWEDO.woundStatus.wounded;
+            label = newedo.config.woundStatus.wounded;
             penalty = -3;
         } else if (value <= 0.90) {
-            label = CONFIG.NEWEDO.woundStatus.grazed;
+            label = newedo.config.woundStatus.grazed;
             penalty = -1;
         }
 
@@ -110,16 +84,16 @@ export default {
         return Math.max(Math.min(value, max), min);
     },
 
-    notify: function (message) {
-        ui.notifications.notify(this.localize(message));
+    info: function (message, options) {
+        ui.notifications.info(this.localize(message), options);
     },
 
-    warn: function (message) {
-        ui.notifications.warn(this.localize(message));
+    warn: function (message, options) {
+        ui.notifications.warn(this.localize(message), options);
     },
 
-    error: function (message) {
-        ui.notifications.error(this.localize(message));
+    error: function (message, options) {
+        ui.notifications.error(this.localize(message), options);
     },
 
     formulaAdd: function (base, string) {
@@ -194,7 +168,7 @@ export default {
      */
     getRollOptions: async function (data, template = `systems/newedo/templates/dialog/roll-default.hbs`) {
         LOGGER.log('Got roll options data', data);
-        const title = data.title ? data.title : "NEWEDO.generic.roll";
+        const title = data.title ? data.title : newedo.config.generic.roll;
         const render = await renderTemplate(template, data);
 
         /**

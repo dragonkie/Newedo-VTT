@@ -4,16 +4,30 @@
         {{{ selector.skill }}}
     </div>
 
-    <div class="form-group">
-        <label>Damage:</label>
-        <div class="flexrow">
-            <input type="text" name="system.damage.value" value="{{system.damage.value}}" />
-            {{{ selectDamage system.damage.type 'system.damage.type' }}}
+    <div><b>Damage Parts:</b></div>
+    {{#each damageParts as | dmg key |}}
+        <div class="flexrow" style="gap: 10px; margin: 3px 0" data-part-index="{{key}}">
+            {{!-- damage formula --}}
+            {{formInput dmg.formula.field value=dmg.formula.value name=dmg.formula.path}}
+            {{!-- damage type --}}
+            <div class="flexrow" style="gap: 5px">
+                {{formInput dmg.type.field value=dmg.type.value name=dmg.type.path}}
+                {{#unless (eq key 0)}}
+                    <a data-action="deleteDamagePart" style="flex: 0;">
+                        <i class="fa-solid fa-trash"></i>
+                    </a>
+                {{/unless}}
+            </div>
         </div>
+    {{/each}}
+    <div>
+        <a data-action="createDamagePart" style="float: right;">
+            Add new damage part <i class="fa-solid fa-plus fa-l"></i>
+        </a>
     </div>
 
-    {{formGroup (getField system.schema 'quality.value') value=system.quality.value label='Quality'}}
-    {{formGroup (getField system.schema 'grit.value') value=system.grit.value label='Grit'}}
+    {{toFieldGroup system.schema 'quality.value' value=system.quality.value label='Quality'}}
+    {{toFieldGroup system.schema 'grit.value' value=system.grit.value label='Grit'}}
 
     <div class="form-group">
         <label>Grit attack / damage bonus:</label>
@@ -24,7 +38,8 @@
         </div>
     </div>
 
-    {{formGroup (getField system.schema 'ranged') value=system.ranged label='Ranged'}}
+
+    {{toFieldGroup system.schema 'ranged' value=system.ranged label='Ranged'}}
 
     <div class="form-group">
         {{#if system.ranged}}<label>Close / Long range:</label>{{/if}}
@@ -49,21 +64,18 @@
         <div class="form-group">
             <label>Magazine</label>
             <span class="flexrow">
-                <input type="number" name="system.magazine.value" value="{{system.magazine.value}}" />
+                <input type="number" name="system.ammo.value" value="{{system.ammo.value}}" />
                 /
-                <input type="number" {{disabled isPlayMode}} name="system.magazine.max" value="{{system.magazine.max}}" />
+                <input type="number" {{disabled isPlayMode}} name="system.ammo.max" value="{{system.ammo.max}}" />
             </span>
         </div>
 
-        <div class="form-group">
-            <label for="system.burst.ammo">Burst Ammo</label>
-            <input type="number" name="system.burst.ammo" value="{{system.burst.ammo}}" />
-        </div>
+        {{toFieldGroup system.schema 'burst.active' value=system.burst.active label='Enable Burst'}}
 
-        <div class="form-group">
-            <label for="system.burst.roll">Burst Roll</label>
-            <input type="number" name="system.burst.roll" value="{{system.burst.roll}}" />
-        </div>
+        {{#if system.burst.active}}
+            {{toFieldGroup system.schema 'burst.ammo' value=system.burst.ammo label='Burst Ammo'}}
+            {{toFieldGroup system.schema 'burst.roll' value=system.burst.roll label='Burst Roll'}}
+        {{/if}}
     {{/if}}
 
 </div>

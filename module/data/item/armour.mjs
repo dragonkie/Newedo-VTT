@@ -13,14 +13,14 @@ export default class ArmourData extends ItemDataModel {
         schema.quality = new NumberField({ initial: 1 });
         schema.price = new PriceField();
 
-        schema.equipped = new BooleanField({ initial: false, required: true });
+        schema.equipped = new BooleanField({ initial: false, required: true, label: newedo.config.generic.equipped });
 
         schema.soak = new SchemaField({
-            kin: new NumberField({ initial: 0, required: true, nullable: false }),
-            ele: new NumberField({ initial: 0, required: true, nullable: false }),
-            bio: new NumberField({ initial: 0, required: true, nullable: false }),
-            arc: new NumberField({ initial: 0, required: true, nullable: false })
-        })
+            kin: new NumberField({ initial: 0, required: true, nullable: false, label: newedo.config.damageTypes.kin }),
+            ele: new NumberField({ initial: 0, required: true, nullable: false, label: newedo.config.damageTypes.ele }),
+            bio: new NumberField({ initial: 0, required: true, nullable: false, label: newedo.config.damageTypes.bio }),
+            arc: new NumberField({ initial: 0, required: true, nullable: false, label: newedo.config.damageTypes.arc })
+        }, {}, { name: 'TestArmour' });
 
         schema.conceal = new BooleanField({ initial: false });
         schema.fragile = new BooleanField({ initial: false });
@@ -36,7 +36,7 @@ export default class ArmourData extends ItemDataModel {
 
     prepareOwnerData(ActorData) {
         if (!this.isEquipped) return;
-        
+
         ActorData.bonus.SoakKin += this.soak.kin;
         ActorData.bonus.SoakEle += this.soak.ele;
         ActorData.bonus.SoakBio += this.soak.bio;

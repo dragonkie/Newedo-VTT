@@ -60,7 +60,7 @@ export default function NewedoSheetMixin(Base) {
             const context = {
                 document: doc,
                 actor: doc.actor,
-                config: CONFIG.NEWEDO,
+                config: newedo.config,
                 system: doc.system,
                 flags: doc.flags,
                 userFlags: game.user.flags,
@@ -121,17 +121,17 @@ export default function NewedoSheetMixin(Base) {
             const ele = target.closest('[data-copy]');
 
             if (!ele) {
-                newedo.utils.error('NEWEDO.Notification.Error.NoCopyElement');
+                newedo.utils.warn('NEWEDO.Notification.Error.NoCopyElement');
                 return;
             }
             if (ele.dataset.copy) {
                 navigator.clipboard.writeText(ele.dataset.copy);
-                newedo.utils.notify('NEWEDO.Notification.Notify.CopiedToClipboard');
+                newedo.utils.info('NEWEDO.Notification.Notify.CopiedToClipboard');
             } else if (ele.value) {
                 navigator.clipboard.writeText(ele.value);
-                newedo.utils.notify('NEWEDO.Notification.Notify.CopiedToClipboard');
+                newedo.utils.info('NEWEDO.Notification.Notify.CopiedToClipboard');
             } else {
-                newedo.utils.error('NEWEDO.Notfication.Error.FailedToCopy');
+                newedo.utils.warn('NEWEDO.Notfication.Error.FailedToCopy');
             }
         }
 

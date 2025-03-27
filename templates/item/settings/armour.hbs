@@ -1,6 +1,6 @@
 <div class="tab-content">
-    {{formGroup (getField system.schema 'soak.kin') label=(localize config.damage.kin) value=system.soak.kin}}
-    {{formGroup (getField system.schema 'soak.ele') label=(localize config.damage.ele) value=system.soak.ele}}
-    {{formGroup (getField system.schema 'soak.bio') label=(localize config.damage.bio) value=system.soak.bio}}
-    {{formGroup (getField system.schema 'soak.arc') label=(localize config.damage.arc) value=system.soak.arc}}
+    {{toFieldGroup system.schema 'soak.kin' value=system.soak.kin}}
+    {{toFieldGroup system.schema 'soak.ele' value=system.soak.ele}}
+    {{toFieldGroup system.schema 'soak.bio' value=system.soak.bio}}
+    {{toFieldGroup system.schema 'soak.arc' value=system.soak.arc}}
 </div>

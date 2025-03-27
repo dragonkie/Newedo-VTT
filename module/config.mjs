@@ -1,10 +1,5 @@
-import sysUtil from "./helpers/sysUtil.mjs";
-
 // Exported object
 export const NEWEDO = {};
-
-// Add the global API, and add the system utils to it immedieatly for use
-
 
 // Base data
 NEWEDO.traitsCore = {
@@ -46,17 +41,39 @@ NEWEDO.traitsAbbr = {
 }
 
 NEWEDO.generic = {
-    legend: "NEWEDO.Generic.legend",
-    damage: "NEWEDO.Generic.damage",
-    trait: "NEWEDO.Generic.trait",
-    rank: "NEWEDO.Generic.rank",
-    armour: "NEWEDO.Generic.armour",
-    soak: "NEWEDO.Generic.soak",
-    level: "NEWEDO.Generic.level",
-    rest: "NEWEDO.Generic.Rest",
-    lift: "NEWEDO.Generic.Lift",
-    jump: "NEWEDO.Generic.Jump",
+    armour: "NEWEDO.Generic.Armour.long",
+    attack: "NEWEDO.Generic.Attack.long",
+    background: "NEWEDO.Generic.Background.long",
+    bonus: "NEWEDO.Generic.Bonus.long",
+    core: "NEWEDO.Generic.Core.long",
+    damage: "NEWEDO.Generic.Damage.long",
+    derived: "NEWEDO.Generic.Derived.long",
+    equipped: "NEWEDO.Generic.Equipped.long",
+    experience: "NEWEDO.Generic.Experience.long",
+    fate: "NEWEDO.Generic.Fate.long",
+    grit: "NEWEDO.Generic.Grit.long",
+    jump: "NEWEDO.Generic.Jump.long",
+    legend: "NEWEDO.Generic.Legend.long",
+    level: "NEWEDO.Generic.Level.long",
+    lift: "NEWEDO.Generic.Lift.long",
+    mod: "NEWEDO.Generic.Mod.long",
+    raise: "NEWEDO.Generic.Raise.long",
+    rank: "NEWEDO.Generic.Rank.long",
+    rest: "NEWEDO.Generic.Rest.long",
+    roll: "NEWEDO.Generic.Roll.long",
+    situational: 'NEWEDO.Generic.Situational.long',
+    size: "NEWEDO.Generic.Size.long",
+    skill: "NEWEDO.Generic.Skill.long",
+    soak: "NEWEDO.Generic.Soak.long",
+    trait: "NEWEDO.Generic.Trait.long",
+    wound: "NEWEDO.Generic.Wound.long"
 };
+NEWEDO.genericAbbr = {};
+NEWEDO.genericPlural = {};
+for (const [key, value] of Object.entries(NEWEDO.generic)) {
+    NEWEDO.genericAbbr[key] = value.replace('long', 'abbr');
+    NEWEDO.genericPlural[key] = value.replace('long', 'plural');
+}
 
 NEWEDO.effect = {
     create: "NEWEDO.EffectCreate",
@@ -66,24 +83,24 @@ NEWEDO.effect = {
 }
 
 NEWEDO.woundStatus = {
-    healthy: "NEWEDO.Wound.Status.Healthy",
-    grazed: "NEWEDO.Wound.Status.Grazed",
-    wounded: "NEWEDO.Wound.Status.Wounded",
-    bloody: "NEWEDO.Wound.Status.Bloody",
-    beaten: "NEWEDO.Wound.Status.Beaten",
-    burning: "NEWEDO.Wound.Status.Burning",
+    healthy: "NEWEDO.WoundStatus.Healthy",
+    grazed: "NEWEDO.WoundStatus.Grazed",
+    wounded: "NEWEDO.WoundStatus.Wounded",
+    bloody: "NEWEDO.WoundStatus.Bloody",
+    beaten: "NEWEDO.WoundStatus.Beaten",
+    burning: "NEWEDO.WoundStatus.Burning",
 }
 
-NEWEDO.damage = {
-    kin: "NEWEDO.Damage.Kin.long",
-    ele: "NEWEDO.Damage.Ele.long",
-    bio: "NEWEDO.Damage.Bio.long",
-    arc: "NEWEDO.Damage.Arc.long",
+NEWEDO.damageTypes = {
+    kin: "NEWEDO.DamageType.Kin.long",
+    ele: "NEWEDO.DamageType.Ele.long",
+    bio: "NEWEDO.DamageType.Bio.long",
+    arc: "NEWEDO.DamageType.Arc.long",
 }
 
-NEWEDO.damageAbbr = {};
-for (const [k, v] of Object.entries(NEWEDO.damage)) {
-    NEWEDO.damageAbbr[k] = v.replace('long', 'abbr')
+NEWEDO.damageTypesAbbr = {};
+for (const [k, v] of Object.entries(NEWEDO.damageTypes)) {
+    NEWEDO.damageTypesAbbr[k] = v.replace('long', 'abbr')
 }
 
 NEWEDO.attribute = {
@@ -169,17 +186,6 @@ NEWEDO.weaponSkills = {
     ...NEWEDO.weaponSkillsRanged
 }
 
-NEWEDO.sheet = {
-    tab: {// Navigation tabs
-        trait: "NEWEDO.tab.traits",
-        skill: "NEWEDO.tab.skill",
-        fate: "NEWEDO.tab.fate",
-        item: "NEWEDO.tab.item",
-        magic: "NEWEDO.tab.magic",
-        biography: "NEWEDO.tab.biography"
-    }
-}
-
 NEWEDO.background = {
     contacts: "NEWEDO.Background.Contacts",
     followers: "NEWEDO.Background.Followers",
@@ -223,4 +229,39 @@ NEWEDO.biography = {
     ambition: "NEWEDO.biography.ambition",
     ideal: "NEWEDO.biography.ideal",
     fear: "NEWEDO.biography.fear"
+}
+
+
+NEWEDO.notificaiton = {
+
+}
+NEWEDO.warning = {
+
+}
+NEWEDO.error = {
+    noDocument: "NEWEDO.Notification.Error.NoDocument"
+}
+NEWEDO.prompt = {
+
+}
+NEWEDO.confirm = {
+    deleteItem: 'NEWEDO.Dialog.Confirm.Delete.Item',
+    deleteFeature: 'NEWEDO.Dialog.Confirm.Delete.Feature'
+}
+NEWEDO.dialog = {
+
+}
+
+NEWEDO.tabs = {
+    character: {
+
+    },
+    npc: {},
+    item: {}
+}
+
+NEWEDO.sheetParts = {
+    character: {},
+    npc: {},
+    item: {}
 }

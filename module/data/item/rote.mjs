@@ -89,16 +89,16 @@ export default class RoteData extends ItemDataModel {
 
         const roll = new NewedoRoll({
             title: this.parent.name,
-            actor: actor,
-            data: rollData
+            document: this.parent,
+            rollData: rollData
         });
 
         roll.AddPart([{
-            type: "NEWEDO.generic.trait",
-            label: CONFIG.NEWEDO.traitsCore.shi,
+            type: '',
+            label: newedo.config.generic.trait + ":" + newedo.config.traitsCore.shi,
             value: `${actor.system.traits.core.shi.rank}d10`
         }, {
-            type: "NEWEDO.generic.skill",
+            type: '',
             label: skill.name,
             value: skill.system.getRanks()
         }]);

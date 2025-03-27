@@ -6,7 +6,7 @@
         <img class="profile-img" src="{{document.img}}" title="{{actor.name}}" height="150px" width="150px" style="object-fit: cover; border: 0;" />
     </div>
     {{!-- Health container--}}
-    {{ localize 'NEWEDO.generic.hp' }}: {{ system.wound.label }}
+    {{ localize 'NEWEDO.Trait.Derived.long' }}: {{ system.wound.label }}
     <div class="bar">
         <div class="fill" style="width: {{ percent system.hp.value system.hp.max }}%;"></div>
         <div class="value flexrow">
@@ -17,7 +17,7 @@
         </div>
     </div>
     {{!-- Armour values --}}
-    {{ localize 'NEWEDO.generic.soak' }}
+    {{ localize 'NEWEDO.Generic.Soak.long' }}
     <div class="flexrow" style="gap: 4px;">
         {{#each system.armour as | soak key |}}
             <div>

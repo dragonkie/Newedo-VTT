@@ -1,3 +1,12 @@
+// declate global helpers
+globalThis.newedo = { id: 'newedo' };
+newedo.paths = {
+    system: `systems/${newedo.id}`,
+    templates: `systems/${newedo.id}/templates`,
+    assets: `systems/${newedo.id}/assets`,
+    character: `systems/${newedo.id}/templates/actor/character`
+};
+
 //import configuration
 import { NEWEDO } from "./config.mjs";
 import registerHooks from "./helpers/hooks.mjs";
@@ -20,21 +29,19 @@ LOGGER.log('⛩️ Traveling to NewEdo ⛩️');
 /*  Init Hook                                   */
 /* -------------------------------------------- */
 Hooks.once('init', async function () {
-    LOGGER.log(`---->🌸🌸🌸 WELCOME TO NEWEDO SAMURAI 🌸🌸🌸<----`);
+    LOGGER.log(`🌸🌸🌸 WELCOME TO NEWEDO SAMURAI 🌸🌸🌸`);
 
     // Add custom constants for configuration.
     CONFIG.NEWEDO = NEWEDO;
-    globalThis.newedo = {
-        utils: Object.assign(sysUtil, foundry.utils),
-        application: applications,
-        CONFIG: NEWEDO,
-        data: dataModels,
-        document: documents,
-        elements: elements,
-        helper: helpers,
-        get id() { return game.system.id },
-    };
 
+    // adds additional features to the global system reference
+    newedo.utils = Object.assign(sysUtil, foundry.utils);
+    newedo.application = applications;
+    newedo.config = NEWEDO;
+    newedo.data = dataModels;
+    newedo.document = documents;
+    newedo.elements = elements;
+    newedo.helper = helpers;
 
     // Add combat documents
     CONFIG.Combat.documentClass = documents.NewedoCombat;

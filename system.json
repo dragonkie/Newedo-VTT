@@ -36,144 +36,156 @@
   "manifest": "https://raw.githubusercontent.com/dragonkie/Newedo-VTT/main/system.json",
   "download": "https://github.com/dragonkie/Newedo-VTT/releases/latest/download/newedo.zip",
   "background": "systems/newedo/assets/images/system-background.png",
+
   "packFolders": [
     {
       "name": "Newedo: Core",
-      "sorting": "a",
       "packs": [
-        "core-kami",
-        "core-rote",
-        "core-weapon",
-        "core-armour",
         "core-ammo",
-        "core-fates",
-        "core-paths"
-      ]
+        "core-armour",
+        "core-culture",
+        "core-fate",
+        "core-kami",
+        "core-lineage",
+        "core-path",
+        "core-rote",
+        "core-weapon"
+      ],
+      "sorting": "a"
     },
     {
       "name": "Newedo: Internal",
-      "sorting": "a",
       "packs": [
-        "internal-skills",
-        "internal-fates",
-        "internal-features"
-      ]
+        "internal-fate",
+        "internal-skill"
+      ],
+      "sorting": "a"
     }
   ],
   "packs": [
     {
-      "label": "Core: Kami",
-      "type": "Item",
-      "name": "core-kami",
-      "path": "packs/core/kami",
-      "system": "newedo",
-      "banner": "systems/newedo/assets/images/banner/banner-item.jpg",
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "TRUSTED": "OBSERVER",
-        "ASSISTANT": "OBSERVER",
-        "GAMEMASTER": "OWNER"
-      }
-    },
-    {
-      "label": "Core: Fates",
-      "type": "Item",
-      "name": "core-fates",
-      "path": "packs/core/fates",
-      "system": "newedo",
-      "banner": "systems/newedo/assets/images/banner/banner-item.jpg",
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "TRUSTED": "OBSERVER",
-        "ASSISTANT": "OBSERVER",
-        "GAMEMASTER": "OWNER"
-      }
-    },
-    {
-      "label": "Core: Paths",
-      "type": "Item",
-      "name": "core-paths",
-      "path": "packs/core/paths",
-      "system": "newedo",
-      "banner": "systems/newedo/assets/images/banner/banner-item.jpg",
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "TRUSTED": "OBSERVER",
-        "ASSISTANT": "OBSERVER",
-        "GAMEMASTER": "OWNER"
-      }
-    },
-    {
       "label": "Core: Rotes",
-      "type": "Item",
       "name": "core-rote",
+      "ownership": {
+        "ASSISTANT": "OBSERVER",
+        "GAMEMASTER": "OWNER",
+        "PLAYER": "OBSERVER",
+        "TRUSTED": "OBSERVER"
+      },
       "path": "packs/core/rote",
       "system": "newedo",
-      "banner": "none",
+      "type": "Item"
+    }, {
+      "label": "Core: Lineages",
+      "name": "core-lineage",
       "ownership": {
-        "PLAYER": "OBSERVER",
-        "TRUSTED": "OBSERVER",
         "ASSISTANT": "OBSERVER",
-        "GAMEMASTER": "OWNER"
-      }
-    },
-    {
+        "GAMEMASTER": "OWNER",
+        "PLAYER": "OBSERVER",
+        "TRUSTED": "OBSERVER"
+      },
+      "path": "packs/core/lineage",
+      "system": "newedo",
+      "type": "Item"
+    }, {
+      "label": "Core: Cultures",
+      "name": "core-culture",
+      "ownership": {
+        "ASSISTANT": "OBSERVER",
+        "GAMEMASTER": "OWNER",
+        "PLAYER": "OBSERVER",
+        "TRUSTED": "OBSERVER"
+      },
+      "path": "packs/core/culture",
+      "system": "newedo",
+      "type": "Item"
+    }, {
       "label": "Core: Weapons",
-      "type": "Item",
       "name": "core-weapon",
-      "path": "packs/core/weapons",
-      "system": "newedo",
-      "banner": "none",
       "ownership": {
-        "PLAYER": "OBSERVER",
-        "TRUSTED": "OBSERVER",
         "ASSISTANT": "OBSERVER",
-        "GAMEMASTER": "OWNER"
-      }
-    },
-    {
-      "label": "internal-features",
-      "type": "Item",
-      "name": "internal-features",
-      "path": "packs/internal/features",
+        "GAMEMASTER": "OWNER",
+        "PLAYER": "OBSERVER",
+        "TRUSTED": "OBSERVER"
+      },
+      "path": "packs/core/weapon",
       "system": "newedo",
-      "banner": "none",
+      "type": "Item"
+    }, {
+      "label": "Internal: Skills",
+      "name": "internal-skill",
       "ownership": {
-        "PLAYER": "OBSERVER",
-        "TRUSTED": "OBSERVER",
         "ASSISTANT": "OBSERVER",
-        "GAMEMASTER": "OWNER"
-      }
-    },
-    {
-      "label": "internal-skills",
-      "type": "Item",
-      "name": "internal-skills",
-      "path": "packs/internal/skills",
+        "GAMEMASTER": "OWNER",
+        "PLAYER": "OBSERVER",
+        "TRUSTED": "OBSERVER"
+      },
+      "path": "packs/internal/skill",
       "system": "newedo",
-      "banner": "none",
-      "ownership": {
-        "PLAYER": "OBSERVER",
-        "TRUSTED": "OBSERVER",
-        "ASSISTANT": "OBSERVER",
-        "GAMEMASTER": "OWNER"
-      }
-    },
-    {
+      "type": "Item"
+    }, {
       "label": "internal-fates",
-      "type": "Item",
-      "name": "internal-fates",
-      "path": "packs/internal/fates",
-      "system": "newedo",
-      "banner": "none",
+      "name": "internal-fate",
       "ownership": {
-        "PLAYER": "OBSERVER",
-        "TRUSTED": "OBSERVER",
         "ASSISTANT": "OBSERVER",
-        "GAMEMASTER": "OWNER"
-      }
+        "GAMEMASTER": "OWNER",
+        "PLAYER": "OBSERVER",
+        "TRUSTED": "OBSERVER"
+      },
+      "path": "packs/internal/fate",
+      "system": "newedo",
+      "type": "Item"
+    }, {
+      "label": "Core: Fates",
+      "name": "core-fate",
+      "ownership": {
+        "ASSISTANT": "OBSERVER",
+        "GAMEMASTER": "OWNER",
+        "PLAYER": "OBSERVER",
+        "TRUSTED": "OBSERVER"
+      },
+      "path": "packs/core/fate",
+      "system": "newedo",
+      "type": "Item"
+    }, {
+      "label": "Core: Kami",
+      "name": "core-kami",
+      "ownership": {
+        "ASSISTANT": "OBSERVER",
+        "GAMEMASTER": "OWNER",
+        "PLAYER": "OBSERVER",
+        "TRUSTED": "OBSERVER"
+      },
+      "path": "packs/core/kami",
+      "system": "newedo",
+      "type": "Item"
+    }, {
+      "label": "Core: Paths",
+      "name": "core-path",
+      "ownership": {
+        "ASSISTANT": "OBSERVER",
+        "GAMEMASTER": "OWNER",
+        "PLAYER": "OBSERVER",
+        "TRUSTED": "OBSERVER"
+      },
+      "path": "packs/core/path",
+      "system": "newedo",
+      "type": "Item"
+    }, {
+      "label": "Core: Rotes",
+      "name": "core-rote",
+      "ownership": {
+        "ASSISTANT": "OBSERVER",
+        "GAMEMASTER": "OWNER",
+        "PLAYER": "OBSERVER",
+        "TRUSTED": "OBSERVER"
+      },
+      "path": "packs/core/rote",
+      "system": "newedo",
+      "type": "Item"
     }
   ],
+
   "languages": [
     {
       "lang": "en",
@@ -185,62 +197,62 @@
   "documentTypes": {
     "Actor": {
       "character": {
-        "htmlFields": [],
-        "filePathFields": {}
+        "htmlFields": [ ],
+        "filePathFields": { }
       },
       "npc": {
-        "htmlFields": [],
-        "filePathFields": {}
+        "htmlFields": [ ],
+        "filePathFields": { }
       },
       "pet": {
-        "htmlFields": [],
-        "filePathFields": {}
+        "htmlFields": [ ],
+        "filePathFields": { }
       },
       "vehicle": {
-        "htmlFields": [],
-        "filePathFields": {}
+        "htmlFields": [ ],
+        "filePathFields": { }
       }
     },
     "Item": {
       "skill": {
-        "htmlFields": [],
-        "filePathFields": {}
+        "htmlFields": [ ],
+        "filePathFields": { }
       },
       "rote": {
-        "htmlFields": [],
-        "filePathFields": {}
+        "htmlFields": [ ],
+        "filePathFields": { }
       },
       "weapon": {
-        "htmlFields": [],
-        "filePathFields": {}
+        "htmlFields": [ ],
+        "filePathFields": { }
       },
       "armour": {
-        "htmlFields": [],
-        "filePathFields": {}
+        "htmlFields": [ ],
+        "filePathFields": { }
       },
       "augment": {
-        "htmlFields": [],
-        "filePathFields": {}
+        "htmlFields": [ ],
+        "filePathFields": { }
       },
       "culture": {
-        "htmlFields": [],
-        "filePathFields": {}
+        "htmlFields": [ ],
+        "filePathFields": { }
       },
       "lineage": {
-        "htmlFields": [],
-        "filePathFields": {}
+        "htmlFields": [ ],
+        "filePathFields": { }
       },
       "fate": {
-        "htmlFields": [],
-        "filePathFields": {}
+        "htmlFields": [ ],
+        "filePathFields": { }
       },
       "path": {
-        "htmlFields": [],
-        "filePathFields": {}
+        "htmlFields": [ ],
+        "filePathFields": { }
       },
       "kami": {
-        "htmlFields": [],
-        "filePathFields": {}
+        "htmlFields": [ ],
+        "filePathFields": { }
       }
     }
   }

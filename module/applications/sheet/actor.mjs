@@ -23,20 +23,14 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
             editLedger: this._onEditLedger,
             fateDisplay: this._onChangeFateDisplay,
             createEffect: this._onCreateEffect,
-            disableEffect: this._onDisableEffect
+            disableEffect: this._onDisableEffect,
+            toggleWeaponBurst: this._onToggleWeaponBurst,
+            reloadWeapon: this._onReloadWeapon
         }
     }
 
-    static PARTS = {
-        body: { template: "systems/newedo/templates/actor/actor-character-sheet.hbs" },
-        panel: { template: "systems/newedo/templates/actor/character/character-panel.hbs" },
-        header: { template: "systems/newedo/templates/actor/character/character-header.hbs" },
-        traits: { template: "systems/newedo/templates/actor/character/character-traits.hbs" },
-        skills: { template: "systems/newedo/templates/actor/character/character-skills.hbs" },
-        equipment: { template: "systems/newedo/templates/actor/character/character-equipment.hbs" },
-        magic: { template: "systems/newedo/templates/actor/character/character-magic.hbs" },
-        augments: { template: "systems/newedo/templates/actor/character/character-augs.hbs" },
-        description: { template: "systems/newedo/templates/actor/character/character-bio.hbs" }
+    static get PARTS() {
+
     }
 
     static TABS = {
@@ -79,20 +73,20 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
 
         // Localize core traits
         for (let [k, v] of Object.entries(core)) {
-            v.label = newedo.utils.localize(CONFIG.NEWEDO.traitsCore[k]);
-            v.abbr = newedo.utils.localize(CONFIG.NEWEDO.traitsCoreAbbr[k]);
+            v.label = newedo.utils.localize(newedo.config.traitsCore[k]);
+            v.abbr = newedo.utils.localize(newedo.config.traitsCoreAbbr[k]);
         }
 
         // Localize Derived traits.
         for (let [k, v] of Object.entries(derived)) {
-            v.label = newedo.utils.localize(CONFIG.NEWEDO.traitsDerived[k]);
-            v.abbr = newedo.utils.localize(CONFIG.NEWEDO.traitsDerivedAbbr[k]);
+            v.label = newedo.utils.localize(newedo.config.traitsDerived[k]);
+            v.abbr = newedo.utils.localize(newedo.config.traitsDerivedAbbr[k]);
         }
 
         // Localize armour labels
         for (let [k, v] of Object.entries(context.system.armour)) {
-            v.label = newedo.utils.localize(CONFIG.NEWEDO.damage[k]);
-            v.abbr = newedo.utils.localize(CONFIG.NEWEDO.damageAbbr[k]);
+            v.label = newedo.utils.localize(newedo.config.damageTypes[k]);
+            v.abbr = newedo.utils.localize(newedo.config.damageTypesAbbr[k]);
         }
 
         // Prepare item contexts
@@ -100,7 +94,7 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
 
         // Initialize containers.
         const skills = {};
-        for (const [key, value] of Object.entries(CONFIG.NEWEDO.traitsCore)) {
+        for (const [key, value] of Object.entries(newedo.config.traitsCore)) {
             skills[key] = {
                 label: newedo.utils.localize(value),
                 list: []
@@ -152,22 +146,32 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
     /*                                   SHEET ACTIONS                                        */
     /*                                                                                        */
     /* -------------------------------------------------------------------------------------- */
-    static async _onEditItem(event, target) {
-        const uuid = target.closest(".item[data-item-uuid]").dataset.itemUuid;
-        const item = await fromUuid(uuid);
 
+    /**================================================
+     * Helper functions
+     * ================================================
+     */
+    static async getTargetItem(target) {
+        const uuid = target.closest(".item[data-item-uuid]").dataset.itemUuid;
+        return fromUuid(uuid);
+    }
+
+    /**================================================
+     * Action functions
+     * ================================================
+     */
+
+    static async _onEditItem(event, target) {
+        const item = await this.constructor.getTargetItem(target);
         if (!item.sheet.rendered) item.sheet.render(true);
         else item.sheet.bringToFront();
     };
 
     static async _onUseItem(event, target) {
         // Get the item were actually targeting
-        const uuid = target.closest(".item[data-item-uuid]").dataset.itemUuid;
-        const item = await fromUuid(uuid);
-
+        const item = await this.constructor.getTargetItem(target);
         // Grabs an optional argument to pass to the item, useful for when an item has multiple use cases such as weapons attacking / damaging
         const action = target.closest("[data-use]")?.dataset.use;
-
         return item.system.use(action);
     };
 
@@ -208,11 +212,9 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
     }
 
     static async _onDeleteItem(event, target) {
-        const uuid = target.closest(".item[data-item-uuid]").dataset.itemUuid;
-        const item = await fromUuid(uuid);
-        const content = TextEditor
+        const item = await this.constructor.getTargetItem(target);
         const confirm = await foundry.applications.api.DialogV2.confirm({
-            content: `${newedo.utils.localize('NEWEDO.confirm.deleteItem')}: ${item.name}`,
+            content: `${newedo.utils.localize(newedo.config.confirm.deleteItem)}: ${item.name}`,
             rejectClose: false,
             modal: true
         });
@@ -240,13 +242,14 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
 
         const roll = new NewedoRoll({
             legend: true,
-            title: 'NEWEDO.generic.trait',
-            actor: this.actor,
-            data: this.document.getRollData()
+            title: 'NEWEDO.Generic.Trait.long',
+            document: this.document,
+            data: this.document.getRollData(),
+            wounds: false
         });
 
         roll.AddPart({
-            type: ele.dataset?.rollType,
+            type: '',
             label: ele.dataset?.rollLabel,
             value: ele.dataset.roll
         });
@@ -289,7 +292,7 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
         //The description is enrichedHTML and can have inlineroles and UUID links
         return roll.toMessage({
             speaker: ChatMessage.getSpeaker({ actor: this.document }),
-            flavor: `<div style="font-size: 20px; text-align: center;">${newedo.utils.localize('NEWEDO.generic.fate')}` + [label] + `</div>`,
+            flavor: `<div style="font-size: 20px; text-align: center;">${newedo.utils.localize(newedo.config.generic.fate)}` + [label] + `</div>`,
             content: [render] + "<div>" + [description] + "</div>",
             create: true,
             rollMode: game.settings.get('core', 'rollMode')
@@ -302,8 +305,8 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
      */
     static async _onSkillDice(event, target) {
         event.preventDefault();
-        const _id = target.closest('.item[data-item-uuid]').dataset.itemUuid.match(/\w+$/)[0];
-        return this.document.items.get(_id)?.system._cycleSkillDice(target.dataset.index, event.shiftKey);
+        const item = await this.constructor.getTargetItem(target);
+        return item?.system._cycleSkillDice(target.dataset.index, event.shiftKey);
     };
 
     static async _onCreateEffect(event, target) {
@@ -316,9 +319,26 @@ export default class NewedoActorSheet extends NewedoSheetMixin(foundry.applicati
     }
 
     static async _onDisableEffect(event, target) {
-        const _id = target.closest('.item[data-item-uuid]').dataset.itemUuid;
-        const item = await fromUuid(_id);
+        const item = await this.constructor.getTargetItem(target);
         item.update({ disabled: !item.disabled });
+    }
+
+    static async _onToggleWeaponBurst(event, target) {
+        const item = await this.constructor.getTargetItem(target);
+        if (item.type != 'weapon') return void pta.utils.error('NEWEDO.Error.ItemSettingMismatch');
+
+        let flag = item.getFlag('newedo', 'burst_fire');
+        if (!flag) await item.setFlag('newedo', 'burst_fire', true);
+        else await item.setFlag('newedo', 'burst_fire', !flag);
+        this.render(false);
+    }
+
+    static async _onReloadWeapon(event, target) {
+        const item = await this.constructor.getTargetItem(target);
+        let max = item.system.ammo.max;
+        await item.update({ 'system.ammo.value': max });
+        this.render(false);
+        item.sheet.render(false);
     }
 
     /* -------------------------------------------------------------------------------------- */

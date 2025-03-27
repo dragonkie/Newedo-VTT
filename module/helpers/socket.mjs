@@ -19,17 +19,17 @@ export default class NewedoSocketManager {
                 /*----------------------------------------------------------------------------*/
                 /*                                USER NOTIFICATIONS                          */
                 /*----------------------------------------------------------------------------*/
-                case 'NOTIFY':
-                    newedo.utils.notify(data.message);
+                case 'NOTIFY_INFO':
+                    newedo.utils.info(data.message);
                     this.emit('RESOLVE', { resolved: true, id: id }, user);
                     break;
 
-                case 'WARN':
+                case 'NOTIFY_WARN':
                     newedo.utils.warn(data.message);
                     this.emit('RESOLVE', { resolved: true, id: id }, user);
                     break;
 
-                case 'ERROR':
+                case 'NOTIFY_ERROR':
                     newedo.utils.error(data.message);
                     this.emit('RESOLVE', { resolved: true, id: id }, user);
                     break;

@@ -1,18 +1,40 @@
 {
   "NEWEDO": {
     "Generic": {
-      "Lock": "Lock",
-      "LockToggle": "Toggle Lock",
-      "Unlock": "Unlock",
-      "Rest": "Rest",
-      "Lift": "Lift",
-      "Mod": "Mod"
+      "Armour": { "abbr": "armr", "long": "Armour", "plural": "Armours" },
+      "Attack": { "abbr": "atk", "long": "Attack", "plural": "Attacks" },
+      "Background": { "abbr": "bg", "long": "Background", "plural": "Backgrounds" },
+      "Bonus": { "abbr": "bns", "long": "Bonus", "plural": "Bonuses" },
+      "Core": { "abbr": "cr", "long": "Core", "plural": "Cores" },
+      "Damage": { "abbr": "dmg", "long": "Damage", "plural": "Damages" },
+      "Derived": { "abbr": "drvd", "long": "Derived", "plural": "DERIVED_PLURAL" },
+      "Equipped": { "abbr": "equip", "long": "Equipped", "plural": "Equipments" },
+      "Experience": { "abbr": "exp", "long": "Experience" },
+      "Fate": { "abbr": "FATE_ABBR", "long": "Fate" },
+      "Grit": { "abbr": "grit", "long": "Grit" },
+      "Legend": { "abbr": "lgnd", "long": "Legend", "plural": "Legends" },
+      "Level": { "abbr": "lvl", "long": "Level", "plural": "Levels" },
+      "Lift": { "long": "Lift" },
+      "Lock": { "long": "Lock" },
+      "LockToggle": { "long": "Toggle Lock" },
+      "Mod": { "abbr": "mod", "long": "Modifier", "plural": "Modifiers" },
+      "Money": { "abbr": "", "long": "Money", "plural": "Monies", "symbol": "¥" },
+      "Raise": { "abbr": "raise", "long": "Raise" },
+      "Rest": { "long": "Rest" },
+      "Roll": { "abbr": "roll", "long": "Roll" },
+      "Situational": { "abbr": "Situation", "long": "Situational", "plural": "Situations" },
+      "Size": { "abbr": "", "long": "Size", "plural": "Sizes" },
+      "Skill": { "abbr": "skl", "long": "Skill", "plural": "Skills" },
+      "Soak": { "long": "Soak", "plural": "Soaks" },
+      "Trait": { "abbr": "trt", "long": "Trait", "plural": "Traits" },
+      "Unlock": { "long": "Unlock" },
+      "Wound": { "abbr": "wnd", "long": "Wound", "plural": "Wounds" }
     },
     "Trait": {
       "Core": {
-        "Hrt": { "abbr": "hrt", "long": "Heart" },
         "Per": { "abbr": "per", "long": "Perception" },
         "Pow": { "abbr": "pow", "long": "Power" },
+        "Hrt": { "abbr": "hrt", "long": "Heart" },
         "Pre": { "abbr": "pre", "long": "Pressence" },
         "Ref": { "abbr": "ref", "long": "Reflex" },
         "Sav": { "abbr": "sav", "long": "Savvy" },
@@ -33,21 +55,19 @@
       "Source": "Source",
       "Toggle": "Toggle Effect"
     },
-    "Damage": {
+    "DamageType": {
       "Arc": { "abbr": "arc", "long": "Arcane" },
       "Bio": { "abbr": "bio", "long": "Biological" },
-      "Ele": { "abbr": "ele", "long": "Element" },
+      "Ele": { "abbr": "ele", "long": "Elemental" },
       "Kin": { "abbr": "kin", "long": "Kinetic" }
     },
-    "Wound": {
-      "Status": {
-        "Healthy": "Healthy",
-        "Grazed": "Grazed",
-        "Wounded": "Wounded",
-        "Bloody": "Banged up",
-        "Beaten": "Hurt Bad",
-        "Burning": "Burning Legend"
-      }
+    "WoundStatus": {
+      "Healthy": "Healthy",
+      "Grazed": "Grazed",
+      "Wounded": "Wounded",
+      "Bloody": "Banged up",
+      "Beaten": "Hurt Bad",
+      "Burning": "Burning Legend"
     },
     "Background": {
       "Contacts": "Contacts",
@@ -62,47 +82,59 @@
         "Equip": "Equip",
         "Delete": "Delete"
       },
-      "Feature": {},
-      "Actor": {}
+      "Feature": { },
+      "Actor": { }
     },
     "Skill": {
-      "Arcana": {"abbr": "", "long": "Arcana"},
-      "Archery": {"abbr": "", "long": "Archery"},
-      "Athletics": {"abbr": "", "long": "Athletics"},
-      "Banter": {"abbr": "", "long": "Banter"},
-      "Commerce": {"abbr": "", "long": "Commerce"},
-      "Computers": {"abbr": "", "long": "Computers"},
-      "Crafting": {"abbr": "", "long": "Crafting"},
-      "Deception": {"abbr": "", "long": "Deception"},
-      "Dodge": {"abbr": "", "long": "Dodge"},
-      "Drive": {"abbr": "", "long": "Drive"},
-      "Eloquence": {"abbr": "", "long": "Eloquence"},
-      "Gambling": {"abbr": "", "long": "Gambling"},
-      "Gunnery": {"abbr": "", "long": "Gunnery"},
-      "Hardware": {"abbr": "", "long": "Hardware"},
-      "HeavyMelee": {"abbr": "", "long": "Heavy Melee"},
-      "Intimidation": {"abbr": "", "long": "Intimidation"},
-      "Intuition": {"abbr": "", "long": "Intuition"},
-      "Investigation": {"abbr": "", "long": "Investigation"},
-      "LightMelee": {"abbr": "", "long": "Light Melee"},
-      "Medicine": {"abbr": "", "long": "Medicine"},
-      "Meditation": {"abbr": "", "long": "Meditation"},
-      "Performance": {"abbr": "", "long": "Performance"},
-      "Rally": {"abbr": "", "long": "Rally"},
-      "Security": {"abbr": "", "long": "Security"},
-      "Seduction": {"abbr": "", "long": "Seduction"},
-      "SleightOfHand": {"abbr": "", "long": "Sleight of Hand"},
-      "SmallArms": {"abbr": "", "long": "Small Arms"},
-      "Stealth": {"abbr": "", "long": "Stealth"},
-      "Streetwise": {"abbr": "", "long": "Streetwise"},
-      "Study": {"abbr": "", "long": "Study"},
-      "Surveillance": {"abbr": "", "long": "Surveillance"},
-      "Survival": {"abbr": "", "long": "Survival"},
-      "Tactics": {"abbr": "", "long": "Tactics"},
-      "Thrown": {"abbr": "", "long": "Thrown"},
-      "Toxicology": {"abbr": "", "long": "Toxicology"},
-      "Unarmed": {"abbr": "", "long": "Unarmed"},
-      "Wetware": {"abbr": "", "long": "Wetware"}
+      "Arcana": { "long": "Arcana" },
+      "Archery": { "long": "Archery" },
+      "Athletics": { "long": "Athletics" },
+      "Banter": { "long": "Banter" },
+      "Commerce": { "long": "Commerce" },
+      "Computers": { "long": "Computers" },
+      "Crafting": { "long": "Crafting" },
+      "Deception": { "long": "Deception" },
+      "Dodge": { "long": "Dodge" },
+      "Drive": { "long": "Drive" },
+      "Eloquence": { "long": "Eloquence" },
+      "Gambling": { "long": "Gambling" },
+      "Gunnery": { "long": "Gunnery" },
+      "Hardware": { "long": "Hardware" },
+      "HeavyMelee": { "long": "Heavy Melee" },
+      "Intimidation": { "long": "Intimidation" },
+      "Intuition": { "long": "Intuition" },
+      "Investigation": { "long": "Investigation" },
+      "LightMelee": { "long": "Light Melee" },
+      "Medicine": { "long": "Medicine" },
+      "Meditation": { "long": "Meditation" },
+      "Performance": { "long": "Performance" },
+      "Rally": { "long": "Rally" },
+      "Security": { "long": "Security" },
+      "Seduction": { "long": "Seduction" },
+      "SleightOfHand": { "long": "Sleight of Hand" },
+      "SmallArms": { "long": "Small Arms" },
+      "Stealth": { "long": "Stealth" },
+      "Streetwise": { "long": "Streetwise" },
+      "Study": { "long": "Study" },
+      "Surveillance": { "long": "Surveillance" },
+      "Survival": { "long": "Survival" },
+      "Tactics": { "long": "Tactics" },
+      "Thrown": { "long": "Thrown" },
+      "Toxicology": { "long": "Toxicology" },
+      "Unarmed": { "long": "Unarmed" },
+      "Wetware": { "long": "Wetware" }
+    },
+    "Dialog": {
+      "Confirm": {
+        "Delete": {
+          "Item": "Are you sure you would like to delete {item}?",
+          "Feature": "Are you sure you would like to delete this feature?"
+        },
+        "Rest": "Are you sure you would like to rest, this will restore {hp}hp and all temporary legend?"
+      },
+      "Prompt": {
+
+      }
     }
   },
   "TYPES": {
@@ -124,36 +156,9 @@
       "weapon": "Weapon"
     }
   },
-  "NEWEDO.generic.abbr.lvl": "lvl",
-  "NEWEDO.generic.abbr.size": "sz",
-  "NEWEDO.generic.armour": "Armour",
-  "NEWEDO.generic.attack": "Attack",
-  "NEWEDO.generic.background": "Background",
-  "NEWEDO.generic.damage": "Damage",
-  "NEWEDO.generic.exp": "Exp",
-  "NEWEDO.generic.experience": "Experience",
-  "NEWEDO.generic.fate": "Fate",
-  "NEWEDO.generic.grit": "Grit",
-  "NEWEDO.generic.hp": "Health",
-  "NEWEDO.generic.item": "Item",
-  "NEWEDO.generic.legend": "Legend",
-  "NEWEDO.generic.lvl": "Level",
-  "NEWEDO.generic.melee": "Melee",
-  "NEWEDO.generic.mod": "Mod",
-  "NEWEDO.generic.money": "Money",
-  "NEWEDO.generic.multiplier": "Multiplier",
-  "NEWEDO.generic.plrl.wound": "Wounds",
-  "NEWEDO.generic.raise": "Raise",
-  "NEWEDO.generic.ranged": "Ranged",
-  "NEWEDO.generic.rank": "Rank",
-  "NEWEDO.generic.roll": "Roll",
-  "NEWEDO.generic.size": "Size",
-  "NEWEDO.generic.skill": "Skill",
-  "NEWEDO.generic.soak": "Soak",
-  "NEWEDO.generic.trait": "Trait",
-  "NEWEDO.generic.wound": "Wound",
-  "NEWEDO.generic.core": "Core",
-  "NEWEDO.generic.derived": "Derived",
+  "SHEET": {
+
+  },
 
   "NEWEDO.tab.augs": "Augments",
   "NEWEDO.tab.bio": "Biography",
@@ -169,16 +174,6 @@
   "NEWEDO.feature.create": "Create new feature",
   "NEWEDO.feature.delete": "Are you sure you would like to delete this feature?",
 
-  "SHEET.Item.armour": "Armour",
-  "SHEET.Item.augment": "Augment",
-  "SHEET.Item.culture": "Culture",
-  "SHEET.Item.fate": "Fate",
-  "SHEET.Item.lineage": "Lineage",
-  "SHEET.Item.path": "Path",
-  "SHEET.Item.rote": "Rote",
-  "SHEET.Item.skill": "Skill",
-  "SHEET.Item.weapon": "Weapon",
-
   "NEWEDO.biography.ambition": "Ambitions",
   "NEWEDO.biography.appearance": "Appearance",
   "NEWEDO.biography.background": "Background",
@@ -192,15 +187,10 @@
 
   "NEWEDO.ledger.add": "Increased",
   "NEWEDO.ledger.exp": "Exp",
-  "NEWEDO.ledger.legend": "Legend",
   "NEWEDO.ledger.money": "Money",
   "NEWEDO.ledger.set": "Set to",
   "NEWEDO.ledger.sub": "Decreased",
 
   "NEWEDO.chat.applyAllDamage": "Apply All",
-  "NEWEDO.chat.undoAllDamage": "Undo All",
-  
-  "NEWEDO.confirm.deleteItem": "Are you sure you would like to delete",
-  "NEWEDO.dialog.situationBonus": "Situational Bonus",
-  "NEWEDO.warn.notEnoughLegend": "Not enough legend"
+  "NEWEDO.chat.undoAllDamage": "Undo All"
 }
