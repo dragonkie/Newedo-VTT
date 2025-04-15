@@ -2,7 +2,7 @@
   "id": "newedo",
   "title": "NewEdo",
   "description": "Official adaptation of the Newedo system for FoundryVTT",
-  "version": "0.5.0",
+  "version": "0.5.4",
   "compatibility": {
     "minimum": 12,
     "verified": 12.334,

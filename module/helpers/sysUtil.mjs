@@ -263,8 +263,6 @@ export default {
         }
 
         for (const i of cleanupIndex) i.delete();
-        
-        console.log(cleanupIndex);
     }
 
 
