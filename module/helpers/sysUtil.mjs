@@ -84,7 +84,8 @@ export default {
         return Math.max(Math.min(value, max), min);
     },
 
-    info: function (message, options) {[]
+    info: function (message, options) {
+        []
         ui.notifications.info(this.localize(message), options);
     },
 
@@ -233,6 +234,38 @@ export default {
     deepClone: function (original, { strict = false, _d = 0 } = {}) {
         return foundry.utils.deepClone();
     },
+
+    // runs multiple tests to ensure we dont publish a shit package
+    async packageCompatabilityTest() {
+        let actorTypes = game.documentTypes.Actor;
+        let itemTypes = game.documentTypes.Item;
+
+        let cleanupIndex = [];
+
+        for (const a of actorTypes) {
+            if (a == 'base') continue;
+            let t = await Actor.create({
+                type: a,
+                name: `Testing ${a}`
+            });
+
+            cleanupIndex.push(t);
+        }
+
+        for (const i of itemTypes) {
+            if (i == 'base') continue;
+            let t = await Item.create({
+                type: i,
+                name: `Testing ${i}`
+            });
+
+            cleanupIndex.push(t);
+        }
+
+        for (const i of cleanupIndex) i.delete();
+        
+        console.log(cleanupIndex);
+    }
 
 
 }
