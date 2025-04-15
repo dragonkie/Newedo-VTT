@@ -267,28 +267,36 @@ export default class WeaponData extends ItemDataModel {
         return roll;
     }
 
-    _damageParts() {
+    getDamageParts() {
         const rollData = this.getRollData();
         if (!rollData) return null;
 
         const parts = [];
 
-        for (const p of this.damageParts) {
-            parts.push({
-                group: 'NEWEDO.Generic.WeaponDamage',
-                type: newedo.config.damageTypes[p.type],
-                label: this.parent.name,
-                value: p.value
-            })
-        }
-
         // Add trait dice for non ranged attacks 
         if (!this.isRanged) parts.push({
+            group: 'NEWEDO.Generic.WeaponDamage',
             type: '',
             label: rollData.trait.label,
             value: `${rollData.trait.rank}d10`
         })
 
+        // add weapon damage parts
+        for (const p of this.damageParts) {
+            parts.push({
+                group: 'NEWEDO.Generic.WeaponDamage',
+                type: '',
+                label: this.parent.name,
+                value: p.value
+            })
+        }
+
+        // add grit damage
+        roll.AddPart({
+            type: '',
+            label: newedo.config.generic.grit,
+            value: this.grit.dmg
+        })
 
         return parts;
     }
@@ -309,27 +317,8 @@ export default class WeaponData extends ItemDataModel {
             rollData: rollData
         });
 
-        for (const part of this.damageParts) {
-            roll.AddPart({
-                type: '',
-                label: this.parent.name + ':' + newedo.config.damageTypes[part.type],
-                value: part.value
-            })
-        }
-
-        if (!this.isRanged) {
-            roll.AddPart({
-                type: '',
-                label: rollData.trait.label,
-                value: `${rollData.trait.rank}d10`
-            })
-        }
-
-        roll.AddPart({
-            type: '',
-            label: newedo.config.generic.grit,
-            value: this.grit.dmg
-        })
+        // add standard damage dice
+        roll.AddPart(this.getDamageParts);
 
         // adds raise dice if a raise was called
         if (attack?.raises > 0) {

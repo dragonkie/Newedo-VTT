@@ -7,7 +7,8 @@
     "compile": "gulp css",
     "watch": "gulp",
     "gulp": "gulp",
-    "watch-sass": "sass --watch src/scss/newedo.scss css/newedo.css"
+    "watch-sass": "sass --watch src/scss/newedo.scss css/newedo.css",
+    "package": "\"E:/Software/7-Zip/7z.exe\" a -tzip newedo.zip -x!src/ -r" 
   },
   "browserslist": [
     "last 3 versions"

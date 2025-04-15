@@ -31,6 +31,9 @@ export function registerHelpers() {
     Handlebars.registerHelper('toTitleCase', (str) => str.replace(/\w\S*/g, text => text.charAt(0).toUpperCase() + text.substring(1).toLowerCase()))
     Handlebars.registerHelper('isGM', () => game.user.isGM);
     Handlebars.registerHelper('objectIsEmpty', (obj) => Object.keys(obj).length <= 0);
+    /* -------------------------------------------- */
+    /*  FIELD HELPERS                               */
+    /* -------------------------------------------- */
     Handlebars.registerHelper('getField', (schema, path) => schema.getField(path));
     Handlebars.registerHelper('toFieldGroup', (schema, path, options) => {
         let field = schema.getField(path);
@@ -49,7 +52,7 @@ export function registerHelpers() {
             label, hint, rootId, stacked, widget, localize: true, units,
             classes: typeof classes === "string" ? classes.split(" ") : []
         };
-        const group = field.toFormInput(groupConfig, inputConfig);
+        const group = field.toInput(groupConfig, inputConfig);
         return new Handlebars.SafeString(group.outerHTML);
     })
     /* -------------------------------------------- */

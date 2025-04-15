@@ -84,7 +84,7 @@ export default {
         return Math.max(Math.min(value, max), min);
     },
 
-    info: function (message, options) {
+    info: function (message, options) {[]
         ui.notifications.info(this.localize(message), options);
     },
 
