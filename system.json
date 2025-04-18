@@ -2,7 +2,7 @@
   "id": "newedo",
   "title": "NewEdo",
   "description": "Official adaptation of the Newedo system for FoundryVTT",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "compatibility": {
     "minimum": "12",
     "verified": "12.331",
@@ -113,7 +113,7 @@
       "type": "Item"
     }, {
       "label": "Internal: Skills",
-      "name": "internal-skill",
+      "name": "internal-skills",
       "ownership": {
         "ASSISTANT": "OBSERVER",
         "GAMEMASTER": "OWNER",
