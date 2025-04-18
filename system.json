@@ -4,9 +4,9 @@
   "description": "Official adaptation of the Newedo system for FoundryVTT",
   "version": "0.5.4",
   "compatibility": {
-    "minimum": 12,
-    "verified": 12.334,
-    "maximum": 13
+    "minimum": "12",
+    "verified": "12.331",
+    "maximum": "12.999"
   },
   "authors": [
     {
@@ -169,18 +169,6 @@
         "TRUSTED": "OBSERVER"
       },
       "path": "packs/core/path",
-      "system": "newedo",
-      "type": "Item"
-    }, {
-      "label": "Core: Rotes",
-      "name": "core-rote",
-      "ownership": {
-        "ASSISTANT": "OBSERVER",
-        "GAMEMASTER": "OWNER",
-        "PLAYER": "OBSERVER",
-        "TRUSTED": "OBSERVER"
-      },
-      "path": "packs/core/rote",
       "system": "newedo",
       "type": "Item"
     }

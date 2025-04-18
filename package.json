@@ -8,7 +8,8 @@
     "watch": "gulp",
     "gulp": "gulp",
     "watch-sass": "sass --watch src/scss/newedo.scss css/newedo.css",
-    "package": "\"E:/Software/7-Zip/7z.exe\" a -tzip ../newedo.zip -x!src/ -x!pack*.json -x!*.md -x!*.git* -x!*.lock -x!newedo.code* -r" 
+    "prepack": "del \"../_packages/newedo.zip\"",
+    "pack": "\"E:/Software/7-Zip/7z.exe\" a -tzip ../_packages/newedo.zip -x!src/ -x!pack*.json -x!*.md -x!*.git* -x!*.lock -x!newedo.code* -r"
   },
   "browserslist": [
     "last 3 versions"
