@@ -6,12 +6,10 @@ export default {
   * Localize a string using internationalization.
   * 
   * this format calls the game.i18n.localize(), but is more convinient and easier to understand
-  * @param {string} str - The string to localized
-  * @returns {string} The localized string
+  * @param {String} txt - The string to localized
+  * @returns {String} The localized string
   */
-    localize: function (str) {
-        return game.i18n.localize(str) ?? str;
-    },
+    localize: (txt) => { return game.i18n.localize(txt) ?? txt },
 
     getCompendium: async function (name) {
         return await game.packs.get(name);
@@ -235,34 +233,51 @@ export default {
         return foundry.utils.deepClone();
     },
 
-    // runs multiple tests to ensure we dont publish a shit package
+    /**
+     * Unit testing to ensure the system is functioning before release
+     */
     async packageCompatabilityTest() {
-        let actorTypes = game.documentTypes.Actor;
-        let itemTypes = game.documentTypes.Item;
+        try {
+            console.log('BEGINING UNIT TEST');
+            console.log('TESTING DOCUMENT TYPE CREATION');
+            // test the document types
+            let actorTypes = game.documentTypes.Actor;
+            let itemTypes = game.documentTypes.Item;
 
-        let cleanupIndex = [];
+            let cleanupIndex = [];
 
-        for (const a of actorTypes) {
-            if (a == 'base') continue;
-            let t = await Actor.create({
-                type: a,
-                name: `Testing ${a}`
-            });
+            for (const a of actorTypes) {
+                if (a == 'base') continue;
+                let t = await Actor.create({
+                    type: a,
+                    name: `Testing ${a}`
+                });
 
-            cleanupIndex.push(t);
+                cleanupIndex.push(t);
+            }
+
+            for (const i of itemTypes) {
+                if (i == 'base') continue;
+                let t = await Item.create({
+                    type: i,
+                    name: `Testing ${i}`
+                });
+
+                cleanupIndex.push(t);
+            }
+            console.log('REMOVING TEST DOCUMENTS');
+            for (const i of cleanupIndex) i.delete();
+            
+            // test compendium pack data
+            console.log('VALIDATING COMPENDIUM REFERENCES');
+            if (this.getCoreFates() == undefined) throw new Error('No reference to core fates compendium');
+            if (this.getCoreSkills() == undefined) throw new Error('No reference to core skills compendium');
+            if (this.getCoreCharDocs() == undefined) throw new Error('Missing reference to core character documents');
         }
-
-        for (const i of itemTypes) {
-            if (i == 'base') continue;
-            let t = await Item.create({
-                type: i,
-                name: `Testing ${i}`
-            });
-
-            cleanupIndex.push(t);
+        catch (err) {
+            console.error(err);
         }
-
-        for (const i of cleanupIndex) i.delete();
+        console.log('ALL SYSTEMS READY TO GO!!!');
     }
 
 
